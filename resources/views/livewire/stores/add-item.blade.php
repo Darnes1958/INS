@@ -1,31 +1,51 @@
-<div class="col-md-7 col-lg-8">
+<div class="col-md-10 col-lg-12">
 
     <form >
         <div class="row g-3">
-            <div class="col-sm-4">
+            <div class="col-md-4">
                 <label for="item_no" class="form-label">رقم الصنف</label>
-                <input type="text" class="form-control" id="item_name" placeholder="" value="" >
+                <input wire:model="item_no"  wire:keydown.enter="$emit('gotonext','item_name')"  type="text" class="form-control" id="item_no" placeholder="" value="" >
+                @error('item_no') <span class="error">{{ $message }}</span> @enderror
             </div>
-
-            <div class="col-sm-8">
+            <div class="col-md-8">
                 <label for="item_name" class="form-label">اسم الصنف</label>
-                <input type="text" class="form-control" id="item_name" placeholder="ادخال اسم المستخدم" >
+                <input wire:model="item_name"  wire:keydown.enter="$emit('gotonext','itemtype')" type="text" class="form-control" id="item_name" placeholder="ادخال اسم الصنف" >
+                @error('item_name') <span class="error">{{ $message }}</span> @enderror
             </div>
 
-            <div class="col-sm-4">
+            <div class="col-md-4">
                 <label for="item_type" class="form-label">نوع الصنف</label>
-                <input type="text" class="form-control" id="item_type" placeholder="النوع" >
+                <input wire:model="itemtype"  wire:keydown.enter="$emit('gotonext','price_buy')"  type="text" class="form-control" id="item_type" placeholder="النوع" >
+                @error('item_type') <span class="error">{{ $message }}</span> @enderror
             </div>
-            <div class="col-sm-8">
+            <div class="col-md-8">
+                <label  class="form-label"> .  </label>
+                <div class="row g-2 ">
+                   <div class="col-md-10" >
+                     <select  wire:model="itemtypel" name="item_type_l" id="item_type_l" class="form-control  form-select "
+                         style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"  >
+                       <option value="">اختيار من القائمة</option>
+                      @foreach($item_types as $s)
+                        <option value="{{ $s->type_no }}">{{ $s->type_name }}</option>
+                      @endforeach
+                     </select>
+                   </div>
+                    <div class="col-md-2" >
+                        <button type="button" class="btn btn-outline-primary btn-sm fa fa-plus"
+                                data-bs-toggle="modal"  data-bs-target="#AddOne"></button>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-6">
+            <div class="col-md-6">
                 <label for="price_buy" class="form-label">سعر الشراء</label>
-                <input type="text" class="form-control" id="price_buy" placeholder="" >
+                <input wire:model="price_buy"  wire:keydown.enter="$emit('gotonext','price_sell')"  type="text" class="form-control" id="price_buy" placeholder="" >
+                @error('price_buy') <span class="error">{{ $message }}</span> @enderror
             </div>
-            <div class="col-6">
+            <div class="col-md-6">
                 <label for="price_sell" class="form-label">سعر البيع</label>
-                <input type="text" class="form-control" id="price_sell" placeholder="" >
+                <input wire:model="price_sell" type="text" class="form-control" id="price_sell" placeholder="" >
+                @error('price_sell') <span class="error">{{ $message }}</span> @enderror
             </div>
 
         </div>
@@ -34,3 +54,17 @@
         <br>
     </form>
 </div>
+
+@push('scripts')
+    <script type="text/javascript">
+        Livewire.on('gotonext',postid=>  {
+
+            if (postid=='item_no') {  $("#item_no").focus(); $("#item_no").select();};
+            if (postid=='item_name') {  $("#item_name").focus(); $("#item_name").select();};
+            if (postid=='itemtype') {  $("#item_type").focus(); $("#item_type").select();};
+            if (postid=='price_buy') {  $("#price_buy").focus(); $("#price_buy").select();};
+            if (postid=='price_sell') {  $("#price_sell").focus(); $("#price_sell").select(); };
+        })
+
+    </script>
+@endpush

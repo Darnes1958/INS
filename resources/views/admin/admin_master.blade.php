@@ -158,6 +158,10 @@
     window.addEventListener('CloseModal', event => {
        $("#ModalForm").modal('hide');
     })
+    window.addEventListener('CloseAddOne', event => {
+        $("#AddOne").modal('hide');
+    })
+
 </script>
 @stack('scripts')
 </body>

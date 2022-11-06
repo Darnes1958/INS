@@ -16,7 +16,7 @@
            </div>
                <!-- Modal -->
                <div class="modal fade" id="ModalForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                   <div class="modal-dialog">
+                   <div class="modal-dialog modal-dialog-centered">
                        <div class="modal-content">
                            <div class="modal-header">
 
@@ -28,9 +28,26 @@
                                @livewire('stores.add-item')
                            </div>
 
+
                        </div>
                    </div>
                </div>
+             <div class="modal fade" id="AddOne" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                 <div class="modal-dialog modal-dialog-centered">
+                     <div class="modal-content">
+                         <div class="modal-header">
+                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                             <h3 class="modal-title fs-5" id="exampleModalToggleLabel2">ادخال النوع الجديد ثم اضغط ENTER</h3>
+                         </div>
+                         <div class="modal-body">
+                             @livewire('add-one')
+                         </div>
+                         <div class="modal-footer">
+                             <button wire:click="$emit('gotonext','itemtype')" class="btn btn-primary" data-bs-target="#ModalForm" data-bs-toggle="modal">رجوع</button>
+                         </div>
+                     </div>
+                 </div>
+             </div>
 
           </div>
       </div>
@@ -38,7 +55,7 @@
       <div class="col-md-4" >
              <label  for="itemno" class="form-label-me ">رقم الصنف</label>
              <input wire:model="item"  wire:keydown.enter="$emit('gotonext','quant')"  x-bind:disabled="!$wire.DetailOpen"
-                     type="text" class="form-control"  id="itemno" name="itemno" style="text-align: center;height: 39px;">
+                     type="text" class="form-control"  id="itemno" name="itemno" style="text-align: center;height: 39px;" autofocus>
         </div>
       <div class="col-md-8">
             <label  for="item_name" class="form-label-me ">اسم الصنف</label>

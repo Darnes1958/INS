@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Buy;
 
 
+use App\Models\stores\stores;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Livewire\Component;
@@ -94,7 +95,10 @@ class OrderBuyDetail extends Component
                 $this->item_name=$result->item_name;
                 $this->price=number_format($result->price_buy, 2, '.', '')  ;
                 $this->raseed= $result->raseed;
-                $this->st_raseed=$result->iteminstore->raseed;
+
+               if ($result->iteminstore) {$this->st_raseed=$result->iteminstore->raseed;}
+               else {$this->st_raseed=0;}
+
                 $this->emit('ChkIfDataExist',$this->item);
 
             }}
