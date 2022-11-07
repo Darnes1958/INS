@@ -16,19 +16,25 @@
                 @error('order_date') <span class="error">{{ $message }}</span> @enderror
             </div>
 
-
-            <div class="col-md-4">
+            <div class="row g-2 ">
+              <div class="col-md-4">
                 <label  for="jehano" class="form-label-me">المورد</label>
                 <input wire:model="jeha" wire:keydown.enter="$emit('gotonext','jehano')"
                        class="form-control  "
                        name="jehano" type="text"  id="jehano" >
                 @error('jeha') <span class="error">{{ $message }}</span> @enderror
                 @error('jeha_type') <span class="error">{{ $message }}</span> @enderror
-            </div>
-            <div   class="col-md-8" >
-              <label id="jehalabel" for="select2-dropdown" class="form-label-me">{{"$jeha_name"}}</label>
-                @livewire('select2-dropdown')
-            </div>
+              </div>
+
+              <div   class="col-md-7" >
+                <label id="jehalabel" for="select2-dropdown" class="form-label-me">{{"$jeha_name"}}</label>
+                  @livewire('select2-dropdown')
+              </div>
+              <div class="col-md-1" >
+                  <label  class="form-label-me"> .</label>
+                <button wire:click="OpenModal" type="button" class="btn btn-outline-primary btn-sm fa fa-plus" data-bs-toggle="modal"></button>
+              </div>
+           </div>
 
 
             <div class="col-md-4">
@@ -49,6 +55,9 @@
                     @endforeach
                 </select>
             </div>
+           <div  class="col-md-8" >
+              @livewire('buy.testselect')
+           </div>
 
           <div class="my-3 align-center justify-content-center "  style="display: flex">
 
@@ -80,6 +89,20 @@
                 </div>
         </div>
 
+      <div class="modal fade" id="ModalForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button wire:click="CloseModal" type="button" class="btn-close" ></button>
+                      <h1 class="modal-title fs-5 mx-6" id="exampleModalLabel">ادخال مورد جديد</h1>
+                  </div>
+                  <div class="modal-body">
+                      @livewire('jeha.add-supp')
+                  </div>
+              </div>
+          </div>
+      </div>
+
   </div>
 
 @push('scripts')
@@ -105,4 +128,38 @@
         })
 
     </script>
+    <script>
+        window.addEventListener('CloseModal', event => {
+            $("#ModalForm").modal('hide');
+        })
+        window.addEventListener('OpenModal', event => {
+            $("#ModalForm").modal('show');
+        })
+
+    </script>
+  <script>
+      $(document).ready(function ()
+      {
+
+          $('#jeha_l').select2({
+              closeOnSelect: true
+          });
+          $('#jeha_l').on('change', function (e) {
+              var data = $('#jeha_l').select2("val");
+
+          @this.set('jeha', data);
+              alert(data);
+          });
+
+
+      });
+      window.livewire.on('data-change-event',()=>{
+
+          $('#jeha_l').select2({
+              closeOnSelect: true
+          });
+
+
+      });
+  </script>
 @endpush

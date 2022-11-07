@@ -24,8 +24,21 @@ class AddItem extends Component
     public $price_sell;
 
     protected $listeners = [
-        'itemtypeadded',
+        'itemtypeadded','gotoaddonetype'
     ];
+    public function OpenSecond(){
+        $this->dispatchBrowserEvent('CloseFirst');
+        $this->dispatchBrowserEvent('OpenSecond');
+    }
+    public function CloseSecond(){
+        $this->dispatchBrowserEvent('CloseSecond');
+        $this->dispatchBrowserEvent('OpenFirst');
+        $this->emit('gotonext','itemtype');
+    }
+
+    public function gotoaddonetype(){
+        $this->emit('gotonext','itemtype');
+    }
     public function itemtypeadded($no)
     {
      $this->itemtype=$no;
@@ -87,7 +100,7 @@ class AddItem extends Component
                                     }
 
 
-        $this->dispatchBrowserEvent('CloseModal');
+        $this->dispatchBrowserEvent('CloseFirst');
     }
     public function mount()
     {

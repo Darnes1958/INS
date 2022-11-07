@@ -32,7 +32,7 @@
                    </div>
                     <div class="col-md-2" >
                         <button type="button" class="btn btn-outline-primary btn-sm fa fa-plus"
-                                data-bs-toggle="modal"  data-bs-target="#AddOne"></button>
+                                wire:click="OpenSecond"></button>
                     </div>
                 </div>
             </div>

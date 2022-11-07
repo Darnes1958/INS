@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Stores;
 
+use App\Models\stores\item_type;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
-use App\Models\stores\item_type;
+use Livewire\WithPagination;
 
-class AddOne extends Component
+class AddItemType extends Component
 {
-
+    use WithPagination;
     public $name;
 
     protected function rules()
@@ -44,9 +45,12 @@ class AddOne extends Component
         $this->name='';
 
     }
+    protected $paginationTheme = 'bootstrap';
     public function render()
     {
-        $itemtypes=item_type::where('type_no','>',0)->paginate(10);
-        return view('livewire.add-one',compact('itemtypes'));
+
+        return view('livewire.Stores.add-item-type',[
+            'itemtypes' => item_type::paginate(10),
+        ]);
     }
 }

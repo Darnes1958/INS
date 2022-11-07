@@ -2,7 +2,7 @@
 
     <div  wire:ignore  >
 
-        <select  class="form-control" id="select2-dropdown" >
+        <select   class="form-control" id="select2-dropdown" >
             <option value="2">مشتريات عامة</option>
             @foreach($select_name as $key => $item)
                 <option value="{{ $item->jeha_no }}">{{ $item->jeha_name }}</option>

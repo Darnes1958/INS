@@ -8,31 +8,23 @@
              @livewire('buy.item-drop-down')
            </div>
            <div class="col-md-1" >
-
-               <button type="button" class="btn btn-outline-primary btn-sm fa fa-plus" data-bs-toggle="modal"
-                       data-bs-target="#ModalForm">
-
-               </button>
+               <button wire:click="OpenFirst" type="button" class="btn btn-outline-primary btn-sm fa fa-plus" data-bs-toggle="modal"></button>
            </div>
                <!-- Modal -->
-               <div class="modal fade" id="ModalForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+               <div class="modal fade" id="ModalFormOne" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                    <div class="modal-dialog modal-dialog-centered">
                        <div class="modal-content">
                            <div class="modal-header">
-
-                              <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close"></button>
+                              <button wire:click="CloseFirst" type="button" class="btn-close" ></button>
                                <h1 class="modal-title fs-5 mx-6" id="exampleModalLabel">ادخال صنف جديد</h1>
-
                            </div>
                            <div class="modal-body">
                                @livewire('stores.add-item')
                            </div>
-
-
                        </div>
                    </div>
                </div>
-             <div class="modal fade" id="AddOne" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+             <div class="modal fade" id="ModalFormTwo" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
                  <div class="modal-dialog modal-dialog-centered">
                      <div class="modal-content">
                          <div class="modal-header">
@@ -40,10 +32,10 @@
                              <h3 class="modal-title fs-5" id="exampleModalToggleLabel2">ادخال النوع الجديد ثم اضغط ENTER</h3>
                          </div>
                          <div class="modal-body">
-                             @livewire('add-one')
+                             @livewire('stores.add-item-type')
                          </div>
                          <div class="modal-footer">
-                             <button wire:click="$emit('gotonext','itemtype')" class="btn btn-primary" data-bs-target="#ModalForm" data-bs-toggle="modal">رجوع</button>
+                             <button wire:click.prevent="CloseSecond" class="btn btn-primary" >رجوع</button>
                          </div>
                      </div>
                  </div>
@@ -55,7 +47,7 @@
       <div class="col-md-4" >
              <label  for="itemno" class="form-label-me ">رقم الصنف</label>
              <input wire:model="item"  wire:keydown.enter="$emit('gotonext','quant')"  x-bind:disabled="!$wire.DetailOpen"
-                     type="text" class="form-control"  id="itemno" name="itemno" style="text-align: center;height: 39px;" autofocus>
+                     type="text" class="form-control"  id="itemno" name="itemno" style="text-align: center;height: 39px;">
         </div>
       <div class="col-md-8">
             <label  for="item_name" class="form-label-me ">اسم الصنف</label>
@@ -102,11 +94,28 @@
         Livewire.on('gotonext',postid=>  {
 
             if (postid=='quant') {  $("#quant").focus();  $("#quant").select();};
+
             if (postid=='item_no') {  $("#itemno").focus(); $("#itemno").select();};
             if (postid=='price') {  $("#price").focus(); $("#price").select();};
         });
 
 
     </script>
+    <script>
+        window.addEventListener('CloseFirst', event => {
+            $("#ModalFormOne").modal('hide');
+        })
+        window.addEventListener('OpenFirst', event => {
+            $("#ModalFormOne").modal('show');
+        })
+        window.addEventListener('CloseSecond', event => {
+            $("#ModalFormTwo").modal('hide');
+        })
+        window.addEventListener('OpenSecond', event => {
+            $("#ModalFormTwo").modal('show');
+        })
+
+    </script>
+
 @endpush
 

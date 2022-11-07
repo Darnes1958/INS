@@ -25,8 +25,18 @@ class OrderBuyHead extends Component
     public $HeadDataOpen;
 
     protected $listeners = [
-        'jehachange','mounthead'
+        'jehachange','mounthead','jehaadded',
     ];
+    public function jehaadded($wj){
+      $this->jeha=$wj;
+    }
+    public function OpenModal(){
+        $this->dispatchBrowserEvent('OpenModal');
+    }
+    public function CloseModal(){
+        $this->dispatchBrowserEvent('CloseModal');
+    }
+
     public function mounthead(){
 
         $this->mount();
@@ -49,7 +59,9 @@ class OrderBuyHead extends Component
         $result = jeha::where('jeha_type',2)->where('jeha_no',$this->jeha)->first();
 
         if ($result) {  $this->jeha_name=$result->jeha_name;
-                        $this->jeha_type=$result->jeha_type; }}
+                        $this->jeha_type=$result->jeha_type;
+                        $this->emit('jehafound',$this->jeha,$this->jeha_name);
+        }}
     }
 
     protected function rules()

@@ -23,6 +23,17 @@ class OrderBuyDetail extends Component
     public $DetailOpen;
     public $OrderDetailOpen;
 
+    public function OpenFirst(){
+        $this->dispatchBrowserEvent('OpenFirst');
+    }
+    public function CloseFirst(){
+        $this->dispatchBrowserEvent('CloseFirst');
+    }
+    public function CloseSecond(){
+        $this->dispatchBrowserEvent('CloseSecond');
+        $this->dispatchBrowserEvent('OpenFirst');
+        $this->emit('gotoaddonetype');
+    }
 
     public function updated($propertyName)
     {
