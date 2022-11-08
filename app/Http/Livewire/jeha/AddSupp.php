@@ -11,21 +11,27 @@ use Livewire\Component;
 class AddSupp extends Component
 {
   public $jeha_no;
-  public $jeha_name;
+  public $jehaname;
   public $address;
   public $libyana;
   public $mdar;
   public $others;
-
-
 
   protected function rules()
   {
     Config::set('database.connections.other.database', Auth::user()->company);
     return [
 
-      'jeha_name' => ['required'],
+      'jehaname' => ['required'],
     ];
+  }
+  public function resetModal(){
+    $this->jehaname='';
+    $this->address='';
+    $this->libyana='';
+    $this->mdar='';
+    $this->others='';
+    info('yes');
   }
   public function SaveJeha()
   {
@@ -36,7 +42,7 @@ class AddSupp extends Component
     DB::connection('other')->table('jeha')->insert([
 
       'jeha_no' => $this->jeha_no,
-      'jeha_name' => $this->jeha_name,
+      'jeha_name' => $this->jehaname,
       'address' => $this->address,
       'libyana' => $this->libyana,
       'mdar' => $this->mdar,
@@ -47,10 +53,16 @@ class AddSupp extends Component
       'jeha_type'=>2,
 
     ]);
+
     $this->emit('jehaadded',$this->jeha_no);
+    $this->resetModal();
     $this->dispatchBrowserEvent('CloseModal');
 
   }
+
+    public function mount(){
+     $this->resetModal();
+    }
     public function render()
     {
         return view('livewire.jeha.add-Supp');

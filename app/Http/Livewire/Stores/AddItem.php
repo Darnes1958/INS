@@ -26,6 +26,16 @@ class AddItem extends Component
     protected $listeners = [
         'itemtypeadded','gotoaddonetype'
     ];
+    public function resetitem(){
+      Config::set('database.connections.other.database', Auth::user()->company);
+      $this->item_no=items::max('item_no')+1;
+      $this->item_name='';
+      $this->itemtype=item_type::min('type_no');
+      $this->itemtypel=item_type::min('type_no');
+      $this->price_sell=0;
+      $this->price_buy=0;
+
+    }
     public function OpenSecond(){
         $this->dispatchBrowserEvent('CloseFirst');
         $this->dispatchBrowserEvent('OpenSecond');
@@ -50,11 +60,12 @@ class AddItem extends Component
         return [
             'item_no' => ['required','integer','gt:0', 'unique:other.items,item_no'],
             'item_name' => ['required'],
-            'itemtype' => ['integer','integer','gt:0','exists:other.item_type,type_no'],
+            'itemtype' => ['required','integer','gt:0','exists:other.item_type,type_no'],
             'price_buy' => ['required','numeric','gt:0'],
             'price_sell' => ['required','numeric','gt:0'],
         ];
     }
+
     public function updatedItemtypel(){
         $this->itemtype=$this->itemtypel;
         $this->emit('gotonext','itemtype');
@@ -99,17 +110,12 @@ class AddItem extends Component
                    // something went wrong
                                     }
 
-
+        $this->resetitem();
         $this->dispatchBrowserEvent('CloseFirst');
     }
     public function mount()
     {
-        Config::set('database.connections.other.database', Auth::user()->company);
-        $this->item_no=items::max('item_no')+1;
-        $this->itemtype=1;
-        $this->itemtypel=1;
-        $this->price_sell=0;
-        $this->price_buy=0;
+     $this->resetitem();
 
     }
     public function render()

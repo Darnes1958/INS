@@ -1,52 +1,56 @@
-
-  <div x-data   class="col-md-12 " style="margin-bottom: 20px;margin-top: 16px;">
+<div x-data class="col-md-12 " style="margin-bottom: 20px;margin-top: 16px;" xmlns="http://www.w3.org/1999/html">
 
     <div  x-show="$wire.HeadOpen" class="row g-3 " style="border:1px solid lightgray;background: white;">
             <div class="col-md-6">
                 <label  for="order_no" class="form-label-me ">رقم الفاتورة</label>
-                <input wire:model="order_no"  wire:keydown.enter="$emit('gotonext','orderno')" type="text" class=" form-control "
+                <input wire:model="order_no"  wire:keydown.enter="$emit('gotonext','date')" type="text" class=" form-control "
                        id="order_no" name="order_no"  autofocus >
                 @error('order_no') <span class="error">{{ $message }}</span> @enderror
             </div>
             <div class="col-md-6">
                 <label for="date" class="form-label-me">التاريخ</label>
-                <input wire:model="order_date" wire:keydown.enter="$emit('gotonext','date')"
+                <input wire:model="order_date" wire:keydown.enter="$emit('gotonext','jehano')"
                        class="form-control  "
                        name="date" type="date"  id="date" >
                 @error('order_date') <span class="error">{{ $message }}</span> @enderror
             </div>
 
-            <div class="row g-2 ">
+            <div class="row g-3 ">
               <div class="col-md-4">
                 <label  for="jehano" class="form-label-me">المورد</label>
-                <input wire:model="jeha" wire:keydown.enter="$emit('gotonext','jehano')"
+                <input wire:model="jeha" wire:keydown.enter="$emit('gotonext','storeno')"
                        class="form-control  "
                        name="jehano" type="text"  id="jehano" >
                 @error('jeha') <span class="error">{{ $message }}</span> @enderror
                 @error('jeha_type') <span class="error">{{ $message }}</span> @enderror
               </div>
+              <div class="col-md-8">
+                <label  class="form-label-me"> .</label>
+              <div class="row g-2 ">
+                  <div   class="col-md-11" >
 
-              <div   class="col-md-7" >
-                <label id="jehalabel" for="select2-dropdown" class="form-label-me">{{"$jeha_name"}}</label>
-                  @livewire('select2-dropdown')
+                    @livewire('jeha.supp-select')
+                  </div>
+
+                  <div class="col-md-1" >
+
+                    <button wire:click="OpenModal" type="button" class="btn btn-outline-primary btn-sm fa fa-plus" data-bs-toggle="modal"></button>
+                  </div>
               </div>
-              <div class="col-md-1" >
-                  <label  class="form-label-me"> .</label>
-                <button wire:click="OpenModal" type="button" class="btn btn-outline-primary btn-sm fa fa-plus" data-bs-toggle="modal"></button>
               </div>
            </div>
 
 
             <div class="col-md-4">
                 <label  for="storeno" class="form-label-me">المخزن</label>
-                <input  wire:model="st_no" wire:keydown.enter="$emit('gotonext','storeno')"
+                <input  wire:model="stno" wire:keydown.enter="$emit('gotonext','head-btn')"
                        class="form-control  "
                        name="storeno" type="text"  id="storeno" >
                 @error('st_no') <span class="error">{{ $message }}</span> @enderror
             </div>
             <div  class="col-md-8" >
                 <label  class="form-label-me">اختيار من القائمة</label>
-                <select  wire:model="store" name="store_id" id="store_id" class="form-control  form-select "
+                <select  wire:model="storel" name="store_id" id="store_id" class="form-control  form-select "
                          style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"
                          >
                     <option value="1">المخزن الرئيسي</option>
@@ -55,15 +59,14 @@
                     @endforeach
                 </select>
             </div>
-           <div  class="col-md-8" >
-              @livewire('buy.testselect')
-           </div>
+
+
 
           <div class="my-3 align-center justify-content-center "  style="display: flex">
 
-                <i  id="head-btn"
+            <input type="button"  id="head-btn"
                     class=" btn btn-outline-success  waves-effect waves-light   "
-                    wire:click="BtnHeader"> موافق </i>
+                    wire:click.prevent="BtnHeader"  wire:keydown.enter="BtnHeader" value="موافق" />
 
           </div>
     </div>
@@ -119,12 +122,12 @@
 
 
         Livewire.on('gotonext',postid=>  {
-
-            if (postid=='orderno') {  $("#date").focus(); };
-            if (postid=='date') {  $("#jehano").focus(); };
-            if (postid=='jehano') {  $("#storeno").focus(); };
-
-            if (postid=='store_id') {  $("#head-btn").active=true};
+            if (postid=='orderno') {  $("#order_no").focus();$("#order_no").select(); };
+            if (postid=='date') {  $("#date").focus();$("#date").select(); };
+            if (postid=='jehano') {  $("#jehano").focus(); $("#jehano").select();};
+            if (postid=='storeno') {  $("#storeno").focus(); $("#storeno").select();};
+            if (postid=='head-btn') {
+                setTimeout(function() { document.getElementById('head-btn').focus(); },100);};
         })
 
     </script>
@@ -136,29 +139,27 @@
             $("#ModalForm").modal('show');
         })
 
+
     </script>
   <script>
+
+
       $(document).ready(function ()
       {
-
-          $('#jeha_l').select2({
+          $('#Supp_L').select2({
               closeOnSelect: true
           });
-          $('#jeha_l').on('change', function (e) {
-              var data = $('#jeha_l').select2("val");
+          $('#Supp_L').on('change', function (e) {
+            var data = $('#Supp_L').select2("val");
+            @this.set('jeha', data);
 
-          @this.set('jeha', data);
-              alert(data);
           });
-
-
       });
       window.livewire.on('data-change-event',()=>{
-
-          $('#jeha_l').select2({
+          $('#Supp_L').select2({
               closeOnSelect: true
           });
-
+          Livewire.emit('gotonext', 'jehano');
 
       });
   </script>

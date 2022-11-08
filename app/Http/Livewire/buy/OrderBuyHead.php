@@ -17,15 +17,30 @@ class OrderBuyHead extends Component
     public $order_date;
     public $jeha;
     public $jeha_type;
-    public $st_no;
+    public $stno;
+    public $storel;
     public $st_name;
     public $jeha_name;
 
-    public $HeadOpen;
+
+  public function updatedStno()
+  {
+    $this->storel=$this->stno;
+  }
+
+  public function updatedStorel()
+  {
+    $this->stno=$this->storel;
+    $this->emit('gotonext', 'storeno');
+
+  }
+
+
+  public $HeadOpen;
     public $HeadDataOpen;
 
     protected $listeners = [
-        'jehachange','mounthead','jehaadded',
+        'mounthead','jehaadded',
     ];
     public function jehaadded($wj){
       $this->jeha=$wj;
@@ -41,14 +56,7 @@ class OrderBuyHead extends Component
 
         $this->mount();
     }
-//
-    public function jehachange($value)
-    {
-        if(!is_null($value))
-            $this->jeha = $value;
-        $this->updatedJeha();
-        $this->emit('gotonext', 'date');
-    }
+
 
     public function updatedJeha()
     {
@@ -71,7 +79,7 @@ class OrderBuyHead extends Component
             'order_no' => ['required','integer','gt:0', 'unique:other.buys,order_no'],
             'order_date' => 'required',
             'jeha_type' => ['integer','size:2'],
-            'st_no' => ['required','integer','gt:0', 'exists:other.stores_names,st_no'],
+            'stno' => ['required','integer','gt:0', 'exists:other.stores_names,st_no'],
         ];
     }
     protected $messages = [
@@ -86,7 +94,7 @@ class OrderBuyHead extends Component
         Config::set('database.connections.other.database', Auth::user()->company);
         $this->order_no=buys::max('order_no')+1;
         $this->order_date=date('Y-m-d');
-        $this->st_no='1';
+        $this->stno='1';
         $this->st_name='المخزن الرئيسي';
         $this->jeha='2';
         $this->jeha_name='مشتريات عامة';
@@ -100,15 +108,10 @@ class OrderBuyHead extends Component
         $this->validate();
         $this->HeadOpen=false;
         $this->HeadDataOpen=true;
-        $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha,$this->st_no);
+        $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha,$this->stno);
         $this->emit('mountdetail');
     }
 
-    public $store;
-    public function updatedStore()
-    {
-        $this->emit('gotonext', 'store_id');
-    }
 
     public function render()
     {
