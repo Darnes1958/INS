@@ -31,7 +31,7 @@ class AddSupp extends Component
     $this->libyana='';
     $this->mdar='';
     $this->others='';
-    info('yes');
+
   }
   public function SaveJeha()
   {

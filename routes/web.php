@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\jeha\customercontroller;
 use App\Http\Controllers\bank\BankReportsController;
 use App\Http\Controllers\buy\OrderBuyController;
+use App\Http\Controllers\aksat\AksatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,9 @@ Route::controller(AdminController::class)->group(function (){
     route::get('/admin/profile', 'Profile')->name('admin.profile') ;
     route::get('/edit/profile', 'EditProfile')->name('edit.profile') ;
     route::post('/store/profile', 'StoreProfile')->name('store.profile') ;
+});
+Route::controller(AKsatController::class)->group(function (){
+  route::get('/kst/input', 'InpKst')->name('kst.input') ;
 });
 
 Route::controller(CustomerController::class)->group(function (){

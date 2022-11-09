@@ -18,15 +18,6 @@ class bank extends Model
     public $incrementing = false;
     public $timestamps = false;
 
-    protected $fillable = [
-        'bank_no',
-        'bank_name',
-        'bank_acc',
-        'acc_tajmeeh',
-        'bank_tajmeeh',
-        'bank_acc_no',
-        'bank_code',
 
-    ];
 }
 

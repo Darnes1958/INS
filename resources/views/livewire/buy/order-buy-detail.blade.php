@@ -5,7 +5,7 @@
       <div class="col-md-12" x-show="$wire.DetailOpen"  >
          <div class="row g-2 ">
            <div class="col-md-11" >
-             @livewire('buy.item-drop-down')
+             @livewire('stores.item-select')
            </div>
            <div class="col-md-1" >
                <button wire:click="OpenFirst" type="button" class="btn btn-outline-primary btn-sm fa fa-plus" data-bs-toggle="modal"></button>
@@ -115,6 +115,27 @@
             $("#ModalFormTwo").modal('show');
         })
 
+    </script>
+
+    <script>
+        $(document).ready(function ()
+        {
+            $('#Item_L').select2({
+                closeOnSelect: true
+            });
+            $('#Item_L').on('change', function (e) {
+                var data = $('#Item_L').select2("val");
+            @this.set('item', data);
+
+            });
+        });
+        window.livewire.on('item-change-event',()=>{
+            $('#Item_L').select2({
+                closeOnSelect: true
+            });
+            Livewire.emit('gotonext', 'item_no');
+
+        });
     </script>
 
 @endpush

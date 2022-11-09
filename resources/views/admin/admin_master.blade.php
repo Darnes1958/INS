@@ -55,9 +55,6 @@
         <div  id="content" class="p-1 p-md-1 pt-1"  dir="rtl">
 
             @yield('admin')
-            <!-- End Page-content -->
-
-
 
         </div>
     </div>
