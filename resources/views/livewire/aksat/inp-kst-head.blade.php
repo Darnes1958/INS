@@ -1,7 +1,7 @@
 
 
 
-  <div x-data  class="row g-3 " style="border:1px solid lightgray;background: white; margin-bottom: 20px;margin-top: 16px;" >
+  <div x-data  class="row g-3" style="border:1px solid lightgray;background: white; margin-bottom: 20px;margin-top: 16px;" >
     <div class="col-md-4">
       <label  for="bank_no" class="form-label-me ">المصرف</label>
       <input wire:model="bankno"  wire:keydown.enter="$emit('gotonext','no')" type="text" class=" form-control "
@@ -47,7 +47,7 @@
      <div   class="col-md-8" >
       <label class="form-label-me">.</label>
     </div>
-  
+
 
   </div>
 
