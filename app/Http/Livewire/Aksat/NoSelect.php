@@ -33,6 +33,7 @@ class NoSelect extends Component
     $this->NoSelectOpen=true;
     $this->bank=$wbno;
     $this->render();
+
   }
   public function hydrate(){
 
@@ -45,7 +46,9 @@ class NoSelect extends Component
   public function render()
     {
       Config::set('database.connections.other.database', Auth::user()->company);
-      $this->MainList=DB::connection('other')->table('main')->where('bank','=',$this->bank)->get();
+      $this->MainList=DB::connection('other')->table('main')
+        ->where('bank','=',$this->bank)
+        ->orderBy('name', 'DESC')->get();
 
         return view('livewire.aksat.no-select',$this->MainList);
     }

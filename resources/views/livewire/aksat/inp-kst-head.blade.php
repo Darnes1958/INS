@@ -15,8 +15,8 @@
 
      <div class="col-md-4">
       <label for="no" class="form-label-me">الرقم الألي</label>
-      <input  x-bind:disabled="!$wire.BankGet"  wire:model="no" wire:keydown.enter="$emit('gotonext','acc')"
-             class="form-control  "
+      <input  x-bind:disabled="!$wire.BankGet"  wire:model="no" wire:keydown.enter="ChkNoAndGo"
+             class="form-control"
              name="no" type="text"  id="no" >
       @error('no') <span class="error">{{ $message }}</span> @enderror
     </div>
@@ -27,14 +27,18 @@
 
      <div class="col-md-4">
       <label  for="acc" class="form-label-me">رقم الحساب</label>
-      <input  x-bind:disabled="!$wire.BankGet" wire:model="acc"
+      <input  x-bind:disabled="!$wire.BankGet" wire:model="acc" wire:keydown.enter="ChkAccAndGo"
              class="form-control  "
              name="acc" type="text"  id="acc" >
-      @error('acc') <span class="error">{{ $message }}</span> @enderror
+
     </div>
      <div   class="col-md-8" >
       <label   class="form-label-me">.</label>
-
+       <div>
+         @if($errors->has('acc'))
+           <span>{{ $errors->first('acc') }}</span>
+         @endif
+       </div>
     </div>
 
      <div class="my-3 col-md-4">
@@ -51,14 +55,11 @@
 
   </div>
 
-
-
-
 @push('scripts')
   <script type="text/javascript">
       Livewire.on('gotonext',postid=>  {
           if (postid=='bankno') {  $("#no").focus();$("#bank_no").select(); };
-          if (postid=='no') {  $("#no").focus();$("#no").select(); };
+          if (postid=='no') {  $("#no").focus(); };
           if (postid=='acc') {  $("#acc").focus();$("#acc").select(); };
           if (postid=='orderno') {  $("#orderno").focus(); $("#orderno").select();};
       })
@@ -100,7 +101,9 @@
           $('#Main_L').select2({
               closeOnSelect: true
           });
-          Livewire.emit('gotonext', 'no');
+
+          Livewire.emit('Go');
+
 
       });
   </script>
