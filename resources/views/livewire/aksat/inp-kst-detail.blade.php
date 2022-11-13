@@ -1,7 +1,7 @@
 
 
 
-<div x-data class="row g-3 my-1" style="border:1px solid lightgray;background: white;">
+<div x-data class="row gy-1 my-1" style="border:1px solid lightgray;background: white;">
 
 
     <div class="d-inline-flex align-items-center">
@@ -10,10 +10,10 @@
     </div>
 
     <div class="d-inline-flex align-items-center">
-        <label for="sul_tot" class="form-label" style="width: 20%; ">إجمالي الفاتورة</label>
-        <input wire:model="sul_tot" type="text" class="form-control" name="sul_tot" style="width: 30%" readonly>
-        <label for="sul" class="form-label" style="width: 20% ">&nbsp;&nbsp;اجمالي التقسيط</label>
-        <input  wire:model="sul"type="text" class="form-control" id="sul" style="width: 30%" readonly>
+        <label for="sul_tot" class="form-label" style="width: 25%; ">إجمالي الفاتورة</label>
+        <input wire:model="sul_tot" type="text" class="form-control" name="sul_tot" style="width: 25%" readonly>
+        <label for="sul" class="form-label" style="width: 25% ">&nbsp;&nbsp;اجمالي التقسيط</label>
+        <input  wire:model="sul" type="text" class="form-control" id="sul" style="width: 25%" readonly>
     </div>
     <div class="d-inline-flex align-items-center">
         <label for="sul_pay" class="form-label" style="width: 20% ">المسدد</label>
@@ -35,14 +35,14 @@
            type="text"  id="notes" >
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-6 mb-2">
     <label for="ksm_date" class="form-label-me">التاريخ</label>
     <input x-bind:disabled="!$wire.OpenKstDetail" wire:model="ksm_date" wire:keydown.enter="$emit('kstdetail_goto','ksm')"
            class="form-control  "
            type="date"  id="ksm_date" >
     @error('kst_date') <span class="error">{{ $message }}</span> @enderror
   </div>
-  <div class="my-3 col-md-6">
+  <div class="col-md-6 mb-2">
     <label  for="ksm" class="form-label-me">القسط</label>
     <input x-bind:disabled="!$wire.OpenKstDetail" wire:model="ksm"
            class="form-control  "
@@ -56,9 +56,9 @@
   <script type="text/javascript">
       Livewire.on('kstdetail_goto',postid=>  {
 
-          if (postid=='notes') {  $("#notes").focus();$("#notes").select(); };
-          if (postid=='ksm_date') {  $("#ksm_date").focus();$("#ksm_date").select(); };
-          if (postid=='ksm') {  $("#ksm").focus(); $("#ksm").select();};
+          if (postid=='notes') {  $("#notes").focus();$("#notes").select(); }
+          if (postid=='ksm_date') {  $("#ksm_date").focus();$("#ksm_date").select(); }
+          if (postid=='ksm') {  $("#ksm").focus(); $("#ksm").select();}
       })
 
 

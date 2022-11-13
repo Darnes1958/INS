@@ -17,7 +17,7 @@ class InpKstHead extends Component
   public $bankname;
   public $no;
   public $acc;
-  public $orderno;
+
   public $name;
   public $BankGet;
 
@@ -26,11 +26,11 @@ class InpKstHead extends Component
 
   public function updatedTheBankListIsSelectd(){
     $this->TheBankListIsSelectd=0;
-    $this->emit('ksthead_goto','bankno');
+    $this->ChkBankAndGo();
   }
   public function updatedTheNoListIsSelectd(){
     $this->TheNoListIsSelectd=0;
-    $this->emit('ksthead_goto','no');
+    $this->ChkNoAndGo();
   }
   protected $listeners = [
     'Go',
@@ -47,7 +47,7 @@ public function Go(){
   public function ResetKstHead(){
     $this->no='';
     $this->acc='';
-    $this->orderno='';
+
   }
 
   public function updatedBankno()
@@ -73,7 +73,7 @@ public function Go(){
   public function updatedNo()
   {
     $this->acc='';
-    $this->orderno='';
+
     $this->emit('GoResetKstDetail');
     $this->resetValidation('acc');
 
@@ -81,13 +81,13 @@ public function Go(){
   public function FillHead(){
     Config::set('database.connections.other.database', Auth::user()->company);
     $this->acc='';
-    $this->orderno='';
+
     if ($this->no!=null) {
       $result = main::where('bank',$this->bankno)->where('no',$this->no)->first();
       if ($result) {
         $this->name=$result->name;
         $this->acc=$result->acc;
-        $this->orderno=$result->order_no;
+
         $this->emit('NoAtUpdate',$result);
       }
     }
@@ -96,18 +96,16 @@ public function Go(){
     Config::set('database.connections.other.database', Auth::user()->company);
 
     $this->acc='';
-    $this->orderno='';
-    info($this->bankno);
-    info($this->no);
+
     if ($this->no!=null) {
       $result = main::where('bank',$this->bankno)->where('no',$this->no)->first();
       if ($result) {
 
         $this->name=$result->name;
         $this->acc=$result->acc;
-        $this->orderno=$result->order_no;
+        $orderno=$result->order_no;
         $this->emit('nofound',$result);
-        $this->emit('GotoKstDetail',$this->no,$this->orderno);
+        $this->emit('GotoKstDetail',$this->no,$orderno);
       }
     }
   }
@@ -131,7 +129,7 @@ public function Go(){
       if ($result) {
         $this->name=$result->name;
         $this->no=$result->no;
-        $this->orderno=$result->order_no;
+
         $this->emit('NoAtUpdate',$result);
         $this->emit('ksthead_goto','no');
 
@@ -150,8 +148,6 @@ public function Go(){
         }),
         ],
 
-
-      'orderno' => ['required','integer', 'exists:other.main,order_no'],
     ];
   }
   protected $messages = [

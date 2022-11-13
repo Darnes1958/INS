@@ -4,7 +4,7 @@
           x-show="$wire.HasAdd"    wire:click="$emit('OpenMyTableAdd')">إضافة </button>
   <table class="table table-sm table-success table-bordered table-striped table-light "  id="mytable1" >
 
-    <thead class="thead-dark">
+    <thead class="thead-dark font-size-12">
     <tr>
       @php
         for ($x = 0; $x <count($this->ColHeader); $x++) {
@@ -15,7 +15,7 @@
     </thead>
     <tbody id="addRow" class="addRow">
     @foreach($TableList as  $item)
-      <tr>
+      <tr class="font-size-12">
         @php
           for ($x = 0; $x <count($this->ColNames); $x++) {
              if ($x==0) {echo "<td>".$item->Col1."</td>";};

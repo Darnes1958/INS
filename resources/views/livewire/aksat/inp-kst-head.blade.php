@@ -1,38 +1,36 @@
 
 
 
-  <div x-data  class="row g-3 my-1" style="border:1px solid lightgray;background: white; " >
-    <div class="col-md-4">
+  <div x-data  class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
+    <div class="col-md-5">
       <label  for="bank_no" class="form-label-me ">المصرف</label>
       <input wire:model="bankno"  wire:keydown.enter="ChkBankAndGo" type="text" class=" form-control "
              id="bank_no"   autofocus >
       @error('bankno') <span class="error">{{ $message }}</span> @enderror
     </div>
-    <div   class="col-md-8" >
+    <div   class="col-md-7" >
       <label  class="form-label-me">.</label>
       @livewire('bank.bank-select')
     </div>
 
-     <div class="col-md-4">
+     <div class="col-md-5">
       <label for="no" class="form-label-me">الرقم الألي</label>
       <input  x-bind:disabled="!$wire.BankGet"  wire:model="no" wire:keydown.enter="ChkNoAndGo"
              class="form-control"
              name="no" type="text"  id="no" >
       @error('no') <span class="error">{{ $message }}</span> @enderror
     </div>
-     <div   class="col-md-8" >
+     <div   class="col-md-7" >
       <label  class="form-label-me">.</label>
       @livewire('aksat.no-select')
     </div>
 
-     <div class="col-md-4">
+     <div class="col-md-5 mb-2" >
       <label  for="acc" class="form-label-me">رقم الحساب</label>
       <input  x-bind:disabled="!$wire.BankGet" wire:model="acc" wire:keydown.enter="ChkAccAndGo"
-             class="form-control  "
-             name="acc" type="text"  id="acc" >
-
+             class="form-control"  name="acc" type="text"  id="acc" >
     </div>
-     <div   class="col-md-8" >
+     <div   class="col-md-7" >
       <label   class="form-label-me">.</label>
        <div>
          @if($errors->has('acc'))
@@ -41,16 +39,7 @@
        </div>
     </div>
 
-     <div class="my-3 col-md-4">
-      <label  for="orderno" class="form-label-me">رقم الفاتورة</label>
-      <input  x-bind:disabled="!$wire.BankGet" wire:model="orderno"
-             class="form-control  "
-             name="orderno" type="text"  id="orderno" >
-      @error('orderno') <span class="error">{{ $message }}</span> @enderror
-    </div>
-     <div   class="col-md-8" >
-      <label class="form-label-me">.</label>
-    </div>
+
 
 
   </div>
@@ -58,10 +47,10 @@
 @push('scripts')
   <script type="text/javascript">
       Livewire.on('ksthead_goto',postid=>  {
-          if (postid=='bankno') {  $("#bank_no").focus();$("#bank_no").select(); };
-          if (postid=='no') {  $("#no").focus();$("#no").select(); };
-          if (postid=='acc') {  $("#acc").focus();$("#acc").select(); };
-          if (postid=='orderno') {  $("#orderno").focus(); $("#orderno").select();};
+          if (postid=='bankno') {  $("#bank_no").focus();$("#bank_no").select(); }
+          if (postid=='no') {  $("#no").focus();$("#no").select(); }
+          if (postid=='acc') {  $("#acc").focus();$("#acc").select(); }
+
       })
 
   </script>
@@ -74,12 +63,8 @@
           });
           $('#Bank_L').on('change', function (e) {
               var data = $('#Bank_L').select2("val");
-
               @this.set('bankno', data);
               @this.set('TheBankListIsSelectd', 1);
-
-
-
           });
 
       });

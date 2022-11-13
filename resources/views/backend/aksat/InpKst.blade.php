@@ -6,11 +6,11 @@
     <div class="container-fluid">
       <div class="row mb-3 ">
         @csrf
-        <div  class="col-md-4 themed-grid-col">
+        <div  class="col-md-6 themed-grid-col">
           @livewire('aksat.inp-kst-head')
           @livewire('aksat.inp-kst-detail')
         </div>
-        <div class="col-md-4 themed-grid-col px-1">
+        <div class="col-md-6 themed-grid-col px-1">
           @livewire('aksat.inp-kst-table')
         </div>
       </div>

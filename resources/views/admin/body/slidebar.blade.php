@@ -14,7 +14,7 @@
                     <button class="btn btn-toggle d-inline-flex align-items-center rounded   border-0 collapsed"
                             data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
                         <i class="fa  fa-cart-arrow-down" aria-hidden="true"></i>&nbsp;  مشتريات</button>
-                    <div class="collapse show" id="home-collapse">
+                    <div class="collapse " id="home-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li><a href="{{route('order_buy.add')}}" class="link-dark d-inline-flex text-decoration-none rounded">فاتورة مشتريات</a></li>
                             <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Updates</a></li>
