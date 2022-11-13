@@ -26,6 +26,7 @@ class InpKstDetail extends Component
   ];
   public function GoResetKstDetail(){
     $this->ResetKstDetail();
+
   }
   public function nofound($res){
    $this->FillKstDetail($res);
@@ -47,7 +48,7 @@ class InpKstDetail extends Component
 
   }
 
-  public function bankfound($res){
+  public function bankfound(){
    $this->ResetKstDetail();
   }
 function ResetKstDetail (){

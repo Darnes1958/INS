@@ -21,6 +21,17 @@ class InpKstHead extends Component
   public $name;
   public $BankGet;
 
+  public $TheBankListIsSelectd;
+  public $TheNoListIsSelectd;
+
+  public function updatedTheBankListIsSelectd(){
+    $this->TheBankListIsSelectd=0;
+    $this->emit('ksthead_goto','bankno');
+  }
+  public function updatedTheNoListIsSelectd(){
+    $this->TheNoListIsSelectd=0;
+    $this->emit('ksthead_goto','no');
+  }
   protected $listeners = [
     'Go',
   ];
@@ -31,7 +42,7 @@ class InpKstHead extends Component
   }
 public function Go(){
   $this->FillHead();
-  $this->emit('gotonext','no');
+
 }
   public function ResetKstHead(){
     $this->no='';
@@ -42,24 +53,30 @@ public function Go(){
   public function updatedBankno()
   {
     $this->emit('GoResetKstDetail');
+  }
+  public function ChkBankAndGo(){
+
     Config::set('database.connections.other.database', Auth::user()->company);
     $this->bankname='';
     if ($this->bankno!=null) {
       $result = bank::where('bank_no',$this->bankno)->first();
 
       if ($result) {  $this->bankname=$result->bankname;
-
-                      $this->BankGet=true;
-                      $this->ResetKstHead();
-                      $this->emit('bankfound',$this->bankno,$this->bankname);
-
+        $this->BankGet=true;
+        $this->ResetKstHead();
+        $this->emit('TakeBankNo',$this->bankno,$this->bankname);
+        $this->emit('bankfound',$this->bankno,$this->bankname);
+        $this->emit('ksthead_goto','no');
       }}
+
   }
   public function updatedNo()
   {
+    $this->acc='';
+    $this->orderno='';
     $this->emit('GoResetKstDetail');
     $this->resetValidation('acc');
-    $this->emit('mainfound',$this->no,$this->name);
+
   }
   public function FillHead(){
     Config::set('database.connections.other.database', Auth::user()->company);
@@ -77,17 +94,20 @@ public function Go(){
   }
   public function ChkNoAndGo(){
     Config::set('database.connections.other.database', Auth::user()->company);
-    $this->validate();
+
     $this->acc='';
     $this->orderno='';
+    info($this->bankno);
+    info($this->no);
     if ($this->no!=null) {
       $result = main::where('bank',$this->bankno)->where('no',$this->no)->first();
       if ($result) {
+
         $this->name=$result->name;
         $this->acc=$result->acc;
         $this->orderno=$result->order_no;
         $this->emit('nofound',$result);
-        $this->emit('GotoKstDetail');
+        $this->emit('GotoKstDetail',$this->no,$this->orderno);
       }
     }
   }
@@ -113,7 +133,7 @@ public function Go(){
         $this->no=$result->no;
         $this->orderno=$result->order_no;
         $this->emit('NoAtUpdate',$result);
-        $this->emit('gotonext','no');
+        $this->emit('ksthead_goto','no');
 
       } }
   }
@@ -142,7 +162,7 @@ public function Go(){
   ];
 
   public function mount(){
-
+    $this->TheBankListIsSelectd=0;
     $this->BankGet=false;
     $this->ResetKstHead();
 }

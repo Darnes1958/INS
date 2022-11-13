@@ -10,7 +10,7 @@
           @livewire('aksat.inp-kst-head')
           @livewire('aksat.inp-kst-detail')
         </div>
-        <div class="col-md-8 themed-grid-col px-1">
+        <div class="col-md-4 themed-grid-col px-1">
           @livewire('aksat.inp-kst-table')
         </div>
       </div>

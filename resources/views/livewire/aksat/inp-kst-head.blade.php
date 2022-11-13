@@ -1,11 +1,11 @@
 
 
 
-  <div x-data  class="row g-3" style="border:1px solid lightgray;background: white; margin-bottom: 20px;margin-top: 16px;" >
+  <div x-data  class="row g-3 my-1" style="border:1px solid lightgray;background: white; " >
     <div class="col-md-4">
       <label  for="bank_no" class="form-label-me ">المصرف</label>
-      <input wire:model="bankno"  wire:keydown.enter="$emit('gotonext','no')" type="text" class=" form-control "
-             id="bank_no" name="bank_no"  autofocus >
+      <input wire:model="bankno"  wire:keydown.enter="ChkBankAndGo" type="text" class=" form-control "
+             id="bank_no"   autofocus >
       @error('bankno') <span class="error">{{ $message }}</span> @enderror
     </div>
     <div   class="col-md-8" >
@@ -57,9 +57,9 @@
 
 @push('scripts')
   <script type="text/javascript">
-      Livewire.on('gotonext',postid=>  {
-          if (postid=='bankno') {  $("#no").focus();$("#bank_no").select(); };
-          if (postid=='no') {  $("#no").focus(); };
+      Livewire.on('ksthead_goto',postid=>  {
+          if (postid=='bankno') {  $("#bank_no").focus();$("#bank_no").select(); };
+          if (postid=='no') {  $("#no").focus();$("#no").select(); };
           if (postid=='acc') {  $("#acc").focus();$("#acc").select(); };
           if (postid=='orderno') {  $("#orderno").focus(); $("#orderno").select();};
       })
@@ -74,15 +74,21 @@
           });
           $('#Bank_L').on('change', function (e) {
               var data = $('#Bank_L').select2("val");
-          @this.set('bankno', data);
+
+              @this.set('bankno', data);
+              @this.set('TheBankListIsSelectd', 1);
+
+
 
           });
+
       });
       window.livewire.on('bank-change-event',()=>{
           $('#Bank_L').select2({
               closeOnSelect: true
           });
-          Livewire.emit('gotonext', 'bankno');
+
+
 
       });
 
@@ -94,7 +100,7 @@
           $('#Main_L').on('change', function (e) {
               var data = $('#Main_L').select2("val");
           @this.set('no', data);
-
+          @this.set('TheNoListIsSelectd', 1);
           });
       });
       window.livewire.on('main-change-event',()=>{

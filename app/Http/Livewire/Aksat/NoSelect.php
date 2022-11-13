@@ -17,17 +17,16 @@ class NoSelect extends Component
   public $bank;
 
   protected $listeners = [
-    'mainfound','bankfound',
+    'nofound','bankfound',
   ];
 
-  public function mainfound($wj,$wn){
+  public function nofound($res){
 
-    if(!is_null($wj)) {
-      $this->MainNo = $wj;
-      $this->MainName = $wn;
+      $this->MainNo = $res['no'];
+      $this->MainName = $res['name'];
 
     }
-  }
+
 
   public function bankfound($wbno,$bname){
     $this->NoSelectOpen=true;

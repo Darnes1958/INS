@@ -15,10 +15,11 @@ class BankSelect extends Component
 
 
   protected $listeners = [
-    'bankfound',
+    'TakeBankNo',
   ];
 
-  public function bankfound($wj,$wn){
+  public function TakeBankNo($wj,$wn){
+
     if(!is_null($wj)) {
       $this->BankNo = $wj;
       $this->BankName = $wn;
