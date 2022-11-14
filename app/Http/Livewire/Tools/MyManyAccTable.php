@@ -12,127 +12,48 @@ use Livewire\WithPagination;
 class MyManyAccTable extends Component
 {
   use WithPagination;
+  public $PagNo=6;
   protected $paginationTheme = 'bootstrap';
 
   protected $listeners = [
-    'GetWhereEquelValue2',
+    'GetMany_Bank_Acc',
   ];
 
-  public function GetWhereEquelValue3($bank,$acc){
-    $this->WhereEquelValue=$bank;
-    $this->WhereEquelValue2=$acc;
+  public $TableName='main';
+  public $Bank;
+  public $Acc;
+  public function GetMany_Bank_Acc($bank,$acc){
+    $this->Bank=$bank;
+    $this->Acc=$acc;
 
   }
-
-  public $TableName;
-  public array $ColNames  ;
-  public array $ColHeader  ;
-  public $PagNo;
-
-  public $HasWhereEquel;
-  public $WhereEquelField;
-  public $WhereEquelValue;
-  public $WhereEquelField2;
-  public $WhereEquelValue2;
-
-  public $IsSearchable;
-  public $Col1Search;
-  public $Col2Search;
-  public $Col3Search;
-
-  public $HasEdit;
-  public $HasDelete;
-  Public $HasAdd;
-
-  public $ModalTitle;
-  public $AddModal;
-  public $EditModal;
-
-
 
   public function selectItem($TheId, $action)
   {
+      $this->emit('Take_ManyAcc_No',$TheId);
+      $this->dispatchBrowserEvent('CloseKstManyModal');
 
-    if ($action == 'delete') {
-      $this->dispatchBrowserEvent('OpenMyTableEdit');
-    }
-    else {
-      $this->emit('GetTheId', $TheId);
-      $this->dispatchBrowserEvent('OpenMyTableEdit');
-
-    }
   }
 
-
-  public $search;
-  public function updatingSearch()
-  {
-    $this->resetPage();
-  }
-
-  protected $queryString = ['search'];
-
-  public array $myquery;
-  public function mount($IsSearchable=false,$Arr=[false,false,false,false,false] ,
-    $hasadd=false,$hasedit=false,$hasdelete=false,
-    $pagno=10,
-    $addmodal='stores.add-item',$editmodal='stores.edit-item',$modaltitle='',
-    $haswhereequel=false,$whereequelfield='',$whereequelvalue=''){
-
-    $this->PagNo=$pagno;
-    $this->IsSearchable=$IsSearchable;
-    $this->Col1Search=$Arr[0];
-    $this->Col2Search=$Arr[1];
-    $this->Col3Search=$Arr[2];
-    $this->HasDelete=$hasdelete;
-    $this->HasEdit=$hasedit;
-    $this->HasAdd=$hasadd;
-    $this->AddModal=$addmodal;
-    $this->EditModal=$editmodal;
-    $this->ModalTitle=$modaltitle;
-    $this->HasWhereEquel =$haswhereequel;
-    $this->WhereEquelField='bank';
-    $this->WhereEquelField='acc';
-    $this->WhereEquelValue=$whereequelvalue;
-
+  public function mount(){
+    $this->Bank=0;
+    $this->Acc='';
   }
 
   public function render()
   {
-    for ($x = 0; $x <count($this->ColNames); $x++) {
-      $this->myquery[$x]=$this->ColNames[$x].' as Col'.$x+1;
-    }
+      Config::set('database.connections.other.database', Auth::user()->company);
 
-    Config::set('database.connections.other.database', Auth::user()->company);
 
-    if ($this->HasWhereEquel) {
-      return view('livewire.tools.my-table2',[
-        'TableList' => DB::connection('other')->table($this->TableName)
-          ->select($this->myquery)
-          ->where($this->WhereEquelField,'=', $this->WhereEquelValue)
-          ->where($this->WhereEquelField2,'=', $this->WhereEquelValue2)
-          ->paginate($this->PagNo),
-        $this->ColNames,$this->ColHeader,
+      return view('livewire.tools.my-many-acc-table', [
+          'TableList' => DB::connection('other')->table($this->TableName)
+              ->select('no','name','sul','kst')
+              ->where('bank', '=', $this->Bank)
+              ->where('acc', '=', $this->Acc)
+              ->paginate($this->PagNo)
+
       ]);
-
-    } else {
-      return view('livewire.tools.my-many-acc-table',[
-        'TableList' => DB::connection('other')->table($this->TableName)
-          ->select($this->myquery)
-          ->when($this->HasWhereEquel,function ($q) {
-            return $q->where($this->WhereEquelField,'=', $this->WhereEquelValue) ;     })
-          ->when($this->IsSearchable, function($q)  {
-            return $q->where($this->ColNames[0], 'like', '%'.$this->search.'%');       })
-          ->when($this->Col1Search, function($q)  {
-            return $q->orwhere($this->ColNames[1], 'like', '%'.$this->search.'%');     })
-          ->when($this->Col2Search, function($q)  {
-            return $q->orwhere($this->ColNames[2], 'like', '%'.$this->search.'%');     })
-          ->when($this->Col3Search, function($q)  {
-            return $q->orwhere($this->ColNames[3], 'like', '%'.$this->search.'%');     })
-
-          ->paginate($this->PagNo),
-        $this->ColNames,$this->ColHeader,
-      ]);}
   }
+
 }
 

@@ -6,9 +6,14 @@ use Livewire\Component;
 
 class ManyAcc extends Component
 {
-  public $post3='main';
+    protected $listeners = [
+        'GotoManyAcc',
+    ];
+
+
   public function GotoManyAcc($bank,$acc){
-    $this->emit('GetWhereEquelValue3',$bank,$acc);
+
+    $this->emit('GetMany_Bank_Acc',$bank,$acc);
   }
     public function render()
     {

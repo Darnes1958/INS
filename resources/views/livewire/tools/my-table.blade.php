@@ -2,7 +2,7 @@
   <input wire:model="search"  x-show="$wire.IsSearchable" type="search"  style="margin: 5px;" placeholder="ابحث هنا .......">
   <button type="button" class="btn btn-outline-primary btn-sm fa fa-plus"
           x-show="$wire.HasAdd"    wire:click="$emit('OpenMyTableAdd')">إضافة </button>
-  <table class="table table-sm table-success table-bordered table-striped table-light "  id="mytable1" >
+  <table class="table my-0 table-sm table-success table-bordered table-striped table-light "  id="mytable1" >
 
     <thead class="thead-dark font-size-12">
     <tr>
@@ -44,7 +44,8 @@
     @endforeach
     </tbody>
   </table>
-  {{ $TableList->links() }}
+    {{ $TableList->links('custom-pagination-links-view') }}
+
 
   <!-- Modal Add -->
   <div class="modal fade" id="ModalMyTableAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

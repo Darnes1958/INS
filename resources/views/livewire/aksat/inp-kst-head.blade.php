@@ -41,7 +41,7 @@
          <div class="modal-dialog modal-dialog-centered">
            <div class="modal-content">
              <div class="modal-header">
-               <button wire:click="CloseKstMany" type="button" class="btn-close" ></button>
+               <button wire:click="CloseMany" type="button" class="btn-close" ></button>
                <h1 class="modal-title fs-5 mx-6" id="exampleModalLabel">اضغظ علي اختيار</h1>
              </div>
              <div class="modal-body">
@@ -59,18 +59,13 @@
   </div>
 
 @push('scripts')
-
   <script>
       window.addEventListener('CloseKstManyModal', event => {
           $("#ModalKstMany").modal('hide');
       })
       window.addEventListener('OpenKstManyModal', event => {
-          alert('here');
-
           $("#ModalKstMany").modal('show');
       })
-
-
   </script>
 
   <script type="text/javascript">
@@ -80,7 +75,6 @@
           if (postid=='acc') {  $("#acc").focus();$("#acc").select(); }
 
       })
-
   </script>
 
   <script>

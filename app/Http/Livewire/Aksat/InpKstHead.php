@@ -27,6 +27,9 @@ class InpKstHead extends Component
   public function OpenMany(){
     $this->dispatchBrowserEvent('OpenKstManyModal');
   }
+  public function CloseMany(){
+        $this->dispatchBrowserEvent('CloseKstManyModal');
+    }
 
   public function updatedTheBankListIsSelectd(){
     $this->TheBankListIsSelectd=0;
@@ -37,10 +40,14 @@ class InpKstHead extends Component
     $this->ChkNoAndGo();
   }
   protected $listeners = [
-    'Go',
+    'Go','Take_ManyAcc_No',
   ];
 
+public function Take_ManyAcc_No($The_no){
+   $this->no=$The_no;
+    $this->emit('ksthead_goto','no');
 
+}
 public function Go(){
   $this->FillHead();
 
@@ -110,7 +117,7 @@ public function Go(){
     }
   }
   public function updatedAcc() {
-    $this->resetValidation('no');
+
     $this->resetValidation('acc');
     $this->emit('GoResetKstDetail');
   }
@@ -120,24 +127,14 @@ public function Go(){
     $validatedData = Validator::make(
       ['acc' => $this->acc],
       ['acc' => 'required|string|exists:other.main,acc'],
+      ['required' => 'لا يجوز','exists' => 'هذا الحساب غير موجود'])->validate();
 
-      ['required' => 'لا يجوز','exists' => 'هذا الحساب غير موجود'],
-
-    )->validate();
-
-
-    if ($this->acc!=null) {
-      Config::set('database.connections.other.database', Auth::user()->company);
-      $result = main::where('bank',$this->bankno)->where('acc',$this->acc)->get();
-
-      if ($result) {
-
+    $result = main::where('bank',$this->bankno)->where('acc',$this->acc)->get();
+    if ($result) {
         if (count($result)>1){
           $this->emit('GotoManyAcc',$this->bankno,$this->acc);
-          $this->dispatchBrowserEvent('OpenKstManyModal');
-
-
-        } else {
+          $this->dispatchBrowserEvent('OpenKstManyModal');}
+        else {
           $result = main::where('bank',$this->bankno)->where('acc',$this->acc)->first();
           $this->name=$result->name;
           $this->no=$result->no;
@@ -149,7 +146,7 @@ public function Go(){
 
 
       } }
-  }
+
   protected function rules()
   {
     Config::set('database.connections.other.database', Auth::user()->company);
