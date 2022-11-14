@@ -25,7 +25,7 @@
         <label for="kst_count" class="form-label" style="width: 20% ">عدد الأقساط</label>
         <input wire:model="kst_count" type="text" class="form-control" id="kst_count" style="width: 30%" readonly>
         <label for="kst" class="form-label" style="width: 20% ">&nbsp;&nbsp;القسط</label>
-        <input wire:model="kst" type="text" class="form-control" id="kst" style="width: 30%" readonly>
+        <input wire:model="kst"  type="text" class="form-control" id="kst" style="width: 30%" readonly>
     </div>
 
   <div class="col-md-12">
@@ -40,14 +40,21 @@
     <input x-bind:disabled="!$wire.OpenKstDetail" wire:model="ksm_date" wire:keydown.enter="$emit('kstdetail_goto','ksm')"
            class="form-control  "
            type="date"  id="ksm_date" >
-    @error('kst_date') <span class="error">{{ $message }}</span> @enderror
+    @error('ksm_date') <span class="error">{{ $message }}</span> @enderror
   </div>
   <div class="col-md-6 mb-2">
     <label  for="ksm" class="form-label-me">القسط</label>
-    <input x-bind:disabled="!$wire.OpenKstDetail" wire:model="ksm"
+    <input x-bind:disabled="!$wire.OpenKstDetail" wire:model="ksm" wire:keydown.enter="ChkKsm"
            class="form-control  "
            type="text"  id="ksm" >
-    @error('kst') <span class="error">{{ $message }}</span> @enderror
+    @error('ksm') <span class="error">{{ $message }}</span> @enderror
+    <div>
+      @if (session()->has('message'))
+        <div class="alert alert-danger">
+          {{ session('message') }}
+        </div>
+      @endif
+    </div>
   </div>
   <br>
 </div>

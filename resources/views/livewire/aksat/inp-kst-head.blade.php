@@ -37,7 +37,21 @@
            <span>{{ $errors->first('acc') }}</span>
          @endif
        </div>
-    </div>
+       <div class="modal fade" id="ModalKstMany" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered">
+           <div class="modal-content">
+             <div class="modal-header">
+               <button wire:click="CloseKstMany" type="button" class="btn-close" ></button>
+               <h1 class="modal-title fs-5 mx-6" id="exampleModalLabel">اضغظ علي اختيار</h1>
+             </div>
+             <div class="modal-body">
+               @livewire('aksat.many-acc')
+             </div>
+           </div>
+         </div>
+       </div>
+
+     </div>
 
 
 
@@ -45,6 +59,20 @@
   </div>
 
 @push('scripts')
+
+  <script>
+      window.addEventListener('CloseKstManyModal', event => {
+          $("#ModalKstMany").modal('hide');
+      })
+      window.addEventListener('OpenKstManyModal', event => {
+          alert('here');
+
+          $("#ModalKstMany").modal('show');
+      })
+
+
+  </script>
+
   <script type="text/javascript">
       Livewire.on('ksthead_goto',postid=>  {
           if (postid=='bankno') {  $("#bank_no").focus();$("#bank_no").select(); }

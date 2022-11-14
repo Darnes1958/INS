@@ -24,6 +24,10 @@ class InpKstHead extends Component
   public $TheBankListIsSelectd;
   public $TheNoListIsSelectd;
 
+  public function OpenMany(){
+    $this->dispatchBrowserEvent('OpenKstManyModal');
+  }
+
   public function updatedTheBankListIsSelectd(){
     $this->TheBankListIsSelectd=0;
     $this->ChkBankAndGo();
@@ -36,10 +40,7 @@ class InpKstHead extends Component
     'Go',
   ];
 
-  public function updated($propertyName)
-  {
-    $this->validateOnly($propertyName);
-  }
+
 public function Go(){
   $this->FillHead();
 
@@ -73,34 +74,33 @@ public function Go(){
   public function updatedNo()
   {
     $this->acc='';
-
-    $this->emit('GoResetKstDetail');
     $this->resetValidation('acc');
 
+    $this->emit('GoResetKstDetail');
   }
   public function FillHead(){
     Config::set('database.connections.other.database', Auth::user()->company);
     $this->acc='';
-
     if ($this->no!=null) {
       $result = main::where('bank',$this->bankno)->where('no',$this->no)->first();
       if ($result) {
         $this->name=$result->name;
         $this->acc=$result->acc;
-
         $this->emit('NoAtUpdate',$result);
       }
     }
   }
   public function ChkNoAndGo(){
+
+    $this->resetValidation('acc');
+    $this->validate();
     Config::set('database.connections.other.database', Auth::user()->company);
 
-    $this->acc='';
 
+    $this->acc='';
     if ($this->no!=null) {
       $result = main::where('bank',$this->bankno)->where('no',$this->no)->first();
       if ($result) {
-
         $this->name=$result->name;
         $this->acc=$result->acc;
         $orderno=$result->order_no;
@@ -110,6 +110,7 @@ public function Go(){
     }
   }
   public function updatedAcc() {
+    $this->resetValidation('no');
     $this->resetValidation('acc');
     $this->emit('GoResetKstDetail');
   }
@@ -119,23 +120,36 @@ public function Go(){
     $validatedData = Validator::make(
       ['acc' => $this->acc],
       ['acc' => 'required|string|exists:other.main,acc'],
+
       ['required' => 'لا يجوز','exists' => 'هذا الحساب غير موجود'],
 
     )->validate();
 
 
     if ($this->acc!=null) {
-      $result = main::where('bank',$this->bankno)->where('acc',$this->acc)->first();
-      if ($result) {
-        $this->name=$result->name;
-        $this->no=$result->no;
+      Config::set('database.connections.other.database', Auth::user()->company);
+      $result = main::where('bank',$this->bankno)->where('acc',$this->acc)->get();
 
-        $this->emit('NoAtUpdate',$result);
-        $this->emit('ksthead_goto','no');
+      if ($result) {
+
+        if (count($result)>1){
+          $this->emit('GotoManyAcc',$this->bankno,$this->acc);
+          $this->dispatchBrowserEvent('OpenKstManyModal');
+
+
+        } else {
+          $result = main::where('bank',$this->bankno)->where('acc',$this->acc)->first();
+          $this->name=$result->name;
+          $this->no=$result->no;
+
+          $this->emit('NoAtUpdate',$result);
+          $this->emit('ksthead_goto','no');
+
+        }
+
 
       } }
   }
-
   protected function rules()
   {
     Config::set('database.connections.other.database', Auth::user()->company);
@@ -146,10 +160,11 @@ public function Go(){
         Rule::exists('other.main')->where(function ($query) {
           $query->where('bank', $this->bankno);
         }),
-        ],
+      ],
 
     ];
   }
+
   protected $messages = [
     'required' => 'لا يجوز ترك فراغ',
 
