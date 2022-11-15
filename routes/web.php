@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\jeha\customercontroller;
 use App\Http\Controllers\bank\BankReportsController;
 use App\Http\Controllers\buy\OrderBuyController;
+use App\Http\Controllers\sell\OrderSellController;
 use App\Http\Controllers\aksat\AksatController;
 
 /*
@@ -62,6 +63,9 @@ Route::controller(OrderBuyController::class)->group(function (){
     route::get('/get-items-in-store','GetItemsInStore')->name('get-items-in-store');
     route::get('/order_buy/add','OrderBuy')->name('order_buy.add');
 
+});
+Route::controller(OrderSellController::class)->group(function (){
+     route::get('/order_sell/add','OrderSell')->name('order_sell.add');
 });
 
 

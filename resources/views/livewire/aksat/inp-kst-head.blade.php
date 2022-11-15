@@ -50,12 +50,7 @@
            </div>
          </div>
        </div>
-
      </div>
-
-
-
-
   </div>
 
 @push('scripts')
@@ -67,13 +62,11 @@
           $("#ModalKstMany").modal('show');
       })
   </script>
-
   <script type="text/javascript">
       Livewire.on('ksthead_goto',postid=>  {
           if (postid=='bankno') {  $("#bank_no").focus();$("#bank_no").select(); }
           if (postid=='no') {  $("#no").focus();$("#no").select(); }
           if (postid=='acc') {  $("#acc").focus();$("#acc").select(); }
-
       })
   </script>
 
@@ -88,15 +81,11 @@
               @this.set('bankno', data);
               @this.set('TheBankListIsSelectd', 1);
           });
-
       });
       window.livewire.on('bank-change-event',()=>{
           $('#Bank_L').select2({
               closeOnSelect: true
           });
-
-
-
       });
 
       $(document).ready(function ()
@@ -114,10 +103,7 @@
           $('#Main_L').select2({
               closeOnSelect: true
           });
-
           Livewire.emit('Go');
-
-
       });
   </script>
 @endpush
