@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Aksat;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -24,6 +25,8 @@ class InpKstHead extends Component
   public $TheBankListIsSelectd;
   public $TheNoListIsSelectd;
 
+  public $The_ser;
+
   public function OpenMany(){
     $this->dispatchBrowserEvent('OpenKstManyModal');
   }
@@ -40,9 +43,27 @@ class InpKstHead extends Component
     $this->ChkNoAndGo();
   }
   protected $listeners = [
-    'Go','Take_ManyAcc_No',
+    'Go','Take_ManyAcc_No','Ksthead_goto','DeleteTheKst','GetTheId'
   ];
 
+  public function GetTheId($id){
+    $this->The_ser=$id;
+  }
+  public function DeleteTheKst(){
+    Config::set('database.connections.other.database', Auth::user()->company);
+    DB::connection('other')->table('kst_trans')->where('no',$this->no)->where('ser',$this->The_ser)->update([
+      'ksm'=>0,
+      'ksm_date'=>null,
+      'kst_notes'=>null,
+      'emp'=>auth::user()->empno,
+    ]);
+    $this->emitTo('tools.my-table','refreshComponent');
+
+  }
+public function Ksthead_goto($wid){
+
+  $this->emit('ksthead_goto',$wid);
+}
 public function Take_ManyAcc_No($The_no){
    $this->no=$The_no;
     $this->emit('ksthead_goto','no');
@@ -113,6 +134,7 @@ public function Go(){
         $orderno=$result->order_no;
         $this->emit('nofound',$result);
         $this->emit('GotoKstDetail',$this->no,$orderno);
+        $this->emit('GetTheMainNo',$this->no);
       }
     }
   }

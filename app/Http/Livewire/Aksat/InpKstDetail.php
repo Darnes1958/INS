@@ -160,6 +160,7 @@ function ResetKstDetail (){
           DB::commit();
 
           $this->ResetKstDetail();
+          $this->emitTo('tools.my-table','refreshComponent');
           $this->emit('ksthead_goto','no');
 
 

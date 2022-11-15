@@ -8,6 +8,14 @@
   'haswhereequel' => true,
   'whereequelfield' => 'no',
   'whereequelvalue' => 0,
+  'hasdelete'=>true,
+  'hasedit'=>true,
+  'addmodal'=>'aksat.delete-kst',
+  'editmodal'=>'aksat.edit-kst',
+  'towhome'=>'aksat.edit-kst',
+  'towhomedelete'=>'aksat.inp-kst-head',
+  'showid'=>0,
+  'showfield'=>'Col5',
   ])
 
 

@@ -1,4 +1,4 @@
-<div x-data>
+<div x-data class="my-2">
   <input wire:model="search"  x-show="$wire.IsSearchable" type="search"  style="margin: 5px;" placeholder="ابحث هنا .......">
   <button type="button" class="btn btn-outline-primary btn-sm fa fa-plus"
           x-show="$wire.HasAdd"    wire:click="$emit('OpenMyTableAdd')">إضافة </button>

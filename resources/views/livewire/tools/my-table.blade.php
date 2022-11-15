@@ -32,13 +32,17 @@
 
         @endphp
         <td x-show="$wire.HasDelete" style="padding-top: 2px;padding-bottom: 2px; ">
+          @if ($ShowField=='' || $item->$ShowField!=$ShowId)
           <i
              wire:click="selectItem({{ $item->Col1 }}, 'update')"
              class="btn btn-outline-primary btn-sm fa fa-edit editable-input" style="margin-left: 2px;"></i>
+          @endif
         </td>
         <td x-show="$wire.HasEdit" style="padding-top: 2px;padding-bottom: 2px; ">
+          @if ($ShowField=='' || $item->$ShowField!=$ShowId)
           <i
-              wire:click="$emit('OpenMyTableEdit')" class="btn btn-outline-danger btn-sm fa fa-times "></i>
+             wire:click="selectItem({{ $item->Col1 }}, 'delete')" class="btn btn-outline-danger btn-sm fa fa-times "></i>
+          @endif
         </td>
       </tr>
     @endforeach
@@ -76,7 +80,27 @@
         </div>
       </div>
     </div>
-    <!-- End Modal Edit -->
+  </div>
+  <!-- End Modal Edit -->
+
+  <div class="modal fade" id="ModalMyTableDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">تأكيد الحذف</h5>
+          <button wire:click="CloseDeleteDialog" type="button" class="close"  >
+            <span aria-hidden="true close-btn">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h5>هل أنت متأكد من الإلغاء ?</h5>
+        </div>
+        <div class="modal-footer">
+          <button  wire:click="CloseDeleteDialog" type="button" class="btn btn-secondary close-btn" >تراجع</button>
+          <button type="button" wire:click.prevent="delete()" class="btn btn-danger close-modal" data-dismiss="modal">نعم متأكد</button>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -98,6 +122,13 @@
       window.addEventListener('CloseMyTableEdit', event => {
 
           $("#ModalMyTableEdit").modal('hide');
+      })
+      window.addEventListener('OpenMyTableDelete', event => {
+          $("#ModalMyTableDelete").modal('show');
+      })
+      window.addEventListener('CloseMyTableDelete', event => {
+
+          $("#ModalMyTableDelete").modal('hide');
       })
 
 

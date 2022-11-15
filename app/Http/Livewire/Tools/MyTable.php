@@ -15,7 +15,7 @@ class MyTable extends Component
   protected $paginationTheme = 'bootstrap';
 
   protected $listeners = [
-    'GetWhereEquelValue',
+    'GetWhereEquelValue','refreshComponent' => '$refresh'
   ];
 
   public function GetWhereEquelValue($ID){
@@ -45,22 +45,31 @@ class MyTable extends Component
   public $AddModal;
   public $EditModal;
 
+  public $ToWhome;
+  public $ToWhomeDelete;
+  public $ShowId;
+  Public $ShowField;
 
-
+  public function CloseDeleteDialog(){
+    $this->dispatchBrowserEvent('CloseMyTableDelete');
+  }
   public function selectItem($TheId, $action)
   {
-
     if ($action == 'delete') {
-      $this->dispatchBrowserEvent('OpenMyTableEdit');
+      $this->emitTo($this->ToWhomeDelete,'GetTheId', $TheId);
+      $this->dispatchBrowserEvent('OpenMyTableDelete');
     }
     else {
-      $this->emit('GetTheId', $TheId);
+
+      $this->emitTo($this->ToWhome,'GetTheId', $TheId);
       $this->dispatchBrowserEvent('OpenMyTableEdit');
-
-
     }
   }
+public function delete(){
+  $this->emitTo($this->ToWhomeDelete,'DeleteTheKst');
+  $this->dispatchBrowserEvent('CloseMyTableDelete');
 
+}
 
   public $search;
   public function updatingSearch()
@@ -74,7 +83,8 @@ class MyTable extends Component
   public function mount($IsSearchable=false,$Arr=[false,false,false,false,false] ,
     $hasadd=false,$hasedit=false,$hasdelete=false,
     $pagno=10,
-    $addmodal='stores.add-item',$editmodal='stores.edit-item',$modaltitle='',
+    $addmodal='stores.add-item',$editmodal='stores.edit-item',$modaltitle='',$towhome='',$towhomedelete='',
+    $showid=0,$showfield='',
     $haswhereequel=false,$whereequelfield='',$whereequelvalue=''){
 
     $this->PagNo=$pagno;
@@ -91,6 +101,10 @@ class MyTable extends Component
     $this->HasWhereEquel =$haswhereequel;
     $this->WhereEquelField=$whereequelfield;
     $this->WhereEquelValue=$whereequelvalue;
+    $this->ToWhome=$towhome;
+    $this->ToWhomeDelete=$towhomedelete;
+    $this->ShowId=$showid;
+    $this->ShowField=$showfield;
 
   }
 

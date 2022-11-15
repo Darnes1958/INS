@@ -6,6 +6,7 @@ use App\Models\bank\bank;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
 
 class BankSelect extends Component
 {
@@ -33,7 +34,9 @@ class BankSelect extends Component
     public function render()
     {
       Config::set('database.connections.other.database', Auth::user()->company);
-      $this->BankList=bank::all();
+      $this->BankList=DB::connection('other')->table('bank')->get();
+
+
       return view('livewire.bank.bank-select',$this->BankList);
     }
 }
