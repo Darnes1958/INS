@@ -9,6 +9,7 @@ use App\Models\stores\stores;
 use App\Models\stores\stores_names;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class OrderSellHead extends Component
@@ -40,8 +41,33 @@ class OrderSellHead extends Component
     public $HeadDataOpen;
 
     protected $listeners = [
-        'mounthead','jehaadded',
+        'mounthead','jehaadded','Take_Search_JehaNo',
     ];
+  public function JehaKeyDown(){
+    if ($this->jeha !=null){
+      Config::set('database.connections.other.database', Auth::user()->company);
+      $res=jeha::find($this->jeha);
+      if ($res){
+        $this->jeha_name=$res->jeha_name;
+        $this->emit('gotonext','storeno');
+      }
+    }
+
+  }
+  public function Take_Search_JehaNo($jeha_no){
+
+    $this->jeha=$jeha_no;
+
+    $this->JehaKeyDown();
+
+
+  }
+    public function OpenJehaSerachModal(){
+      $this->dispatchBrowserEvent('OpenSelljehaModal');
+    }
+    public function CloseJehaSerachModal(){
+      $this->dispatchBrowserEvent('CloseSelljehaModal');
+    }
     public function jehaadded($wj){
         $this->jeha=$wj;
     }
@@ -101,6 +127,11 @@ class OrderSellHead extends Component
         $this->jeha_type='2';
         $this->HeadOpen=True;
         $this->HeadDataOpen=false;
+
+
+
+
+
     }
 
     public function BtnHeader()

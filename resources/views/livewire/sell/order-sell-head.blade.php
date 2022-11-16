@@ -17,26 +17,45 @@
 
         <div class="row g-3 ">
             <div class="col-md-4">
-                <label  for="jehano" class="form-label-me">المورد</label>
-                <input wire:model="jeha" wire:keydown.enter="$emit('gotonext','storeno')"
+                <label  for="jehano" class="form-label-me">رقم الزبون</label>
+                <input wire:model="jeha" wire:keydown.enter="JehaKeyDown"
                        class="form-control  "
                        name="jehano" type="text"  id="jehano" >
                 @error('jeha') <span class="error">{{ $message }}</span> @enderror
                 @error('jeha_type') <span class="error">{{ $message }}</span> @enderror
             </div>
-            <div class="col-md-8">
-                <label  class="form-label-me"> .</label>
+            <div class="col-md-2">
+                <label class="form-label-me">.</label>
                 <div class="row g-2 ">
-                    <div   class="col-md-11" >
-
-                        @livewire('jeha.supp-select')
+                    <div class="col-md-6" >
+                        <button wire:click="OpenJehaSerachModal" type="button" class="btn btn-outline-primary btn-sm fa fa-arrow-alt-circle-down" data-bs-toggle="modal"></button>
                     </div>
-
-                    <div class="col-md-1" >
-
+                    <div class="col-md-6" >
                         <button wire:click="OpenModal" type="button" class="btn btn-outline-primary btn-sm fa fa-plus" data-bs-toggle="modal"></button>
                     </div>
                 </div>
+
+            </div>
+
+            <div class="col-md-6">
+                <label  class="form-label-me">.</label>
+                <input wire:model="jeha_name"  class="form-control  "   type="text"  id="jehaname" readonly>
+
+                    <div class="modal fade" id="ModalSelljeha" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button wire:click="CloseJehaSerachModal" type="button" class="btn-close" ></button>
+
+                                </div>
+                                <div class="modal-body">
+                                    @livewire('jeha.cust-search')
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
             </div>
         </div>
 
@@ -139,25 +158,36 @@
 
     </script>
     <script>
+        window.addEventListener('CloseSelljehaModal', event => {
+            $("#ModalSelljeha").modal('hide');
+        })
+        window.addEventListener('OpenSelljehaModal', event => {
+            $("#ModalSelljeha").modal('show');
+        })
+
+
+    </script>
+    <script>
 
 
         $(document).ready(function ()
         {
-            $('#Supp_L').select2({
+            $('#Cust_L').select2({
                 closeOnSelect: true
             });
-            $('#Supp_L').on('change', function (e) {
-                var data = $('#Supp_L').select2("val");
+            $('#Cust_L').on('change', function (e) {
+                var data = $('#Cust_L').select2("val");
             @this.set('jeha', data);
 
             });
         });
         window.livewire.on('data-change-event',()=>{
-            $('#Supp_L').select2({
+            $('#Cust_L').select2({
                 closeOnSelect: true
             });
             Livewire.emit('gotonext', 'jehano');
 
         });
     </script>
+
 @endpush

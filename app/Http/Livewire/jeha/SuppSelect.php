@@ -27,6 +27,7 @@ class SuppSelect extends Component
     }
   }
 
+
   public function hydrate(){
 
     $this->emit('data-change-event');
@@ -34,6 +35,7 @@ class SuppSelect extends Component
     public function render()
     {
       Config::set('database.connections.other.database', Auth::user()->company);
+
       $this->SuppList=jeha::where('jeha_type',2)->where('available',1)->get();
       return view('livewire.jeha.supp-select',$this->SuppList);
     }
