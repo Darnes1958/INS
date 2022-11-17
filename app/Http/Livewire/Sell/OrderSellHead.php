@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Sell;
 
 use App\Models\sell\sells;
 use App\Models\jeha\jeha;
+use App\Models\stores\halls_names;
 use App\Models\stores\items;
 use App\Models\stores\stores;
 use App\Models\stores\stores_names;
@@ -23,8 +24,49 @@ class OrderSellHead extends Component
     public $st_name;
     public $jeha_name;
 
+    public $OredrSellRadio='Makazen';
+    public $PlaceLabel='المخزن';
 
-    public function updatedStno()
+
+
+    public $stores_names;
+    public $halls_names;
+    public $HeadOpen;
+    public $HeadDataOpen;
+
+  protected $listeners = [
+    'mounthead','jehaadded','Take_Search_JehaNo',
+  ];
+  public function PlaceKeyEnter(){
+    $this->storel='';
+    Config::set('database.connections.other.database', Auth::user()->company);
+    if ($this->stno!=null) {
+      if ($this->OredrSellRadio=='Makazen'){
+        $res=stores_names::find($this->stno);
+        if ($res) {$this->storel=$res->st_no;}
+        else  $this->dispatchBrowserEvent('mmsg','هذا الرقم غير مخزون ؟');
+      }
+      if ($this->OredrSellRadio=='Salat'){
+        $res=halls_names::find($this->stno);
+        if ($res) {$this->storel=$res->hall_no;}
+        else $this->dispatchBrowserEvent('MyMsg','نحن هنا');
+      }
+      if ($res) {$this->emit('gotonext','head-btn');}
+
+    }
+  }
+  public function ChangePlace(){
+    if ($this->OredrSellRadio=='Makazen') {
+      $this->dispatchBrowserEvent('MyMsg','نحن هنا');
+      $this->PlaceLabel ='المخزن';
+    } else
+    {
+      $this->dispatchBrowserEvent('MyMsg','نحن هنا');
+      $this->PlaceLabel ='الصالة';
+    }
+  }
+
+  public function updatedStno()
     {
         $this->storel=$this->stno;
     }
@@ -36,20 +78,13 @@ class OrderSellHead extends Component
 
     }
 
-
-    public $HeadOpen;
-    public $HeadDataOpen;
-
-    protected $listeners = [
-        'mounthead','jehaadded','Take_Search_JehaNo',
-    ];
   public function JehaKeyDown(){
     if ($this->jeha !=null){
       Config::set('database.connections.other.database', Auth::user()->company);
       $res=jeha::find($this->jeha);
       if ($res){
         $this->jeha_name=$res->jeha_name;
-        $this->emit('gotonext','storeno');
+        $this->emit('gotonext','orderno');
       }
     }
 
@@ -101,6 +136,7 @@ class OrderSellHead extends Component
     protected function rules()
     {
         Config::set('database.connections.other.database', Auth::user()->company);
+
         return [
             'order_no' => ['required','integer','gt:0', 'unique:other.buys,order_no'],
             'order_date' => 'required',
@@ -127,11 +163,6 @@ class OrderSellHead extends Component
         $this->jeha_type='2';
         $this->HeadOpen=True;
         $this->HeadDataOpen=false;
-
-
-
-
-
     }
 
     public function BtnHeader()
@@ -139,19 +170,23 @@ class OrderSellHead extends Component
         $this->validate();
         $this->HeadOpen=false;
         $this->HeadDataOpen=true;
-        $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha,$this->stno);
-        $this->emit('mountdetail');
+        $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha,$this->stno,$this->OredrSellRadio);
+        $this->emit('mountdetail',$this->stno,$this->OredrSellRadio);
     }
-
 
     public function render()
     {
 
         Config::set('database.connections.other.database', Auth::user()->company);
+        $this->stores_names=stores_names::all();
+        $this->halls_names=halls_names::all();
+
+
         return view('livewire.sell.order-sell-head',[
             'jeha'=>jeha::where('jeha_type',1)->where('available',1)->get(),
             'stores'=>stores::where('raseed','>',0)->get(),
-            'stores_names'=>stores_names::all(),
+            'stores_names'=>$this->stores_names,
+            'halls_names'=>$this->halls_names,
             'items'=>items::on('other')->where('raseed','>',0)->get(),
             'jeha_name'=>$this->jeha_name,
             // 'date' => date('Y-m-d'),

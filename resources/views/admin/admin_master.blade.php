@@ -10,7 +10,7 @@
     <meta content="Themesdesign" name="author" />
     <!-- App favicon -->
 
-
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="{{asset('backend/assets/css/sidebars.css')}}" rel="stylesheet" >
 
 
@@ -149,6 +149,36 @@
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    const Toast = Swal.mixin({
+        toast: true,
+        title: 'هل انت متأكد ؟',
+        showCancelButton: true,
+        confirmButtonText: 'نعم متأكد',
+        cancelButtonText: `تراجع`,
+        cancelButtonColor: 'red',
+        icon: 'question',
+
+        background: '#e1e7de',
+        width: 300,
+
+    })
+</script>
+
+
+<script>
+    const MyMsg = Swal.mixin({
+        toast: true,
+        padding: '3em',
+
+        background: '#e1e7de',
+        icon: 'question',
+        timer: 5000,
+        timerProgressBar: true,
+
+    })
+</script>
 
 @livewireScripts
 @stack('scripts')

@@ -1,31 +1,17 @@
 <div x-data class="col-md-12 " style="margin-bottom: 20px;margin-top: 16px;" xmlns="http://www.w3.org/1999/html">
 
     <div  x-show="$wire.HeadOpen" class="row g-3 " style="border:1px solid lightgray;background: white;">
-        <div class="col-md-6">
-            <label  for="order_no" class="form-label-me ">رقم الفاتورة</label>
-            <input wire:model="order_no"  wire:keydown.enter="$emit('gotonext','date')" type="text" class=" form-control "
-                   id="order_no" name="order_no"  autofocus >
-            @error('order_no') <span class="error">{{ $message }}</span> @enderror
-        </div>
-        <div class="col-md-6">
-            <label for="date" class="form-label-me">التاريخ</label>
-            <input wire:model="order_date" wire:keydown.enter="$emit('gotonext','jehano')"
-                   class="form-control  "
-                   name="date" type="date"  id="date" >
-            @error('order_date') <span class="error">{{ $message }}</span> @enderror
-        </div>
-
         <div class="row g-3 ">
             <div class="col-md-4">
                 <label  for="jehano" class="form-label-me">رقم الزبون</label>
                 <input wire:model="jeha" wire:keydown.enter="JehaKeyDown"
                        class="form-control  "
-                       name="jehano" type="text"  id="jehano" >
+                       name="jehano" type="text"  id="jehano" autofocus>
                 @error('jeha') <span class="error">{{ $message }}</span> @enderror
                 @error('jeha_type') <span class="error">{{ $message }}</span> @enderror
             </div>
             <div class="col-md-2">
-                <label class="form-label-me">.</label>
+                <label class="form-label-me">&nbsp</label>
                 <div class="row g-2 ">
                     <div class="col-md-6" >
                         <button wire:click="OpenJehaSerachModal" type="button" class="btn btn-outline-primary btn-sm fa fa-arrow-alt-circle-down" data-bs-toggle="modal"></button>
@@ -38,7 +24,17 @@
             </div>
 
             <div class="col-md-6">
-                <label  class="form-label-me">.</label>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" wire:model="OredrSellRadio" wire:click="ChangePlace" name="inlineRadioOptions" id="inlineRadio1" value="Makazen">
+                    <label class="form-check-label" for="inlineRadio1">مخازن</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" wire:model="OredrSellRadio" wire:click="ChangePlace" name="inlineRadioOptions" id="inlineRadio2" value="Salat">
+                    <label class="form-check-label" for="inlineRadio2">صالات</label>
+                </div>
+
+
                 <input wire:model="jeha_name"  class="form-control  "   type="text"  id="jehaname" readonly>
 
                     <div class="modal fade" id="ModalSelljeha" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -59,24 +55,52 @@
             </div>
         </div>
 
+        <div class="col-md-6">
+            <label  for="order_no" class="form-label-me ">رقم الفاتورة</label>
+            <input wire:model="order_no"  wire:keydown.enter="$emit('gotonext','date')" type="text" class=" form-control "
+                   id="order_no" name="order_no"   >
+            @error('order_no') <span class="error">{{ $message }}</span> @enderror
+        </div>
+        <div class="col-md-6">
+            <label for="date" class="form-label-me">التاريخ</label>
+            <input wire:model="order_date" wire:keydown.enter="$emit('gotonext','storeno')"
+                   class="form-control  "
+                   name="date" type="date"  id="date" >
+            @error('order_date') <span class="error">{{ $message }}</span> @enderror
+        </div>
+
         <div class="col-md-4">
-            <label  for="storeno" class="form-label-me">المخزن</label>
-            <input  wire:model="stno" wire:keydown.enter="$emit('gotonext','head-btn')"
+            <label   for="storeno" class="form-label-me">{{$PlaceLabel}}</label>
+            <input  wire:model="stno" wire:keydown.enter="PlaceKeyEnter"
                     class="form-control  "
                     name="storeno" type="text"  id="storeno" >
             @error('st_no') <span class="error">{{ $message }}</span> @enderror
         </div>
+
+        @if ($OredrSellRadio=='Salat')
         <div  class="col-md-8" >
-            <label  class="form-label-me">اختيار من القائمة</label>
+           <label  class="form-label-me">اختيار من القائمة</label>
             <select  wire:model="storel" name="store_id" id="store_id" class="form-control  form-select "
                      style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"
             >
-                <option value="1">المخزن الرئيسي</option>
-                @foreach($stores_names as $s)
-                    <option value="{{ $s->st_no }}">{{ $s->st_name }}</option>
+                @foreach($halls_names as $key=>$s)
+                    <option value="{{ $s->hall_no }}">{{ $s->hall_name }}</option>
                 @endforeach
             </select>
         </div>
+        @endif
+        @if ($OredrSellRadio=='Makazen')
+            <div  class="col-md-8" >
+                <label  class="form-label-me">اختيار من القائمة</label>
+                <select  wire:model="storel" name="store_id" id="store_id" class="form-control  form-select "
+                         style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"
+                >
+                    @foreach($stores_names as $key=>$s)
+                        <option value="{{ $s->st_no }}">{{ $s->st_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        @endif
 
         <div class="my-3 align-center justify-content-center "  style="display: flex">
 
@@ -125,6 +149,16 @@
 </div>
 
 @push('scripts')
+    <script type="text/javascript">
+        window.addEventListener('mmsg',function(e){
+            MyMsg.fire({
+                confirmButtonText:  e.detail,
+
+
+            })
+        });
+    </script>
+
     <script type="text/javascript">
         Livewire.on('jehachange',postid=>{
 

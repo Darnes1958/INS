@@ -5,7 +5,7 @@
     <div class="col-md-12" x-show="$wire.DetailOpen"  >
         <div class="row g-2 ">
             <div class="col-md-11" >
-                @livewire('stores.item-select')
+                @livewire('stores.item-select', ['PlaceSelectType' => $OredrPlacetype,'PlaceToselect' => $OrderPlaceId])
             </div>
             <div class="col-md-1" >
                 <button wire:click="OpenFirst" type="button" class="btn btn-outline-primary btn-sm fa fa-plus" data-bs-toggle="modal"></button>

@@ -21,6 +21,8 @@ class OrderSellTable extends Component
     public $st_no;
     public $notes;
 
+    public $PlaceType;
+
     protected $listeners = [
         'putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable'
     ];
@@ -111,12 +113,14 @@ class OrderSellTable extends Component
 
         }
     }
-    public function HeadBtnClick($Wor,$wd,$wjh,$wst)
+    public function HeadBtnClick($Wor,$wd,$wjh,$wst,$wplace)
     {
         $this->order_no=$Wor;
         $this->order_date=$wd;
         $this->jeha_no=$wjh;
         $this->st_no=$wst;
+        $this->PlaceType=$wplace;
+
 
     }
     public function ChkIfDataExist($witem_no){

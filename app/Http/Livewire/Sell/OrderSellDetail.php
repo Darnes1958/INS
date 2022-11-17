@@ -20,7 +20,11 @@ class OrderSellDetail extends Component
     public $DetailOpen;
     public $OrderDetailOpen;
 
-    public function OpenFirst(){
+  public $OredrPlacetype='Makazen';
+  public $OrderPlaceId=1;
+
+
+  public function OpenFirst(){
         $this->dispatchBrowserEvent('OpenFirst');
     }
     public function CloseFirst(){
@@ -39,10 +43,11 @@ class OrderSellDetail extends Component
     protected $listeners = [
         'itemchange','edititem','YesIsFound','ClearData','mountdetail','dismountdetail'
     ];
-    public function mountdetail(){
+    public function mountdetail($wpt,$wpn){
         $this->OrderDetailOpen=true;
         $this->DetailOpen=true;
-
+        $this->OredrPlacetype=$wpt;
+        $this->OrderPlaceId=$wpn;
 
         $this->ClearData();
         $this->emit('gotonext', 'item_no');
