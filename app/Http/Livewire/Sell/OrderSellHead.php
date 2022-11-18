@@ -141,7 +141,7 @@ class OrderSellHead extends Component
             'order_no' => ['required','integer','gt:0', 'unique:other.buys,order_no'],
             'order_date' => 'required',
             'jeha_type' => ['integer','size:2'],
-            'stno' => ['required','integer','gt:0', 'exists:other.stores_names,st_no'],
+
         ];
     }
     protected $messages = [
@@ -170,8 +170,8 @@ class OrderSellHead extends Component
         $this->validate();
         $this->HeadOpen=false;
         $this->HeadDataOpen=true;
-        $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha,$this->stno,$this->OredrSellRadio);
-        $this->emit('mountdetail',$this->stno,$this->OredrSellRadio);
+        $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha,$this->OredrSellRadio,$this->stno);
+        $this->emit('mountdetail',$this->OredrSellRadio,$this->stno);
     }
 
     public function render()

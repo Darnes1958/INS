@@ -14,12 +14,17 @@ class ItemSelect extends Component
   public $ItemNo;
   public $ItemName;
   public $ItemList;
-  public $PlaceSelectType='items';
-  public $PlaceToselect=1;
+  public $PlaceSelectType;
+  public $PlaceToSelect;
   protected $listeners = [
-    'itemfound',
+    'itemfound','B_RefreshSelectItem','RefreshSelectItem => $refresh',
   ];
 
+  public function B_RefreshSelectItem($PST,$PTS){
+   $this->PlaceSelectType=$PST;
+   $this->PlaceToSelect=$PTS;
+   $this->render();
+   }
   public function jehafound($wj,$wn){
 
     if(!is_null($wj)) {
@@ -28,30 +33,34 @@ class ItemSelect extends Component
     }
   }
 
-
+  public function mount($placeSelectType='items',$placeToselect=1){
+    $this->PlaceSelectType=$placeSelectType;
+    $this->PlaceToSelect=$placeToselect;
+  }
   public function hydrate(){
 
     $this->emit('item-change-event');
   }
     public function render()
     {
-      info('before');
+        if ($this->PlaceSelectType=='items') {
         Config::set('database.connections.other.database', Auth::user()->company);
-        if ($this->PlaceSelectType=='items') {info('yes'); $this->ItemList=items::where('available',1)->get();}
-        if ($this->PlaceSelectType=='Makazen') {
-          DB::connection('other')->table('stores')
-            ->join('items', 'stores.item_no', '=', 'items.item_no')
-            ->select('stores.item_no', 'stores.raseed', 'items.item_name')
-            ->where('stores.st_no',$this->PlaceToselect)
-            ->get();}
-        if ($this->PlaceSelectType=='Salat') {
-         DB::connection('other')->table('halls')
-          ->join('items', 'halls.item_no', '=', 'items.item_no')
-          ->select('halls.item_no', 'halls.raseed', 'items.item_name')
-          ->where('halls.hall_no',$this->PlaceToselect)
+        $this->ItemList=DB::connection('other')->table('items')
+          ->select('item_no', 'raseed', 'item_name')
+          ->where('available',1)
           ->get();}
-
-
+        if ($this->PlaceSelectType=='Makazen') {
+            DB::connection('other')->table('stores')
+                ->join('items', 'stores.item_no', '=', 'items.item_no')
+                ->select('stores.item_no', 'stores.raseed', 'items.item_name')
+                ->where('stores.st_no',$this->PlaceToSelect)
+                ->get();}
+        if ($this->PlaceSelectType=='Salat') {
+            DB::connection('other')->table('halls')
+                ->join('items', 'halls.item_no', '=', 'items.item_no')
+                ->select('halls.item_no', 'halls.raseed', 'items.item_name')
+                ->where('halls.hall_no',$this->PlaceToSelect)
+                ->get();}
         return view('livewire.stores.item-select',$this->ItemList);
     }
 }

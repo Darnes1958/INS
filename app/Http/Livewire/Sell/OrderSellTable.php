@@ -113,15 +113,13 @@ class OrderSellTable extends Component
 
         }
     }
-    public function HeadBtnClick($Wor,$wd,$wjh,$wst,$wplace)
+    public function HeadBtnClick($Wor,$wd,$wjh,$wplace,$wst)
     {
         $this->order_no=$Wor;
         $this->order_date=$wd;
         $this->jeha_no=$wjh;
         $this->st_no=$wst;
         $this->PlaceType=$wplace;
-
-
     }
     public function ChkIfDataExist($witem_no){
 

@@ -48,8 +48,11 @@ class OrderSellDetail extends Component
         $this->DetailOpen=true;
         $this->OredrPlacetype=$wpt;
         $this->OrderPlaceId=$wpn;
+        $this->emit('B_RefreshSelectItem',$wpt,$wpn);
+
 
         $this->ClearData();
+
         $this->emit('gotonext', 'item_no');
     }
     public function dismountdetail(){
@@ -90,13 +93,10 @@ class OrderSellDetail extends Component
     {
         if(!is_null($value))
             $this->item = $value;
-
         $this->updatedItem();
-
         $this->emit('gotonext', 'item_no');
     }
     public function updatedItem()
-
     {
         $this->item_name='';
         Config::set('database.connections.other.database', Auth::user()->company);

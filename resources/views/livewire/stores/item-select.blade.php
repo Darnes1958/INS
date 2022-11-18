@@ -3,7 +3,7 @@
   <select   wire:model="ItemNo" id="Item_L" class="Item_L" >
     <option value="">اختيار من القائمة</option>
     @foreach($ItemList as  $s)
-      <option value="{{ $s->Item_no }}">{{ $s->Item_name }}</option>
+      <option value="{{ $s->item_no }}">{{ $s->item_name }}</option>
     @endforeach
   </select>
 </div>
