@@ -16,6 +16,7 @@ class OrderSellDetail extends Component
     public $quant;
     public $price;
     public $orderdetail=[];
+    public $st_label;
 
     public $DetailOpen;
     public $OrderDetailOpen;
@@ -43,11 +44,13 @@ class OrderSellDetail extends Component
     protected $listeners = [
         'itemchange','edititem','YesIsFound','ClearData','mountdetail','dismountdetail'
     ];
-    public function mountdetail($wpt,$wpn){
+    public function mountdetail($wpt,$wpn,$wpname){
         $this->OrderDetailOpen=true;
         $this->DetailOpen=true;
         $this->OredrPlacetype=$wpt;
         $this->OrderPlaceId=$wpn;
+        $this->st_label='رصيد '.$wpname;
+
         $this->emit('B_RefreshSelectItem',$wpt,$wpn);
 
 
@@ -96,25 +99,66 @@ class OrderSellDetail extends Component
         $this->updatedItem();
         $this->emit('gotonext', 'item_no');
     }
+
+   public function ChkItem(){
+       Config::set('database.connections.other.database', Auth::user()->company);
+       if ($this->item!=null) {
+           if ($this->OredrPlacetype=='Makazen') {
+               $result=items::with(array('iteminstore' => function ($query){
+                   $query->where('st_no', $this->OrderPlaceId);
+               }))->
+               where('item_no', $this->item)->first();
+           }
+
+           if ($this->OredrPlacetype=='Salat') {
+               $result=items::with(array('iteminhall' => function ($query){
+                   $query->where('hall_no', $this->OrderPlaceId);
+               }))->
+               where('item_no', $this->item)->first();
+
+           }
+
+           if ($result) {
+               $this->item_name=$result->item_name;
+               $this->price=number_format($result->price_buy, 2, '.', '')  ;
+               $this->raseed= $result->raseed;
+
+               if ($this->OredrPlacetype=='Makazen') {
+                   if ($result->iteminstore->count()!=0) {$this->st_raseed=$result->iteminstore[0]->raseed;}
+                   else {$this->st_raseed = 0; }
+                   if ($this->st_raseed==0) {return 'zero';}
+                   return ('ok');
+               }
+               if ($this->OredrPlacetype=='Salat') {
+                   if ($result->iteminhall->count()!=0) {$this->st_raseed=$result->iteminhall[0]->raseed;}
+                   else {$this->st_raseed=0; }
+                   if ($this->st_raseed==0) {return 'zero';}
+                   return ('ok');
+               }
+
+               $this->emit('ChkIfDataExist',$this->item);
+               $this->emit('gotonext','quant');
+
+           } { return('not');}
+       } else { return('empty');}
+
+   }
+    public function ItemKeyDown(){
+        $this->item_name='';
+        $this->quant=0;
+        $this->price=0;
+        $res=$this->ChkItem();
+        if ($res=='ok') {$this->emit('gotonext','quant');}
+        if ($res=='not') { $this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ؟');}
+        if ($res=='empty') { $this->dispatchBrowserEvent('mmsg', 'لا يجوز');}
+        if ($res=='zero') { $this->dispatchBrowserEvent('mmsg', 'رصيد الصنف صفر');}
+    }
     public function updatedItem()
     {
         $this->item_name='';
-        Config::set('database.connections.other.database', Auth::user()->company);
-        if ($this->item!=null) {
-            $result=items::with('iteminstore')->
-            where('item_no', $this->item)->first();
+        $this->quant=0;
+        $this->price=0;
 
-            if ($result) {
-                $this->item_name=$result->item_name;
-                $this->price=number_format($result->price_buy, 2, '.', '')  ;
-                $this->raseed= $result->raseed;
-
-                if ($result->iteminstore) {$this->st_raseed=$result->iteminstore->raseed;}
-                else {$this->st_raseed=0;}
-
-                $this->emit('ChkIfDataExist',$this->item);
-
-            }}
     }
 
     protected function rules()
@@ -133,7 +177,7 @@ class OrderSellDetail extends Component
 
     ];
 
-    public function ChkItem()
+    public function ChkRec()
     {
         $this->validate();
         $this->orderdetail=['item_no'=>$this->item,'item_name'=>$this->item_name,

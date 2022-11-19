@@ -23,6 +23,7 @@ class ItemSelect extends Component
   public function B_RefreshSelectItem($PST,$PTS){
    $this->PlaceSelectType=$PST;
    $this->PlaceToSelect=$PTS;
+
    $this->render();
    }
   public function jehafound($wj,$wn){
@@ -43,6 +44,7 @@ class ItemSelect extends Component
   }
     public function render()
     {
+
         if ($this->PlaceSelectType=='items') {
         Config::set('database.connections.other.database', Auth::user()->company);
         $this->ItemList=DB::connection('other')->table('items')
@@ -50,17 +52,20 @@ class ItemSelect extends Component
           ->where('available',1)
           ->get();}
         if ($this->PlaceSelectType=='Makazen') {
-            DB::connection('other')->table('stores')
+            $this->ItemList=DB::connection('other')->table('stores')
                 ->join('items', 'stores.item_no', '=', 'items.item_no')
                 ->select('stores.item_no', 'stores.raseed', 'items.item_name')
                 ->where('stores.st_no',$this->PlaceToSelect)
+                ->where('stores.raseed','>',0)
                 ->get();}
         if ($this->PlaceSelectType=='Salat') {
-            DB::connection('other')->table('halls')
+            $this->ItemList=DB::connection('other')->table('halls')
                 ->join('items', 'halls.item_no', '=', 'items.item_no')
                 ->select('halls.item_no', 'halls.raseed', 'items.item_name')
                 ->where('halls.hall_no',$this->PlaceToSelect)
-                ->get();}
+                ->where('halls.raseed','>',0)
+                ->get();  }
+
         return view('livewire.stores.item-select',$this->ItemList);
     }
 }

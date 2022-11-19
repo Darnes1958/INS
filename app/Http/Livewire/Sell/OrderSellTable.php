@@ -130,6 +130,7 @@ class OrderSellTable extends Component
                 $this->orderdetail[$index]['price']);
 
         }
+
     }
     public function gotonext($value)
     {

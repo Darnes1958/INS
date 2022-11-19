@@ -46,14 +46,14 @@
 
     <div class="col-md-4" >
         <label  for="itemno" class="form-label-me ">رقم الصنف</label>
-        <input wire:model="item"  wire:keydown.enter="$emit('gotonext','quant')"  x-bind:disabled="!$wire.DetailOpen"
+        <input wire:model="item"  wire:keydown.enter="ItemKeyDown"  x-bind:disabled="!$wire.DetailOpen"
                type="text" class="form-control"  id="itemno" name="itemno" style="text-align: center;height: 39px;">
     </div>
     <div class="col-md-8">
         <label  for="item_name" class="form-label-me ">اسم الصنف</label>
         <textarea wire:model="item_name" name="item_name" class="form-control"
                   style="color: #0b5ed7; "
-                  readonly id="item_name" placeholder="اسم الصنف"></textarea>
+                  readonly id="item_name" ></textarea>
         @error('item') <span class="error">{{ $message }}</span> @enderror
     </div>
     <div class="col-6 ">
@@ -77,7 +77,7 @@
         @error('price') <span class="error">{{ $message }}</span> @enderror
     </div>
     <div class="col-6 ">
-        <label for="st_raseed" class="form-label-me " >رصيد المخزن</label>
+        <label for="st_raseed" class="form-label-me " >{{$st_label}}</label>
         <input wire:model="st_raseed" class="form-control " name="st_raseed" type="text" readonly
                id="st_raseed"   >
     </div>

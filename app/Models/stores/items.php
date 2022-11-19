@@ -17,9 +17,11 @@ class items extends Model
 
     public function iteminstore()
     {
-
-        return $this->hasOne(stores:: class, 'item_no', 'item_no');
-
+        return $this->hasMany(stores:: class, 'item_no', 'item_no');
+    }
+    public function iteminhall()
+    {
+        return $this->hasMany(halls:: class, 'item_no', 'item_no');
     }
 
 

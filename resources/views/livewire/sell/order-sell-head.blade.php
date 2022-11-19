@@ -4,7 +4,7 @@
         <div class="row g-3 ">
             <div class="col-md-4">
                 <label  for="jehano" class="form-label-me">رقم الزبون</label>
-                <input wire:model="jeha" wire:keydown.enter="JehaKeyDown"
+                <input wire:model="jeha_no" wire:keydown.enter="JehaKeyDown"
                        class="form-control  "
                        name="jehano" type="text"  id="jehano" autofocus>
                 @error('jeha') <span class="error">{{ $message }}</span> @enderror
@@ -20,11 +20,9 @@
                         <button wire:click="OpenModal" type="button" class="btn btn-outline-primary btn-sm fa fa-plus" data-bs-toggle="modal"></button>
                     </div>
                 </div>
-
             </div>
 
             <div class="col-md-6">
-
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" wire:model="OredrSellRadio" wire:click="ChangePlace" name="inlineRadioOptions" id="inlineRadio1" value="Makazen">
                     <label class="form-check-label" for="inlineRadio1">مخازن</label>
@@ -33,16 +31,12 @@
                     <input class="form-check-input" type="radio" wire:model="OredrSellRadio" wire:click="ChangePlace" name="inlineRadioOptions" id="inlineRadio2" value="Salat">
                     <label class="form-check-label" for="inlineRadio2">صالات</label>
                 </div>
-
-
                 <input wire:model="jeha_name"  class="form-control  "   type="text"  id="jehaname" readonly>
-
                     <div class="modal fade" id="ModalSelljeha" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button wire:click="CloseJehaSerachModal" type="button" class="btn-close" ></button>
-
                                 </div>
                                 <div class="modal-body">
                                     @livewire('jeha.cust-search')
@@ -50,8 +44,6 @@
                             </div>
                         </div>
                     </div>
-
-
             </div>
         </div>
 
@@ -80,7 +72,7 @@
         @if ($OredrSellRadio=='Salat')
         <div  class="col-md-8" >
            <label  class="form-label-me">اختيار من القائمة</label>
-            <select  wire:model="storel" name="store_id" id="store_id" class="form-control  form-select "
+            <select  wire:model="storel" wire:click="FillStno" name="store_id" id="store_id" class="form-control  form-select "
                      style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"
             >
                 @foreach($halls_names as $key=>$s)
@@ -92,7 +84,7 @@
         @if ($OredrSellRadio=='Makazen')
             <div  class="col-md-8" >
                 <label  class="form-label-me">اختيار من القائمة</label>
-                <select  wire:model="storel" name="store_id" id="store_id" class="form-control  form-select "
+                <select  wire:model="storel"   name="store_id" id="store_id" class="form-control  form-select "
                          style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"
                 >
                     @foreach($stores_names as $key=>$s)
@@ -126,7 +118,7 @@
             <input wire:model="jeha_name"   class="form-control  " type="text"  readonly >
         </div>
         <div   class="col-md-12" >
-            <label  class="form-label-me">المخزن</label>
+            <label  class="form-label-me">{{$PlaceLabel}}</label>
             <input wire:model="st_name"   class="form-control  " type="text"   readonly>
             <br>
         </div>
@@ -196,11 +188,8 @@
         window.addEventListener('OpenSelljehaModal', event => {
             $("#ModalSelljeha").modal('show');
         })
-
-
     </script>
     <script>
-
 
         $(document).ready(function ()
         {
@@ -210,7 +199,6 @@
             $('#Cust_L').on('change', function (e) {
                 var data = $('#Cust_L').select2("val");
             @this.set('jeha', data);
-
             });
         });
         window.livewire.on('data-change-event',()=>{
@@ -218,7 +206,6 @@
                 closeOnSelect: true
             });
             Livewire.emit('gotonext', 'jehano');
-
         });
     </script>
 
