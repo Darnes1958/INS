@@ -43,7 +43,7 @@ class OrderBuyTable extends Component
       else {
           Config::set('database.connections.other.database', Auth::user()->company);
 
-          DB::beginTransaction();
+          DB::connection('other')->beginTransaction();
 
           try {
               DB::connection('other')->table('buys')->insert([
@@ -102,7 +102,7 @@ class OrderBuyTable extends Component
                   ]);
               }
 
-              DB::commit();
+              DB::connection('other')->commit();
 
               $this->emit('mounttable');
               $this->emit('dismountdetail');
@@ -110,7 +110,7 @@ class OrderBuyTable extends Component
 
 
           } catch (\Exception $e) {
-              DB::rollback();
+              DB::connection('other')->rollback();
 
               // something went wrong
           }

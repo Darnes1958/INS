@@ -39,6 +39,8 @@ class OrderSellHead extends Component
     'mounthead','jehaadded','Take_Search_JehaNo',
   ];
 
+
+
   public function PlaceKeyEnter(){
 
     if ($this->ChkPlace()=='ok') { $this->emit('gotonext','head-btn');}

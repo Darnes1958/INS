@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Sell;
 
+use App\Models\stores\items;
+use App\Models\stores\stores;
 use App\Models\trans\trans;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -22,6 +24,8 @@ class OrderSellTable extends Component
     public $notes;
 
     public $PlaceType;
+    public $rebh;
+    public $HasRaseed=true;
 
     protected $listeners = [
         'putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable'
@@ -38,26 +42,29 @@ class OrderSellTable extends Component
         }
         else {
             Config::set('database.connections.other.database', Auth::user()->company);
-
-            DB::beginTransaction();
+            $this->HasRaseed=true;
+            DB::connection('other')->beginTransaction();
 
             try {
-                DB::connection('other')->table('buys')->insert([
+
+               if ($this->PlaceType='Makazen') {$pt=1;}
+                DB::connection('other')->table('sells')->insert([
                     'order_no' => $this->order_no,
-                    'order_no2' => 0,
                     'jeha' => $this->jeha_no,
                     'order_date' => $this->order_date,
                     'order_date_input' => $this->order_date,
                     'notes' => $this->notes,
-                    'price_type' => 1,
+                    'price_type' => 2,
                     'tot1' => $this->tot1,
                     'ksm' => $this->ksm,
                     'tot' => $this->tot,
                     'tot_charges' => 0,
                     'cash' => $this->madfooh,
                     'not_cash' => $this->tot - $this->madfooh,
-                    'place_no' => $this->st_no,
+                    'sell_type'=>$pt,
+                    'place_no' =>$this->st_no ,
                     'tran_no' => 0,
+                    'rebh' =>$this->rebh,
                     'emp' => Auth::user()->empno,
                     'available' => 0
                 ]);
@@ -66,19 +73,39 @@ class OrderSellTable extends Component
                     if ($item['item_no'] == 0) {
                         continue;
                     }
+                    if ($this->PlaceType='Makazen')
+                     {
+                      $pt=1;
+                      $st_quant=DB::connection('other')->table('stores')
+                        ->where('st_no', '=', $this->st_no)
+                        ->where('item_no','=',$item['item_no'])
+                        ->pluck('raseed');
 
-                    DB::connection('other')->table('buy_tran')->insert([
+
+                      $st_quant=(int)$st_quant[0];
+                      $quant=(int)$item['quant'];
+
+                      if ($quant>$st_quant)
+                      {$this->dispatchBrowserEvent('mmsg', 'الصنف :'.$item['item_no'].' رصيده لا يكفي');
+                       $this->HasRaseed=false;
+
+                       break;
+                      }
+                     }
+
+                    if ($this->HasRaseed)
+                    {DB::connection('other')->table('sell_tran')->insert([
                         'order_no' => $this->order_no,
                         'item_no' => $item['item_no'],
                         'quant' => $item['quant'],
-                        'price_input' => $item['price'],
                         'price' => $item['price'],
+                        'rebh' => $item['rebh'],
                         'emp' => Auth::user()->empno,
                         'tarjeeh' => 0
 
-                    ]);
+                    ]);}
                 }
-                if ($this->madfooh != 0) {
+                if ($this->HasRaseed && $this->madfooh != 0) {
 
                     $tran_no = trans::max('tran_no') + 1;
                     DB::connection('other')->table('trans')->insert([
@@ -86,30 +113,35 @@ class OrderSellTable extends Component
                         'jeha' => $this->jeha_no,
                         'val' => $this->madfooh,
                         'tran_date' => $this->order_date,
-                        'tran_type' => 1,
-                        'imp_exp' => 2,
-                        'tran_who' => 2,
+                        'tran_type' => 2,
+                        'imp_exp' => 1,
+                        'tran_who' => 3,
                         'chk_no' => 0,
-                        'notes' => 'فاتورة مشتريات ' . $this->order_no,
+                        'notes' => 'فاتورة مبيعات ' . $this->order_no,
                         'kyde' => 0,
                         'emp' => Auth::user()->empno,
                         'order_no' => $this->order_no
 
                     ]);
                 }
-
-                DB::commit();
-
+              if ($this->HasRaseed)
+              {
+                DB::connection('other')->commit();
                 $this->emit('mounttable');
                 $this->emit('dismountdetail');
                 $this->emit('mounthead');
+              } else {DB::connection('other')->rollback();}
+
 
 
             } catch (\Exception $e) {
-                DB::rollback();
+                DB::connection('other')->rollback();
 
+                $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
+                info($e);
                 // something went wrong
             }
+
 
         }
     }
@@ -157,6 +189,7 @@ class OrderSellTable extends Component
 
     public function putdata($value)
     {
+
         $One= array_column($this->orderdetail, 'item_no');
         $index = array_search( $value['item_no'], $One);
         if  ($index) {
@@ -171,18 +204,25 @@ class OrderSellTable extends Component
             $this->orderdetail[] =
                 ['item_no' => $value['item_no'], 'item_name' => $value['item_name'],
                     'quant' => $value['quant'], 'price' => $value['price'],
-                    'subtot' => number_format($value['price'] * $value['quant'], 2, '.', '')];
+                    'subtot' => number_format($value['price'] * $value['quant'], 2, '.', ''),
+                    'rebh'=>$value['rebh'],];
         }
         $this->tot1 = number_format(array_sum(array_column($this->orderdetail, 'subtot')),
             2, '.', '');
         $this->tot = number_format($this->tot1 - $this->ksm,
             2, '.', '');
-        $this->emit('mountdetail');
+      $this->rebh = number_format(array_sum(array_column($this->orderdetail, 'rebh')),
+        2, '.', '');
+      $this->emitTo('sell.order-sell-detail','TakeNewItem');
+
+
     }
     public function removeitem($value)    {
         unset($this->orderdetail[$value]);
         array_values($this->orderdetail);
-        $this->emit('mountdetail');
+        $this->emitTo('sell.order-sell-detail','ClearData');
+      $this->emitTo('sell.order-sell-detail','ClearData');
+      $this->emitTo('sell.order-sell-detail','gotonext','item_no');
     }
     public function edititem($value)
     {

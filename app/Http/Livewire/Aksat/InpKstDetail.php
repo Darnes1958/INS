@@ -98,7 +98,7 @@ function ResetKstDetail (){
       $over=$this->ksm-$this->raseed;
     }
     Config::set('database.connections.other.database', Auth::user()->company);
-    DB::beginTransaction();
+    DB::connection('other')->beginTransaction();
     try {
         if ($ksm!=0){
           $results=kst_trans::where('no',$this->D_no)->where(function ($query) {
@@ -157,7 +157,7 @@ function ResetKstDetail (){
             'raseed'=>$this->raseed-$ksm,
           ]);
 
-          DB::commit();
+          DB::connection('other')->commit();
 
           $this->ResetKstDetail();
           $this->emitTo('tools.my-table','refreshComponent');
@@ -165,7 +165,7 @@ function ResetKstDetail (){
 
 
         } catch (\Exception $e) {
-        DB::rollback();
+        DB::connection('other')->rollback();
 
         // something went wrong
       }
