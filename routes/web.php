@@ -36,6 +36,7 @@ Route::controller(AdminController::class)->group(function (){
 });
 Route::controller(AKsatController::class)->group(function (){
   route::get('/kst/input', 'InpKst')->name('kst.input') ;
+  route::get('/haf/input', 'InpHaf')->name('haf.input') ;
 });
 
 Route::controller(CustomerController::class)->group(function (){

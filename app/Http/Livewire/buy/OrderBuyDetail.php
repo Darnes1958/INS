@@ -106,8 +106,7 @@ class OrderBuyDetail extends Component
                 $this->item_name=$result->item_name;
                 $this->price=number_format($result->price_buy, 2, '.', '')  ;
                 $this->raseed= $result->raseed;
-info($result->iteminstore->count());
-              info($result->iteminstore);
+
                if ($result->iteminstore->count()!=0) {$this->st_raseed=$result->iteminstore[0]->raseed;}
                else {$this->st_raseed=0;}
 

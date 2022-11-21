@@ -15,5 +15,9 @@ class AksatController extends Controller
     $main=main::all();
     $date = date('Y-m-d');
     return view('backend.aksat.InpKst', compact('main','date'));
-  }  //
+  }
+  function InpHaf (){
+    Config::set('database.connections.other.database', Auth::user()->company);
+    return view('backend.aksat.InpHaf');
+  }
 }

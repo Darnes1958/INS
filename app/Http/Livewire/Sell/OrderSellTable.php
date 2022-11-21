@@ -199,6 +199,7 @@ class OrderSellTable extends Component
             $this->orderdetail[$index]['quant']=$value['quant'];
             $this->orderdetail[$index]['subtot']=
                 number_format($value['price']*$value['quant'], 2, '.', '');
+            $this->orderdetail[$index]['rebh']=$value['rebh'];
         }
         else {
             $this->orderdetail[] =

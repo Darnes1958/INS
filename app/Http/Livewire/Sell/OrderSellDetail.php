@@ -188,8 +188,6 @@ class OrderSellDetail extends Component
     protected $messages = [
         'required' => 'لا يجوز ترك فراغ',
         'unique' => 'هذا الرقم مخزون مسبقا',
-
-
     ];
 
     public function ChkRec()
@@ -197,7 +195,6 @@ class OrderSellDetail extends Component
         $this->validate();
       if ($this->quant>$this->st_raseed)
          {$this->dispatchBrowserEvent('mmsg', 'الرصيد لا يسمح !'); return(false);}
-
         $subtot=number_format($this->price * $this->quant, 2, '.', '');
         $rebh=$subtot-number_format($this->price_buy * $this->quant, 2, '.', '');
 
@@ -206,8 +203,6 @@ class OrderSellDetail extends Component
         $this->emit('putdata',$this->orderdetail);
         return (true);
     }
-
-
 
     public function render()
     {

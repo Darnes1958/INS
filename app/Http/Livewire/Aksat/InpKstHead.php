@@ -76,7 +76,6 @@ public function Go(){
   public function ResetKstHead(){
     $this->no='';
     $this->acc='';
-
   }
 
   public function updatedBankno()
