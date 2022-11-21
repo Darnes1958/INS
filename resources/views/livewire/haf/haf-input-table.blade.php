@@ -30,4 +30,5 @@
      </tbody>
   </table>
   {{ $HafithaTable->links('custom-pagination-links-view') }}
+</div>
 

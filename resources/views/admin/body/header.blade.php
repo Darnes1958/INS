@@ -31,8 +31,7 @@
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img class="rounded-circle header-profile-user" src="{{
                       (!empty($admindata->profile_image))? url('upload/admin_images/'.$admindata->profile_image):
-                      url('upload/no_image.jpg')}}"
-                         alt="Header Avatar">
+                      url('upload/no_image.jpg')}}" >
                     <span class="d-none d-xl-inline-block ms-1">{{$admindata->name}}</span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>

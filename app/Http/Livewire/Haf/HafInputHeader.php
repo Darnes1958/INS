@@ -50,9 +50,8 @@ class HafInputHeader extends Component
          ->selectRaw('hafitha_tran.kst_type,kst_type.kst_type_name,count(*) as  wcount,sum(kst) as sumkst')
          ->groupby('hafitha_tran.kst_type','kst_type.kst_type_name')
          ->get();
-
-
          $this->emit('TakeHafithaTable',$this->hafitha);
+         $this->emit('TakeHafithaDetail',$this->hafitha,$this->bank);
 
      }}
 

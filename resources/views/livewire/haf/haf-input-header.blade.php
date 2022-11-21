@@ -1,4 +1,4 @@
-<div x-data  class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
+<div  class="row gy-1 my-1" style="border:1px solid lightgray;background: white;" >
   <div class="col-md-4">
     <label  for="bank" class="form-label-me ">المصرف</label>
     <input wire:model="bank"  wire:keydown.enter="ChkBankAndGo" type="text" class=" form-control "
@@ -9,7 +9,6 @@
     <label  class="form-label-me"> &nbsp </label>
     @livewire('bank.bank-haf-select')
   </div>
-
   <div class="col-md-4">
     <div >
       <label for="no" class="form-label-me">تاريخ الحافظة</label>
@@ -29,10 +28,8 @@
     </div>
     <br>
   </div>
-
   <div   class="col-md-8" >
-
-    <table class="table-sm table-bordered " width="100%"  id="hafheadertable" >
+   <table class="table-sm table-bordered " width="100%"  id="hafheadertable" >
       <thead>
       <tr>
         <th width="40%">البيان</th>
@@ -54,7 +51,6 @@
       </tbody>
 
     </table><br>
-
   </div>
 </div>
 
