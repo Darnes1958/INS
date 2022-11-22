@@ -16,7 +16,18 @@
         <label  for="no" class="form-label" style="width: 20%">&nbsp;رقم العقد</label>
         <input  wire:model="no" wire:keydown.enter="ChkNoAndGo"
                 class="form-control"  name="no" type="text"  id="no" style="width: 30%">
+
     </div>
+
+        @if (session()->has('message'))
+        <div class="d-inline-flex align-items-center mt-2 mb-0" style="height: 20px;">
+            <div style="height: 20px; width: 50%">
+            </div>
+            <div class="alert alert-danger text-center p-0 " style="height: 20px; width: 50%">
+                {{ session('message') }}
+            </div>
+        </div>
+        @endif
 
     <div class="d-inline-flex align-items-center">
         <label for="name" class="form-label align-right" style="width: 20% ">اســــــم الزبون</label>
@@ -68,6 +79,7 @@
 
             if (postid=='ksm_date') {  $("#ksm_date").focus();$("#ksm_date").select(); }
             if (postid=='ksm') {  $("#ksm").focus(); $("#ksm").select();}
+            if (postid=='no') {  $("#no").focus(); $("#no").select();}
         })
 
         $(document).ready(function ()

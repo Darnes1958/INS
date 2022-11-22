@@ -115,13 +115,9 @@ public function ChkPlace(){
   }
 
   public function Take_Search_JehaNo($jeha_no){
-
     $this->jeha_no=$jeha_no;
-
     $this->JehaKeyDown();
-
-
-  }
+    }
     public function OpenJehaSerachModal(){
       $this->dispatchBrowserEvent('OpenSelljehaModal');
     }
@@ -193,14 +189,12 @@ public function ChkPlace(){
 
     public function render()
     {
-
         Config::set('database.connections.other.database', Auth::user()->company);
         $this->stores_names=stores_names::all();
         $this->halls_names=halls_names::all();
         return view('livewire.sell.order-sell-head',[
             'stores_names'=>$this->stores_names,
             'halls_names'=>$this->halls_names,
-
         ]);
     }
 }

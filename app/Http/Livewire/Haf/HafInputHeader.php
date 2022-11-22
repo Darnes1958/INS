@@ -23,6 +23,18 @@ class HafInputHeader extends Component
 
  public $TheBankListIsSelectd;
 
+  protected $listeners = [
+    'RefreshHead',
+  ];
+
+  public function RefreshHead(){
+    $result=DB::connection('other')->
+    table('hafitha_view')->where('hafitha_state','=',0)
+      ->where('bank',$this->bank)
+      ->first();
+    $this->FillHead($result);
+  }
+
   public function updatedTheBankListIsSelectd(){
     $this->TheBankListIsSelectd=0;
     $this->ChkBankAndGo();
@@ -38,22 +50,26 @@ class HafInputHeader extends Component
        ->first();
 
      if ($result) {
-       $this->hafitha=$result->hafitha_no;
-       $this->hafitha_date=$result->hafitha_date;
-       $this->hafitha_tot=number_format($result->hafitha_tot,2, '.', '');
-       $this->hafitha_enter=number_format($result->kst_morahel+$result->kst_half_over+$result->kst_over+$result->kst_wrong,2, '.', '');
-       $this->hafitha_differ=number_format($this->hafitha_tot-$this->hafitha_enter,2, '.', '');
-       $this->HafHeadDetail=DB::connection('other')
-         ->table('hafitha_tran')
-         ->join('kst_type', 'hafitha_tran.kst_type', '=', 'kst_type_no')
-         ->where('hafitha','=',$this->hafitha)
-         ->selectRaw('hafitha_tran.kst_type,kst_type.kst_type_name,count(*) as  wcount,sum(kst) as sumkst')
-         ->groupby('hafitha_tran.kst_type','kst_type.kst_type_name')
-         ->get();
-         $this->emit('TakeHafithaTable',$this->hafitha);
-         $this->emit('TakeHafithaDetail',$this->hafitha,$this->bank);
+       $this->FillHead($result);
+       $this->emit('TakeHafithaDetail',$this->hafitha,$this->bank);
 
      }}
+
+}
+public function FillHead($res){
+  $this->hafitha=$res->hafitha_no;
+  $this->hafitha_date=$res->hafitha_date;
+  $this->hafitha_tot=number_format($res->hafitha_tot,2, '.', '');
+  $this->hafitha_enter=number_format($res->kst_morahel+$res->kst_half_over+$res->kst_over+$res->kst_wrong,2, '.', '');
+  $this->hafitha_differ=number_format($this->hafitha_tot-$this->hafitha_enter,2, '.', '');
+  $this->HafHeadDetail=DB::connection('other')
+    ->table('hafitha_tran')
+    ->join('kst_type', 'hafitha_tran.kst_type', '=', 'kst_type_no')
+    ->where('hafitha','=',$this->hafitha)
+    ->selectRaw('hafitha_tran.kst_type,kst_type.kst_type_name,count(*) as  wcount,sum(kst) as sumkst')
+    ->groupby('hafitha_tran.kst_type','kst_type.kst_type_name')
+    ->get();
+  $this->emit('TakeHafithaTable',$this->hafitha);
 
 }
     public function render()

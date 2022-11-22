@@ -136,10 +136,7 @@ class OrderSellTable extends Component
 
             } catch (\Exception $e) {
                 DB::connection('other')->rollback();
-
                 $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
-                info($e);
-                // something went wrong
             }
 
 

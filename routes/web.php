@@ -7,6 +7,7 @@ use App\Http\Controllers\bank\BankReportsController;
 use App\Http\Controllers\buy\OrderBuyController;
 use App\Http\Controllers\sell\OrderSellController;
 use App\Http\Controllers\aksat\AksatController;
+use App\Http\Controllers\aksat\RepAksatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,9 @@ Route::controller(AdminController::class)->group(function (){
 Route::controller(AKsatController::class)->group(function (){
   route::get('/kst/input', 'InpKst')->name('kst.input') ;
   route::get('/haf/input', 'InpHaf')->name('haf.input') ;
+});
+Route::controller(RepAksatController::class)->group(function (){
+  route::get('/repMain/all', 'RepMain')->name('repmain.all') ;
 });
 
 Route::controller(CustomerController::class)->group(function (){
