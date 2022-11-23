@@ -34,10 +34,12 @@ class HafInputDetail extends Component
 
     public $kst_type;
 
+    Public $SumKst;
     public $TheNoListIsSelectd;
+    public $NoGeted=false;
 
-    protected $listeners = [
-        'TakeHafithaDetail',
+  protected $listeners = [
+        'TakeHafithaDetail','Take_ManyAcc_No','OpenWrong',
     ];
 
   public $TheBankListIsSelectd;
@@ -46,24 +48,46 @@ class HafInputDetail extends Component
     $this->TheNoListIsSelectd=0;
     $this->ChkNoAndGo();
   }
+  public function updatedNo(){
+    $this->NoGeted=false;
+  }
+  public function updatedAcc(){
+    $this->NoGeted=false;
+  }
+
   public function ChkNoAndGo(){
     Config::set('database.connections.other.database', Auth::user()->company);
 
     if ($this->no!=null) {
       $result = main::where('no',$this->no)->first();
       if ($result) {
-        $this->kst_type=1;
+
         $ser=DB::connection('other')->table('kst_trans')
           ->where('no',$this->no)
           ->where('ksm','!=',null)
           ->where('ksm','!=','0')->max('ser');
-
         if ($ser==null) {$kst=$result->kst;}
         else {$res=DB::connection('other')->table('kst_trans')->where('no',$this->no)->where('ser',$ser)->first();
               $kst=$res->ksm;}
+
+        $sumkst=hafitha_tran::select(DB::connection('other')->raw('sum(kst + baky) as total'))
+                              ->where('hafitha',$this->hafitha)->where('no',$this->no)->first();
+
+
+        if ($sumkst->total != null)
+         {$this->SumKst=$sumkst->total;}
+        else {$this->SumKst=0;}
+
+        if ($this->SumKst>=$result->raseed){ $this->kst_type=2; session()->flash('message', 'بالفائض .. ');}
+        else { $this->kst_type=1;}
+
+
         $this->FillDetail($result,$kst);
+        $this->NoGeted=true;
         $this->emit('kstdetail_goto','ksm_date');
-      } else {
+      }
+
+      else {
         $result = MainArc::where('no',$this->no)->first();
         if ($result) {
           $this->kst_type=2;
@@ -79,8 +103,10 @@ class HafInputDetail extends Component
           }
 
           $this->FillDetail($result,$kst);
+          $this->NoGeted=true;
           $this->emit('kstdetail_goto','ksm_date');
           session()->flash('message', 'بالفائض .. من الارشيف');
+
         }
 
       }
@@ -106,26 +132,46 @@ class HafInputDetail extends Component
         $this->emit('bankfound',$this->bank,'');
     }
     public function ChkAccAndGo(){
+      Config::set('database.connections.other.database', Auth::user()->company);
+      $result = main::where('bank',$this->bank)->where('acc',$this->acc)->get();
+      if (count($result)!=0) {
+
+        if (count($result)>1){
+          $this->emit('GotoManyAcc',$this->bank,$this->acc);
+          $this->dispatchBrowserEvent('OpenKstManyModal');}
+        else {
+          $result = main::where('bank',$this->bank)->where('acc',$this->acc)->first();
+          $this->name=$result->name;
+          $this->no=$result->no;
+          $this->emit('kstdetail_goto','no');
+        }
+      }
+      else
+      {
+        $this->dispatchBrowserEvent('mmsg');
+      }
 
     }
     public function ChkKsm(){
       $this->validate();
-
-        $result = main::where('no',$this->no)->first();
-        if ($result) {
-          $this->kst_type=1;
-          $this->StoreRec(0);
+      if ($this->SumKst>=$this->raseed) {
+        $this->kst_type=2;
+        $baky=0;
+      } else { if ($this->SumKst+$this->kst>$this->raseed){
+        $baky=$this->SumKst+$this->kst-$this->raseed;
+        $this->kst_type=3;
+        } else {$baky=0; $this->kst_type=1;}
+        }
+          $this->StoreRec($baky);
           $this->emit('RefreshHead');
           $this->Resetdetail();
-        }
-
     }
 
     function mount(){
       $this->ksm_date=date('Y-m-d');
     }
    public function Resetdetail(){
-    $this->no='';
+    $this->NoGeted=false;
     $this->acc='';
     $this->name='';
     $this->sul_pay='';
@@ -151,7 +197,7 @@ class HafInputDetail extends Component
           'acc'=>$this->acc,
           'name'=>$this->name,
           'ksm_date'=>$this->ksm_date,
-          'kst'=>$this->ksm,
+          'kst'=>$this->kst-$baky,
           'baky'=>$baky,
           'kst_type'=>$this->kst_type,
           'page_no'=>1,
@@ -169,6 +215,25 @@ class HafInputDetail extends Component
 
 
    }
+
+  public function OpenMany(){
+    $this->dispatchBrowserEvent('OpenKstManyModal');
+  }
+  public function CloseMany(){
+    $this->dispatchBrowserEvent('CloseKstManyModal');
+  }
+  public function OpenWrong(){
+    $this->emit('ParamToWrong',$this->hafitha,$this->acc,$this->ksm_date);
+    $this->dispatchBrowserEvent('OpenWrongModal');
+  }
+  public function CloseWrong(){
+    $this->dispatchBrowserEvent('CloseWrongModal');
+  }
+
+  public function Take_ManyAcc_No($The_no){
+    $this->no=$The_no;
+    $this->ChkNoAndGo();
+  }
   protected function rules()
   {
     return [

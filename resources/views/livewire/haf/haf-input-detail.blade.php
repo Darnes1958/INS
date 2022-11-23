@@ -1,7 +1,7 @@
 
 
 
-<div  class="row gy-1 my-1" style="border:1px solid lightgray;background: white;">
+<div x-data class="row gy-1 my-1" style="border:1px solid lightgray;background: white;">
 
     <div   class="col-md-12" >
 
@@ -18,7 +18,32 @@
                 class="form-control"  name="no" type="text"  id="no" style="width: 30%">
 
     </div>
-
+    <div class="modal fade" id="ModalKstMany" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button wire:click="CloseMany" type="button" class="btn-close" ></button>
+                    <h1 class="modal-title fs-5 mx-6" id="exampleModalLabel">اضغظ علي اختيار</h1>
+                </div>
+                <div class="modal-body">
+                    @livewire('aksat.many-acc')
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="ModalWrong" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button wire:click="CloseWrong" type="button" class="btn-close" ></button>
+                    <h1 class="modal-title fs-5 mx-6" id="exampleModalLabel">ادخل الاسم وقيمة القسط</h1>
+                </div>
+                <div class="modal-body">
+                    @livewire('haf.wrong-acc')
+                </div>
+            </div>
+        </div>
+    </div>
         @if (session()->has('message'))
         <div class="d-inline-flex align-items-center mt-2 mb-0" style="height: 20px;">
             <div style="height: 20px; width: 50%">
@@ -57,22 +82,50 @@
     <div class="col-md-6 mb-2">
         <label for="ksm_date" class="form-label-me">التاريخ</label>
         <input wire:model="ksm_date" wire:keydown.enter="$emit('kstdetail_goto','ksm')"
-               class="form-control  "
+               x-bind:disabled="!$wire.NoGeted" class="form-control  "
                type="date"  id="ksm_date" >
         @error('ksm_date') <span class="error">{{ $message }}</span> @enderror
     </div>
     <div class="col-md-6 mb-2">
         <label  for="ksm" class="form-label-me">القسط</label>
         <input wire:model="ksm" wire:keydown.enter="ChkKsm"
-               class="form-control  "
+               x-bind:disabled="!$wire.NoGeted" class="form-control  "
                type="text"  id="ksm" >
         @error('ksm') <span class="error">{{ $message }}</span> @enderror
 
     </div>
     <br>
+
 </div>
 
 @push('scripts')
+    <script type="text/javascript">
+        window.addEventListener('mmsg',function(e){
+            KstWrong.fire({
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+
+                    Livewire.emit('OpenWrong');
+                }
+            })
+        });
+    </script>
+
+    <script>
+        window.addEventListener('CloseKstManyModal', event => {
+            $("#ModalKstMany").modal('hide');
+        })
+        window.addEventListener('OpenKstManyModal', event => {
+            $("#ModalKstMany").modal('show');
+        })
+        window.addEventListener('CloseWrongModal', event => {
+            $("#ModalWrong").modal('hide');
+        })
+        window.addEventListener('OpenWrongModal', event => {
+            $("#ModalWrong").modal('show');
+        })
+    </script>
     <script type="text/javascript">
         Livewire.on('kstdetail_goto',postid=>  {
 

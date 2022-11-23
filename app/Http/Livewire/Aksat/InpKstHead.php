@@ -151,7 +151,7 @@ public function Go(){
       ['required' => 'لا يجوز','exists' => 'هذا الحساب غير موجود'])->validate();
 
     $result = main::where('bank',$this->bankno)->where('acc',$this->acc)->get();
-    if ($result) {
+    if (count($result)!=0) {
         if (count($result)>1){
           $this->emit('GotoManyAcc',$this->bankno,$this->acc);
           $this->dispatchBrowserEvent('OpenKstManyModal');}
@@ -162,10 +162,7 @@ public function Go(){
 
           $this->emit('NoAtUpdate',$result);
           $this->emit('ksthead_goto','no');
-
         }
-
-
       } }
 
   protected function rules()

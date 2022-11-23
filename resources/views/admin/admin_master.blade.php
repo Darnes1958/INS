@@ -165,7 +165,18 @@
 
     })
 </script>
-
+<script>
+    const KstWrong = Swal.mixin({
+        toast: true,
+        title: 'هذا الحساب غير مخزون بهذا المصرف .. هل هو قسط وارد بالخطأ ؟',
+        showCancelButton: true,
+        confirmButtonText: '<i class="fa fa-thumbs-up"></i> نعم , هو قسط وارد بالخطأ ',
+        cancelButtonText:   '<i class="fa fa-thumbs-down">&nbsp;لا تراجع</i>',
+        cancelButtonColor: 'red',
+        icon: 'question',
+        background: '#e1e7de',
+    })
+</script>
 
 <script>
     const MyMsg = Swal.mixin({
