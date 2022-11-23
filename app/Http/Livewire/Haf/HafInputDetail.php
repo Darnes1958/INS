@@ -39,9 +39,13 @@ class HafInputDetail extends Component
     public $NoGeted=false;
 
   protected $listeners = [
-        'TakeHafithaDetail','Take_ManyAcc_No','OpenWrong',
+        'TakeHafithaDetail','Take_ManyAcc_No','OpenWrong','ResetFromWrong',
     ];
-
+  public function ResetFromWrong(){
+      $this->CloseWrong();
+      $this->emit('RefreshHead');
+      $this->Resetdetail();
+  }
   public $TheBankListIsSelectd;
 
   public function updatedTheNoListIsSelectd(){
@@ -148,7 +152,9 @@ class HafInputDetail extends Component
       }
       else
       {
-        $this->dispatchBrowserEvent('mmsg');
+          info('in detail '.$this->hafitha);
+       $this->emit('ParamToWrong',$this->hafitha,$this->acc,$this->ksm_date);
+       $this->dispatchBrowserEvent('kstwrong');
       }
 
     }

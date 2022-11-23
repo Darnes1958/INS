@@ -16,7 +16,7 @@
 
 @push('scripts')
   <script type="text/javascript">
-      Livewire.on('kstdetail_goto',postid=>  {
+      Livewire.on('goto',postid=>  {
           if (postid=='wrongkst') {  $("#wrongkst").focus();$("#wrongkst").select(); }
           if (postid=='wrongname') {  $("#wrongname").focus(); $("#wrongname").select();}
           if (postid=='wrongsave') {

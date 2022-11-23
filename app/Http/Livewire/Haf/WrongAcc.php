@@ -16,9 +16,10 @@ class WrongAcc extends Component
   public $hafno;
   public $hafdate;
   public $hafacc;
-  protected $Listeners=[ 'ParamToWrong',  ];
+    protected $listeners = [  'ParamToWrong',  ];
 
   public function ParamToWrong($h,$a,$d){
+      info('in wrong '.$this->hafno);
     $this->hafno=$h;
     $this->hafdate=$d;
     $this->hafacc=$a;
@@ -36,7 +37,7 @@ class WrongAcc extends Component
  public function WrongSave(){
    $this->validate();
    Config::set('database.connections.other.database', Auth::user()->company);
-   $serinhafitha= hafitha_tran::where('hafitha',$this->hafitha)->max('ser_in_hafitha')+1;
+   $serinhafitha= hafitha_tran::where('hafitha',$this->hafno)->max('ser_in_hafitha')+1;
    DB::connection('other')->beginTransaction();
    try {
      DB::connection('other')->table('hafitha_tran')->insert([
@@ -58,9 +59,10 @@ class WrongAcc extends Component
        'kst_wrong'=>$sumwrong,
      ]);
      DB::connection('other')->commit();
-
+     $this->emit('ResetFromWrong');
    } catch (\Exception $e) {
      DB::connection('other')->rollback();
+     info($e);
      $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
    }
 

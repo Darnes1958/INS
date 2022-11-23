@@ -100,7 +100,7 @@
 
 @push('scripts')
     <script type="text/javascript">
-        window.addEventListener('mmsg',function(e){
+        window.addEventListener('kstwrong',function(e){
             KstWrong.fire({
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
@@ -108,6 +108,11 @@
 
                     Livewire.emit('OpenWrong');
                 }
+            })
+        });
+        window.addEventListener('mmsg',function(e){
+            MyMsg.fire({
+                confirmButtonText:  e.detail,
             })
         });
     </script>
