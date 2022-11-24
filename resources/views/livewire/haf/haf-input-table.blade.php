@@ -20,10 +20,12 @@
           <td> {{ $item->kst }} </td>
           <td> {{ $item->kst_type_name }} </td>
           <td style="padding-top: 2px;padding-bottom: 2px; ">
-            <i  class="btn btn-outline-primary btn-sm fa fa-edit editable-input" style="margin-left: 2px;"></i>
+            <i  class="btn btn-outline-primary btn-sm fa fa-edit editable-input" style="margin-left: 2px;"
+                wire:click="SelectItem({{ $item->no }},{{ $item->acc }}, 'update')" ></i>
           </td>
           <td style="padding-top: 2px;padding-bottom: 2px; ">
-            <i  class="btn btn-outline-danger btn-sm fa fa-times "></i>
+            <i  class="btn btn-outline-danger btn-sm fa fa-times "
+                wire:click="SelectItem({{ $item->no }},{{ $item->acc }}, 'delete')"></i>
           </td>
         </tr>
       @endforeach
@@ -31,4 +33,23 @@
   </table>
   {{ $HafithaTable->links('custom-pagination-links-view') }}
 </div>
+
+@push('scripts')
+<script type="text/javascript">
+    window.addEventListener('delkst',function(e){
+        MyConfirm.fire({
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                Livewire.emit('DoDelete');
+            }
+        })
+    });
+    window.addEventListener('mmsg',function(e){
+        MyMsg.fire({
+            confirmButtonText:  e.detail,
+        })
+    });
+</script>
+@endpush
 

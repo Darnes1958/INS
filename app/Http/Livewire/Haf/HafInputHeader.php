@@ -26,7 +26,18 @@ class HafInputHeader extends Component
   protected $listeners = [
     'RefreshHead',
   ];
-
+  public function updatedbank(){
+    $this->hafitha=0;
+    $this->HafHeadDetail=DB::connection('other')
+      ->table('hafitha_tran')
+      ->join('kst_type', 'hafitha_tran.kst_type', '=', 'kst_type_no')
+      ->where('hafitha','=',$this->hafitha)
+      ->selectRaw('hafitha_tran.kst_type,kst_type.kst_type_name,count(*) as  wcount,sum(kst) as sumkst')
+      ->groupby('hafitha_tran.kst_type','kst_type.kst_type_name')
+      ->get();
+    $this->emit('BankIsUpdating');
+    $this->emit('banknotfound');
+  }
   public function RefreshHead(){
     $result=DB::connection('other')->
     table('hafitha_view')->where('hafitha_state','=',0)
@@ -50,10 +61,13 @@ class HafInputHeader extends Component
        ->first();
 
      if ($result) {
+
        $this->FillHead($result);
        $this->emit('TakeHafithaDetail',$this->hafitha,$this->bank);
+       $this->emit('TakeBankNo',$this->bank,$result->bank_name);
 
-     }}
+     } else {$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون');}
+   }
 
 }
 public function FillHead($res){
@@ -62,6 +76,7 @@ public function FillHead($res){
   $this->hafitha_tot=number_format($res->hafitha_tot,2, '.', '');
   $this->hafitha_enter=number_format($res->kst_morahel+$res->kst_half_over+$res->kst_over+$res->kst_wrong,2, '.', '');
   $this->hafitha_differ=number_format($this->hafitha_tot-$this->hafitha_enter,2, '.', '');
+
   $this->HafHeadDetail=DB::connection('other')
     ->table('hafitha_tran')
     ->join('kst_type', 'hafitha_tran.kst_type', '=', 'kst_type_no')

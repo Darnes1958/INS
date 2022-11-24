@@ -1,29 +1,29 @@
 <div  class="row gy-1 my-1" style="border:1px solid lightgray;background: white;" >
   <div class="col-md-4">
-    <label  for="bank" class="form-label-me ">المصرف</label>
-    <input wire:model="bank"  wire:keydown.enter="ChkBankAndGo" type="text" class=" form-control "
+    <label  for="bank" class="form-label ">المصرف</label>
+    <input wire:model="bank"  wire:keydown.Enter="ChkBankAndGo" type="text" class=" form-control "
            id="bank_no"   autofocus >
     @error('bankno') <span class="error">{{ $message }}</span> @enderror
   </div>
   <div   class="col-md-8" >
-    <label  class="form-label-me"> &nbsp </label>
+    <label  class="form-label"> &nbsp </label>
     @livewire('bank.bank-haf-select')
   </div>
   <div class="col-md-4">
     <div >
-      <label for="no" class="form-label-me">تاريخ الحافظة</label>
+      <label for="no" class="form-label">تاريخ الحافظة</label>
       <input wire:model="hafitha_date"  class="form-control" type="text"  id="hafitha_date" readonly>
     </div>
     <div  >
-      <label  for="acc" class="form-label-me">المبلغ</label>
+      <label  for="acc" class="form-label">المبلغ</label>
       <input  wire:model="hafitha_tot"  class="form-control"  type="text"  id="hafitha_tot" readonly>
     </div>
     <div  >
-      <label  for="acc" class="form-label-me">تم ادخاله</label>
+      <label  for="acc" class="form-label">تم ادخاله</label>
       <input  wire:model="hafitha_enter"  class="form-control"  type="text"  id="hafitha_enter" readonly>
     </div>
     <div  >
-      <label  for="acc" class="form-label-me">المتبقي</label>
+      <label  for="acc" class="form-label">المتبقي</label>
       <input  wire:model="hafitha_differ"  class="form-control"  type="text"  id="hafitha_differ" readonly>
     </div>
     <br>
@@ -38,9 +38,9 @@
       </tr>
       </thead>
       <tbody id="addRow" class="addRow">
+
       @if ($HafHeadDetail)
       @foreach($HafHeadDetail as $key => $item)
-
         <tr>
           <td > {{ $item->kst_type_name }} </td>
           <td > {{ $item->wcount }} </td>
@@ -55,6 +55,14 @@
 </div>
 
 @push('scripts')
+  <script type="text/javascript">
+
+      window.addEventListener('mmsg',function(e){
+          MyMsg.fire({
+              confirmButtonText:  e.detail,
+          })
+      });
+  </script>
 
   <script>
       $(document).ready(function ()

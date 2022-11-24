@@ -10,11 +10,11 @@
 
     <div class="d-inline-flex align-items-center">
         <label  for="acc" class="form-label" style="width: 20%">رقم الحساب</label>
-        <input  wire:model="acc" wire:keydown.enter="ChkAccAndGo"
+        <input  wire:model="acc" wire:keydown.enter="ChkAccAndGo"  x-bind:disabled="!$wire.BankGeted"
                 class="form-control"  name="acc" type="text"  id="acc" style="width: 30%">
 
         <label  for="no" class="form-label" style="width: 20%">&nbsp;رقم العقد</label>
-        <input  wire:model="no" wire:keydown.enter="ChkNoAndGo"
+        <input  wire:model="no" wire:keydown.enter="ChkNoAndGo"  x-bind:disabled="!$wire.BankGeted"
                 class="form-control"  name="no" type="text"  id="no" style="width: 30%">
 
     </div>

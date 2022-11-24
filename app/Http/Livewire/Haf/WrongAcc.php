@@ -19,7 +19,8 @@ class WrongAcc extends Component
     protected $listeners = [  'ParamToWrong',  ];
 
   public function ParamToWrong($h,$a,$d){
-      info('in wrong '.$this->hafno);
+    $this->wrongname='';
+    $this->wrongkst=0;
     $this->hafno=$h;
     $this->hafdate=$d;
     $this->hafacc=$a;
@@ -50,11 +51,11 @@ class WrongAcc extends Component
        'ksm_date'=>$this->hafdate,
        'kst'=>$this->wrongkst,
        'baky'=>0,
-       'kst_type'=>3,
+       'kst_type'=>4,
        'page_no'=>1,
        'emp'=>auth::user()->empno,
      ]);
-     $sumwrong=hafitha_tran::where('hafitha',$this->hafno)->where('kst_type',3)->sum('kst');
+     $sumwrong=hafitha_tran::where('hafitha',$this->hafno)->where('kst_type',4)->sum('kst');
      DB::connection('other')->table('hafitha')->where('hafitha_no',$this->hafno)->update([
        'kst_wrong'=>$sumwrong,
      ]);
@@ -62,7 +63,7 @@ class WrongAcc extends Component
      $this->emit('ResetFromWrong');
    } catch (\Exception $e) {
      DB::connection('other')->rollback();
-     info($e);
+
      $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
    }
 

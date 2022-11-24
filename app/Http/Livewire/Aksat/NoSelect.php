@@ -17,7 +17,7 @@ class NoSelect extends Component
   public $bank;
 
   protected $listeners = [
-    'nofound','bankfound',
+    'nofound','bankfound','banknotfound',
   ];
 
   public function nofound($res){
@@ -34,6 +34,11 @@ class NoSelect extends Component
     $this->render();
 
   }
+  public function banknotfound(){
+    $this->NoSelectOpen=false;
+    $this->bank=0;
+  }
+
   public function hydrate(){
 
     $this->emit('main-change-event');

@@ -10,7 +10,7 @@
   <div class="my-3 align-center justify-content-center "  style="display: flex">
     <input type="button"  id="wrongsave"
            class=" btn btn-outline-success  waves-effect waves-light "
-           wire:click.prevent="WrongSave"  wire:keydown.enter="WrongSave" value="موافق" />
+           wire:click.prevent="WrongSave"  value="موافق" />
   </div>
 </div>
 

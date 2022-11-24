@@ -37,10 +37,14 @@ class HafInputDetail extends Component
     Public $SumKst;
     public $TheNoListIsSelectd;
     public $NoGeted=false;
+    public $BankGeted=false;
 
   protected $listeners = [
-        'TakeHafithaDetail','Take_ManyAcc_No','OpenWrong','ResetFromWrong',
+        'TakeHafithaDetail','Take_ManyAcc_No','OpenWrong','ResetFromWrong','BankIsUpdating',
     ];
+  public function BankIsUpdating(){
+    $this->BankGeted=false;
+  }
   public function ResetFromWrong(){
       $this->CloseWrong();
       $this->emit('RefreshHead');
@@ -63,7 +67,7 @@ class HafInputDetail extends Component
     Config::set('database.connections.other.database', Auth::user()->company);
 
     if ($this->no!=null) {
-      $result = main::where('no',$this->no)->first();
+      $result = main::where('bank',$this->bank)->where('no',$this->no)-> first();
       if ($result) {
 
         $ser=DB::connection('other')->table('kst_trans')
@@ -133,6 +137,7 @@ class HafInputDetail extends Component
     public function TakeHafithaDetail($h,$b){
         $this->hafitha=$h;
         $this->bank=$b;
+        $this->BankGeted=true;
         $this->emit('bankfound',$this->bank,'');
     }
     public function ChkAccAndGo(){
@@ -193,7 +198,6 @@ class HafInputDetail extends Component
     Config::set('database.connections.other.database', Auth::user()->company);
     $serinhafitha= hafitha_tran::where('hafitha',$this->hafitha)->max('ser_in_hafitha')+1;
      DB::connection('other')->beginTransaction();
-
      try {
         DB::connection('other')->table('hafitha_tran')->insert([
           'hafitha'=>$this->hafitha,
@@ -210,9 +214,16 @@ class HafInputDetail extends Component
           'emp'=>auth::user()->empno,
         ]);
         $summorahel=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',1)->sum('kst');
+        $sumover1=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',2)->sum('kst');
+        $sumover2=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',2)->sum('kst');
+        if ($sumover1==null) {$sumover1=0;}
+        if ($sumover2==null) {$sumover2=0;}
+        $sumover=$sumover1+$sumover2;
+        $sumhalfover=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',3)->sum('kst');
          DB::connection('other')->table('hafitha')->where('hafitha_no',$this->hafitha)->update([
-           'kst_morahel'=>$summorahel,
+           'kst_morahel'=>$summorahel,'kst_over'=>$sumover,'kst_half_over'=>$sumhalfover,
          ]);
+
        DB::connection('other')->commit();
      } catch (\Exception $e) {
        DB::connection('other')->rollback();
