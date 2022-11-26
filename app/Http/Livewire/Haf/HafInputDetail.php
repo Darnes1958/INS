@@ -40,7 +40,8 @@ class HafInputDetail extends Component
     public $BankGeted=false;
 
   protected $listeners = [
-        'TakeHafithaDetail','Take_ManyAcc_No','OpenWrong','ResetFromWrong','BankIsUpdating',
+        'TakeHafithaDetail','Take_ManyAcc_No','OpenWrong',
+        'ResetFromWrong','ResetFromUpdate','BankIsUpdating',
     ];
   public function BankIsUpdating(){
     $this->BankGeted=false;
@@ -50,6 +51,12 @@ class HafInputDetail extends Component
       $this->emit('RefreshHead');
       $this->Resetdetail();
   }
+    public function ResetFromUpdate(){
+
+        $this->emit('RefreshHead');
+        $this->Resetdetail();
+    }
+
   public $TheBankListIsSelectd;
 
   public function updatedTheNoListIsSelectd(){
@@ -65,11 +72,9 @@ class HafInputDetail extends Component
 
   public function ChkNoAndGo(){
     Config::set('database.connections.other.database', Auth::user()->company);
-
     if ($this->no!=null) {
-      $result = main::where('bank',$this->bank)->where('no',$this->no)-> first();
+      $result = main::where('no',$this->no)-> first();
       if ($result) {
-
         $ser=DB::connection('other')->table('kst_trans')
           ->where('no',$this->no)
           ->where('ksm','!=',null)
@@ -77,28 +82,27 @@ class HafInputDetail extends Component
         if ($ser==null) {$kst=$result->kst;}
         else {$res=DB::connection('other')->table('kst_trans')->where('no',$this->no)->where('ser',$ser)->first();
               $kst=$res->ksm;}
-
         $sumkst=hafitha_tran::select(DB::connection('other')->raw('sum(kst + baky) as total'))
                               ->where('hafitha',$this->hafitha)->where('no',$this->no)->first();
-
-
         if ($sumkst->total != null)
          {$this->SumKst=$sumkst->total;}
         else {$this->SumKst=0;}
 
-        if ($this->SumKst>=$result->raseed){ $this->kst_type=2; session()->flash('message', 'بالفائض .. ');}
+        if ($result->raseed<=0 || $this->SumKst>=$result->raseed )
+           { $this->kst_type=2; session()->flash('message', 'بالفائض .. ');}
         else { $this->kst_type=1;}
-
 
         $this->FillDetail($result,$kst);
         $this->NoGeted=true;
         $this->emit('kstdetail_goto','ksm_date');
       }
 
-      else {
+      else
+
+      {
         $result = MainArc::where('no',$this->no)->first();
         if ($result) {
-          $this->kst_type=2;
+          $this->kst_type=5;
           $ser=DB::connection('other')->table('TransArc')
             ->where('no',$this->no)
             ->where('ksm','!=',null)
@@ -114,12 +118,9 @@ class HafInputDetail extends Component
           $this->NoGeted=true;
           $this->emit('kstdetail_goto','ksm_date');
           session()->flash('message', 'بالفائض .. من الارشيف');
-
         }
-
+        else {session()->flash('message', 'هذا الرقم غير موجود');}
       }
-
-
     }
   }
     public function FillDetail($res,$kst){
@@ -144,7 +145,6 @@ class HafInputDetail extends Component
       Config::set('database.connections.other.database', Auth::user()->company);
       $result = main::where('bank',$this->bank)->where('acc',$this->acc)->get();
       if (count($result)!=0) {
-
         if (count($result)>1){
           $this->emit('GotoManyAcc',$this->bank,$this->acc);
           $this->dispatchBrowserEvent('OpenKstManyModal');}
@@ -157,7 +157,6 @@ class HafInputDetail extends Component
       }
       else
       {
-          info('in detail '.$this->hafitha);
        $this->emit('ParamToWrong',$this->hafitha,$this->acc,$this->ksm_date);
        $this->dispatchBrowserEvent('kstwrong');
       }
@@ -165,13 +164,11 @@ class HafInputDetail extends Component
     }
     public function ChkKsm(){
       $this->validate();
-      if ($this->SumKst>=$this->raseed) {
-        $this->kst_type=2;
-        $baky=0;
-      } else { if ($this->SumKst+$this->kst>$this->raseed){
-        $baky=$this->SumKst+$this->kst-$this->raseed;
-        $this->kst_type=3;
-        } else {$baky=0; $this->kst_type=1;}
+      $baky=0;
+      if ($this->kst_type==1)
+      { if ($this->SumKst+$this->kst>$this->raseed){
+          $baky=$this->SumKst+$this->kst-$this->raseed;
+          $this->kst_type=3; }
         }
           $this->StoreRec($baky);
           $this->emit('RefreshHead');
@@ -207,7 +204,7 @@ class HafInputDetail extends Component
           'acc'=>$this->acc,
           'name'=>$this->name,
           'ksm_date'=>$this->ksm_date,
-          'kst'=>$this->kst-$baky,
+          'kst'=>$this->ksm-$baky,
           'baky'=>$baky,
           'kst_type'=>$this->kst_type,
           'page_no'=>1,
@@ -215,10 +212,12 @@ class HafInputDetail extends Component
         ]);
         $summorahel=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',1)->sum('kst');
         $sumover1=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',2)->sum('kst');
-        $sumover2=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',2)->sum('kst');
+        $sumover2=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',5)->sum('kst');
+        $sumover3=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',3)->sum('baky');
         if ($sumover1==null) {$sumover1=0;}
         if ($sumover2==null) {$sumover2=0;}
-        $sumover=$sumover1+$sumover2;
+        if ($sumover3==null) {$sumover3=0;}
+        $sumover=$sumover1+$sumover2+$sumover3;
         $sumhalfover=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',3)->sum('kst');
          DB::connection('other')->table('hafitha')->where('hafitha_no',$this->hafitha)->update([
            'kst_morahel'=>$summorahel,'kst_over'=>$sumover,'kst_half_over'=>$sumhalfover,
@@ -229,8 +228,6 @@ class HafInputDetail extends Component
        DB::connection('other')->rollback();
        $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
      }
-
-
    }
 
   public function OpenMany(){

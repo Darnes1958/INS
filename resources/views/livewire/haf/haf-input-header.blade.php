@@ -6,7 +6,7 @@
     @error('bankno') <span class="error">{{ $message }}</span> @enderror
   </div>
   <div   class="col-md-8" >
-    <label  class="form-label"> &nbsp </label>
+    <label  class="form-label"> حافظة رقم : {{$hafitha}} </label>
     @livewire('bank.bank-haf-select')
   </div>
   <div class="col-md-4">

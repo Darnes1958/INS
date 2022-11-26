@@ -21,20 +21,19 @@ class UpdateKst extends Component
   public $hafser;
   public $hafkst_type;
   public $hafraseed=0;
-  protected $listeners = ['ParamToWrong',];
+  protected $listeners = ['ParamToUpdate',];
 
-  public function ParamToWrong($haf,$ser)
+  public function ParamToUpdate($haf,$ser)
   {
     Config::set('database.connections.other.database', Auth::user()->company);
     $res=hafitha_tran::where('hafitha',$haf)->where('ser_in_hafitha',$ser)->first();
     $this->updatedate = $res->ksm_date;
     $this->updatekst = $res->kst;
     $this->hafithano = $haf;
+    $this->hafser=$ser;
     $this->hafno = $res->no;
     $this->hafacc = $res->acc;
     $this->hafkst_type=$res->kst_type;
-    if ($this->hafkst_type!=4) {$res=main::find($this->hafno)->first();$this->hafraseed=$res->raseed;}
-
   }
 
   protected function rules()
@@ -52,32 +51,51 @@ class UpdateKst extends Component
   public function UpdateSave()
   {
     $this->validate();
-    if ($this->hafkst_type=4)
-     {$kst=$this->updatekst;$baky=0;}
-    else
-     {
-       if ($this->updatekst>$this->hafraseed) {$kst=$this->$this->hafraseed;$baky=$this->updatekst-$this->hafraseed;}
-       else {$kst=$this->updatekst;$baky=0;}
-     } //<!-- up to here -->
+
     Config::set('database.connections.other.database', Auth::user()->company);
+      if ($this->hafkst_type==1 || $this->hafkst_type==3)
+       { $res=main::find($this->hafno)->first();
+          $raseed=$res->raseed;
+          if ($this->updatekst>$raseed)
+          {if ($raseed==0) {$kst=$this->updatekst;$baky=0;$type=2;}
+          else {$kst=$raseed;$baky=$this->updatekst-$raseed;$type=3;}
+          }
+          else {$kst=$this->updatekst;$baky=0;$type=1;}
+       }
+      else {$kst=$this->updatekst;$baky=0;$type=$this->hafkst_type;}
+
+
 
     DB::connection('other')->beginTransaction();
     try {
       DB::connection('other')->table('hafitha_tran')
-        ->where('ser_in_hafitha',$this->hafser)->update([
-
-        'ksm_date' => $this->hafdate,
-        'kst' => $this->wrongkst,
-        'baky' => 0,
-        'kst_type' => 4,
+        ->where('hafitha',$this->hafithano)-> where('ser_in_hafitha',$this->hafser)->update([
+        'ksm_date' => $this->updatedate,
+        'kst' => $kst,
+        'baky' => $baky,
+        'kst_type' => $type,
         'emp' => auth::user()->empno,
       ]);
-      $sumwrong = hafitha_tran::where('hafitha', $this->hafno)->where('kst_type', 4)->sum('kst');
-      DB::connection('other')->table('hafitha')->where('hafitha_no', $this->hafno)->update([
-        'kst_wrong' => $sumwrong,
-      ]);
+
+        $summorahel=hafitha_tran::where('hafitha',$this->hafithano)->where('kst_type',1)->sum('kst');
+        $sumover1=hafitha_tran::where('hafitha',$this->hafithano)->where('kst_type',2)->sum('kst');
+        $sumover2=hafitha_tran::where('hafitha',$this->hafithano)->where('kst_type',5)->sum('kst');
+        $sumover3=hafitha_tran::where('hafitha',$this->hafithano)->where('kst_type',3)->sum('baky');
+        if ($sumover1==null) {$sumover1=0;}
+        if ($sumover2==null) {$sumover2=0;}
+        if ($sumover3==null) {$sumover3=0;}
+        $sumover=$sumover1+$sumover2+$sumover3;
+        $sumhalfover=hafitha_tran::where('hafitha',$this->hafithano)->where('kst_type',3)->sum('kst');
+        $sumwrong=hafitha_tran::where('hafitha',$this->hafithano)->where('kst_type',4)->sum('kst');
+        DB::connection('other')->table('hafitha')->where('hafitha_no',$this->hafithano)->update([
+            'kst_morahel'=>$summorahel,'kst_over'=>$sumover,'kst_half_over'=>$sumhalfover,'kst_wrong'=>$sumwrong,
+        ]);
+
+
+
       DB::connection('other')->commit();
-      $this->emit('ResetFromWrong');
+      $this->emit('CloseUpdate');
+      $this->emit('ResetFromUpdate');
     } catch (\Exception $e) {
       DB::connection('other')->rollback();
 
