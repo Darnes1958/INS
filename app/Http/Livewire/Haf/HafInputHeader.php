@@ -22,10 +22,24 @@ class HafInputHeader extends Component
  public $HafHeadDetail;
 
  public $TheBankListIsSelectd;
+    public $ModalTitle;
 
   protected $listeners = [
-    'RefreshHead',
+    'RefreshHead','CloseMini',
   ];
+    public function CloseMini(){
+        $this->ChkBankAndGo();
+        $this->dispatchBrowserEvent('CloseMiniModal');
+    }
+    public function OpenMini($ktno,$kstname) {
+        $this->ChkBankAndGo();
+        $this->ModalTitle=$kstname;
+        $this->emit('TakeKstTypeName',$ktno);
+
+        $this->dispatchBrowserEvent('OpenMiniModal');
+
+    }
+
   public function updatedbank(){
     $this->hafitha=0;
     $this->HafHeadDetail=DB::connection('other')
@@ -61,7 +75,7 @@ class HafInputHeader extends Component
        ->first();
 
      if ($result) {
-
+         $this->NoWrite=false;
        $this->FillHead($result);
        $this->emit('TakeHafithaDetail',$this->hafitha,$this->bank);
        $this->emit('TakeBankNo',$this->bank,$result->bank_name);
@@ -85,6 +99,7 @@ public function FillHead($res){
     ->groupby('hafitha_tran.kst_type','kst_type.kst_type_name')
     ->get();
   $this->emit('TakeHafithaTable',$this->hafitha);
+  $this->emit('TakeHafithaMini',$this->hafitha);
 
 }
     public function render()

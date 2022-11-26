@@ -16,12 +16,15 @@
       <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
         <thead class="font-size-12">
         <tr>
-          <th width="10%">ت</th>
-          <th width="20%">رقم العقد</th>
-          <th width="20%">رقم الحساب</th>
-          <th width="30%">الاسم</th>
+          <th width="6%">ت</th>
+          <th width="16%">رقم العقد</th>
+          <th width="18%">رقم الحساب</th>
+          <th width="26%">الاسم</th>
           <th width="10%">القسط</th>
-          <th width="10%">الحالة</th>
+          <th width="10%">الباقي</th>
+          <th width="8%">الحالة</th>
+          <th width="8%">&nbsp;</th>
+
         </tr>
         </thead>
         <tbody id="addRow" class="addRow">
@@ -32,6 +35,7 @@
               <td> {{ $item->acc }} </td>
               <td> {{ $item->name }} </td>
               <td> {{ $item->kst }} </td>
+              <td> {{ $item->baky }} </td>
               <td> {{ $item->kst_type_name }} </td>
               <td style="padding-top: 2px;padding-bottom: 2px; ">
                 <i  class="btn btn-outline-primary btn-sm fa fa-edit editable-input" style="margin-left: 2px;"

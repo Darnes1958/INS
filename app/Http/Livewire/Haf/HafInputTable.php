@@ -16,7 +16,7 @@ class HafInputTable extends Component
   protected $paginationTheme = 'bootstrap';
 
   protected $listeners = [
-    'TakeHafithaTable','DoDelete','CloseUpdate'
+    'TakeHafithaTable','DoDelete','CloseUpdate','DoNotWrite'
   ];
   public $hafitha=0;
 
@@ -24,11 +24,13 @@ class HafInputTable extends Component
   public $AccToAction;
   public $search;
   public $DisRadio='DisAll';
+
   public function updatingSearch()
     {
         $this->resetPage();
     }
-  public function TakeHafithaTable($h){
+
+    public function TakeHafithaTable($h){
     $this->hafitha=$h;
   }
 
@@ -53,7 +55,7 @@ class HafInputTable extends Component
     DB::connection('other')->beginTransaction();
 
     try {
-       
+
       DB::connection('other')->table('hafitha_tran')
         ->where('hafitha',$this->hafitha)
         ->where('no',$this->NoToAction)
@@ -89,6 +91,7 @@ class HafInputTable extends Component
   }
   public function render()
     {
+
     return view('livewire.haf.haf-input-table',[
         'HafithaTable' =>DB::connection('other')
             ->table('hafitha_tran_view')
