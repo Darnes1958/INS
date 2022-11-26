@@ -20,8 +20,8 @@
            id="bank_no"   autofocus >
     @error('bankno') <span class="error">{{ $message }}</span> @enderror
   </div>
-  <div  class="col-md-8" >
-    <label class="form-label " style="color: #0a53be"> حافظة رقم : {{$hafitha}} </label>
+  <div   class="col-md-8" >
+    <label   class="form-label " style="color: #0a53be"> حافظة رقم : {{$hafitha}} </label>
     @livewire('bank.bank-haf-select')
   </div>
   <div class="col-md-4">
@@ -79,12 +79,8 @@
                  >&nbsp;&nbsp;الغاء الحافظة</i>
         <i   id="tar-btn"  class=" mx-2 btn btn-outline-info      fas fa-external-link-alt"
                   >&nbsp;&nbsp;ترحيل الحافظة</i>
-
       </div>
-
   </div>
-
-
 </div>
 
 @push('scripts')
