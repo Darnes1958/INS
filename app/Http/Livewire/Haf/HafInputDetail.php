@@ -20,7 +20,7 @@ class HafInputDetail extends Component
     public $hafitha=0;
     public $bank=0;
     public $acc;
-    public $name;
+    public $name='Abd Bar';
     public $sul_tot;
     public $dofa;
     public $sul;

@@ -92,7 +92,7 @@ public function Go(){
       if ($result) {  $this->bankname=$result->bankname;
         $this->BankGet=true;
         $this->ResetKstHead();
-        $this->emit('TakeBankNo',$this->bankno,$this->bankname);
+        $this->emit('TakeHafBankNo',$this->bankno,$this->bankname);
         $this->emit('bankfound',$this->bankno,$this->bankname);
         $this->emit('ksthead_goto','no');
       }}

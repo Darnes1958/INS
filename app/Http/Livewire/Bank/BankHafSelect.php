@@ -9,31 +9,31 @@ use Livewire\Component;
 
 class BankHafSelect extends Component
 {
-  public $BankNo;
-  public $BankName;
-  public $BankList;
+  public $BankHafNo;
+  public $BankHafName;
+  public $BankHafList;
 
   protected $listeners = [
-    'TakeBankNo',
+    'TakeHafBankNo',
   ];
 
-  public function TakeBankNo($wj,$wn){
+  public function TakeHafBankNo($wj,$wn){
     if(!is_null($wj)) {
-      $this->BankNo = $wj;
-      $this->BankName = $wn;
+      $this->BankHafNo = $wj;
+      $this->BankHafName = $wn;
     }
   }
 
   public function hydrate(){
-    $this->emit('bank-change-event');
+    $this->emit('bank-haf-change-event');
   }
   public function render()
   {
     Config::set('database.connections.other.database', Auth::user()->company);
-    $this->BankList=DB::connection('other')->
+    $this->BankHafList=DB::connection('other')->
     table('hafitha_view')->where('hafitha_state','=',0)
     ->get();
-    return view('livewire.bank.bank-haf-select',$this->BankList);
+    return view('livewire.bank.bank-haf-select',$this->BankHafList);
   }
 }
 

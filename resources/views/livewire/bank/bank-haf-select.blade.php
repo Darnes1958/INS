@@ -1,7 +1,7 @@
 <div class="col-md-12" >
-  <select   wire:model="BankNo" id="Bank_L" class="Bank_L" >
+  <select   wire:model="BankHafNo" id="Bank_L_H" class="Bank_L_H" >
     <option value="">اختيار من القائمة</option>
-    @foreach($BankList as $s)
+    @foreach($BankHafList as $s)
       <option value="{{ $s->bank }}">{{ $s->bank_name }}</option>
     @endforeach
   </select>

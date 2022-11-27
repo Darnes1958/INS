@@ -70,20 +70,74 @@
       </tbody>
 
     </table><br>
+      <div x-data="{ShowNew : @entangle('ShowHafNew'),ShowDel : @entangle('ShowHafDel'),ShowTarheel : @entangle('ShowHafTarheel')}">
+        <div  class="my-3 py-3 align-center justify-content-center  "  style="display: flex;border: solid lightgray 1px;">
+          <i  @click="ShowNew = true" id="add-btn"  class=" mx-2 btn btn-outline-success    fa fa-plus "
+                   >&nbsp;&nbsp; حافظة جديدة</i>
+          <i  x-show="ShowDel" wire:click="DeleteHafitha" id="del-btn"  class=" mx-2 btn btn-outline-danger    fas fa-times "
+                   >&nbsp;&nbsp;الغاء الحافظة</i>
+          <i  x-show="ShowTarheel" id="tar-btn"  class=" mx-2 btn btn-outline-info      fas fa-external-link-alt"
+                   >&nbsp;&nbsp;ترحيل الحافظة</i>
+        </div>
 
-      <div class="my-3 py-3 align-center justify-content-center  "  style="display: flex;border: solid lightgray 1px;">
+        <div  x-show="ShowNew" @click.outside="ShowNew = false"
+              class=" my-2 py-2 px-2 align-center justify-content-center "  style="display: flex;border: solid lightgray 1px;">
+          <div class="row">
+            <div class="col-md-4 mb-2">
+              <label  for="bank_l_no" class="form-label mb-0 ">المصرف</label>
+              <input wire:model="bank_l"  wire:keydown.enter="ChkBankList" type="text" class=" form-control "
+                     id="bank_l_no"   autofocus >
+              @error('bank_l') <span class="error">{{ $message }}</span> @enderror
+            </div>
+            <div   class="col-md-8" >
+              <label  class="form-label mb-0 " style="color: #0a53be">&nbsp;</label>
+              @livewire('bank.bank-select')
+            </div>
+          <div class="col-md-4">
+            <label for="no" class="form-label mb-0">تاريخ الحافظة</label>
+            <input wire:model="hafitha_date_new"  wire:keydown.enter="$emit('goto','hafitha_tot_new')" class="form-control" type="date"  id="hafitha_date_new" >
+            @error('hafitha_date_new') <span class="error">{{ $message }}</span> @enderror
+          </div>
+          <div class="col-md-4" >
+            <label  for="acc" class="form-label mb-0">المبلغ</label>
+            <input  wire:model="hafitha_tot_new" wire:keydown.enter="$emit('goto','Save-new-btn')" class="form-control"  type="text"  id="hafitha_tot_new" >
+            @error('hafitha_tot_new') <span class="error">{{ $message }}</span> @enderror
+          </div>
+          <div class=" col-md-4 align-center justify-content-end" style="display: flex;">
+            <input type="button"  id="Save-new-btn"
+                   class=" btn btn-outline-success  waves-effect waves-light "
+                   wire:click.prevent="SaveNewBtn"  value="تخزين الحافظة" />
+          </div>
 
-        <i   id="add-btn"  class=" mx-2 btn btn-outline-success    fa fa-plus "
-                 >&nbsp;&nbsp; حافظة جديدة</i>
-        <i  id="del-btn"  class=" mx-2 btn btn-outline-danger    fas fa-times "
-                 >&nbsp;&nbsp;الغاء الحافظة</i>
-        <i   id="tar-btn"  class=" mx-2 btn btn-outline-info      fas fa-external-link-alt"
-                  >&nbsp;&nbsp;ترحيل الحافظة</i>
-      </div>
+          </div>
+
+        </div>
+    </div>
   </div>
 </div>
 
 @push('scripts')
+  <script type="text/javascript">
+      Livewire.on('goto',postid=>  {
+
+          if (postid=='hafitha_date_new') {  $("#hafitha_date_new").focus();$("#hafitha_date_new").select(); }
+          if (postid=='hafitha_tot_new') {  $("#hafitha_tot_new").focus();$("#hafitha_tot_new").select(); }
+          if (postid=='Save-new-btn') {
+              setTimeout(function() { document.getElementById('Save-new-btn').focus(); },100);}
+
+      })
+      window.addEventListener('DelHafitha',function(e){
+          MyConfirm.fire({
+          }).then((result) => {
+              /* Read more about isConfirmed, isDenied below */
+              if (result.isConfirmed) {
+
+                  Livewire.emit('DoDeleteHafitha');
+              }
+          })
+      });
+
+  </script>
     <script>
         window.addEventListener('CloseMiniModal', event => {
             $("#ModalMini").modal('hide');
@@ -109,13 +163,30 @@
           });
           $('#Bank_L').on('change', function (e) {
               var data = $('#Bank_L').select2("val");
-          @this.set('bank', data);
-          @this.set('TheBankListIsSelectd', 1);
 
+          @this.set('bank_l', data);
+          @this.set('TheBankListIsSelectd', 1);
           });
       });
       window.livewire.on('bank-change-event',()=>{
           $('#Bank_L').select2({
+              closeOnSelect: true
+          });
+      });
+      $(document).ready(function ()
+      {
+          $('#Bank_L_H').select2({
+              closeOnSelect: true
+          });
+          $('#Bank_L_H').on('change', function (e) {
+              var data = $('#Bank_L_H').select2("val");
+          @this.set('bank', data);
+          @this.set('TheBankHafIsSelectd', 1);
+
+          });
+      });
+      window.livewire.on('bank-haf-change-event',()=>{
+          $('#Bank_L_H').select2({
               closeOnSelect: true
           });
       });
