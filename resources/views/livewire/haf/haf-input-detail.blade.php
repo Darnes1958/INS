@@ -15,7 +15,7 @@
 
         <label  for="no" class="form-label" style="width: 20%">&nbsp;رقم العقد</label>
         <input  wire:model="no" wire:keydown.enter="ChkNoAndGo"  x-bind:disabled="!$wire.BankGeted"
-                class="form-control"  name="no" type="text"  id="no" style="width: 30%">
+                class="form-control"  name="no" type="number"  id="no" style="width: 30%">
 
     </div>
     <div class="modal fade" id="ModalKstMany" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -90,7 +90,7 @@
         <label  for="ksm" class="form-label-me">القسط</label>
         <input wire:model="ksm" wire:keydown.enter="ChkKsm"
                x-bind:disabled="!$wire.NoGeted" class="form-control  "
-               type="text"  id="ksm" >
+               type="number"  id="ksm" >
         @error('ksm') <span class="error">{{ $message }}</span> @enderror
 
     </div>

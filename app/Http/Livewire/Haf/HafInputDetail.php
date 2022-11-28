@@ -20,7 +20,7 @@ class HafInputDetail extends Component
     public $hafitha=0;
     public $bank=0;
     public $acc;
-    public $name='Abd Bar';
+    public $name;
     public $sul_tot;
     public $dofa;
     public $sul;
@@ -224,6 +224,8 @@ class HafInputDetail extends Component
          ]);
 
        DB::connection('other')->commit();
+       $this->emit('DoChkBankNo');
+
      } catch (\Exception $e) {
        DB::connection('other')->rollback();
        $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');

@@ -15,8 +15,8 @@
     </div>
 
   <div class="col-md-4">
-    <label  for="bank" class="form-label ">المصرف</label>
-    <input wire:model="bank"  wire:keydown.Enter="ChkBankAndGo" type="text" class=" form-control "
+    <label  for="bank_no" class="form-label ">المصرف</label>
+    <input wire:model="bank"  wire:keydown.Enter="ChkBankAndGo" type="number" class=" form-control "
            id="bank_no"   autofocus >
     @error('bankno') <span class="error">{{ $message }}</span> @enderror
   </div>
@@ -70,18 +70,27 @@
       </tbody>
 
     </table><br>
-      <div x-data="{ShowNew : @entangle('ShowHafNew'),ShowDel : @entangle('ShowHafDel'),ShowTarheel : @entangle('ShowHafTarheel')}">
+      <div x-data="{isUploading:  @entangle('HafUpload'), progress: @entangle('HafProgress'),count: @entangle('HafCount'),
+          ShowNew : @entangle('ShowHafNew'),ShowDel : @entangle('ShowHafDel'),ShowTarheel : @entangle('ShowHafTarheel')}">
         <div  class="my-3 py-3 align-center justify-content-center  "  style="display: flex;border: solid lightgray 1px;">
           <i  @click="ShowNew = true" id="add-btn"  class=" mx-2 btn btn-outline-success    fa fa-plus "
                    >&nbsp;&nbsp; حافظة جديدة</i>
           <i  x-show="ShowDel" wire:click="DeleteHafitha" id="del-btn"  class=" mx-2 btn btn-outline-danger    fas fa-times "
                    >&nbsp;&nbsp;الغاء الحافظة</i>
-          <i  x-show="ShowTarheel" id="tar-btn"  class=" mx-2 btn btn-outline-info      fas fa-external-link-alt"
+          <i  x-show="ShowTarheel" id="tar-btn"  wire:click="TarheelHafitha" class=" mx-2 btn btn-outline-info      fas fa-external-link-alt"
                    >&nbsp;&nbsp;ترحيل الحافظة</i>
         </div>
 
+
+
+          <div x-show="isUploading" class=" my-2 py-2 px-2 align-center justify-content-center "  style="display: flex;border: solid lightgray 1px;">
+            <progress max="count" x-bind:value="progress"></progress>
+          </div>
+
+
+
         <div  x-show="ShowNew" @click.outside="ShowNew = false"
-              class=" my-2 py-2 px-2 align-center justify-content-center "  style="display: flex;border: solid lightgray 1px;">
+              >
           <div class="row">
             <div class="col-md-4 mb-2">
               <label  for="bank_l_no" class="form-label mb-0 ">المصرف</label>
@@ -120,6 +129,7 @@
   <script type="text/javascript">
       Livewire.on('goto',postid=>  {
 
+          if (postid=='bank') {  $("#bank_no").focus();$("#bank_no").select(); }
           if (postid=='hafitha_date_new') {  $("#hafitha_date_new").focus();$("#hafitha_date_new").select(); }
           if (postid=='hafitha_tot_new') {  $("#hafitha_tot_new").focus();$("#hafitha_tot_new").select(); }
           if (postid=='Save-new-btn') {
@@ -129,10 +139,16 @@
       window.addEventListener('DelHafitha',function(e){
           MyConfirm.fire({
           }).then((result) => {
-              /* Read more about isConfirmed, isDenied below */
               if (result.isConfirmed) {
-
                   Livewire.emit('DoDeleteHafitha');
+              }
+          })
+      });
+      window.addEventListener('TarHafitha',function(e){
+          MyConfirm.fire({
+          }).then((result) => {
+              if (result.isConfirmed) {
+                  Livewire.emit('DoTarheelHafitha');
               }
           })
       });

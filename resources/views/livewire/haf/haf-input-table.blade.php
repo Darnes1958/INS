@@ -46,6 +46,7 @@
                     wire:click="SelectItem({{ $item->no }},{{ $item->acc }},{{ $item->ser_in_hafitha }}, 'delete')"></i>
               </td>
             </tr>
+
           @endforeach
          </tbody>
       </table>

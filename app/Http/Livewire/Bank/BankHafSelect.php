@@ -14,7 +14,7 @@ class BankHafSelect extends Component
   public $BankHafList;
 
   protected $listeners = [
-    'TakeHafBankNo',
+    'TakeHafBankNo','refreshBankHafSelect' => '$refresh',
   ];
 
   public function TakeHafBankNo($wj,$wn){

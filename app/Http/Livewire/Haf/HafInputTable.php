@@ -16,12 +16,13 @@ class HafInputTable extends Component
   protected $paginationTheme = 'bootstrap';
 
   protected $listeners = [
-    'TakeHafithaTable','DoDelete','CloseUpdate','DoNotWrite'
+    'TakeHafithaTable','DoDelete','CloseUpdate','DoNotWrite','refreshHafInputTable' => '$refresh',
   ];
   public $hafitha=0;
 
   public $NoToAction;
   public $AccToAction;
+  public $SerToAction;
   public $search;
   public $DisRadio='DisAll';
 
@@ -42,6 +43,7 @@ class HafInputTable extends Component
 
     $this->NoToAction=$no;
     $this->AccToAction=$acc;
+    $this->SerToAction=$ser;
     if ($action=='delete'){
       $this->dispatchBrowserEvent('delkst');
     }
@@ -51,15 +53,20 @@ class HafInputTable extends Component
     }
   }
   public function DoDelete(){
+
     Config::set('database.connections.other.database', Auth::user()->company);
     DB::connection('other')->beginTransaction();
 
     try {
 
-      DB::connection('other')->table('hafitha_tran')
+      if ($this->NoToAction!=0)
+      {DB::connection('other')->table('hafitha_tran')
         ->where('hafitha',$this->hafitha)
-        ->where('no',$this->NoToAction)
-        ->where('acc',strval($this->AccToAction))->delete();
+        ->where('no',$this->NoToAction)->delete();}
+      else
+      {DB::connection('other')->table('hafitha_tran')
+        ->where('hafitha',$this->hafitha)
+        ->where('ser_in_hafitha',$this->SerToAction)->delete();}
 
       $summorahel=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',1)->sum('kst');
       if ($summorahel==null) {$summorahel=0;}
@@ -81,6 +88,8 @@ class HafInputTable extends Component
 
       DB::connection('other')->commit();
       $this->emit('RefreshHead');
+      $this->emit('DoChkBankNo');
+
 
     } catch (\Exception $e) {
         info($e);

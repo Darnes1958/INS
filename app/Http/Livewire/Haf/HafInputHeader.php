@@ -34,24 +34,121 @@ class HafInputHeader extends Component
  public $ShowHafDel=false;
  public $ShowHafTarheel=false;
 
+ public $HafUpload=false;
+ public $HafProgress=0;
+ public $HafCount=100;
+
   protected $listeners = [
-    'RefreshHead','CloseMini',
+    'RefreshHead','CloseMini','DoDeleteHafitha','DoTarheelHafitha','DoChkBankNo',
   ];
+  function DoChkBankNo(){
+    $this->ChkBankAndGo();
+  }
+  function TarheelHafitha(){
+
+    $this->dispatchBrowserEvent('TarHafitha');
+  }
+  function DoTarheelHafitha(){
+    $this->HafUpload=true;
+    $this->HafProgress=0;
+    Config::set('database.connections.other.database', Auth::user()->company);
+    DB::connection('other')->beginTransaction();
+    try {
+      $this->HafCount=DB::connection('other')->table('hafitha_tran_view')->where('hafitha_no',$this->hafitha)->count();
+      $res=DB::connection('other')->table('hafitha_tran_view')->where('hafitha_no',$this->hafitha)->get();
+
+      foreach ($res as $item)
+      {
+        $no=$item->no; $acc=$item->acc; $kst=$item->kst; $ksm_date=$item->ksm_date; $baky=$item->baky;
+        $ser_in_hafitha=$item->ser_in_hafitha; $emp=$item->emp; $name=$item->name;$bank=$item->bank;
+        $sul_pay=$item->sul_pay+$item->kst;$raseed=$item->raseed-$item->kst;
+
+        if ($item->kst_type==1 or $item->kst_type==3)
+           { $min=DB::connection('other')->table('kst_trans')
+             ->where([
+               ['no', $no],
+               ['ksm', null],])
+             ->orwhere([
+               ['no',  $no],
+               ['ksm', 0],])
+             ->min('ser');
+             if ($min==null)
+                  {$min=DB::connection('other')->table('kst_trans')->where('no',$no)->max('ser')+1;
+                    DB::connection('other')->table('kst_trans')->insert([
+                     'ser'=>$min,'no'=>$no,'kst_date'=>$ksm_date,'ksm_type'=>2,'chk_no'=>0,'kst'=>$kst,'ksm_date'=>$ksm_date,'ksm'=>$kst,'emp'=>$emp,
+                      'h_no'=>$this->hafitha,'inp_date'=>date('Y-m-d'),]);
+                  }
+             else {
+                   DB::connection('other')->table('kst_trans')->where('no',$no)->where('ser',$min)->update([
+                   'h_no'=>$this->hafitha,'ksm'=>$kst,'ksm_date'=>$ksm_date,'emp'=>$emp,'inp_date'=>date('Y-m-d'),'ksm_type'=>2,]);
+                  }
+             if ($baky!=0)
+                 {
+                  DB::connection('other')->table('over_kst')->insert([
+                    'no'=>$no,'name'=>$name,'bank'=>$bank,'acc'=>$acc,'kst'=>$baky,'tar_type'=>1,'tar_date'=>$ksm_date,'letters'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
+                 }
+
+             DB::connection('other')->table('main')->where('no',$no)->
+             update(['sul_pay'=>$sul_pay,'raseed'=>$raseed]);
+           }
+       if ($item->kst_type==2)
+       {
+         DB::connection('other')->table('over_kst')->insert([
+           'no'=>$no,'name'=>$name,'bank'=>$bank,'acc'=>$acc,'kst'=>$kst,'tar_type'=>1,'tar_date'=>$ksm_date,'letters'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
+       }
+        if ($item->kst_type==5)
+        {
+          DB::connection('other')->table('over_kst_a')->insert([
+            'no'=>$no,'name'=>$name,'bank'=>$bank,'acc'=>$acc,'kst'=>$kst,'tar_type'=>1,'tar_date'=>$ksm_date,'letters'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
+        }
+        if ($item->kst_type==4)
+        {
+          $wrong=DB::connection('other')->table('wrong_kst')->max('wrong_no')+1;
+          DB::connection('other')->table('wrong_kst')->insert([
+            'wrong_no'=>$no,'name'=>$name,'bank'=>$bank,'acc'=>$acc,'kst'=>$kst,'tar_date'=>$ksm_date,'morahel'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
+        }
+        $this->HafProgress++;
+
+      }
+      DB::connection('other')->table('hafitha')->where('hafitha_no',$this->hafitha)->update(['hafitha_state'=>1]);
+
+      DB::connection('other')->commit();
+      $this->HafHeadDetail=null;
+      $this->bank=null;
+      $this->HafUpload=false;
+      $this->ChkBankAndGo();
+      $this->emit('refreshBankHafSelect');
+      $this->emit('refreshHafInputTable');
+
+      $this->dispatchBrowserEvent('mmsg', 'تم ترحيل الحافظة');
+
+    } catch (\Exception $e) {
+      DB::connection('other')->rollback();
+      info($e);
+    }
+  }
+
   function DeleteHafitha(){
     $this->dispatchBrowserEvent('DelHafitha');
   }
   function DoDeleteHafitha(){
-    info('I come');
+
     Config::set('database.connections.other.database', Auth::user()->company);
     DB::connection('other')->beginTransaction();
     try {
       DB::connection('other')->table('hafitha_tran')->where('hafitha',$this->hafitha)->delete();
       DB::connection('other')->table('pages')->where('hafitha',$this->hafitha)->delete();
-      DB::connection('other')->table('hafitha')->delete($this->hafitha);
+      DB::connection('other')->table('hafitha')->where('hafitha_no',$this->hafitha)->delete();
       DB::connection('other')->commit();
+
+      $this->bank=null;
+      $this->emit('goto','bank');
+      $this->ChkBankAndGo();
+
+
     } catch (\Exception $e) {
       DB::connection('other')->rollback();
-      info($e);
+
     }
   }
   function mount(){
@@ -73,6 +170,10 @@ class HafInputHeader extends Component
   public function updatedbank(){
     Config::set('database.connections.other.database', Auth::user()->company);
     $this->hafitha=0;
+    $this->hafitha_date='';
+    $this->hafitha_tot=0;
+    $this->hafitha_enter=0;
+    $this->hafitha_differ=0;
     $this->ShowHafDel=false;
     $this->ShowHafTarheel=false;
     $this->HafHeadDetail=DB::connection('other')
@@ -165,6 +266,9 @@ class HafInputHeader extends Component
         ]);
      DB::connection('other')->commit();
      $this->ShowHafNew=false;
+     $this->bank=$this->bank_l;
+     $this->emit('goto','bank');
+     $this->ChkBankAndGo();
 
    } catch (\Exception $e) {
      DB::connection('other')->rollback();
@@ -189,9 +293,18 @@ class HafInputHeader extends Component
        $this->emit('TakeHafBankNo',$this->bank,$result->bank_name);
 
        if ($this->hafitha_differ==0) {$this->ShowHafTarheel=True;}
+       else {$this->ShowHafTarheel=false;}
 
      } else {$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون');$this->ShowHafDel=false;$this->ShowHafTarheel=false;}
-   }
+   } else {     $this->hafitha=0;
+                $this->hafitha_date='';
+                $this->hafitha_tot=0;
+                $this->hafitha_enter=0;
+                $this->hafitha_differ=0;
+
+                $this->emit('BankIsUpdating');
+                $this->emit('banknotfound');
+          }
 
 }
 public function FillHead($res){
