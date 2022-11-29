@@ -38,9 +38,11 @@ Route::controller(AdminController::class)->group(function (){
 Route::controller(AKsatController::class)->group(function (){
   route::get('/kst/input', 'InpKst')->name('kst.input') ;
   route::get('/haf/input', 'InpHaf')->name('haf.input') ;
+
 });
 Route::controller(RepAksatController::class)->group(function (){
   route::get('/repMain/all', 'RepMain')->name('repmain.all') ;
+  route::get('/rep/mosdada', 'RepMosdada')->name('rep.mosdada') ;
 });
 
 Route::controller(CustomerController::class)->group(function (){

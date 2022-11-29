@@ -79,9 +79,9 @@ class HafInputDetail extends Component
           ->where('no',$this->no)
           ->where('ksm','!=',null)
           ->where('ksm','!=','0')->max('ser');
-        if ($ser==null) {$kst=$result->kst;}
+        if ($ser==null) {$kst=$result->kst; }
         else {$res=DB::connection('other')->table('kst_trans')->where('no',$this->no)->where('ser',$ser)->first();
-              $kst=$res->ksm;}
+              $kst=$res->ksm; }
         $sumkst=hafitha_tran::select(DB::connection('other')->raw('sum(kst + baky) as total'))
                               ->where('hafitha',$this->hafitha)->where('no',$this->no)->first();
         if ($sumkst->total != null)

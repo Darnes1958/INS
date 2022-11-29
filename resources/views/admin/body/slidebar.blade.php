@@ -57,7 +57,7 @@
                             <li><a href="{{route('kst.input')}}" class="link-dark d-inline-flex text-decoration-none rounded">قسط مصرفي</a></li>
                             <li><a href="{{route('haf.input')}}" class="link-dark d-inline-flex text-decoration-none rounded">حافظة موجودة</a></li>
                             <li><a href="{{route('repmain.all')}}" class="link-dark d-inline-flex text-decoration-none rounded">تقرير عن عقد</a></li>
-                            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Sign out</a></li>
+                            <li><a href="{{route('rep.mosdada')}}" class="link-dark d-inline-flex text-decoration-none rounded">العقود المسددة</a></li>
                         </ul>
                     </div>
                 </li>

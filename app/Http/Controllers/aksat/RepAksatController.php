@@ -7,8 +7,11 @@ use Illuminate\Http\Request;
 
 class RepAksatController extends Controller
 {
-    function RepMain (){
-        return view('backend.aksat.rep.rep-main');
-    }
+  function RepMain (){
+      return view('backend.aksat.rep.rep-main');
+  }
+  function RepMosdada (){
+    return view('backend.aksat.rep.rep-mosdada');
+  }
 
 }
