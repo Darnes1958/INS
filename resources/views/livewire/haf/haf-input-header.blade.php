@@ -127,6 +127,8 @@
 
 @push('scripts')
   <script type="text/javascript">
+
+
       Livewire.on('goto',postid=>  {
 
           if (postid=='bank') {  $("#bank_no").focus();$("#bank_no").select(); }

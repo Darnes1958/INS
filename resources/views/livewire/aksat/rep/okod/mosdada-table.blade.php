@@ -1,5 +1,5 @@
 <div>
-  <div x-data  class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
+  <div  x-data="{ open:@entangle('ShowTar'), progress: @entangle('ArcProgress'),count: @entangle('ArcCount')}" class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
     <div class="col-md-5">
       @livewire('aksat.rep.bank-comp',
       ['sender' => 'aksat.rep.okod.mosdada-table',])
@@ -9,8 +9,18 @@
     </div>
     <div class="col-md-1 my-2 d-inline-flex ">
       <label for="baky" class="form-label mx-0 text-right " style="width: 30%; ">الباقي</label>
-      <input wire:model="baky" class="form-control mx-0 text-center" type="number"  min="0" max="5"  id="baky" style="width: 70%; ">
+      <input wire:model="baky" class="form-control mx-0 text-center" type="number"  min="-5" max="5"  id="baky" style="width: 70%; ">
     </div>
+    <div  class="col-md-2 my-2 ">
+      <button x-show="open" wire:click="ArcTarheel" class=" mx-2 btn btn-outline-warning  " style="height: 30px;" >نقل المحدد للأرشيف</button>
+      <progress wire:loading wire:target="ArcTarheel" x-bind:max="count" x-bind:value="progress"></progress>
+    </div>
+    <div  x-show="open" class="col-md-1 my-2 checkbox">
+      <label>
+        <input wire:click="DoCheckAll" type="checkbox" class="check" id="checkAll"> تحديد الكل
+      </label>
+    </div>
+
   </div>
 
 
@@ -49,18 +59,21 @@
         <td> {{ $item->kst }} </td>
         <td> {{ $item->sul_pay }} </td>
         <td> {{ $item->raseed }} </td>
-        <td><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
+        <td><input class="form-check-input" type="checkbox" wire:model="mychecked.{{$item->no}}"
+                   value="1" id="flexCheckDefault"></td>
       </tr>
     @endforeach
     @endif
     </tbody>
   </table>
+
   @if ($RepTable )
   {{ $RepTable->links('custom-pagination-links-view') }}
   @endif
 </div>
 @push('scripts')
   <script type="text/javascript">
+
       window.addEventListener('mmsg',function(e){
           MyMsg.fire({
               confirmButtonText:  e.detail,
