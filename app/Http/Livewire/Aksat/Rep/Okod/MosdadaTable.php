@@ -34,7 +34,7 @@ class MosdadaTable extends Component
   ];
 
   public function DoCheckAll(){
-   
+
     $this->CheckAll=true;
   }
   public function TakeBank($bank_no){

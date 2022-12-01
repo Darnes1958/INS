@@ -42,7 +42,9 @@ Route::controller(AKsatController::class)->group(function (){
 });
 Route::controller(RepAksatController::class)->group(function (){
   route::get('/repMain/all', 'RepMain')->name('repmain.all') ;
-  route::get('/rep/mosdada', 'RepMosdada')->name('rep.mosdada') ;
+
+  route::get('/rep/okod/{rep}', 'RepOkod')->name('rep.okod') ;
+
 });
 
 Route::controller(CustomerController::class)->group(function (){

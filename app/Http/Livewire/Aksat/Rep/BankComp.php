@@ -29,6 +29,7 @@ class BankComp extends Component
     if ($this->bank_no!=null) {
       $result = bank::where('bank_no',$this->bank_no)->first();
       if ($result) {
+        info('the sender '.$this->Sender);
         $this->bank_name=$result->bank_name;
         $this->emitTo($this->Sender,'TakeBank',$this->bank_no);
       } else {$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون');}

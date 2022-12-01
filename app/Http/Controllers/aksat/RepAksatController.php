@@ -10,8 +10,11 @@ class RepAksatController extends Controller
   function RepMain (){
       return view('backend.aksat.rep.rep-main');
   }
-  function RepMosdada (){
-    return view('backend.aksat.rep.rep-mosdada');
+
+  function RepOkod ($rep){
+
+    return view('backend.aksat.rep.rep-okod',compact('rep'));
+
   }
 
 }

@@ -55,9 +55,32 @@
                     <div class="collapse" id="account-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li><a href="{{route('kst.input')}}" class="link-dark d-inline-flex text-decoration-none rounded">قسط مصرفي</a></li>
-                            <li><a href="{{route('haf.input')}}" class="link-dark d-inline-flex text-decoration-none rounded">حافظة موجودة</a></li>
+                            <li><a href="{{route('haf.input')}}" class="link-dark d-inline-flex text-decoration-none rounded">حافظة </a></li>
+
+                        </ul>
+                    </div>
+                </li>
+                <li class="border-top my-3"></li>
+                <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#repokod-collapse" aria-expanded="false">
+                        &nbsp <i class="fa  fas fa-list-ul" aria-hidden="true"></i>&nbsp تقارير عقود</button>
+                    <div class="collapse" id="repokod-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+
                             <li><a href="{{route('repmain.all')}}" class="link-dark d-inline-flex text-decoration-none rounded">تقرير عن عقد</a></li>
-                            <li><a href="{{route('rep.mosdada')}}" class="link-dark d-inline-flex text-decoration-none rounded">العقود المسددة</a></li>
+                            <li><a href="{{route('rep.okod','mosdada')}}" class="link-dark d-inline-flex text-decoration-none rounded">العقود المسددة</a></li>
+                            <li><a href="{{route('rep.okod','kamla')}}" class="link-dark d-inline-flex text-decoration-none rounded">العقود الخاملة</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#repbank-collapse" aria-expanded="false">
+                        &nbsp <i class="fa  fas fa-school" aria-hidden="true"></i>&nbsp تقارير مصارف</button>
+                    <div class="collapse" id="repbank-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                           <li><a href="{{route('rep.okod','banksum')}}" class="link-dark d-inline-flex text-decoration-none rounded">اجمالي المصارف</a></li>
+                           <li><a href="{{route('rep.okod','bankone')}}" class="link-dark d-inline-flex text-decoration-none rounded">كشف تقصيلي بالمصرف</a></li>
                         </ul>
                     </div>
                 </li>
