@@ -1,7 +1,7 @@
 <div   class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
 
     <div x-data  class="col-md-12 my-1">
-        <input  wire:model="search" wire:click="OpenTable"
+        <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "
                 class="form-control"   type="text"  >
         <div x-show="$wire.IsSearch">
             <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >

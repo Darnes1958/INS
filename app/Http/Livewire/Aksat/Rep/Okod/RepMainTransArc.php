@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Livewire\Aksat\Rep;
+namespace App\Http\Livewire\Aksat\Rep\Okod;
 
 use Livewire\Component;
 
-class RepMainTrans extends Component
+class RepMainTransArc extends Component
 {
-    public $post='kst_trans';
+    public $post='transarc';
     public $no;
 
     protected $listeners = [
@@ -19,6 +19,6 @@ class RepMainTrans extends Component
     }
     public function render()
     {
-        return view('livewire.aksat.rep.rep-main-trans');
+        return view('livewire.aksat.rep.okod.rep-main-trans-arc');
     }
 }

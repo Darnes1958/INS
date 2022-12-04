@@ -68,6 +68,7 @@
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 
                             <li><a href="{{route('repmain.all')}}" class="link-dark d-inline-flex text-decoration-none rounded">تقرير عن عقد</a></li>
+                            <li><a href="{{route('repmain.arc')}}" class="link-dark d-inline-flex text-decoration-none rounded">تقرير عن عقد من الأرشيف</a></li>
                             <li><a href="{{route('rep.okod','mosdada')}}" class="link-dark d-inline-flex text-decoration-none rounded">العقود المسددة</a></li>
                             <li><a href="{{route('rep.okod','kamla')}}" class="link-dark d-inline-flex text-decoration-none rounded">العقود الخاملة</a></li>
                         </ul>

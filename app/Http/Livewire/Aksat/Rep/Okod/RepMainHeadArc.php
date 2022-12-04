@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Livewire\Aksat\Rep;
+namespace App\Http\Livewire\Aksat\Rep\Okod;
 
 use App\Models\aksat\main;
+use App\Models\aksat\MainArc;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class RepMainHead extends Component
+class RepMainHeadArc extends Component
 {
  use WithPagination;
  protected $paginationTheme = 'bootstrap';
@@ -38,8 +39,9 @@ class RepMainHead extends Component
  public function ChkNoAndGo(){
     Config::set('database.connections.other.database', Auth::user()->company);
     $this->acc='';
+
     if ($this->no!=null) {
-        $result = main::where('no',$this->no)->first();
+        $result = MainArc::where('no',$this->no)->first();
         if ($result) {
             $this->acc=$result->acc;
             $this->emit('GotoDetail',$result);
@@ -51,8 +53,8 @@ class RepMainHead extends Component
  }
     public function render()
     {
-        return view('livewire.aksat.rep.rep-main-head',[
-            'TableList' => DB::connection('other')->table('main')
+        return view('livewire.aksat.rep.okod.rep-main-head-arc',[
+            'TableList' => DB::connection('other')->table('MainArc')
                 ->select('no','acc', 'name','sul')
                 ->where('name', 'like', '%'.$this->search.'%')
                 ->orwhere('acc', 'like', '%'.$this->search.'%')
