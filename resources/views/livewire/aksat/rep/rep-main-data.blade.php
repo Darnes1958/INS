@@ -1,4 +1,12 @@
-<div  class="row gy-1 my-1" style="border:1px solid lightgray;background: white;">
+<div x-data class="row gy-1 my-1" style="border:1px solid lightgray;background: white;">
+    <div class="d-inline-flex align-items-center">
+        <label for="no" class="form-label" style="width: 20%">الرقم الألي</label>
+        <input  wire:model="no"
+                class="form-control"   type="text" style="width: 30%" id="no" readonly>
+        <label for="acc" class="form-label" style="width: 20% " >&nbsp;رقم الحساب</label>
+        <input  wire:model="acc"
+                type="text" class="form-control" id="acc" style="width: 30%" readonly >
+    </div>
     <div class="d-inline-flex align-items-center">
         <label for="name" class="form-label align-right" style="width: 20% ">اســــــم الزبون</label>
         <input  wire:model="name" type="text" class="form-control" id="name" readonly style="width: 80%" >
@@ -33,9 +41,40 @@
         <label for="chk_out" class="form-label" style="width: 20% ">&nbsp;صكوك مرجعة</label>
         <input wire:model="chk_out"  type="text" class="form-control" id="chk_out" style="width: 30%" readonly>
     </div>
-    <div class="col-md-12">
-        <label for="notes" class="form-label-me">ملاحظات</label>
-        <input wire:model="notes"  class="form-control"   type="text"  id="notes" readonly>
+    <div class="d-inline-flex align-items-center my-1">
+        <label for="notes" class="form-label-me" style="width: 20% ">ملاحظات</label>
+        <textarea wire:model="notes"  class="form-control"  style="width: 80% " id="notes" readonly></textarea>
+    </div>
+    @livewire('tools.my-table2',
+    ['TableName' => $mainitems,
+    'ColNames' =>['item_no','item_name','quant','price','sub_tot'],
+    'ColHeader' =>['رقم الصنف','اسم الصنف','الكمية','السعر','المجموع'],
+    'pagno'=>5,
+    'haswhereequel' => true,
+    'whereequelfield' => 'order_no',
+    'whereequelvalue' => 0,
+    ])
+    <div  class="d-inline-flex align-items-center">
+        <a x-show="$wire.OverKst>0" wire:click="ShowOver" href="#" style="width: 20% ">فائض({{$OverKst}})</a>
+        <a x-show="$wire.TarKst>0" wire:click="ShowTar" href="#" style="width: 20% ; color: green">ترجيع({{$TarKst}})</a>
+        <a x-show="$wire.ArcMain>0" href="#" style="width: 20% ; color: #6f1e43">عقود سابقة({{$ArcMain}})</a>
+        <a x-show="$wire.ChkTasleem>0" href="#" style="width: 20% ; color: #6f1e43">صكوك مرجعة({{$ChkTasleem}})</a>
+    </div>
+    <div x-show="$wire.HasOver"style="width: 40% " >
+        <label class="form-label-me" >المبالغ المخصومة بالفائض</label>
+        <table class="table table-sm table-bordered table-striped table-light "   >
+            <thead class="font-size-12"><tr><th>التاريخ</th><th>المبلغ</th></tr></thead>
+            <tbody id="addRow" class="addRow">
+            @foreach($TableOver as  $item) <tr class="font-size-12"><td>{{$item->tar_date}}</td><td>{{$item->kst}}</td></tr> @endforeach  </tbody>
+        </table> {{ $TableOver->links('custom-pagination-links-view') }}
+    </div>
+    <div x-show="$wire.HasTar"style="width: 40% " >
+        <label class="form-label-me" >المبالغ المرجعة</label>
+        <table class="table table-sm table-bordered table-striped table-light "   >
+            <thead class="font-size-12"><tr><th>التاريخ</th><th>المبلغ</th></tr></thead>
+            <tbody id="addRow" class="addRow">
+            @foreach($TableTar as  $item) <tr class="font-size-12"><td>{{$item->tar_date}}</td><td>{{$item->kst}}</td></tr> @endforeach  </tbody>
+        </table> {{ $TableTar->links('custom-pagination-links-view') }}
     </div>
 </div>
 

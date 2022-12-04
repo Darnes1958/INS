@@ -4,7 +4,7 @@
       @livewire('aksat.rep.bank-comp',
       ['sender' => 'aksat.rep.okod.kamla',])
     </div>
-    <div class="col-md-1 my-2 d-inline-flex ">
+    <div class="col-md-2 my-2 d-inline-flex ">
       <label for="baky" class="form-label mx-0 text-right " style="width: 50%; ">عدد الأشهر</label>
       <input wire:model="months" class="form-control mx-0 text-center" type="number"  min="1" max="100"  id="baky" style="width: 50%; ">
     </div>

@@ -1,38 +1,35 @@
 <div   class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
-    <div   class="col-md-12" >
 
-        @livewire('aksat.no-select-all')
-    </div>
-    <div class="d-inline-flex align-items-center">
-        <label for="no" class="form-label" style="width: 20%">الرقم الألي</label>
-        <input  wire:model="no" wire:keydown.enter="ChkNoAndGo"
-                class="form-control"   type="text" style="width: 30%" id="no" >
-        <label for="acc" class="form-label" style="width: 20% ">&nbsp;رقم الحساب</label>
-        <input  wire:model="acc" wire:keydown.enter="ChkAccAndGo"
-                type="text" class="form-control" id="acc" style="width: 30%" >
-    </div>
-
-    <div   class="col-md-7" >
-
-        <div>
-            @if($errors->has('acc'))
-                <span>{{ $errors->first('acc') }}</span>
-            @endif
-        </div>
-        <div class="modal fade" id="ModalKstMany" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button wire:click="CloseMany" type="button" class="btn-close" ></button>
-                        <h1 class="modal-title fs-5 mx-6" id="exampleModalLabel">اضغظ علي اختيار</h1>
-                    </div>
-                    <div class="modal-body">
-                        @livewire('aksat.many-acc')
-                    </div>
-                </div>
-            </div>
+    <div x-data  class="col-md-12 my-1">
+        <input  wire:model="search" wire:click="OpenTable"
+                class="form-control"   type="text"  >
+        <div x-show="$wire.IsSearch">
+            <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
+                <thead class="font-size-12">
+                <tr>
+                    <th>رقم العقد</th>
+                    <th>رقم الحساب</th>
+                    <th>الاسم</th>
+                    <th>اجمالي التقسيط</th>
+                </tr>
+                </thead>
+                <tbody id="addRow" class="addRow">
+                @foreach($TableList as  $item)
+                    <tr class="font-size-12">
+                        <td > <a wire:click="selectItem({{ $item->no }})" href="#">{{$item->no}}</a>
+                        <td > <a wire:click="selectItem({{ $item->no }})" href="#">{{$item->acc}}</a>
+                        <td > <a wire:click="selectItem({{ $item->no }})" href="#" >{{$item->name}}</a>
+                        <td > <a wire:click="selectItem({{ $item->no }})" href="#" >{{$item->sul}}</a>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+            {{ $TableList->links('custom-pagination-links-view') }}
         </div>
     </div>
+
+
+
 </div>
 
 @push('scripts')

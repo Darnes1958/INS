@@ -27,6 +27,10 @@ class Kamla extends Component
   {
     $this->resetPage();
   }
+    public function updatingMonths()
+    {
+        $this->resetPage();
+    }
 
   protected $listeners = [
     'TakeBank',
@@ -34,8 +38,9 @@ class Kamla extends Component
 
 
   public function TakeBank($bank_no){
-    info($bank_no);
+
     $this->bank_no=$bank_no;
+      $this->resetPage();
 
   }
   public function paginate($items, $perPage = 15, $page = null, $options = [])
@@ -48,11 +53,11 @@ class Kamla extends Component
     {
       Config::set('database.connections.other.database', Auth::user()->company);
       DB::connection('other')->table('late')->delete();
-      DB::connection('other')->statement( 'insert into late select main.no,DATEDIFF(month,max(ksm_date),getdate()),:emp 
+      DB::connection('other')->statement( 'insert into late select main.no,DATEDIFF(month,max(ksm_date),getdate()),:emp
                             from main,kst_trans where main.no=kst_trans.no and (SUL_PAY)<(SUL-1) and main.no<>0 and sul_pay<>0
                             and bank=:bank group by main.no having DATEDIFF(month,max(ksm_date),getdate())>=:months ',
                             array('bank'=> $this->bank_no,'emp'=>Auth::user()->empno,'months'=>$this->months ));
-      DB::connection('other')->statement('insert into late select main.no,DATEDIFF(month,sul_date,getdate()),:emp from main 
+      DB::connection('other')->statement('insert into late select main.no,DATEDIFF(month,sul_date,getdate()),:emp from main
                             where  sul_pay=0 and  main.no<>0 and DATEDIFF(month,sul_date,getdate())>=:months and bank=:bank ',
                             array('bank'=> $this->bank_no,'emp'=>Auth::user()->empno,'months'=>$this->months ));
 
