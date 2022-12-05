@@ -50,6 +50,15 @@
                 </li>
                 <li class="border-top my-3"></li>
                 <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#okod-collapse" aria-expanded="false">
+                        &nbsp <i class="fa  fas fa-restroom" aria-hidden="true"></i>&nbsp عقود</button>
+                    <div class="collapse" id="okod-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="{{route('main.input')}}" class="link-dark d-inline-flex text-decoration-none rounded">ادخال عقد جديد</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
                     <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
                         &nbsp <i class="fa  fas fa-restroom" aria-hidden="true"></i>&nbsp اقساط</button>
                     <div class="collapse" id="account-collapse">
