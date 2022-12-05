@@ -39,7 +39,7 @@
   </div>
   <div class="col-md-6">
     <label for="sul_date" class="form-label-me">تاريخ العقد</label>
-    <input  x-bind:disabled="!$wire.OrderGet"  wire:model="sul_date" wire:keydown.enter="$emit('goto,'bank_no')"
+    <input  x-bind:disabled="!$wire.OrderGet"  wire:model="sul_date" wire:keydown.enter="$emit('goto','bankno')"
             class="form-control"
             name="sul_date" type="date"  id="sul_date" >
     @error('sul_date') <span class="error">{{ $message }}</span> @enderror
@@ -144,6 +144,7 @@
           if (postid=='kst') {  $("#kst").focus();$("#kst").select(); }
           if (postid=='chk_in') {  $("#chk_in").focus();$("#chk_in").select(); }
           if (postid=='ref_no') {  $("#ref_no").focus();$("#ref_no").select(); }
+          if (postid=='sul_date') {  $("#sul_date").focus();$("#sul_date").select(); }
           if (postid=='SaveBtn') {
               setTimeout(function() { document.getElementById('SaveBtn').focus(); },100);};
       })

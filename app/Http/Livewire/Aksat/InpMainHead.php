@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use DateTime;
 
 class InpMainHead extends Component
 {
@@ -97,7 +98,7 @@ class InpMainHead extends Component
    if ($this->no){
     $res=main::find($this->no);
     if ($res){$this->dispatchBrowserEvent('mmsg', 'هذا الرقم مخزون مسبقا');$this->emit('goto','no');}
-    else {$this->emit('goto','bankno');};}
+    else {$this->emit('goto','sul_date');};}
   }
   public function ChkOrderAndGo(){
 
@@ -124,6 +125,7 @@ class InpMainHead extends Component
      $this->order_no=$this->orderno;
      $this->emit('goto','no');
      $this->emit('TakeOrderNo',$res->order_no,$res->jeha_name);
+       $this->sul_date=date('Y-m-d');
    } else {$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ');}
   }
   public function ChkPlaceAndGo(){
@@ -184,11 +186,28 @@ class InpMainHead extends Component
     'sul_date.required'=>'يجب ادخال تاريخ صحيح',
   ];
   public function SaveCont(){
-    $this->validate();
+      $this->validate();
+      $month = date('m', strtotime($this->sul_date));
+      $year = date('Y', strtotime($this->sul_date));
+      $date=$year.$month.'28';
+      $date = DateTime::createFromFormat('Ymd',$date);
+      $date=$date->format('Y-m-d');
+
+      for ($i=1;$i<=$this->kstcount;$i++) {
+          info($date);
+          $date = date('Y-m-d', strtotime($date . "+1 month"));
+
+      }
+
+
+
+
+
+
   }
     public function render()
     {
-      $this->sul_date=date('Y-m-d');
+
 
         return view('livewire.aksat.inp-main-head');
     }
