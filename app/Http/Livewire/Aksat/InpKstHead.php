@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Aksat;
 
+use App\Models\aksat\kst_trans;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -39,6 +40,7 @@ class InpKstHead extends Component
     $this->ChkBankAndGo();
   }
   public function updatedTheNoListIsSelectd(){
+
     $this->TheNoListIsSelectd=0;
     $this->ChkNoAndGo();
   }
@@ -51,13 +53,27 @@ class InpKstHead extends Component
   }
   public function DeleteTheKst(){
     Config::set('database.connections.other.database', Auth::user()->company);
+    DB::connection('other')->beginTransaction();
+    try {
     DB::connection('other')->table('kst_trans')->where('no',$this->no)->where('ser',$this->The_ser)->update([
       'ksm'=>0,
       'ksm_date'=>null,
       'kst_notes'=>null,
       'emp'=>auth::user()->empno,
     ]);
+    $sul_pay=kst_trans::where('no',$this->no)->where('ksm','!=',null)->sum('ksm');
+    $sul=main::where('no',$this->no)->first();
+    $raseed=$sul->sul-$sul_pay;
+    main::where('no',$this->no)->update(['sul_pay'=>$sul_pay,'raseed'=>$raseed]);
+
+    DB::connection('other')->commit();
+    $this->ChkNoAndGo();
     $this->emitTo('tools.my-table','refreshComponent');
+    } catch (\Exception $e) {
+      DB::connection('other')->rollback();
+
+      $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
+    }
 
   }
 public function Ksthead_goto($wid){
@@ -118,12 +134,9 @@ public function Go(){
     }
   }
   public function ChkNoAndGo(){
-
     $this->resetValidation('acc');
     $this->validate();
     Config::set('database.connections.other.database', Auth::user()->company);
-
-
     $this->acc='';
     if ($this->no!=null) {
       $result = main::where('bank',$this->bankno)->where('no',$this->no)->first();
@@ -132,8 +145,9 @@ public function Go(){
         $this->acc=$result->acc;
         $orderno=$result->order_no;
         $this->emit('nofound',$result);
-        $this->emit('GotoKstDetail',$this->no,$orderno);
+
         $this->emit('GetTheMainNo',$this->no);
+        $this->emit('GotoKstDetail',$this->no,$orderno);
       }
     }
   }

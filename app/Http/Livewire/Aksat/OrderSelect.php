@@ -15,7 +15,7 @@ class OrderSelect extends Component
 
 
   protected $listeners = [
-    'TakeOrderNo',
+    'TakeOrderNo','refreshComponent' => '$refresh'
   ];
 
   public function TakeOrderNo($wj,$wn){

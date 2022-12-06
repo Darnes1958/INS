@@ -135,6 +135,7 @@
       Livewire.on('goto',postid=>  {
 
 
+          if (postid=='orderno') {  $("#orderno").focus();$("#orderno").select(); }
           if (postid=='bankno') {  $("#bankno").focus();$("#bankno").select(); }
           if (postid=='no') {  $("#no").focus();$("#no").select(); }
           if (postid=='acc') {  $("#acc").focus();$("#acc").select(); }

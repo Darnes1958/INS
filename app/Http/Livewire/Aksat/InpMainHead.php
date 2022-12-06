@@ -2,8 +2,11 @@
 
 namespace App\Http\Livewire\Aksat;
 
+use App\Models\aksat\kst_trans;
 use App\Models\aksat\main;
+use App\Models\aksat\main_items;
 use App\Models\aksat\place;
+use App\Models\sell\sell_tran;
 use App\Models\sell\sells;
 use App\Models\bank\bank;
 use App\Models\sell\sells_view;
@@ -36,6 +39,8 @@ class InpMainHead extends Component
   public $place=1;
   public $dofa;
   public $ref_no;
+
+  public $DAY_OF_KSM;
 
 
   public $OrderGet=false;
@@ -187,27 +192,61 @@ class InpMainHead extends Component
   ];
   public function SaveCont(){
       $this->validate();
-      $month = date('m', strtotime($this->sul_date));
-      $year = date('Y', strtotime($this->sul_date));
-      $date=$year.$month.'28';
-      $date = DateTime::createFromFormat('Ymd',$date);
-      $date=$date->format('Y-m-d');
+      Config::set('database.connections.other.database', Auth::user()->company);
+      DB::connection('other')->beginTransaction();
+      try {
+         DB::connection('other')->table('main')->insert([
+           'no'=>$this->no,'name'=>$this->name,'bank'=>$this->bankno,'acc'=>$this->acc,'sul_date'=>$this->sul_date,'sul_type'=>1,'sul_tot'=>$this->sul_tot,
+           'dofa'=>$this->dofa,'sul'=>$this->sul,'kst'=>$this->kst,'kst_count'=>$this->kstcount,'sul_pay'=>0,'raseed'=>$this->sul,'order_no'=>$this->orderno,
+           'jeha'=>$this->jeha,'place'=>$this->place,'notes'=>$this->notes,'chk_in'=>$this->chk_in,'chk_out'=>0,'last_order'=>0,'ref_no'=>$this->ref_no,
+           'emp'=>auth::user()->empno,'inp_date'=>date('Y-m-d'),]);
+         $res=sell_tran::where('order_no',$this->orderno)->get();
+         foreach ($res as $item) {
+           main_items::insert(['no'=>$this->no,'item_no'=>$item->item_no]);
+         }
+          $day = date('d', strtotime($this->sul_date));
+          $month = date('m', strtotime($this->sul_date));
+          $year = date('Y', strtotime($this->sul_date));
+          $date=$year.$month.'28';
+          $date = DateTime::createFromFormat('Ymd',$date);
+          $date=$date->format('Y-m-d');
+          if ($day>$this->DAY_OF_KSM) {$date = date('Y-m-d', strtotime($date . "+1 month"));}
+          for ($i=1;$i<=$this->kstcount;$i++) {
+              kst_trans::insert([
+                'ser'=>$i,
+                'no'=>$this->no,
+                'kst_date'=>$date,
+                'ksm_type'=>2,
+                'chk_no'=>0,
+                'kst'=>$this->kst,
+                'ksm_date'=>null,
+                'ksm'=>0,
+                'emp'=>auth()->user()->empno,
+                'h_no'=>0,
+                'kst_notes'=>null,
+                'inp_date'=>date('Y-m-d'),
+              ]);
+              $date = date('Y-m-d', strtotime($date . "+1 month"));
+          }
 
-      for ($i=1;$i<=$this->kstcount;$i++) {
-          info($date);
-          $date = date('Y-m-d', strtotime($date . "+1 month"));
+        DB::connection('other')->commit();
+        $this->no=''; $this->orderno='';$this->name='';$this->bankno='';$this->acc='';$this->place='';
+        $this->sul='';$this->sul_tot='';$this->dofa='';$this->kst='';
+        $this->kstcount='';$this->notes='';$this->ref_no='';$this->chk_in='';
+        $this->emitTo('aksat.order-select','refreshComponent');
+        $this->emit('goto','orderno');
 
+      } catch (\Exception $e) {
+        DB::connection('other')->rollback();
+
+        $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
       }
-
-
-
-
-
-
   }
     public function render()
     {
-
+      Config::set('database.connections.other.database', Auth::user()->company);
+      $res=DB::connection('other')->table('settings')->where('no',3)->first();
+      $this->DAY_OF_KSM=$res->s1;
 
         return view('livewire.aksat.inp-main-head');
     }

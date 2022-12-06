@@ -8,6 +8,7 @@ use App\Http\Controllers\buy\OrderBuyController;
 use App\Http\Controllers\sell\OrderSellController;
 use App\Http\Controllers\aksat\AksatController;
 use App\Http\Controllers\aksat\RepAksatController;
+use App\Http\Controllers\RepAmaaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,9 @@ Route::controller(RepAksatController::class)->group(function (){
 
   route::get('/rep/okod/{rep}', 'RepOkod')->name('rep.okod')->middleware('auth') ;
 
+});
+Route::controller(RepAmaaController::class)->group(function (){
+  route::get('/repamma/{rep}', 'RepAmma')->name('repamma')->middleware('auth');
 });
 
 Route::controller(CustomerController::class)->group(function (){

@@ -94,6 +94,17 @@
                         </ul>
                     </div>
                 </li>
+
+                <li class="border-top my-3"></li>
+                <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#repmak-collapse" aria-expanded="false">
+                        &nbsp <i class="fa  fas fa-list-ul" aria-hidden="true"></i>&nbsp تقارير مخزون</button>
+                    <div class="collapse" id="repmak-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="{{route('repamma','mak')}}" class="link-dark d-inline-flex text-decoration-none rounded">تقرير عن المخزون</a></li>
+                        </ul>
+                    </div>
+                </li>
             </ul>
         </div>
 

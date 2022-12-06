@@ -52,6 +52,7 @@ class RepMainHead extends Component
  }
     public function render()
     {
+      Config::set('database.connections.other.database', Auth::user()->company);
         return view('livewire.aksat.rep.okod.rep-main-head',[
             'TableList' => DB::connection('other')->table('main')
                 ->select('no','acc', 'name','sul')
