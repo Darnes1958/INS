@@ -7,7 +7,7 @@
 
             <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
                 <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
-                
+
             </a>
             <ul class="list-unstyled ps-0">
                 <li class="mb-1">
@@ -37,7 +37,7 @@
                 </li>
                 <li class="mb-1">
                     <button class="btn btn-toggle d-inline-flex align-items-center rounded    border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#trans-collapse" aria-expanded="false">
-                        &nbsp  <i class="fa fas fa-cart-plus" aria-hidden="true"></i>&nbsp;  إيصالات قبض
+                        &nbsp  <i class="fa fas fa-cart-plus" aria-hidden="true"></i>&nbsp;  إيصالات قبض ودفع
                     </button>
                     <div class="collapse" id="trans-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">

@@ -70,6 +70,7 @@ class TransHead extends Component
 
       }
       $this->emit('gotonext','tran_date');
+      $this->emitTo('trans.trans-table','TakeJehaAndType',$this->jeha,$this->imp_exp);
       return (true);
 
     } else return (false);
