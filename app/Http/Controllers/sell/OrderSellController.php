@@ -14,12 +14,6 @@ use Illuminate\Support\Facades\Config;
 class OrderSellController extends Controller
 {
     function OrderSell(){
-
-
-
-
         return view('backend.sell.inp_sell');
-
-
     }
 }

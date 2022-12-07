@@ -1,30 +1,41 @@
 <div x-data class="col-md-12 " style="margin-bottom: 20px;margin-top: 16px;" xmlns="http://www.w3.org/1999/html">
 
-  <div  x-show="$wire.HeadOpen" class="row g-3 " style="border:1px solid lightgray;background: white;">
+  <div   class="row g-3 " style="border:1px solid lightgray;background: white;">
     <div class="col-md-6">
       <label   class="form-label-me ">الرقم الالي</label>
-      <input wire:model="tran_no" type="text" class=" form-control "   readonly  >
+      <input wire:model="TranNo" type="text" class=" form-control "   readonly  >
     </div>
     <div class="col-md-12">
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" wire:model="CustRadio" wire:click="ChangeJhea"  value="Cust">
+        <input class="form-check-input" type="radio" wire:model="JehaRadio" wire:click="ChangeJeha"  value="Cust">
         <label class="form-check-label" >زبائن</label>
       </div>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" wire:model="SuppRadio" wire:click="ChangeJeha"  value="Supp">
+        <input class="form-check-input" type="radio" wire:model="JehaRadio" wire:click="ChangeJeha"  value="Supp">
         <label class="form-check-label" >موردين</label>
       </div>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" wire:model="OtherRadio" wire:click="ChangeJeha"  value="Other">
+        <input class="form-check-input" type="radio" wire:model="JehaRadio" wire:click="ChangeJeha"  value="Others">
         <label class="form-check-label" >أخرون</label>
       </div>
     </div>
+    <div class="col-md-5">
+      <label  for="tran_type" class="form-label-me ">طريقة الدفع</label>
+      <input  wire:model="tran_type" min="1" max="999" wire:keydown.enter="ChkTypeAndGo" type="number" class=" form-control "
+             id="tran_type"   autofocus >
+      @error('tran_type') <span class="error">{{ $message }}</span> @enderror
+    </div>
+    <div  class="col-md-7" >
+      <label  class="form-label-me">.</label>
+      @livewire('tools.pay-select')
+    </div>
+
     <div class="row g-3 ">
       <div class="col-md-4">
-        <label  for="jehano" class="form-label-me">رقم الزبون</label>
-        <input wire:model="jeha_no" wire:keydown.enter="JehaKeyDown"
+        <label  for="jeha" class="form-label-me">رقم الزبون</label>
+        <input wire:model="jeha" wire:keydown.enter="ChkJehaAndGo"
                class="form-control  "
-               name="jehano" type="number"  id="jehano" autofocus>
+               name="jeha" type="number"  id="jeha" autofocus>
         @error('jeha') <span class="error">{{ $message }}</span> @enderror
         @error('jeha_type') <span class="error">{{ $message }}</span> @enderror
       </div>
@@ -42,26 +53,13 @@
       </div>
 
       <input wire:model="jeha_name"  class="form-control  "   type="text"  id="jehaname" readonly>
-      <div class="modal fade" id="ModalSelljeha" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button wire:click="CloseJehaSerachModal" type="button" class="btn-close" ></button>
-            </div>
-            <div class="modal-body">
-              @livewire('jeha.cust-search')
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-
 
     <div class="col-md-6">
       <label for="date" class="form-label-me">التاريخ</label>
       <input wire:model="tran_date" wire:keydown.enter="$emit('gotonext','val')"
              class="form-control  "
-             name="date" type="date"  id="date" >
+             name="tran_date" type="date"  id="tran_date" >
       @error('tran_date') <span class="error">{{ $message }}</span> @enderror
     </div>
     <div class="col-md-6">
@@ -69,27 +67,21 @@
       <input wire:model="val" wire:keydown.enter="$emit('gotonext','notes')"
              class="form-control  "
              name="val" type="number"  id="val" >
-      @error('tran_date') <span class="error">{{ $message }}</span> @enderror
+      @error('val') <span class="error">{{ $message }}</span> @enderror
     </div>
     <div class="col-md-12">
       <label for="notes" class="form-label-me">ملاحظات</label>
-      <input x-bind:disabled="!$wire.OrderGet" wire:model="notes" wire:keydown.enter="$emit('goto','kstcount')"
+      <input x-bind:disabled="!$wire.OrderGet" wire:model="notes" wire:keydown.enter="$emit('gotonext','savebtn')"
              class="form-control  "
              type="text"  id="notes" >
     </div>
 
-
-
     <div class="my-3 align-center justify-content-center "  style="display: flex">
-
       <input type="button"  id="savebtn"
-             class=" btn btn-outline-success  waves-effect waves-light   "
-             wire:click.prevent="ٍSaveBtn"   value="تخزين" />
-
+             class=" btn btn-outline-success  waves-effect waves-light"
+             wire:click.prevent="DoSave"   value="تخزين" />
     </div>
   </div>
-
-  
 
   <div class="modal fade" id="ModalForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -99,7 +91,20 @@
           <h1 class="modal-title fs-5 mx-6" id="exampleModalLabel">ادخال مورد جديد</h1>
         </div>
         <div class="modal-body">
+
           @livewire('jeha.add-supp')
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="ModalSelljeha" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button wire:click="CloseJehaSerachModal" type="button" class="btn-close" ></button>
+        </div>
+        <div class="modal-body">
+          @livewire('jeha.cust-search')
         </div>
       </div>
     </div>
@@ -129,12 +134,14 @@
 
 
       Livewire.on('gotonext',postid=>  {
-          if (postid=='orderno') {  $("#order_no").focus();$("#order_no").select(); };
-          if (postid=='date') {  $("#date").focus();$("#date").select(); };
-          if (postid=='jehano') {  $("#jehano").focus(); $("#jehano").select();};
-          if (postid=='storeno') {  $("#storeno").focus(); $("#storeno").select();};
-          if (postid=='head-btn') {
-              setTimeout(function() { document.getElementById('head-btn').focus(); },100);};
+
+          if (postid=='tran_type') {  $("#tran_type").focus();$("#tran_type").select(); };
+          if (postid=='jeha') {  $("#jeha").focus();$("#jeha").select(); };
+          if (postid=='tran_date') {  $("#tran_date").focus(); $("#tran_date").select();};
+          if (postid=='val') {  $("#val").focus(); $("#val").select();};
+          if (postid=='notes') {  $("#notes").focus(); $("#notes").select();};
+          if (postid=='savebtn') {
+              setTimeout(function() { document.getElementById('savebtn').focus(); },100);};
       })
 
   </script>
@@ -149,10 +156,10 @@
 
   </script>
   <script>
-      window.addEventListener('CloseSelljehaModal', event => {
+      window.addEventListener('CloseTransjehaModal', event => {
           $("#ModalSelljeha").modal('hide');
       })
-      window.addEventListener('OpenSelljehaModal', event => {
+      window.addEventListener('OpenTransjehaModal', event => {
           $("#ModalSelljeha").modal('show');
       })
   </script>
@@ -173,6 +180,23 @@
               closeOnSelect: true
           });
           Livewire.emit('gotonext', 'jehano');
+      });
+      $(document).ready(function ()
+      {
+          $('#Pay_L').select2({
+              closeOnSelect: true
+          });
+          $('#Pay_L').on('change', function (e) {
+              var data = $('#Pay_L').select2("val");
+          @this.set('tran_type', data);
+          @this.set('ThePayNoListIsSelectd', 1);
+          });
+      });
+      window.livewire.on('Pay-change-event',()=>{
+          $('#Pay_L').select2({
+              closeOnSelect: true
+          });
+
       });
   </script>
 

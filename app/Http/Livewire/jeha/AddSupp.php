@@ -16,15 +16,26 @@ class AddSupp extends Component
   public $libyana;
   public $mdar;
   public $others;
+  public $jeha_type=2;
+
+  protected $listeners = [
+    'refreshComponent' => '$refresh','WithJehaType'
+  ];
+  public function WithJehaType($jeha_type)
+  {
+    info($this->jeha_type);
+    $this->jeha_type=$jeha_type;
+  }
 
   protected function rules()
   {
     Config::set('database.connections.other.database', Auth::user()->company);
     return [
 
-      'jehaname' => ['required'],
+      'jehaname' => ['required']
     ];
   }
+
   public function resetModal(){
     $this->jehaname='';
     $this->address='';
@@ -47,10 +58,10 @@ class AddSupp extends Component
       'libyana' => $this->libyana,
       'mdar' => $this->mdar,
       'others' => $this->others,
-      'charge_by'=>1,
+      'charge_by'=>0,
       'emp'=>auth::user()->empno,
       'available'=>1,
-      'jeha_type'=>2,
+      'jeha_type'=>$this->jeha_type,
 
     ]);
 
@@ -61,7 +72,10 @@ class AddSupp extends Component
   }
 
     public function mount(){
+
+
      $this->resetModal();
+
     }
     public function render()
     {

@@ -128,6 +128,7 @@ public function ChkPlace(){
         $this->jeha_no=$wj;
     }
     public function OpenModal(){
+      $this->emitTo('jeha.add-supp','WithJehaType',1);
         $this->dispatchBrowserEvent('OpenModal');
     }
     public function CloseModal(){

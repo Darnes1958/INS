@@ -9,6 +9,7 @@ use App\Http\Controllers\sell\OrderSellController;
 use App\Http\Controllers\aksat\AksatController;
 use App\Http\Controllers\aksat\RepAksatController;
 use App\Http\Controllers\RepAmaaController;
+use App\Http\Controllers\trans\TransController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,9 @@ Route::controller(AKsatController::class)->group(function (){
   route::get('/haf/input', 'InpHaf')->name('haf.input')->middleware('auth') ;
   route::get('/main/input', 'MainInp')->name('main.input')->middleware('auth') ;
 
+});
+Route::controller(TransController::class)->group(function (){
+  route::get('/trans/input/{imp_exp}', 'TransInp')->name('trans.input')->middleware('auth') ;
 });
 Route::controller(RepAksatController::class)->group(function (){
   route::get('/repMain/all', 'RepMain')->name('repmain.all')->middleware('auth');

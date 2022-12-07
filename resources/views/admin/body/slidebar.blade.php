@@ -36,6 +36,18 @@
                     </div>
                 </li>
                 <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded    border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#trans-collapse" aria-expanded="false">
+                        &nbsp  <i class="fa fas fa-cart-plus" aria-hidden="true"></i>&nbsp;  إيصالات قبض
+                    </button>
+                    <div class="collapse" id="trans-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="{{route('trans.input',1)}}" class="link-dark d-inline-flex text-decoration-none rounded">إيصال قبض</a></li>
+                            <li><a href="{{route('trans.input',2)}}" class="link-dark d-inline-flex text-decoration-none rounded">إيصال دفع</a></li>
+
+                        </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
                     <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
                         &nbsp   <i class="fa  fas fa-restroom" aria-hidden="true"></i>&nbsp;  عملاء</button>
                     </button>

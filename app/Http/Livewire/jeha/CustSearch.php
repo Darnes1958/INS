@@ -11,12 +11,20 @@ use Livewire\WithPagination;
 class CustSearch extends Component
 {
   use WithPagination;
-
+  public $jeha_type=1;
   public $PagNo = 10;
   protected $paginationTheme = 'bootstrap';
   public $SearchJehaNo;
 
   public $search;
+  protected $listeners = [
+    'refreshComponent' => '$refresh','WithJehaType'
+  ];
+  public function WithJehaType($jeha_type)
+  {
+    $this->jeha_type=$jeha_type;
+  }
+
   public function updatingSearch()
   {
     $this->resetPage();
@@ -26,18 +34,29 @@ class CustSearch extends Component
   {
     $this->emit('Take_Search_JehaNo', $jeha_no);
     $this->dispatchBrowserEvent('CloseSelljehaModal');
+    $this->dispatchBrowserEvent('CloseTransjehaModal');
   }
 
   public function render()
   {
     Config::set('database.connections.other.database', Auth::user()->company);
-    return view('livewire.jeha.cust-search', [
+    if ($this->jeha_type!=3)
+     return view('livewire.jeha.cust-search', [
       'TableList' => DB::connection('other')->table('jeha')
         ->select('jeha_no', 'jeha_name')
-        ->where('jeha_type',1)
+        ->where('jeha_type',$this->jeha_type)
         ->where('jeha_name', 'like', '%'.$this->search.'%')
         ->paginate($this->PagNo)
     ]);
+    if ($this->jeha_type==3)
+      return view('livewire.jeha.cust-search', [
+        'TableList' => DB::connection('other')->table('jeha')
+          ->select('jeha_no', 'jeha_name')
+          ->whereNotIn('jeha_type',[1,2])
+          ->where('jeha_name', 'like', '%'.$this->search.'%')
+          ->paginate($this->PagNo)
+      ]);
+
   }
 }
 
