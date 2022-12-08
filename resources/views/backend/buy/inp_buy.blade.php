@@ -4,7 +4,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
  <div id="page-content" class="page-content" >
     <div class="container-fluid">
-        <div class="row mb-3 ">
+
+       <div class="row mb-3 ">
            @csrf
                 <div  class="col-md-4 themed-grid-col">
                        @livewire('buy.order-buy-head')

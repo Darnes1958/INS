@@ -17,8 +17,8 @@
                     <div class="collapse " id="home-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li><a href="{{route('order_buy.add')}}" class="link-dark d-inline-flex text-decoration-none rounded">فاتورة مشتريات</a></li>
-                            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Updates</a></li>
-                            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Reports</a></li>
+                            <li><a href="{{route('order_buy.edit')}}" class="link-dark d-inline-flex text-decoration-none rounded">تعديل فاتورة مشتريات</a></li>
+
                         </ul>
                     </div>
                 </li>
@@ -41,9 +41,7 @@
                     </button>
                     <div class="collapse" id="trans-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="{{route('trans.input',1)}}" class="link-dark d-inline-flex text-decoration-none rounded">إيصال قبض</a></li>
-                            <li><a href="{{route('trans.input',2)}}" class="link-dark d-inline-flex text-decoration-none rounded">إيصال دفع</a></li>
-
+                            <li><a href="{{route('trans.input')}}" class="link-dark d-inline-flex text-decoration-none rounded">إيصال قبض أو دفع</a></li>
                         </ul>
                     </div>
                 </li>

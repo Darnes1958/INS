@@ -14,6 +14,7 @@ use Livewire\Component;
 class TransHead extends Component
 {
   public $JehaRadio='Cust';
+  public $ImpExpRadio=1;
   public $jeha_type=1;
   public $TranNo;
   public $jeha;
@@ -21,14 +22,20 @@ class TransHead extends Component
   public $tran_type=1;
   public $val;
   public $notes;
-  public $imp_exp;
+  public $impexp=1;
 
   public $ThePayNoListIsSelectd;
 
   protected $listeners = [
     'Take_Search_JehaNo',
   ];
-
+  public function updatedImpexp(){
+    info('here');
+    $this->ChkJehaAndGo();
+  }
+  public function updatedJeha(){
+    $this->emitTo('trans.trans-table','TakeJehaAndType',0,$this->impexp);
+  }
   public function Take_Search_JehaNo($jeha){
     $this->jeha=$jeha;
     $this->ChkJehaAndGo();
@@ -37,6 +44,8 @@ class TransHead extends Component
     if ($this->JehaRadio=='Cust') {$this->jeha_type=1;}
     if ($this->JehaRadio=='Supp') {$this->jeha_type=2;}
     if ($this->JehaRadio=='Others') {$this->jeha_type=3;}
+    $this->jeha=null;
+    $this->emitTo('trans.trans-table','TakeJehaAndType',$this->jeha,$this->impexp);
   }
   public function ChkJeha(){
     if ($this->jeha !=null ) {
@@ -70,7 +79,7 @@ class TransHead extends Component
 
       }
       $this->emit('gotonext','tran_date');
-      $this->emitTo('trans.trans-table','TakeJehaAndType',$this->jeha,$this->imp_exp);
+      $this->emitTo('trans.trans-table','TakeJehaAndType',$this->jeha,$this->impexp);
       return (true);
 
     } else return (false);
@@ -114,7 +123,7 @@ class TransHead extends Component
       'val'=>$this->val,
       'tran_date'=>$this->tran_date,
       'tran_type'=>$this->tran_type,
-      'imp_exp'=>$this->imp_exp,
+      'imp_exp'=>$this->impexp,
       'tran_who'=>1,
       'chk_no'=>0,
       'notes'=>$this->notes,
@@ -130,7 +139,7 @@ class TransHead extends Component
     $this->val=null;
     $this->notes=null;
     $this->emit('gotonext','jeha');
-
+    $this->emitTo('trans.trans-table','TakeJehaAndType',0,$this->impexp);
   }
 
   public function OpenJehaSerachModal(){
@@ -149,9 +158,7 @@ class TransHead extends Component
   public function CloseModal(){
     $this->dispatchBrowserEvent('CloseModal');
   }
-  public function mount($imp_exp){
-    $this->imp_exp=$imp_exp;
-  }
+
   public function render()
    {
 

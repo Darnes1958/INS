@@ -1,9 +1,19 @@
 <div x-data class="col-md-12 " style="margin-bottom: 20px;margin-top: 16px;" xmlns="http://www.w3.org/1999/html">
 
   <div   class="row g-3 " style="border:1px solid lightgray;background: white;">
-    <div class="col-md-6">
+    <div class="col-md-5">
       <label   class="form-label-me ">الرقم الالي</label>
       <input wire:model="TranNo" type="text" class=" form-control "   readonly  >
+    </div>
+    <div class="col-md-12">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" wire:model="impexp"   value="1">
+        <label class="form-check-label" >قبض</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" wire:model="impexp"   value="2">
+        <label class="form-check-label" >دفـــع</label>
+      </div>
     </div>
     <div class="col-md-12">
       <div class="form-check form-check-inline">

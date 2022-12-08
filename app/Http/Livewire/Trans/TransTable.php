@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Trans;
 
+use App\Models\trans\trans;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -15,19 +16,40 @@ class TransTable extends Component
     public $search;
     public $jeha=0;
     public $imp_exp=1;
+    public $tran_no;
     public function updatingSearch()
     {
         $this->resetPage();
     }
     protected $listeners = [
-        'TakeJehaAndType',
+        'TakeJehaAndType','closeandrefresh'
     ];
 
+    public function closeandrefresh(){
+      $this->CloseEditDialog();
+      $this->render();
+    }
     public function TakeJehaAndType($j,$i){
 
         $this->jeha=$j;
         $this->imp_exp=$i;
     }
+    public function selectItem($tran_no,$action){
+      $this->tran_no=$tran_no;
+      if ($action=='delete') {$this->dispatchBrowserEvent('OpenMyDelete');}
+      if ($action=='update') {$this->emit('ToEditTran',$tran_no);$this->dispatchBrowserEvent('OpenMyEdit');}
+    }
+    public function CloseDeleteDialog(){$this->dispatchBrowserEvent('CloseMyDelete');}
+    public function CloseEditDialog(){$this->dispatchBrowserEvent('CloseMyEdit');}
+
+    public function delete(){
+      $this->CloseDeleteDialog();
+      trans::where('tran_no',$this->edittran_no)->delete();
+      $this->render();
+    }
+
+
+
     public function render()
     {
      Config::set('database.connections.other.database', Auth::user()->company);
@@ -48,7 +70,7 @@ class TransTable extends Component
                 ['imp_exp',$this->imp_exp],
                 ['val', 'like', '%'.$this->search.'%'],
             ])
-            ->orderBy('tran_no','asc')
+            ->orderBy('tran_no','desc')
             ->paginate(15)
     ]);
 

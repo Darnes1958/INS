@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class TransController extends Controller
 {
-  function TransInp($imp_exp){
-    return view('backend.trans.inp_trans',compact('imp_exp'));
+  function TransInp(){
+    return view('backend.trans.inp_trans');
   }
 }

@@ -30,6 +30,9 @@ class OrderBuyController extends Controller
 
 
     }
+  function OrderBuyEdit (){
+    return view('backend.buy.edit_buy');
+  }
 
     function GetItemsInStore (Request $request)
     {

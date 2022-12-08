@@ -8,14 +8,16 @@
                     <div class="card-header">{{ __('Login') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('login') }}">
+                        <form method="POST" action="{{ route('login') }}" >
                             @csrf
 
                             <div class="row mb-3">
                                 <label for="id" class="col-md-4 col-form-label text-md-end">{{ __('رقم المستخدم') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" type="text" class="form-control @error('id') is-invalid @enderror" name="id" value="{{ old('id') }}" required autocomplete="id" autofocus>
+                                    <input id="email" type="text" class="form-control @error('id') is-invalid @enderror" name="id"
+                                           readonly
+                                           onclick="this.removeAttribute('readOnly');" required autocomplete="off" autofocus>
 
                                     @error('id')
                                     <span class="invalid-feedback" role="alert">
@@ -26,10 +28,12 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+                                <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('الرقم السري') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password"
+                                           readonly
+                                           onclick="this.removeAttribute('readOnly');"  required autocomplete="off" >
 
                                     @error('password')
                                     <span class="invalid-feedback" role="alert">
