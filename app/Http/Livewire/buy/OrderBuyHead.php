@@ -37,7 +37,7 @@ class OrderBuyHead extends Component
 
 
   public $HeadOpen;
-    public $HeadDataOpen;
+  public $HeadDataOpen;
 
     protected $listeners = [
         'mounthead','jehaadded',
