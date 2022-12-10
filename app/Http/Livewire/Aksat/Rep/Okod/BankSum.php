@@ -25,7 +25,7 @@ class BankSum extends Component
   {
     Config::set('database.connections.other.database', Auth::user()->company);
     return view('livewire.aksat.rep.okod.bank-sum',[
-      'RepTable'=>rep_banks::where('bank_name', 'like', '%'.$this->search.'%')->orderby('bank')->paginate(15)
+      'RepTable'=>rep_banks::where('bank_name', 'like', '%'.$this->search.'%')->orderby('bank')->paginate(14)
     ]);
   }
 }

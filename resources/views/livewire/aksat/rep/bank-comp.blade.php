@@ -1,8 +1,8 @@
 <div x-data  class="row gy-1 my-1"  >
-  <div class="col-md-1 mx-0">
+  <div class="col-md-2 mx-0">
     <label  for="bank_no" class="form-label mx-0" >المصرف</label>
   </div>
-  <div class="col-md-2 mx-0">
+  <div class="col-md-4 mx-0">
    <input wire:model="bank_no"  wire:keydown.enter="ChkBankAndGo" type="text" class=" form-control mx-0 "
            id="bank_no"   autofocus >
     @error('bank_no') <span class="error">{{ $message }}</span> @enderror

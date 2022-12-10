@@ -1,21 +1,23 @@
 <div>
-  <div  x-data="{ open:@entangle('ShowTar'), progress: @entangle('ArcProgress'),count: @entangle('ArcCount')}" class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
-    <div class="col-md-5">
+  <div  x-data="{ open:@entangle('ShowTar'), progress: @entangle('ArcProgress'),count: @entangle('ArcCount')}"
+        class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
+    <div class="col-md-4">
       @livewire('aksat.rep.bank-comp',
       ['sender' => 'aksat.rep.okod.mosdada-table',])
     </div>
-    <div class="col-md-2 my-2 ">
-      <input wire:model="search"  type="search"   placeholder="ابحث هنا .......">
+    <div class="col-md-3 my-2  ">
+      <input wire:model="search" class="form-control mx-0 text-center" type="search"   placeholder="ابحث هنا .......">
     </div>
-    <div class="col-md-1 my-2 d-inline-flex ">
+    <div class="col-md-2 my-2 mx-0 d-inline-flex ">
       <label for="baky" class="form-label mx-0 text-right " style="width: 30%; ">الباقي</label>
       <input wire:model="baky" class="form-control mx-0 text-center" type="number"  min="-5" max="5"  id="baky" style="width: 70%; ">
     </div>
     <div  class="col-md-2 my-2 ">
-      <button x-show="open" wire:click="ArcTarheel" class=" mx-2 btn btn-outline-warning  " style="height: 30px;" >نقل المحدد للأرشيف</button>
+      <button x-show="open" wire:click="ArcTarheel" class="  btn btn-outline-warning
+      " style="height: 30px;" >نقل للأرشيف</button>
       <progress wire:loading wire:target="ArcTarheel" x-bind:max="count" x-bind:value="progress"></progress>
     </div>
-    <div  x-show="open" class="col-md-1 my-2 checkbox">
+    <div  x-show="open" class="col-md-1  my-2 checkbox">
       <label>
         <input wire:click="DoCheckAll" type="checkbox" class="check" id="checkAll"> تحديد الكل
       </label>
@@ -27,18 +29,18 @@
   <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
     <thead class="font-size-12">
     <tr>
-      <th width="4%">ت</th>
+
       <th width="7%">رقم العقد</th>
       <th width="12%">رقم الحساب</th>
-      <th width="18%">الاسم</th>
-      <th width="7%">تاريخ العقد</th>
-      <th width="7%">اجمالي الفاتورة</th>
-      <th width="7%">دفعة مقدما</th>
-      <th width="7%">اجمالي التقسيط</th>
+      <th width="16%">الاسم</th>
+      <th width="8%">تاريخ العقد</th>
+      <th width="9%">اجمالي الفاتورة</th>
+      <th width="6%">دفعة</th>
+      <th width="9%">اجمالي التقسيط</th>
       <th width="7%">عدد الاقساط</th>
       <th width="7%">القسط</th>
-      <th width="7%">المسدد</th>
-      <th width="7">المطلوب</th>
+      <th width="8%">المسدد</th>
+      <th width="8">المطلوب</th>
       <th width="3%">&nbsp;</th>
     </tr>
     </thead>
@@ -47,7 +49,7 @@
 
     @foreach($RepTable as $key=>$item)
       <tr class="font-size-12">
-        <td > {{ $key+1 }} </td>
+
         <td > {{ $item->no }} </td>
         <td> {{ $item->acc }} </td>
         <td> {{ $item->name }} </td>

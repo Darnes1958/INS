@@ -31,7 +31,8 @@
     </div>
     <div class="col-md-5">
       <label  for="tran_type" class="form-label-me ">طريقة الدفع</label>
-      <input  wire:model="tran_type" min="1" max="999" wire:keydown.enter="ChkTypeAndGo" type="number" class=" form-control "
+      <input  wire:model="tran_type" min="1" max="999" wire:keydown.enter="ChkTypeAndGo"
+              type="number" class=" form-control "
              id="tran_type"   autofocus >
       @error('tran_type') <span class="error">{{ $message }}</span> @enderror
     </div>
@@ -40,29 +41,29 @@
       @livewire('tools.pay-select')
     </div>
 
-    <div class="row g-3 ">
-      <div class="col-md-4">
+    <div class="row  ">
+      <div class="col-md-4 my-1">
         <label  for="jeha" class="form-label-me">رقم الزبون</label>
         <input wire:model="jeha" wire:keydown.enter="ChkJehaAndGo"
-               class="form-control  "
+               class="form-control "
                name="jeha" type="number"  id="jeha" autofocus>
         @error('jeha') <span class="error">{{ $message }}</span> @enderror
         @error('jeha_type') <span class="error">{{ $message }}</span> @enderror
       </div>
 
-      <div class="col-md-2">
+      <div class="col-md-4 my-1">
         <label class="form-label-me">&nbsp</label>
-        <div class="row g-2 ">
-          <div class="col-md-6" >
+        <div class="row  ">
+          <div class="col-md-4 mx-1" >
             <button wire:click="OpenJehaSerachModal" type="button" class="btn btn-outline-primary btn-sm fa fa-arrow-alt-circle-down" data-bs-toggle="modal"></button>
           </div>
-          <div class="col-md-6" >
+          <div class="col-md-4 mx-1" >
             <button wire:click="OpenModal" type="button" class="btn btn-outline-primary btn-sm fa fa-plus" data-bs-toggle="modal"></button>
           </div>
         </div>
       </div>
 
-      <input wire:model="jeha_name"  class="form-control  "   type="text"  id="jehaname" readonly>
+      <input wire:model="jeha_name"  class="form-control mx-2"   type="text"  id="jehaname" readonly>
     </div>
 
     <div class="col-md-6">

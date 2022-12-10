@@ -1,4 +1,4 @@
-<div class="col-md-12" >
+<div class="col-md-12 mx-0" >
   <select   wire:model="BankNo" id="Bank_L" class="Bank_L" >
     <option value="">اختيار من القائمة</option>
     @foreach($BankList as $s)

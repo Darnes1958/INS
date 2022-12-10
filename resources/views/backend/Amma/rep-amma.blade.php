@@ -11,6 +11,11 @@
       @livewire('amma.mak.mak-rep')
     </div>
     @endif
+      @if ($rep=='daily')
+          <div class=" themed-grid-col px-1">
+              @livewire('amma.daily-rep')
+          </div>
+      @endif
 
 
   </div>
