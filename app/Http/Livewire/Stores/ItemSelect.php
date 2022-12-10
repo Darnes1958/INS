@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class ItemSelect extends Component
 {
-  public $ItemNo;
+  public $ItemListNo;
   public $ItemName;
   public $ItemList;
   public $PlaceSelectType;
@@ -29,7 +29,7 @@ class ItemSelect extends Component
   public function jehafound($wj,$wn){
 
     if(!is_null($wj)) {
-      $this->ItemNo = $wj;
+      $this->ItemListNo = $wj;
       $this->ItemName = $wn;
     }
   }

@@ -198,7 +198,7 @@ class OrderBuyTableEdit extends Component
                 2, '.', '');
             $this->tot = number_format($this->tot1 - $this->ksm,
                 2, '.', '');
-        $this->emit('mountdetail');
+
     }
     public function removeitem($value)    {
             unset($this->orderdetail[$value]);

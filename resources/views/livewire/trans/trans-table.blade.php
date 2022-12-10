@@ -27,7 +27,6 @@
                     <i wire:click="selectItem({{ $item->tran_no }},'delete')"
                        class="btn btn-outline-danger btn-sm fa fa-times "></i>
                 </td>
-
             </tr>
         @endforeach
         </tbody>

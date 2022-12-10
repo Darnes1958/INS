@@ -95,11 +95,13 @@
           });
           $('#Main_L').on('change', function (e) {
               var data = $('#Main_L').select2("val");
+
           @this.set('no', data);
           @this.set('TheNoListIsSelectd', 1);
           });
       });
       window.livewire.on('main-change-event',()=>{
+
           $('#Main_L').select2({
               closeOnSelect: true
           });
