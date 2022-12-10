@@ -47,58 +47,48 @@
       <div class="col-md-4" >
              <label  for="itemno" class="form-label-me ">رقم الصنف</label>
              <input wire:model="item"  wire:keydown.enter="ChkItemAndGo"  x-bind:disabled="!$wire.DetailOpen"
-                     type="text" class="form-control"  id="itemno" name="itemno" style="text-align: center;height: 39px;">
+                     type="number" class="form-control"  id="itemno" name="itemno" style="text-align: center;height: 39px;">
         </div>
       <div class="col-md-8">
             <label  for="item_name" class="form-label-me ">اسم الصنف</label>
-            <textarea wire:model="item_name" name="item_name" class="form-control"
-                      style="color: #0b5ed7; "
+            <textarea wire:model="item_name" class="form-control" style="color: #0b5ed7; "
                        readonly id="item_name" placeholder="اسم الصنف"></textarea>
             @error('item') <span class="error">{{ $message }}</span> @enderror
         </div>
       <div class="col-6 ">
             <label for="quant" class="form-label-me " >الكمية</label>
-            <input x-bind:disabled="!$wire.ItemGeted" wire:model="quant" wire:keydown.enter="$emit('gotonext','price')"  x-bind:disabled="!$wire.DetailOpen"
-                   class="form-control " name="quant" type="text" value="1"
-                   id="quant"  style="text-align: center" >
+            <input x-bind:disabled="!$wire.DetailOpen || !$wire.ItemGeted"
+                   wire:model="quant" wire:keydown.enter="ChkQuantAndGo"
+                   class="form-control " type="number" min="1" oninput="validity.valid||(value='');" value="1" id="quant"  style="text-align: center" >
             @error('quant') <span class="error">{{ $message }}</span> @enderror
       </div>
       <div class="col-6 ">
                 <label for="raseed" class="form-label-me" >الرصيد الكلي</label>
-                <input wire:model="raseed" class="form-control " name="raseed" type="text" readonly
-                       id="raseed"   >
+                <input wire:model="raseed" class="form-control " type="text" readonly id="raseed"   >
       </div>
       <div class="col-6">
             <label for="price" class="form-label-me">السعر</label>
-            <input x-bind:disabled="!$wire.ItemGeted" wire:model="price" wire:keydown.enter="ChkItem" class="form-control" name="price" type="text" value=""
-                   id="price"  style="text-align: center"  x-bind:disabled="!$wire.DetailOpen">
+            <input x-bind:disabled="!$wire.DetailOpen || !$wire.ItemGeted" wire:model="price"
+                   wire:keydown.enter="ChkPriceAndGo"
+                   class="form-control" name="price" type="number"  min="1" oninput="validity.valid||(value='');"
+                   id="price"  style="text-align: center" >
           <br>
-
-            @error('price') <span class="error">{{ $message }}</span> @enderror
+          @error('price') <span class="error">{{ $message }}</span> @enderror
        </div>
       <div class="col-6 ">
             <label for="st_raseed" class="form-label-me " >رصيد المخزن</label>
-            <input wire:model="st_raseed" class="form-control " name="st_raseed" type="text" readonly
-                   id="st_raseed"   >
+            <input wire:model="st_raseed" class="form-control "  type="text" readonly  id="st_raseed"   >
         </div>
  </div>
 
 
 @push('scripts')
     <script type="text/javascript">
-
-
-        Livewire.on('gotonext',postid=>  {
-
-
+      Livewire.on('gotonext',postid=>  {
             if (postid=='quant') {  $("#quant").focus();  $("#quant").select();};
-
             if (postid=='itemno') {  $("#itemno").focus(); $("#itemno").select();};
             if (postid=='price') {  $("#price").focus(); $("#price").select();};
         });
-
-
-
         window.addEventListener('CloseFirst', event => {
             $("#ModalFormOne").modal('hide');
         })
@@ -111,8 +101,6 @@
         window.addEventListener('OpenSecond', event => {
             $("#ModalFormTwo").modal('show');
         })
-
-
         $(document).ready(function ()
         {
             $('#Item_L').select2({
@@ -120,20 +108,20 @@
             });
             $('#Item_L').on('change', function (e) {
                 var data = $('#Item_L').select2("val");
-
                 @this.set('item', data);
                 @this.set('TheItemListSelected',1);
-
-
             });
         });
         window.livewire.on('item-change-event',()=>{
-
             $('#Item_L').select2({
                 closeOnSelect: true
             });
         });
+      window.addEventListener('mmsg',function(e){
+          MyMsg.fire({
+              confirmButtonText:  e.detail,
+          })
+      });
     </script>
-
 @endpush
 

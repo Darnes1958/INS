@@ -62,19 +62,14 @@ class OrderBuyDetailEdit extends Component
         if ($this->item!=null) {
             $result=items::with('iteminstore')
             ->where('item_no', $this->item)->first();
-
             if ($result) {
-
                 $this->IfBuyItemExists($this->order_no,$this->item);
-
                 $this->item_name=$result->item_name;
                 $this->price=number_format($result->price_buy, 2, '.', '')  ;
                 $this->raseed= $result->raseed;
                 $this->st_raseed=0;
                 for ($i=0;$i<count($result->iteminstore);$i++)
                  { if($result->iteminstore[$i]->st_no==$this->stno){$this->st_raseed=$result->iteminstore[$i]->raseed;}}
-
-
                 $this->emit('ChkIfDataExist',$this->item);
                 $this->ItemGeted=true;
                 $this->emit('gotonext','quant');
@@ -83,10 +78,22 @@ class OrderBuyDetailEdit extends Component
     public function updatedItem()
     {
       $this->ItemGeted=false;
+    }
+    public function ChkQuantAndGo(){
+     if ($this->quant){
+         if ($this->ItemExistsInOrder){
+             if (($this->st_raseed-$this->OldItemQuant+$this->quant)<0){
+                 $this->dispatchBrowserEvent('mmsg', 'لا تجوز هذه الكمية .. سيصبح رصيد المخزن أقل من صفر');
+                 $this->emit('gotonext','quant');
+                 return (false);
+             }
+         }
+         return true;
+         $this->emit('gotonext','price');
+     }
 
     }
     public function mountdetail(){
-
         $this->OrderDetailOpen=true;
         $this->DetailOpen=true;
         $this->ClearData();
@@ -103,7 +110,6 @@ class OrderBuyDetailEdit extends Component
         $this->ClearData();
         $this->DetailOpen=false;
         $this->OrderDetailOpen=true;
-
     }
     public function ClearData () {
         $this->raseed=0;
@@ -129,13 +135,8 @@ class OrderBuyDetailEdit extends Component
     {
         if(!is_null($value))
             $this->item = $value;
-
-
-
         $this->emit('gotonext', 'item_no');
     }
-
-
     protected function rules()
     {
         Config::set('database.connections.other.database', Auth::user()->company);
@@ -152,13 +153,17 @@ class OrderBuyDetailEdit extends Component
 
     ];
 
-    public function ChkItem()
+    public function ChkPriceAndGo()
     {
         $this->validate();
+        if (!$this->ChkQuantAndGo()) return false;
+
         $this->orderdetail=['item_no'=>$this->item,'item_name'=>$this->item_name,
             'quant'=>$this->quant,'price'=>$this->price,'subtot'=>$this->price];
         $this->emit('putdata',$this->orderdetail);
         $this->mountdetail();
+        $this->emit('gotonext','itemno');
+        return true;
     }
 
 
