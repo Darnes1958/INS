@@ -33,10 +33,20 @@ class OrderBuyHeadEdit extends Component
 
     public $HeadOpen=true;
     public $HeadDataOpen=false;
+    public $TheOrderListSelected;
 
     protected $listeners = [
         'mounthead','jehaadded',
     ];
+  public function updatedTheOrderListSelected(){
+    $this->TheOrderListSelected=0;
+    $this->ChkOrderNoAndGo();
+  }
+  public function mounthead(){
+
+    $this->mount();
+    $this->emit('gotonext','orderno');
+  }
     public function updatedOrderno(){
         $this->OrderNoFound=false;
     }
@@ -88,7 +98,14 @@ class OrderBuyHeadEdit extends Component
         $this->emitTo('buy.order-buy-detail-edit','mountdetail');
     }
 
-
+    public function mount(){
+      $this->orderno='';
+      $this->order_date='';
+      $this->jeha='';
+      $this->stno='';
+      $this->HeadOpen=true;
+      $this->emit('gotonext','orderno');
+    }
     public function render()
     {
 

@@ -1,14 +1,14 @@
 <div   class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
-    <div class="col-md-2">
-        <label for="date" class="form-label-me">التاريخ</label>
-        <input wire:model="date" wire:keydown.enter="ChkDateAndGo"
-               class="form-control  "
+    <div class="col-md-2 my-1 d-inline-flex align-items-center">
+        <label for="date" class="form-label mx-1 my-1" >التاريخ</label>
+        <input wire:model="RepDate" wire:keydown.enter="ChkDateAndGo"
+               class="form-control"
                name="date" type="date"  id="date" >
         @error('tran_date') <span class="error">{{ $message }}</span> @enderror
     </div>
-    <div class="col-md-10">
+    <div class="col-md-10 my-2">
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" wire:model="RepRadio" wire:click="ChangeRep"  value="Buy">
+            <input class="form-check-input" type="radio" wire:model="RepRadio"   value="buys_view">
             <label class="form-check-label" >مشتريات</label>
         </div><div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" wire:model="RepRadio" wire:click="ChangeRep"  value="sell">
@@ -38,6 +38,9 @@
             <input class="form-check-input" type="radio" wire:model="RepRadio" wire:click="ChangeRep"  value="Main">
             <label class="form-check-label" >عقود</label>
         </div>
+    </div>
+    <div>
+        @livewire('amma.daily-rep-table',['tablename'=>$RepRadio,'inpdate'=>$RepDate,'searachfield1'=>$RepSearch1 ])
     </div>
 
 </div>

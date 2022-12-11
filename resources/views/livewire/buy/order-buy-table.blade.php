@@ -101,7 +101,14 @@
 
 @push('scripts')
     <script type="text/javascript">
-
+        window.addEventListener('dodelete',function(e){
+            MyConfirm.fire({
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.emit('DoDelete');
+                }
+            })
+        });
 
         Livewire.on('gotonext',postid=>  {
 

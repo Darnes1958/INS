@@ -110,6 +110,7 @@ class OrderBuyHead extends Component
         $this->HeadOpen=false;
         $this->HeadDataOpen=true;
         $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha,$this->stno);
+        $this->emitTo('buy.order-buy-detail','TakeParam',$this->order_no,$this->stno);
         $this->emit('mountdetail');
     }
 

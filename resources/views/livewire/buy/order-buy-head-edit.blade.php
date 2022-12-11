@@ -1,6 +1,9 @@
  <div x-data class="col-md-12 " style="margin-bottom: 20px;margin-top: 16px;" xmlns="http://www.w3.org/1999/html">
 
     <div x-show="$wire.HeadOpen" class="row g-3 " style="border:1px solid lightgray;background: white;">
+      <div class="col-md-12" >
+        @livewire('buy.buy-select')
+      </div>
       <div class="col-md-6">
           <label  for="orderno" class="form-label-me ">رقم الفاتورة</label>
           <input wire:model="orderno"  wire:keydown.enter="ChkOrderNoAndGo" type="text" class=" form-control "
@@ -52,6 +55,22 @@
             MyMsg.fire({
                 confirmButtonText:  e.detail,
             })
+        });
+        $(document).ready(function ()
+        {
+            $('#Buy_L').select2({
+                closeOnSelect: true
+            });
+            $('#Buy_L').on('change', function (e) {
+                var data = $('#Buy_L').select2("val");
+            @this.set('orderno', data);
+            @this.set('TheOrderListSelected',1);
+            });
+        });
+        window.livewire.on('buy-change-event',()=>{
+            $('#Order_L').select2({
+                closeOnSelect: true
+            });
         });
   </script>
 @endpush

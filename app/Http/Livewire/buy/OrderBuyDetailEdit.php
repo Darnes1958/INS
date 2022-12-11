@@ -63,11 +63,13 @@ class OrderBuyDetailEdit extends Component
             $result=items::with('iteminstore')
             ->where('item_no', $this->item)->first();
             if ($result) {
-                $this->IfBuyItemExists($this->order_no,$this->item);
+                $this->IfBuyItemExists($this->order_no,$this->item,$this->stno);
                 $this->item_name=$result->item_name;
                 $this->price=number_format($result->price_buy, 2, '.', '')  ;
+
                 $this->raseed= $result->raseed;
                 $this->st_raseed=0;
+
                 for ($i=0;$i<count($result->iteminstore);$i++)
                  { if($result->iteminstore[$i]->st_no==$this->stno){$this->st_raseed=$result->iteminstore[$i]->raseed;}}
                 $this->emit('ChkIfDataExist',$this->item);
@@ -88,16 +90,18 @@ class OrderBuyDetailEdit extends Component
                  return (false);
              }
          }
-         return true;
+
          $this->emit('gotonext','price');
+       return true;
      }
 
     }
+
     public function mountdetail(){
         $this->OrderDetailOpen=true;
         $this->DetailOpen=true;
         $this->ClearData();
-        $this->emit('gotonext', 'item_no');
+        $this->emit('gotonext', 'itemno');
     }
     public function dismountdetail(){
         $this->ClearData();
@@ -129,7 +133,7 @@ class OrderBuyDetailEdit extends Component
         $this->item_name=$value['item_name'];
         $this->quant=$value['quant'];
         $this->price=$value['price'] ;
-        $this->emit('gotonext', 'item_no');
+        $this->emit('gotonext', 'quant');
     }
     public function itemchange($value)
     {

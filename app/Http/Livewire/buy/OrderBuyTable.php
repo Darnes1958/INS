@@ -26,9 +26,10 @@ class OrderBuyTable extends Component
     public $jeha_no;
     public $st_no;
     public $notes;
+  public $TheDelete;
 
    protected $listeners = [
-        'putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable'
+        'putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable','DoDelete'
     ];
    public function mounttable(){
        $this->mount();
@@ -46,6 +47,10 @@ class OrderBuyTable extends Component
           DB::connection('other')->beginTransaction();
 
           try {
+            $ord=buys::where('order_no',$this->order_no)->first();
+            if ($ord!=null){
+                $this->order_no=buys::max('order_no')+1;
+              }
               DB::connection('other')->table('buys')->insert([
                   'order_no' => $this->order_no,
                   'order_no2' => 0,
@@ -111,7 +116,7 @@ class OrderBuyTable extends Component
 
           } catch (\Exception $e) {
               DB::connection('other')->rollback();
-
+info($e);
               // something went wrong
           }
 
@@ -182,11 +187,15 @@ class OrderBuyTable extends Component
                 2, '.', '');
         $this->emit('mountdetail');
     }
-    public function removeitem($value)    {
-            unset($this->orderdetail[$value]);
-            array_values($this->orderdetail);
-            $this->emit('mountdetail');
-    }
+  public function removeitem($value)    {
+    $this->TheDelete=$value;
+    $this->dispatchBrowserEvent('dodelete');
+  }
+  public function DoDelete(){
+    unset($this->orderdetail[$this->TheDelete]);
+    array_values($this->orderdetail);
+    $this->emit('mountdetail');
+  }
     public function edititem($value)
     {
       $this->emit( 'edititem',$this->orderdetail[$value]) ;

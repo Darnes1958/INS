@@ -12,11 +12,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
-
+use App\Http\Livewire\Traits\MyLib;
 
 
 class OrderBuyTableEdit extends Component
 {
+
    public $ksm;
    public $madfooh;
    public $tot1;
@@ -27,9 +28,11 @@ class OrderBuyTableEdit extends Component
    public $jeha_no;
    public $st_no;
    public $notes;
-
+   public $HasRaseed=true;
+   public $TheDelete;
+   use MyLib;
    protected $listeners = [
-        'putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable','GetOrderData'
+        'putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable','GetOrderData','DoDelete'
     ];
    public function mounttable(){
        $this->mount();
@@ -64,6 +67,10 @@ class OrderBuyTableEdit extends Component
           DB::connection('other')->beginTransaction();
 
           try {
+
+              buy_tran::where('order_no',$this->order_no)->delete();
+              buys::where('order_no',$this->order_no)->delete();
+
               DB::connection('other')->table('buys')->insert([
                   'order_no' => $this->order_no,
                   'order_no2' => 0,
@@ -85,8 +92,18 @@ class OrderBuyTableEdit extends Component
               ]);
 
               foreach ($this->orderdetail as $item) {
+                info('here 4');
                   if ($item['item_no'] == 0) {
                       continue;
+                  }
+
+                  if ($this->IfBuyItemExists($this->order_no,$item['item_no'],$this->st_no)) {
+                    if (($this->PlaceItemQuant-$this->OldItemQuant+$this->quant)<0) {
+                      $this->dispatchBrowserEvent('mmsg',
+                        ' رصيد المخزن للصنف '.$item['item_no'].' .. سيصبح أقل من صفر ');
+                      $this->HasRaseed=true;
+                      break;
+                    }
                   }
 
                   DB::connection('other')->table('buy_tran')->insert([
@@ -98,9 +115,11 @@ class OrderBuyTableEdit extends Component
                       'emp' => Auth::user()->empno,
                       'tarjeeh' => 0
 
+
                   ]);
               }
-              if ($this->madfooh != 0) {
+
+              if ($this->madfooh != 0 && $this->HasRaseed) {
 
                   $tran_no = trans::max('tran_no') + 1;
                   DB::connection('other')->table('trans')->insert([
@@ -120,15 +139,19 @@ class OrderBuyTableEdit extends Component
                   ]);
               }
 
-              DB::connection('other')->commit();
+              if ($this->HasRaseed) {
 
-              $this->emit('mounttable');
-              $this->emit('dismountdetail');
-              $this->emit('mounthead');
+                DB::connection('other')->commit();
+
+                $this->emit('mounttable');
+                $this->emit('dismountdetail');
+                $this->emit('mounthead');
+              } else {  DB::connection('other')->rollback();}
 
 
           } catch (\Exception $e) {
               DB::connection('other')->rollback();
+              info($e);
 
               // something went wrong
           }
@@ -201,9 +224,13 @@ class OrderBuyTableEdit extends Component
 
     }
     public function removeitem($value)    {
-            unset($this->orderdetail[$value]);
-            array_values($this->orderdetail);
-            $this->emit('mountdetail');
+            $this->TheDelete=$value;
+      $this->dispatchBrowserEvent('dodelete');
+    }
+    public function DoDelete(){
+      unset($this->orderdetail[$this->TheDelete]);
+      array_values($this->orderdetail);
+      $this->emit('mountdetail');
     }
     public function edititem($value)
     {

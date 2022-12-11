@@ -24,7 +24,7 @@
                              class="form-control estimated_amount" readonly style="background-color: #ddd;" ></td>
                 <td style="padding-top: 2px;padding-bottom: 2px; ">
                     <i wire:click.prevent="edititem({{$key}})" class="btn btn-outline-primary btn-sm fa fa-edit editable-input" style="margin-left: 2px;"></i>
-                    <i  wire:click.prevent="removeitem({{$key}})" class="btn btn-outline-danger btn-sm fa fa-times "></i>
+                    <i wire:click.prevent="removeitem({{$key}})" class="btn btn-outline-danger btn-sm fa fa-times "></i>
                 </td>
             </tr>
         @endforeach
@@ -101,7 +101,14 @@
 
 @push('scripts')
     <script type="text/javascript">
-
+        window.addEventListener('dodelete',function(e){
+            MyConfirm.fire({
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.emit('DoDelete');
+                }
+            })
+        });
 
         Livewire.on('gotonext',postid=>  {
 

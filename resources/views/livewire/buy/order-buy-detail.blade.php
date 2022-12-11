@@ -46,7 +46,7 @@
 
       <div class="col-md-4" >
              <label  for="itemno" class="form-label-me ">رقم الصنف</label>
-             <input wire:model="item"  wire:keydown.enter="$emit('gotonext','quant')"  x-bind:disabled="!$wire.DetailOpen"
+             <input wire:model="item"  wire:keydown.enter="ChkItemAndGo"  x-bind:disabled="!$wire.DetailOpen"
                      type="text" class="form-control"  id="itemno" name="itemno" style="text-align: center;height: 39px;">
         </div>
       <div class="col-md-8">
@@ -58,7 +58,7 @@
         </div>
       <div class="col-6 ">
             <label for="quant" class="form-label-me " >الكمية</label>
-            <input wire:model="quant" wire:keydown.enter="$emit('gotonext','price')"  x-bind:disabled="!$wire.DetailOpen"
+            <input wire:model="quant" wire:keydown.enter="ChkQuantAndGo"  x-bind:disabled="!$wire.DetailOpen || !$wire.ItemGeted"
                    class="form-control " name="quant" type="text" value="1"
                    id="quant"  style="text-align: center" >
             @error('quant') <span class="error">{{ $message }}</span> @enderror
@@ -70,8 +70,8 @@
       </div>
       <div class="col-6">
             <label for="price" class="form-label-me">السعر</label>
-            <input wire:model="price" wire:keydown.enter="ChkItem" class="form-control" name="price" type="text" value=""
-                   id="price"  style="text-align: center"  x-bind:disabled="!$wire.DetailOpen">
+            <input wire:model="price" wire:keydown.enter="ChkPriceAndGo" class="form-control" name="price" type="text" value=""
+                   id="price"  style="text-align: center"  x-bind:disabled="!$wire.DetailOpen || !$wire.ItemGeted">
           <br>
 
             @error('price') <span class="error">{{ $message }}</span> @enderror
