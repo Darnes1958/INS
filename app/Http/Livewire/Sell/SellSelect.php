@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Buy;
+namespace App\Http\Livewire\Sell;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Carbon\Carbon;
 
-class BuySelect extends Component
+class SellSelect extends Component
 {
   public $OrderNo;
 
@@ -29,16 +29,16 @@ class BuySelect extends Component
   }
 
   public function hydrate(){
-    $this->emit('buy-change-event');
+    $this->emit('sell-change-event');
   }
     public function render()
     {
       Config::set('database.connections.other.database', Auth::user()->company);
-      $this->OrderList=DB::connection('other')->table('buys_view')
+      $this->OrderList=DB::connection('other')->table('sells_view')
         ->where('order_date','>',Carbon::now()->subYear(1))
         ->orderBy('order_no', 'DESC')->get();
 
-      return view('livewire.buy.buy-select',$this->OrderList);
+      return view('livewire.sell.sell-select',$this->OrderList);
 
     }
 }

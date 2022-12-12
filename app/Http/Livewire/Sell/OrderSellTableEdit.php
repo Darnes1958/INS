@@ -1,0 +1,269 @@
+<?php
+
+namespace App\Http\Livewire\Sell;
+
+use App\Models\sell\rep_sell_tran;
+use App\Models\stores\items;
+use App\Models\stores\stores;
+use App\Models\trans\trans;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+use Livewire\Component;
+
+class OrderSellTableEdit extends Component
+{
+    public $ksm;
+    public $madfooh;
+    public $tot1;
+    public $tot;
+    public $orderdetail=[];
+    public $order_no;
+    public $order_date;
+    public $jeha_no;
+    public $st_no;
+    public $notes;
+
+    public $PlaceType;
+    public $rebh;
+    public $HasRaseed=true;
+
+    protected $listeners = [
+        'putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable','GetOrderData'
+    ];
+  public function GetOrderData($order_no,$ksm,$madfooh,$tot1,$tot,$jeha,$stno,$notes){
+    $this->order_no=$order_no;
+    $this->ksm=$ksm;
+    $this->madfooh=$madfooh;
+    $this->tot1=$tot1;
+    $this->tot=$tot;
+    $this->jeha_no=$jeha;
+    $this->st_no=$stno;
+    $this->notes=$notes;
+    $res=rep_sell_tran::where('order_no',$this->order_no)->get();
+    foreach ($res as $value)
+      $this->orderdetail[] =
+       ['item_no' => $value['item_no'], 'item_name' => $value['item_name'],
+        'quant' => $value['quant'], 'price' => $value['price'],
+        'subtot' => number_format($value['price'] * $value['quant'], 2, '.', ''),
+        'rebh'=>$value['rebh'],];
+
+  }
+    public function mounttable(){
+        $this->mount();
+    }
+
+    public function store(){
+
+        if (count($this->orderdetail)==1){
+            session()->flash('message', 'لم يتم ادخال اصناف بعد');
+
+        }
+        else {
+            Config::set('database.connections.other.database', Auth::user()->company);
+            $this->HasRaseed=true;
+            DB::connection('other')->beginTransaction();
+
+            try {
+
+               if ($this->PlaceType='Makazen') {$pt=1;}
+                DB::connection('other')->table('sells')->insert([
+                    'order_no' => $this->order_no,
+                    'jeha' => $this->jeha_no,
+                    'order_date' => $this->order_date,
+                    'order_date_input' => $this->order_date,
+                    'notes' => $this->notes,
+                    'price_type' => 2,
+                    'tot1' => $this->tot1,
+                    'ksm' => $this->ksm,
+                    'tot' => $this->tot,
+                    'tot_charges' => 0,
+                    'cash' => $this->madfooh,
+                    'not_cash' => $this->tot - $this->madfooh,
+                    'sell_type'=>$pt,
+                    'place_no' =>$this->st_no ,
+                    'tran_no' => 0,
+                    'rebh' =>$this->rebh,
+                    'emp' => Auth::user()->empno,
+                    'available' => 0
+                ]);
+
+                foreach ($this->orderdetail as $item) {
+                    if ($item['item_no'] == 0) {
+                        continue;
+                    }
+                    if ($this->PlaceType='Makazen')
+                     {
+                      $pt=1;
+                      $st_quant=DB::connection('other')->table('stores')
+                        ->where('st_no', '=', $this->st_no)
+                        ->where('item_no','=',$item['item_no'])
+                        ->pluck('raseed');
+
+
+                      $st_quant=(int)$st_quant[0];
+                      $quant=(int)$item['quant'];
+
+                      if ($quant>$st_quant)
+                      {$this->dispatchBrowserEvent('mmsg', 'الصنف :'.$item['item_no'].' رصيده لا يكفي');
+                       $this->HasRaseed=false;
+
+                       break;
+                      }
+                     }
+
+                    if ($this->HasRaseed)
+                    {DB::connection('other')->table('sell_tran')->insert([
+                        'order_no' => $this->order_no,
+                        'item_no' => $item['item_no'],
+                        'quant' => $item['quant'],
+                        'price' => $item['price'],
+                        'rebh' => $item['rebh'],
+                        'emp' => Auth::user()->empno,
+                        'tarjeeh' => 0
+
+                    ]);}
+                }
+                if ($this->HasRaseed && $this->madfooh != 0) {
+
+                    $tran_no = trans::max('tran_no') + 1;
+                    DB::connection('other')->table('trans')->insert([
+                        'tran_no' => $tran_no,
+                        'jeha' => $this->jeha_no,
+                        'val' => $this->madfooh,
+                        'tran_date' => $this->order_date,
+                        'tran_type' => 2,
+                        'imp_exp' => 1,
+                        'tran_who' => 3,
+                        'chk_no' => 0,
+                        'notes' => 'فاتورة مبيعات ' . $this->order_no,
+                        'kyde' => 0,
+                        'emp' => Auth::user()->empno,
+                        'order_no' => $this->order_no
+
+                    ]);
+                }
+              if ($this->HasRaseed)
+              {
+                DB::connection('other')->commit();
+                $this->emit('mounttable');
+                $this->emit('dismountdetail');
+                $this->emit('mounthead');
+              } else {DB::connection('other')->rollback();}
+
+
+
+            } catch (\Exception $e) {
+                DB::connection('other')->rollback();
+                $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
+            }
+
+
+        }
+    }
+    public function HeadBtnClick($Wor,$wd,$wjh,$wplace,$wst)
+    {
+        $this->order_no=$Wor;
+        $this->order_date=$wd;
+        $this->jeha_no=$wjh;
+        $this->st_no=$wst;
+        $this->PlaceType=$wplace;
+    }
+    public function ChkIfDataExist($witem_no){
+
+        $One= array_column($this->orderdetail, 'item_no');
+        $index = array_search( $witem_no, $One);
+        if  ( $index ) {
+            $this->emit('YesIsFound',$this->orderdetail[$index]['quant'],
+                $this->orderdetail[$index]['price']);
+
+        }
+
+    }
+    public function gotonext($value)
+    {
+        $this->ksm = number_format($this->ksm,2, '.', '');
+        $this->madfooh = number_format($this->madfooh,2, '.', '');
+    }
+    protected function rules()
+    {
+        return [
+            'ksm' => ['required','numeric','gte:0','lte:tot1'],
+            'madfooh' =>   ['required','numeric','gte:0','lte:tot'],
+        ];
+    }
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
+    public function updatedKsm() {
+
+        $this->tot = number_format($this->tot1-$this->ksm,
+            2, '.', '');
+    }
+
+    public function putdata($value)
+    {
+
+        $One= array_column($this->orderdetail, 'item_no');
+        $index = array_search( $value['item_no'], $One);
+        if  ($index) {
+            $this->orderdetail[$index]['item_no']=$value['item_no'];
+            $this->orderdetail[$index]['item_name']=$value['item_name'];
+            $this->orderdetail[$index]['price']=$value['price'];
+            $this->orderdetail[$index]['quant']=$value['quant'];
+            $this->orderdetail[$index]['subtot']=
+                number_format($value['price']*$value['quant'], 2, '.', '');
+            $this->orderdetail[$index]['rebh']=$value['rebh'];
+        }
+        else {
+            $this->orderdetail[] =
+                ['item_no' => $value['item_no'], 'item_name' => $value['item_name'],
+                    'quant' => $value['quant'], 'price' => $value['price'],
+                    'subtot' => number_format($value['price'] * $value['quant'], 2, '.', ''),
+                    'rebh'=>$value['rebh'],];
+        }
+        $this->tot1 = number_format(array_sum(array_column($this->orderdetail, 'subtot')),
+            2, '.', '');
+        $this->tot = number_format($this->tot1 - $this->ksm,
+            2, '.', '');
+      $this->rebh = number_format(array_sum(array_column($this->orderdetail, 'rebh')),
+        2, '.', '');
+      $this->emitTo('sell.order-sell-detail','TakeNewItem');
+
+
+    }
+    public function removeitem($value)    {
+        unset($this->orderdetail[$value]);
+        array_values($this->orderdetail);
+        $this->emitTo('sell.order-sell-detail','ClearData');
+      $this->emitTo('sell.order-sell-detail','ClearData');
+      $this->emitTo('sell.order-sell-detail','gotonext','item_no');
+    }
+    public function edititem($value)
+    {
+        $this->emit( 'edititem',$this->orderdetail[$value]) ;
+    }
+    public function mount()
+    {
+
+        $this->orderdetail=[
+            ['item_no'=>'0','item_name'=>'',
+                'quant'=>'0','price'=>'0',
+                'subtot'=>'0']
+        ];
+
+        $this->ksm=number_format(0, 2, '.', '');
+        $this->madfooh=number_format(0, 2, '.', '');
+        $this->tot1=number_format(0, 2, '.', '');
+        $this->tot=number_format(0, 2, '.', '');
+        $this->notes=' ';
+
+    }
+
+    public function render()
+    {
+        return view('livewire.sell.order-sell-table-edit',$this->orderdetail);
+    }
+}

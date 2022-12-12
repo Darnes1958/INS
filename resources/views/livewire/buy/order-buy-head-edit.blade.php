@@ -18,7 +18,7 @@
           @error('order_date') <span class="error">{{ $message }}</span> @enderror
       </div>
 
-      <div class="row g-3 ">
+
         <div class="col-md-12">
           <label   class="form-label-me">المورد</label>
           <input wire:model="jeha_name"   class="form-control" readonly    type="text"   >
@@ -27,13 +27,16 @@
           <label   class="form-label-me">المخزن</label>
           <input wire:model="st_name"   class="form-control" readonly    type="text"   >
         </div>
-      </div>
 
-      <div class="my-3 align-center justify-content-center "  style="display: flex">
+
+      <div class="my-3  align-center justify-content-center"  style="display: flex">
 
         <input type="button"  id="head-btn"
                x-bind:hidden="!$wire.OrderNoFound" class= " btn btn-outline-success  waves-effect waves-light   "
-              wire:click.prevent="BtnHeader"  value="موافق" />
+              wire:click.prevent="BtnHeader"  value="  موافـق  " />
+        <input type="button"  id="head-btn2"
+               x-bind:hidden="!$wire.OrderNoFound" class= "mx-4 btn btn-outline-danger  waves-effect waves-light   "
+               wire:click.prevent="BtnHeaderDel"  value="الغاء الفاتورة" />
 
     </div>
     </div>
@@ -71,6 +74,14 @@
             $('#Order_L').select2({
                 closeOnSelect: true
             });
+        });
+        window.addEventListener('dodelete',function(e){
+            MyConfirm.fire({
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.emit('DoDelete');
+                }
+            })
         });
   </script>
 @endpush

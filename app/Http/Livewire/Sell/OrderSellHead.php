@@ -146,7 +146,7 @@ public function ChkPlace(){
         Config::set('database.connections.other.database', Auth::user()->company);
 
         return [
-            'order_no' => ['required','integer','gt:0', 'unique:other.buys,order_no'],
+            'order_no' => ['required','integer','gt:0', 'unique:other.sells,order_no'],
             'jeha_no' =>['required','integer','gt:1', Rule::exists('other.jeha')->where(function ($query) {
                 $query->where('jeha_type', 1);
             })],

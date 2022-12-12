@@ -16,4 +16,7 @@ class OrderSellController extends Controller
     function OrderSell(){
         return view('backend.sell.inp_sell');
     }
+  function OrderSellEdit (){
+    return view('backend.sell.edit_sell');
+  }
 }
