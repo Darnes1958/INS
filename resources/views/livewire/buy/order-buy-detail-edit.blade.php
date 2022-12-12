@@ -1,5 +1,5 @@
 
- <div x-data="{ $wire.OrderDetailOpen: true }" x-show="$wire.OrderDetailOpen"
+ <div x-data
          class="row g-3 " style="border:1px solid lightgray;background: white;">
 
       <div class="col-md-12" x-show="$wire.DetailOpen"  >

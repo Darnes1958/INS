@@ -86,6 +86,7 @@ Route::controller(OrderBuyController::class)->group(function (){
 });
 Route::controller(OrderSellController::class)->group(function (){
      route::get('/order_sell/add','OrderSell')->name('order_sell.add')->middleware('auth');
+     route::get('/order_sell/edit','OrderSellEdit')->name('order_sell.edit')->middleware('auth');
 });
 
 

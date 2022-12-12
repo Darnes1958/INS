@@ -92,7 +92,7 @@ class OrderBuyTableEdit extends Component
               ]);
 
               foreach ($this->orderdetail as $item) {
-                info('here 4');
+
                   if ($item['item_no'] == 0) {
                       continue;
                   }
@@ -151,9 +151,6 @@ class OrderBuyTableEdit extends Component
 
           } catch (\Exception $e) {
               DB::connection('other')->rollback();
-              info($e);
-
-              // something went wrong
           }
 
       }

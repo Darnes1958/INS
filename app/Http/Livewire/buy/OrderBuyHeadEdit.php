@@ -10,6 +10,7 @@ use App\Models\stores\stores;
 use App\Models\stores\stores_names;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class OrderBuyHeadEdit extends Component
@@ -35,8 +36,10 @@ class OrderBuyHeadEdit extends Component
     public $HeadDataOpen=false;
     public $TheOrderListSelected;
 
+    public $Good=true;
+
     protected $listeners = [
-        'mounthead','jehaadded',
+        'mounthead','jehaadded','DoDelete'
     ];
   public function updatedTheOrderListSelected(){
     $this->TheOrderListSelected=0;
@@ -45,6 +48,8 @@ class OrderBuyHeadEdit extends Component
   public function mounthead(){
 
     $this->mount();
+    $this->OrderNoFound=false;
+    $this->emitTo('buy.order-buy-detail-edit','dismountdetail');
     $this->emit('gotonext','orderno');
   }
     public function updatedOrderno(){
@@ -52,6 +57,7 @@ class OrderBuyHeadEdit extends Component
     }
     public function ChkOrderNoAndGo(){
       if ($this->orderno) {
+        $this->emit('mounttable');
         Config::set('database.connections.other.database', Auth::user()->company);
         $res = buys::find($this->orderno);
         if ($res) {
@@ -97,7 +103,39 @@ class OrderBuyHeadEdit extends Component
         $this->emitTo('buy.order-buy-detail-edit','TakeParam',$this->orderno,$this->stno);
         $this->emitTo('buy.order-buy-detail-edit','mountdetail');
     }
+  public function BtnHeaderDel()
+  {
+    $this->dispatchBrowserEvent('dodelete');
+  }
+  public function DoDelete(){
 
+    Config::set('database.connections.other.database', Auth::user()->company);
+    $this->Good=true;
+    $res=buy_tran::where('order_no',$this->orderno)->get();
+    foreach ($res as $item){
+      $st_raseed=stores::where('st_no',$this->stno)->where('item_no',$item->item_no)->first();
+      if ($st_raseed && $item->quant>$st_raseed->raseed){
+        $this->dispatchBrowserEvent('mmsg', 'الصنف رقم :  '.$item->item_no.'  سيصبح رصيده فالمخزن اقل من الصفر');
+        $this->Good=false;
+        break;
+      }
+    }
+    if ($this->Good){
+    DB::connection('other')->beginTransaction();
+    try {
+      buy_tran::where('order_no',$this->orderno)->delete();
+      buys::where('order_no',$this->orderno)->delete();
+      DB::connection('other')->commit();
+      $this->emit('mounttable');
+
+      $this->emitTo('buy.order-buy-detail-edit','dismountdetail');
+      $this->emitSelf('mounthead');
+    } catch (\Exception $e) {
+      DB::connection('other')->rollback();
+
+    }}
+
+  }
     public function mount(){
       $this->orderno='';
       $this->order_date='';

@@ -2,14 +2,19 @@
 namespace App\Http\Livewire\Traits;
 
 use App\Models\buy\buy_tran;
+use App\Models\others\price_type;
+use App\Models\sell\sell_tran;
+use App\Models\stores\items;
 use App\Models\stores\stores;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 trait MyLib {
     public $OldItemQuant=0;
     public $PlaceItemQuant;
     public $ItemExistsInOrder=false;
+
     public function IfBuyItemExists($order_no,$item_no,$stno){
         Config::set('database.connections.other.database', Auth::user()->company);
         $res=buy_tran::where('order_no',$order_no)->where('item_no',$item_no)->first();
@@ -20,4 +25,37 @@ trait MyLib {
                    return (true);}
         else {$this->OldItemQuant=0; $this->ItemExistsInOrder=false; return (false);}
     }
+  public function IfSellItemExists($order_no,$item_no,$placetype,$stno){
+    Config::set('database.connections.other.database', Auth::user()->company);
+    $res=sell_tran::where('order_no',$order_no)->where('item_no',$item_no)->first();
+    if ($res) {$this->OldItemQuant=$res->quant;
+      $this->RetPlaceRaseed($item_no,$placetype,$stno);
+      $this->ItemExistsInOrder=true;
+      return (true);}
+    else {$this->OldItemQuant=0; $this->ItemExistsInOrder=false; return (false);}
+  }
+
+  public function RetPlaceRaseed($item_no,$placetype,$stno){
+    Config::set('database.connections.other.database', Auth::user()->company);
+    if ($placetype=='Makazen')
+     {$ras=stores::where('st_no',$stno)->where('item_no',$item_no)->first();}
+    else
+     {$ras=halls::where('hall_no',$stno)->where('item_no',$item_no)->first();}
+    if ($ras) $this->PlaceItemQuant=$ras->raseed;
+    else $this->PlaceItemQuant=0;
+    return $this->PlaceItemQuant;
+  }
+ public function RetItemData($item){
+  $result=items::where('item_no', $item)->first();
+  return $result;
+ }
+ public function RetItemPrice($item,$pricetype){
+   Config::set('database.connections.other.database', Auth::user()->company);
+   $pr=DB::connection('other')->table('item_price_sell')
+     ->where('price_type', '=', $pricetype)
+     ->where('item_no','=',$item)
+     ->first('price');
+   if ($pr) return $pr->price;
+   else return 0;
+ }
 }

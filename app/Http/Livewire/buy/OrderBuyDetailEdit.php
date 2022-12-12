@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\Buy;
 
 
-use App\Http\Livewire\Traits\BuyChks;
+
 use App\Models\stores\stores;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -104,8 +104,10 @@ class OrderBuyDetailEdit extends Component
         $this->emit('gotonext', 'itemno');
     }
     public function dismountdetail(){
+
         $this->ClearData();
-        $this->DetailOpen=False;
+        $this->DetailOpen=false;
+        $this->OrderDetailOpen=false;
     }
 
     public function mount()
