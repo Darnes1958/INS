@@ -1,42 +1,50 @@
 <div   class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
-    <div class="col-md-2 my-1 d-inline-flex align-items-center">
+    <div class="col-md-3 my-1 d-inline-flex align-items-center">
         <label for="date" class="form-label mx-1 my-1" >التاريخ</label>
-        <input wire:model="RepDate" wire:keydown.enter="ChkDateAndGo"
+        <input wire:model="DateVal" wire:keydown.enter="ChkDateAndGo"
                class="form-control"
-               name="date" type="date"  id="date" >
+                type="date"  id="date" >
         @error('tran_date') <span class="error">{{ $message }}</span> @enderror
     </div>
-    <div class="col-md-10 my-2">
+    <div class="col-md-9 my-2">
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" wire:model="RepRadio"   value="buys_view">
             <label class="form-check-label" >مشتريات</label>
         </div><div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" wire:model="RepRadio" wire:click="ChangeRep"  value="sell">
+            <input class="form-check-input" type="radio" wire:model="RepRadio"  value="sells_view">
             <label class="form-check-label" >مبيعات</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" wire:model="RepRadio" wire:click="ChangeRep"  value="Tran">
+            <input class="form-check-input" type="radio" wire:model="RepRadio"   value="tran_view">
             <label class="form-check-label" >ايصالات</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" wire:model="RepRadio" wire:click="ChangeRep"  value="Aksat">
+            <input class="form-check-input" type="radio" wire:model="RepRadio"   value="Aksat">
             <label class="form-check-label" >أقساط</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" wire:model="RepRadio" wire:click="ChangeRep"  value="Over">
+            <input class="form-check-input" type="radio" wire:model="RepRadio" value="Over">
             <label class="form-check-label" >فائض</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" wire:model="RepRadio" wire:click="ChangeRep"  value="Wrong">
+            <input class="form-check-input" type="radio" wire:model="RepRadio"   value="Wrong">
             <label class="form-check-label" >بالخطأ</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" wire:model="RepRadio" wire:click="ChangeRep"  value="Tar">
+            <input class="form-check-input" type="radio" wire:model="RepRadio"   value="Tar">
             <label class="form-check-label" >ترجيع</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" wire:model="RepRadio" wire:click="ChangeRep"  value="Main">
+            <input class="form-check-input" type="radio" wire:model="RepRadio"   value="main_view">
             <label class="form-check-label" >عقود</label>
+        </div>
+
+        <div class="my-2  "  >
+
+            <input  type="button"  id="BackupBtn"
+                   class=" btn btn-outline-success  waves-effect waves-light   "
+                   wire:click.prevent="BackupBtn"   value="نسخ احتياطي" />
+
         </div>
     </div>
     <div>

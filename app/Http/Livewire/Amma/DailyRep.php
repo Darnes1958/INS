@@ -2,6 +2,9 @@
 
 namespace App\Http\Livewire\Amma;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class DailyRep extends Component
@@ -12,6 +15,24 @@ class DailyRep extends Component
 
     public $DateVal;
 
+    public function BackupBtn(){
+        $dbpath='D:\backup\mybak33.bak';
+        Config::set('database.connections.other.database', Auth::user()->company);
+        //DB::statement('BACKUP DATABASE '.Auth::user()->company.' TO DISK = \''.$dbpath.'\'  ');
+        DB::connection('other')
+            ->statement('use master; EXEC [DBbackup] \'Daibany\',\'c:\backup\mydb222.bak\'
+             ');
+    }
+
+    public function updatedRepRadio(){
+        if ($this->RepRadio=='buys_view') {$this->RepSearch1='jeha_name';$this->RepDate='order_date_input';}
+        if ($this->RepRadio=='sells_view') {$this->RepSearch1='jeha_name';$this->RepDate='order_date_input';}
+        if ($this->RepRadio=='tran_view') {$this->RepSearch1='jeha_name';$this->RepDate='inp_date';}
+        if ($this->RepRadio=='main_view') {$this->RepSearch1='name';$this->RepDate='inp_date';}
+
+        $this->emitTo('amma.daily-rep-table','TakeParams',
+            $this->RepRadio,$this->RepDate,$this->RepSearch1);
+    }
     public function ChkDateAndGo(){
       $this->emitTo('amma.daily-rep-table','TakeDate',$this->DateVal);
 
@@ -24,6 +45,7 @@ class DailyRep extends Component
 
     public function render()
     {
+
         return view('livewire.amma.daily-rep');
     }
 }
