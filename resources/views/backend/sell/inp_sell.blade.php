@@ -7,7 +7,7 @@
             <div class="row mb-3 ">
                 @csrf
                 <div  class="col-md-4 themed-grid-col">
-                    @livewire('sell.order-sell-head')
+                    @livewire('sell.order-sell-head',['price_type'=>$price_type])
                     @livewire('sell.order-sell-detail')
                 </div>
                 <div class="col-md-8 themed-grid-col px-1">

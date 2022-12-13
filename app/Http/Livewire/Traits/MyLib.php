@@ -6,6 +6,7 @@ use App\Models\others\price_type;
 use App\Models\sell\sell_tran;
 use App\Models\stores\items;
 use App\Models\stores\stores;
+use App\Models\stores\halls;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -29,9 +30,9 @@ trait MyLib {
     Config::set('database.connections.other.database', Auth::user()->company);
     $res=sell_tran::where('order_no',$order_no)->where('item_no',$item_no)->first();
     if ($res) {$this->OldItemQuant=$res->quant;
-      $this->RetPlaceRaseed($item_no,$placetype,$stno);
-      $this->ItemExistsInOrder=true;
-      return (true);}
+               $this->RetPlaceRaseed($item_no,$placetype,$stno);
+               $this->ItemExistsInOrder=true;
+               return (true);}
     else {$this->OldItemQuant=0; $this->ItemExistsInOrder=false; return (false);}
   }
 

@@ -2,27 +2,31 @@
 
 namespace App\Http\Livewire\Sell;
 
+use App\Models\sell\price_type;
 use App\Models\stores\items;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use \App\Http\Livewire\Traits\MyLib;
 
 class OrderSellDetail extends Component
 {
+    use MyLib;
     public $item;
     public $item_name;
     public $st_raseed;
     public $raseed;
     public $quant;
     public $price;
+    public $price_Type;
     public $orderdetail=[];
     public $st_label;
     public $price_buy;
     public $DetailOpen;
     public $OrderDetailOpen;
 
-  public $OredrPlacetype='Makazen';
+  public $OrderPlacetype='Makazen';
   public $OrderPlaceId=1;
 
   public $TheItemListIsSelectd;
@@ -44,11 +48,12 @@ class OrderSellDetail extends Component
         'itemchange','edititem','YesIsFound','ClearData','mountdetail','dismountdetail','TakeNewItem'
     ];
 
-    public function mountdetail($wpt,$wpn,$wpname){
+    public function mountdetail($wpt,$wpn,$wpname,$price_type){
         $this->OrderDetailOpen=true;
         $this->DetailOpen=true;
-        $this->OredrPlacetype=$wpt;
+        $this->OrderPlacetype=$wpt;
         $this->OrderPlaceId=$wpn;
+        $this->price_Type=$price_type;
         $this->st_label='رصيد '.$wpname;
 
         $this->emit('B_RefreshSelectItem',$wpt,$wpn);
@@ -105,57 +110,33 @@ class OrderSellDetail extends Component
         $this->emit('gotonext', 'item_no');
     }
 
-   public function ChkItem(){
-       Config::set('database.connections.other.database', Auth::user()->company);
-       if ($this->item!=null) {
-           if ($this->OredrPlacetype=='Makazen') {
-               $result=items::with(array('iteminstore' => function ($query){
-                   $query->where('st_no', $this->OrderPlaceId);
-               }))->
-               where('item_no', $this->item)->first();
-           }
+   public function ChkItem()
+   {
+     Config::set('database.connections.other.database', Auth::user()->company);
+     if ($this->item != null) {
 
-           if ($this->OredrPlacetype=='Salat') {
-               $result=items::with(array('iteminhall' => function ($query){
-                   $query->where('hall_no', $this->OrderPlaceId);
-               }))->
-               where('item_no', $this->item)->first();
-
-           }
-
-           if ($result) {
-               $this->item_name=$result->item_name;
-               $this->price=number_format($result->price_sell, 2, '.', '')  ;
-             $pr=DB::connection('other')->table('item_price_sell')
-               ->where('price_type', '=', 2)
-               ->where('item_no','=',$this->item)
-               ->pluck('price');
-
-             if ($pr)  {$this->price=number_format($result->price_sell, 2, '.', '')  ;}
-             else {$this->price=number_format((float)$pr[0], 2, '.', '')  ;}
-
-             $this->raseed= $result->raseed;
-               $this->price_buy=$result->price_buy;
-
-               if ($this->OredrPlacetype=='Makazen') {
-                   info($result->iteminstore->count());
-                 info($result->iteminstore);
-
-                   if ($result->iteminstore->count()!=0) {$this->st_raseed=$result->iteminstore[0]->raseed;}
-                   else {$this->st_raseed = 0; }
-                   if ($this->st_raseed==0) {return 'zero';}
-                   return ('ok');
-               }
-               if ($this->OredrPlacetype=='Salat') {
-                   if ($result->iteminhall->count()!=0) {$this->st_raseed=$result->iteminhall[0]->raseed;}
-                   else {$this->st_raseed=0; }
-                   if ($this->st_raseed==0) {return 'zero';}
-                   return ('ok');
-               }
-
-           } { return('not');}
-       } else { return('empty');}
-
+       $result = $this->RetItemData($this->item);
+       if ($result) {
+         $this->item_name = $result->item_name;
+         $this->raseed = $result->raseed;
+         $this->price_buy = $result->price_buy;
+         $this->price = $this->RetItemPrice($this->item, $this->price_Type);
+         if ($this->price == 0) {
+           $this->price = $result->price_sell;
+         }
+         $this->price = number_format($this->price, 2, '.', '');
+         $this->st_raseed = $this->RetPlaceRaseed($this->item, $this->OrderPlacetype, $this->OrderPlaceId);
+         if ($this->st_raseed == 0) {
+           return 'zero';
+         }
+         return ('ok');
+       }
+       {
+         return ('not');
+       }
+     } else {
+       return ('empty');
+      }
    }
     public function ItemKeyDown(){
         $this->item_name='';
@@ -173,7 +154,6 @@ class OrderSellDetail extends Component
         $this->item_name='';
         $this->quant=0;
         $this->price=0;
-
     }
 
     protected function rules()

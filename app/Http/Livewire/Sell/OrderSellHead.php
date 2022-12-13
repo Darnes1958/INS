@@ -28,17 +28,23 @@ class OrderSellHead extends Component
     public $OredrSellRadio='Makazen';
     public $PlaceLabel='المخزن';
 
-
+    public $price_type=1;
 
     public $stores_names;
     public $halls_names;
     public $HeadOpen;
     public $HeadDataOpen;
+    public $ThePriceListIsSelected;
 
   protected $listeners = [
     'mounthead','jehaadded','Take_Search_JehaNo',
   ];
 
+  public function updatedThePriceListIsSelected(){
+    $this->ThePriceListIsSelected=0;
+    $this->emit('gotonext','jehano');
+
+  }
 
 
   public function PlaceKeyEnter(){
@@ -183,8 +189,8 @@ public function ChkPlace(){
         if ($this->ChkPlace()=='empty') {$this->dispatchBrowserEvent('mmsg', 'يجب ادخال نقطة البيع ؟'); return(false);}
         $this->HeadOpen=false;
         $this->HeadDataOpen=true;
-        $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha_no,$this->OredrSellRadio,$this->stno);
-        $this->emit('mountdetail',$this->OredrSellRadio,$this->stno,$this->st_name);
+        $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha_no,$this->OredrSellRadio,$this->stno,$this->price_type);
+        $this->emit('mountdetail',$this->OredrSellRadio,$this->stno,$this->st_name,$this->price_type);
         return (true);
     }
 

@@ -25,6 +25,7 @@ class OrderSellDetailEdit extends Component
     public $price_buy;
     public $DetailOpen;
     public $OrderDetailOpen;
+    public $ItemGeted=false;
 
   public $OrderPlacetype='Makazen';
   public $OrderPlaceId=1;
@@ -37,8 +38,15 @@ class OrderSellDetailEdit extends Component
   }
 
   public function ChkQuant(){
-    if ($this->quant>$this->st_raseed)
-    {$this->dispatchBrowserEvent('mmsg', 'الرصيد لا يسمح !'); return(false);}
+    if ($this->ItemExistsInOrder){
+      if ($this->quant>$this->st_raseed+$this->OldItemQuant)
+      {$this->dispatchBrowserEvent('mmsg', 'الرصيد لا يسمح !'); return(false);}
+    }
+    else {
+      if ($this->quant>$this->st_raseed)
+      {$this->dispatchBrowserEvent('mmsg', 'الرصيد لا يسمح !'); return(false);}
+    }
+
     if ($this->quant<=0) {return false;}
     $this->emit('gotonext','price');
   }
@@ -68,6 +76,7 @@ class OrderSellDetailEdit extends Component
     public function dismountdetail(){
         $this->ClearData();
         $this->DetailOpen=False;
+        $this->OrderDetailOpen=False;
 
     }
 
@@ -137,23 +146,25 @@ class OrderSellDetailEdit extends Component
         $this->price=0;
         $res=$this->ChkItem();
         if ($res=='ok') {$this->emit('ChkIfDataExist',$this->item);
+                         $this->ItemGeted=true;
                          $this->emit('gotonext','quant');}
         if ($res=='not') { $this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ؟');}
         if ($res=='empty') { $this->dispatchBrowserEvent('mmsg', 'لا يجوز');}
         if ($res=='zero') { $this->dispatchBrowserEvent('mmsg', 'رصيد الصنف صفر');}
     }
     public function updatedItem()
-    {
+    {   $this->ItemGeted=false;
         $this->item_name='';
         $this->quant=0;
         $this->price=0;
+        $this->st_raseed=0;
     }
 
     protected function rules()
     {
         Config::set('database.connections.other.database', Auth::user()->company);
         return [
-            'item' => ['required','integer','gt:0', 'exists:other.items,item_no'],
+
             'quant' =>   ['required','integer','gt:0'],
             'price' =>   ['required','numeric'  ,'gt:0'],
         ];
@@ -165,15 +176,24 @@ class OrderSellDetailEdit extends Component
 
     public function ChkRec()
     {
+
         $this->validate();
-      if ($this->quant>$this->st_raseed)
-         {$this->dispatchBrowserEvent('mmsg', 'الرصيد لا يسمح !'); return(false);}
+        if ($this->ItemExistsInOrder){
+          if ($this->quant>$this->st_raseed+$this->OldItemQuant)
+          {$this->dispatchBrowserEvent('mmsg', 'الرصيد لا يسمح !'); return(false);}
+        }
+        else {
+          if ($this->quant>$this->st_raseed)
+          {$this->dispatchBrowserEvent('mmsg', 'الرصيد لا يسمح !'); return(false);}
+        }
+
         $subtot=number_format($this->price * $this->quant, 2, '.', '');
         $rebh=$subtot-number_format($this->price_buy * $this->quant, 2, '.', '');
 
         $this->orderdetail=['item_no'=>$this->item,'item_name'=>$this->item_name,
             'quant'=>$this->quant,'price'=>$this->price,'subtot'=>$this->price,'rebh'=>$rebh];
         $this->emit('putdata',$this->orderdetail);
+
         return (true);
     }
 

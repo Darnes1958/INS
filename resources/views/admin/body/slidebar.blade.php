@@ -28,7 +28,8 @@
                     </button>
                     <div class="collapse" id="dashboard-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="{{route('order_sell.add')}}" class="link-dark d-inline-flex text-decoration-none rounded">مبيعات بالتقسيط</a></li>
+                            <li><a href="{{route('order_sell.add',2)}}" class="link-dark d-inline-flex text-decoration-none rounded">مبيعات بالتقسيط</a></li>
+                            <li><a href="{{route('order_sell.add',1)}}" class="link-dark d-inline-flex text-decoration-none rounded">مبيعات نقدية</a></li>
                             <li><a href="{{route('order_sell.edit')}}" class="link-dark d-inline-flex text-decoration-none rounded">تعديل والغاء فاتورة</a></li>
 
                         </ul>

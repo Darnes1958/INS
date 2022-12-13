@@ -25,10 +25,8 @@
             @error('order_date') <span class="error">{{ $message }}</span> @enderror
         </div>
 
-
-
         <div class="col-md-12">
-            <label  for="order_no" class="form-label-me ">{{$PlaceLabel}}المخزن</label>
+            <label  for="order_no" class="form-label-me ">{{$PlaceLabel}}</label>
             <input wire:model="st_name"   class="form-control" readonly    type="text"   >
 
         </div>
@@ -38,6 +36,9 @@
                    class=" btn btn-outline-success  waves-effect waves-light   "
                    x-bind:hidden="!$wire.OrderNoFound"
                    wire:click.prevent="BtnHeader"  wire:keydown.enter="BtnHeader" value="موافق" />
+            <input type="button"  id="head-btn2"
+                   x-bind:hidden="!$wire.OrderNoFound" class= "mx-4 btn btn-outline-danger  waves-effect waves-light   "
+                   wire:click.prevent="BtnHeaderDel"  value="الغاء الفاتورة" />
 
         </div>
     </div>
@@ -85,6 +86,15 @@
             MyMsg.fire({
                 confirmButtonText:  e.detail,
            })
+        });
+        window.addEventListener('dodelete',function(e){
+
+            MyConfirm.fire({
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.emit('DoDelete');
+                }
+            })
         });
     </script>
 
@@ -162,6 +172,8 @@
                 closeOnSelect: true
             });
         });
+
+
     </script>
 
 @endpush

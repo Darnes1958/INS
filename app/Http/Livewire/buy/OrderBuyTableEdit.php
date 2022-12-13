@@ -97,14 +97,13 @@ class OrderBuyTableEdit extends Component
                       continue;
                   }
 
-                  if ($this->IfBuyItemExists($this->order_no,$item['item_no'],$this->st_no)) {
-                    if (($this->PlaceItemQuant-$this->OldItemQuant+$this->quant)<0) {
-                      $this->dispatchBrowserEvent('mmsg',
-                        ' رصيد المخزن للصنف '.$item['item_no'].' .. سيصبح أقل من صفر ');
-                      $this->HasRaseed=true;
-                      break;
-                    }
-                  }
+
+                if ( $this->RetPlaceRaseed($item['item_no'],'Makazen',$this->st_no)+$item['quant']<0) {
+                  $this->dispatchBrowserEvent('mmsg',
+                    ' رصيد المخزن للصنف '.$item['item_no'].' .. سيصبح أقل من صفر ');
+                  $this->HasRaseed=false;
+                  break;}
+                else $this->HasRaseed=True;
 
                   DB::connection('other')->table('buy_tran')->insert([
                       'order_no' => $this->order_no,

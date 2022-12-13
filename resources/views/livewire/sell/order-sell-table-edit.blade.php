@@ -84,9 +84,9 @@
     <!-- End Hide Add Customer Form -->
 
 
-    <div class="form-group" >
+    <div  >
 
-        <button wire:click.prevent="store()" class="btn btn-info" id="storeButton">تخزين الفاتورة</button>
+        <button wire:click.prevent="store" class="btn btn-info" id="storeButton">تخزين الفاتورة</button>
 
         @if (session()->has('message'))
             <div class="alert alert-success">

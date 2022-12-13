@@ -47,7 +47,7 @@ class OrderSellTable extends Component
 
             try {
 
-               if ($this->PlaceType='Makazen') {$pt=1;}
+               if ($this->PlaceType=='Makazen') $pt=1; else $pt=2;
                 DB::connection('other')->table('sells')->insert([
                     'order_no' => $this->order_no,
                     'jeha' => $this->jeha_no,

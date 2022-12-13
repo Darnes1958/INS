@@ -2,7 +2,10 @@
 
 namespace App\Http\Livewire\Sell;
 
+use App\Models\aksat\main;
 use App\Models\sell\rep_sell_tran;
+use App\Models\sell\sell_tran;
+use App\Models\sell\sells;
 use App\Models\stores\items;
 use App\Models\stores\stores;
 use App\Models\trans\trans;
@@ -10,9 +13,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use App\Http\Livewire\Traits\MyLib;
 
 class OrderSellTableEdit extends Component
 {
+    use MyLib;
     public $ksm;
     public $madfooh;
     public $tot1;
@@ -23,21 +28,26 @@ class OrderSellTableEdit extends Component
     public $jeha_no;
     public $st_no;
     public $notes;
+    public $price_type;
 
-    public $PlaceType;
+    public $TablePlaceType;
     public $rebh;
     public $HasRaseed=true;
 
     protected $listeners = [
-        'putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable','GetOrderData'
+        'putdata','gotonext','ChkIfDataExist','mounttable','GetOrderData'
     ];
-  public function GetOrderData($order_no,$ksm,$madfooh,$tot1,$tot,$jeha,$stno,$notes){
+  public function GetOrderData($order_no,$order_date,$price_type,$ksm,$madfooh,$tot1,$tot,$jeha,$placetype,$stno,$notes){
     $this->order_no=$order_no;
+    $this->order_date=$order_date;
+    $this->price_type=$price_type;
     $this->ksm=$ksm;
     $this->madfooh=$madfooh;
     $this->tot1=$tot1;
     $this->tot=$tot;
     $this->jeha_no=$jeha;
+    $this->TablePlaceType=$placetype;
+
     $this->st_no=$stno;
     $this->notes=$notes;
     $res=rep_sell_tran::where('order_no',$this->order_no)->get();
@@ -55,18 +65,36 @@ class OrderSellTableEdit extends Component
 
     public function store(){
 
-        if (count($this->orderdetail)==1){
+      Config::set('database.connections.other.database', Auth::user()->company);
+      if (count($this->orderdetail)==1){
             session()->flash('message', 'لم يتم ادخال اصناف بعد');
+            return false;
+        }
+      if ($this->price_type==2) {
+          $res=main::where('order_no',$this->order_no)->first();
+          if ($res) {$no=$res->no;$sul_pay=$res->sul_pay;} else $no=0;
+          if ($no!=0 && ($this->tot - $this->madfooh)<$res->sul_pay){
+            session()->flash('message', 'يجب أن لا تكون قيمة الفاتورة أصغر من المدفوع في العقد');
+            return false;
+          }
 
         }
-        else {
-            Config::set('database.connections.other.database', Auth::user()->company);
             $this->HasRaseed=true;
             DB::connection('other')->beginTransaction();
 
             try {
+              sell_tran::where('order_no',$this->order_no)->delete();
+              sells::where('order_no',$this->order_no)->delete();
 
-               if ($this->PlaceType='Makazen') {$pt=1;}
+              if ($no!=0){
+                main::where('no',$no)->update([
+                 'sul_tot'=>$this->tot,
+                 'sul'=>$this->tot - $this->madfooh,
+                 'dofa'=>$this->madfooh,
+                 'raseed'=>$this->tot - $this->madfooh-$sul_pay,
+                ]);
+              }
+               if ($this->TablePlaceType=='Makazen') $pt=1; else $pt=2;
                 DB::connection('other')->table('sells')->insert([
                     'order_no' => $this->order_no,
                     'jeha' => $this->jeha_no,
@@ -92,25 +120,12 @@ class OrderSellTableEdit extends Component
                     if ($item['item_no'] == 0) {
                         continue;
                     }
-                    if ($this->PlaceType='Makazen')
-                     {
-                      $pt=1;
-                      $st_quant=DB::connection('other')->table('stores')
-                        ->where('st_no', '=', $this->st_no)
-                        ->where('item_no','=',$item['item_no'])
-                        ->pluck('raseed');
 
-
-                      $st_quant=(int)$st_quant[0];
-                      $quant=(int)$item['quant'];
-
-                      if ($quant>$st_quant)
-                      {$this->dispatchBrowserEvent('mmsg', 'الصنف :'.$item['item_no'].' رصيده لا يكفي');
-                       $this->HasRaseed=false;
-
-                       break;
-                      }
-                     }
+                    if ( $this->RetPlaceRaseed($item['item_no'],$this->TablePlaceType,$this->st_no)<(int)$item['quant']) {
+                         $this->dispatchBrowserEvent('mmsg', 'الصنف :'.$item['item_no'].' رصيده لا يكفي');
+                         $this->HasRaseed=false;
+                         break;}
+                    else $this->HasRaseed=True;
 
                     if ($this->HasRaseed)
                     {DB::connection('other')->table('sell_tran')->insert([
@@ -151,24 +166,13 @@ class OrderSellTableEdit extends Component
                 $this->emit('mounthead');
               } else {DB::connection('other')->rollback();}
 
-
-
             } catch (\Exception $e) {
                 DB::connection('other')->rollback();
                 $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
             }
 
+    }
 
-        }
-    }
-    public function HeadBtnClick($Wor,$wd,$wjh,$wplace,$wst)
-    {
-        $this->order_no=$Wor;
-        $this->order_date=$wd;
-        $this->jeha_no=$wjh;
-        $this->st_no=$wst;
-        $this->PlaceType=$wplace;
-    }
     public function ChkIfDataExist($witem_no){
 
         $One= array_column($this->orderdetail, 'item_no');
@@ -205,7 +209,7 @@ class OrderSellTableEdit extends Component
 
     public function putdata($value)
     {
-
+      info('putData : '.$this->TablePlaceType);
         $One= array_column($this->orderdetail, 'item_no');
         $index = array_search( $value['item_no'], $One);
         if  ($index) {
@@ -230,7 +234,7 @@ class OrderSellTableEdit extends Component
             2, '.', '');
       $this->rebh = number_format(array_sum(array_column($this->orderdetail, 'rebh')),
         2, '.', '');
-      $this->emitTo('sell.order-sell-detail','TakeNewItem');
+      $this->emitTo('sell.order-sell-detail-edit','TakeNewItem');
 
 
     }

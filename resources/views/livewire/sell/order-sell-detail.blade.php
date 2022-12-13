@@ -5,7 +5,7 @@
     <div class="col-md-12" x-show="$wire.DetailOpen"  >
         <div class="row g-2 ">
             <div class="col-md-12" >
-                @livewire('stores.item-select', ['PlaceSelectType' => $OredrPlacetype,'PlaceToselect' => $OrderPlaceId])
+                @livewire('stores.item-select', ['PlaceSelectType' => $OrderPlacetype,'PlaceToselect' => $OrderPlaceId])
             </div>
         </div>
     </div>
@@ -78,16 +78,12 @@
                 var data = $('#Item_L').select2("val");
             @this.set('item', data);
             @this.set('TheItemListIsSelectd', 1);
-
             });
         });
         window.livewire.on('item-change-event',()=>{
             $('#Item_L').select2({
                 closeOnSelect: true
-
             });
-
-
         });
     </script>
 

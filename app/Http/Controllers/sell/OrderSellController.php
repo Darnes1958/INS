@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Config;
 
 class OrderSellController extends Controller
 {
-    function OrderSell(){
-        return view('backend.sell.inp_sell');
+    function OrderSell($price_type){
+        return view('backend.sell.inp_sell',compact('price_type'));
     }
   function OrderSellEdit (){
     return view('backend.sell.edit_sell');

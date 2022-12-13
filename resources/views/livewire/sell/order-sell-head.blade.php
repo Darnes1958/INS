@@ -1,7 +1,15 @@
 <div x-data class="col-md-12 " style="margin-bottom: 20px;margin-top: 16px;" xmlns="http://www.w3.org/1999/html">
-
     <div  x-show="$wire.HeadOpen" class="row g-3 " style="border:1px solid lightgray;background: white;">
+
         <div class="row g-3 ">
+            <div x-show="$wire.price_type!=2" class="col-md-12"   >
+                <div class="row ">
+                    <div class="col-md-12" >
+                        <label   class="form-label ">طريقة الدفع</label>
+                        @livewire('sell.price-select')
+                    </div>
+                </div>
+            </div>
             <div class="col-md-4">
                 <label  for="jehano" class="form-label-me">رقم الزبون</label>
                 <input wire:model="jeha_no" wire:keydown.enter="JehaKeyDown"
@@ -206,6 +214,22 @@
                 closeOnSelect: true
             });
             Livewire.emit('gotonext', 'jehano');
+        });
+        $(document).ready(function ()
+        {
+            $('#Price_L').select2({
+                closeOnSelect: true
+            });
+            $('#Price_L').on('change', function (e) {
+                var data = $('#Price_L').select2("val");
+            @this.set('price_type', data);
+            @this.set('ThePriceListIsSelected',1);
+            });
+        });
+        window.livewire.on('price-change-event',()=>{
+            $('#Price_L').select2({
+                closeOnSelect: true
+            });
         });
     </script>
 
