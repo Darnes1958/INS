@@ -1,4 +1,4 @@
-<div   class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
+<div x-data  class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
 
     <div x-data  class="col-md-12 my-1">
         <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "

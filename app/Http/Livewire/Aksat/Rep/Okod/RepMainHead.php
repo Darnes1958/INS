@@ -18,6 +18,7 @@ class RepMainHead extends Component
  public $search='';
  public $IsSearch=true;
 
+ protected $listeners = ['OpenTable',];
  public function updatingSearch()
   {
     $this->resetPage();

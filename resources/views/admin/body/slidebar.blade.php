@@ -65,6 +65,8 @@
                     <div class="collapse" id="okod-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li><a href="{{route('main.input')}}" class="link-dark d-inline-flex text-decoration-none rounded">ادخال عقد جديد</a></li>
+                            <li><a href="{{route('main.edit',1)}}" class="link-dark d-inline-flex text-decoration-none rounded">تعديل عقد</a></li>
+                            <li><a href="{{route('main.edit',2)}}" class="link-dark d-inline-flex text-decoration-none rounded">الغاء عقد</a></li>
                         </ul>
                     </div>
                 </li>

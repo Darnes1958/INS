@@ -42,6 +42,7 @@ class OrderSellHead extends Component
 
   public function updatedThePriceListIsSelected(){
     $this->ThePriceListIsSelected=0;
+    $this->emitTo('sell.price-select','TakeTypeNo',$this->price_type);
     $this->emit('gotonext','jehano');
 
   }
@@ -181,6 +182,7 @@ public function ChkPlace(){
         $this->jeha_type='2';
         $this->HeadOpen=True;
         $this->HeadDataOpen=false;
+
     }
 
     public function BtnHeader()

@@ -11,22 +11,19 @@ use Livewire\Component;
 
 class PriceSelect extends Component
 {
-  public $type_no;
+  public $type_no=1;
 
   public $PriceList;
 
 
   protected $listeners = [
-    'TaketypeNo','refreshComponent' => '$refresh'
-  ];
+    'TakeTypeNo'  ];
 
   public function TakeTypeNo($wo){
 
-    if(!is_null($wo)) {
       $this->type_no = $wo;
+info($this->type_no);
 
-
-    }
   }
 
   public function hydrate(){

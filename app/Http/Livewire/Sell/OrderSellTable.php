@@ -22,7 +22,7 @@ class OrderSellTable extends Component
     public $jeha_no;
     public $st_no;
     public $notes;
-
+    public $price_type;
     public $PlaceType;
     public $rebh;
     public $HasRaseed=true;
@@ -54,7 +54,7 @@ class OrderSellTable extends Component
                     'order_date' => $this->order_date,
                     'order_date_input' => $this->order_date,
                     'notes' => $this->notes,
-                    'price_type' => 2,
+                    'price_type' => $this->price_type,
                     'tot1' => $this->tot1,
                     'ksm' => $this->ksm,
                     'tot' => $this->tot,
@@ -113,7 +113,7 @@ class OrderSellTable extends Component
                         'jeha' => $this->jeha_no,
                         'val' => $this->madfooh,
                         'tran_date' => $this->order_date,
-                        'tran_type' => 2,
+                        'tran_type' => $this->price_type,
                         'imp_exp' => 1,
                         'tran_who' => 3,
                         'chk_no' => 0,
@@ -142,13 +142,14 @@ class OrderSellTable extends Component
 
         }
     }
-    public function HeadBtnClick($Wor,$wd,$wjh,$wplace,$wst)
+    public function HeadBtnClick($Wor,$wd,$wjh,$wplace,$wst,$price_type)
     {
         $this->order_no=$Wor;
         $this->order_date=$wd;
         $this->jeha_no=$wjh;
         $this->st_no=$wst;
         $this->PlaceType=$wplace;
+        $this->price_type=$price_type;
     }
     public function ChkIfDataExist($witem_no){
 

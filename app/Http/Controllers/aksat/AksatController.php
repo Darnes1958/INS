@@ -24,4 +24,8 @@ class AksatController extends Controller
     Config::set('database.connections.other.database', Auth::user()->company);
     return view('backend.aksat.InpMain');
   }
+  function MainEdit ($EditDel){
+    Config::set('database.connections.other.database', Auth::user()->company);
+    return view('backend.aksat.EditMain',compact('EditDel'));
+  }
 }
