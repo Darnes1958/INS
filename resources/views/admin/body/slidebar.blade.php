@@ -82,6 +82,17 @@
                         </ul>
                     </div>
                 </li>
+                <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#over-collapse" aria-expanded="false">
+                        &nbsp <i class="fa  fas fa-restroom" aria-hidden="true"></i>&nbsp فائض وترجيع</button>
+                    <div class="collapse" id="over-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="{{route('over.input','over')}}" class="link-dark d-inline-flex text-decoration-none rounded">خصم بالفائض</a></li>
+                            <li><a href="{{route('over.input','over_a')}}" class="link-dark d-inline-flex text-decoration-none rounded">خصم بالفائض من الأرشيف</a></li>
+
+                        </ul>
+                    </div>
+                </li>
                 <li class="border-top my-3"></li>
                 <li class="mb-1">
                     <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#repokod-collapse" aria-expanded="false">

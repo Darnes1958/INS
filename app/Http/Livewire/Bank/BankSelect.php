@@ -35,8 +35,6 @@ class BankSelect extends Component
     {
       Config::set('database.connections.other.database', Auth::user()->company);
       $this->BankList=DB::connection('other')->table('bank')->get();
-
-
       return view('livewire.bank.bank-select',$this->BankList);
     }
 }

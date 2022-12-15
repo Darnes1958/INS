@@ -1,0 +1,16 @@
+<?php
+
+namespace App\Http\Controllers\Aksat;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+
+class OverTarController extends Controller
+{
+  function OverInp ($Proc){
+
+    return view('backend.aksat.InpOverTar',compact('Proc'));
+  }  //
+}

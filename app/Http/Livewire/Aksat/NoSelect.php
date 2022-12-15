@@ -15,6 +15,7 @@ class NoSelect extends Component
   public $MainList;
   public $NoSelectOpen;
   public $bank;
+  public $MainOrArc;
 
   protected $listeners = [
     'nofound','bankfound','banknotfound',
@@ -43,14 +44,16 @@ class NoSelect extends Component
 
     $this->emit('main-change-event');
   }
-  public function mount(){
+  public function mount($mainorarc='main'){
+    $this->MainOrArc=$mainorarc;
     $this->bank=0;
     $this->NoSelectOpen=false;
   }
   public function render()
     {
       Config::set('database.connections.other.database', Auth::user()->company);
-      $this->MainList=DB::connection('other')->table('main')
+
+      $this->MainList=DB::connection('other')->table($this->MainOrArc)
         ->where('bank','=',$this->bank)
         ->orderBy('name', 'DESC')->get();
 

@@ -10,17 +10,8 @@ use App\Http\Controllers\aksat\AksatController;
 use App\Http\Controllers\aksat\RepAksatController;
 use App\Http\Controllers\RepAmaaController;
 use App\Http\Controllers\trans\TransController;
+use App\Http\Controllers\Aksat\OverTarController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
@@ -44,6 +35,11 @@ Route::controller(AKsatController::class)->group(function (){
   route::get('/main/Edit/{EditDel}', 'MainEdit')->name('main.edit')->middleware('auth') ;
 
 });
+Route::controller(OverTarController::class)->group(function (){
+  route::get('/overtar/inpover/{Proc}', 'OverInp')->name('over.input')->middleware('auth') ;
+
+});
+
 Route::controller(TransController::class)->group(function (){
   route::get('/trans/input}', 'TransInp')->name('trans.input')->middleware('auth') ;
 });
