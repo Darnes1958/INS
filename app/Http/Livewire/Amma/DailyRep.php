@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Illuminate\Support\Facades\Storage;
 
 class DailyRep extends Component
 {
@@ -18,10 +19,9 @@ class DailyRep extends Component
     public function BackupBtn(){
         $dbpath='D:\backup\mybak33.bak';
         Config::set('database.connections.other.database', Auth::user()->company);
-        //DB::statement('BACKUP DATABASE '.Auth::user()->company.' TO DISK = \''.$dbpath.'\'  ');
-        DB::connection('other')
-            ->statement('use master; EXEC [DBbackup] \'Daibany\',\'c:\backup\mydb222.bak\'
-             ');
+       // DB::statement('BACKUP DATABASE '.Auth::user()->company.' TO DISK = \''.$dbpath.'\'  ');
+       // DB::connection('other')->statement('use master; EXEC [DBbackup] \'Daibany\',\'c:\backup\mydb222.bak\'');
+        return Storage::download('Elawamy_12122022071901.bak');
     }
 
     public function updatedRepRadio(){

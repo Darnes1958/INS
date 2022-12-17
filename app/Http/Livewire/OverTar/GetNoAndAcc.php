@@ -53,7 +53,7 @@ class GetNoAndAcc extends Component
 
   public function Take_ManyAcc_No($The_no){
     $this->no=$The_no;
-    $this->emit('ksthead_goto','no');
+    $this->ChkNoAndGo();
 
   }
   public function Go(){
@@ -92,8 +92,8 @@ class GetNoAndAcc extends Component
     Config::set('database.connections.other.database', Auth::user()->company);
     $this->acc='';
     if ($this->no!=null) {
-      if ($this->MainOrArc='main') $result = main::where('bank',$this->bankno)->where('no',$this->no)->first();
-      if ($this->MainOrArc='mainarc') $result =MainArc::where('bank',$this->bankno)->where('no',$this->no)->first();
+      if ($this->MainOrArc=='main') $result = main::where('bank',$this->bankno)->where('no',$this->no)->first();
+      if ($this->MainOrArc=='mainarc') $result =MainArc::where('bank',$this->bankno)->where('no',$this->no)->first();
       if ($result) {
         $this->name=$result->name;
         $this->acc=$result->acc;
@@ -107,12 +107,13 @@ class GetNoAndAcc extends Component
     Config::set('database.connections.other.database', Auth::user()->company);
     $this->acc='';
     if ($this->no!=null) {
-      if ($this->MainOrArc='main') $result = main::where('bank',$this->bankno)->where('no',$this->no)->first();
-      if ($this->MainOrArc='mainarc') $result =MainArc::where('bank',$this->bankno)->where('no',$this->no)->first();
+      if ($this->MainOrArc=='main') $result = main::where('bank',$this->bankno)->where('no',$this->no)->first();
+      if ($this->MainOrArc=='mainarc') $result =MainArc::where('bank',$this->bankno)->where('no',$this->no)->first();
       if ($result) {
         $this->name=$result->name;
         $this->acc=$result->acc;
         $this->emitTo($this->ToWhome,'TakeData',$this->bankno,$this->acc,$this->no,$this->name);
+        $this->emit('TakeNo',$this->no);
       }
     }
   }
@@ -128,7 +129,7 @@ class GetNoAndAcc extends Component
       ['acc' => 'required|string|exists:other.'.$this->MainOrArc.',acc'],
       ['required' => 'لا يجوز','exists' => 'هذا الحساب غير موجود'])->validate();
 
-    if ($this->MainOrArc='main')
+    if ($this->MainOrArc=='main')
     {
       $result = main::where('bank',$this->bankno)->where('acc',$this->acc)->get();
 

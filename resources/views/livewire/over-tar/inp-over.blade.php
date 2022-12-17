@@ -8,7 +8,7 @@
   </div>
   <div class="col-md-6 mb-2">
     <label  for="kst" class="form-label-me">المبلغ</label>
-    <input x-bind:disabled="!$wire.OpenDetail" wire:model="kst" wire:keydown.enter="ChkKstAndGo"
+    <input x-bind:disabled="!$wire.OpenDetail" wire:model="kst" wire:keydown.enter="$emit('gotodet','SaveBtn')"
            class="form-control  "
            type="number"  id="kst" >
     @error('kst') <span class="error">{{ $message }}</span> @enderror

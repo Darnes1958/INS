@@ -11,7 +11,7 @@
   </div>
 
   <div class="col-md-5">
-    <label for="no" class="form-label-me">الرقم الألي</label>
+    <label for="no" class="form-label-me">رقم العقد</label>
     <input  x-bind:disabled="!$wire.BankGet"  wire:model="no" wire:keydown.enter="ChkNoAndGo"
             class="form-control"
             name="no" type="text"  id="no" >

@@ -9,14 +9,24 @@
         <div  class="col-md-6 themed-grid-col">
           @if ($Proc=='over')
             @livewire('over-tar.get-no-and-acc',['towhome'=>'over-tar.inp-over','mainorarc'=>'main'])
-            @livewire('over-tar.inp-over',['proc'=>'over'])
+            @livewire('over-tar.inp-over',['proc'=>'over_kst'])
 
           @endif
           @if ($Proc=='over_a')
               @livewire('over-tar.get-no-and-acc',['towhome'=>'over-tar.inp-over','mainorarc'=>'mainarc'])
-            @livewire('over-tar.inp-over',['proc'=>'over_a'])
+            @livewire('over-tar.inp-over',['proc'=>'over_kst_a'])
           @endif
         </div>
+          <div  class="col-md-6 themed-grid-col">
+              @if ($Proc=='over')
+
+                  @livewire('over-tar.over-table',['proc'=>'over_kst'])
+
+              @endif
+              @if ($Proc=='over_a')
+                  @livewire('over-tar.over-table',['proc'=>'over_kst_a'])
+              @endif
+          </div>
 
       </div>
     </div>

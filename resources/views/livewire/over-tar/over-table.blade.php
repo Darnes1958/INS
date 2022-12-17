@@ -4,27 +4,26 @@
         <thead class="font-size-12">
         <tr>
             <th width="13%">الرقم الألي</th>
+            <th width="13%">رقم العقد</th>
             <th width="13%">التاريخ</th>
             <th width="16%">المبلغ</th>
-            <th width="48%">ملاحظات</th>
             <th width="5%"></th>
             <th width="5%"></th>
-
         </tr>
         </thead>
         <tbody id="addRow" class="addRow">
         @foreach($TableList as  $item)
             <tr class="font-size-12">
-                <td>{{$item->tran_no}}</td>
-                <td>{{$item->tran_date}}</td>
-                <td>{{$item->val}}</td>
-                <td>{{$item->notes}}</td>
+                <td>{{$item->wrec_no}}</td>
+                <td>{{$item->no}}</td>
+                <td>{{$item->tar_date}}</td>
+                <td>{{$item->kst}}</td>
                 <td  style="padding-top: 2px;padding-bottom: 2px; ">
-                    <i wire:click="selectItem({{ $item->tran_no }},'update')"
+                    <i wire:click="selectItem({{ $item->wrec_no }},'update')"
                        class="btn btn-outline-primary btn-sm fa fa-edit editable-input" style="margin-left: 2px;"></i>
                 </td>
                 <td  style="padding-top: 2px;padding-bottom: 2px; ">
-                    <i wire:click="selectItem({{ $item->tran_no }},'delete')"
+                    <i wire:click="selectItem({{ $item->wrec_no }},'delete')"
                        class="btn btn-outline-danger btn-sm fa fa-times "></i>
                 </td>
             </tr>
@@ -52,15 +51,15 @@
         </div>
     </div>
 
-    <div class="modal fade" id="ModalMyEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="ModalMyOverEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <button wire:click="CloseEditDialog" type="button" class="btn-close" ></button>
-                    <h1 class="modal-title fs-5 mx-6" id="exampleModalLabel">تعديل إيصال</h1>
+                    <h1 class="modal-title fs-5 mx-6" id="exampleModalLabel">تعديل مبلغ بالفائض</h1>
                 </div>
                 <div class="modal-body">
-                    @livewire('trans.edit-tran')
+                    @livewire('over-tar.edit-over')
                 </div>
             </div>
         </div>
@@ -79,10 +78,10 @@
             $("#ModalMyDelete").modal('hide');
         })
         window.addEventListener('OpenMyEdit', event => {
-            $("#ModalMyEdit").modal('show');
+            $("#ModalMyOverEdit").modal('show');
         })
         window.addEventListener('CloseMyEdit', event => {
-            $("#ModalMyEdit").modal('hide');
+            $("#ModalMyOverEdit").modal('hide');
         })
 
 
