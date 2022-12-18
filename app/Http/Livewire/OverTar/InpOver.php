@@ -63,6 +63,7 @@ class InpOver extends Component
 
      $this->kst='';
      $this->OpenDetail=false;
+     $this->emit('TakeNo',$this->no);
      $this->emit('goto','no');
    }
     public function mount($proc='over_kst'){

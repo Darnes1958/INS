@@ -10,7 +10,7 @@
       <div class="col-md-6">
         <label for="editkst" class="form-label">المبلغ</label>
         <input wire:model="editkst"  wire:keydown.enter="$emit('gotonextover','oversavebtn')"
-               type="number" class="form-control"
+               type="text" class="form-control"
                id="editkst"  >
         @error('editkst') <span class="error">{{ $message }}</span> @enderror
       </div>

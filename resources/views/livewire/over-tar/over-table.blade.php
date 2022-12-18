@@ -1,5 +1,5 @@
 <div >
-    <div class="d-flex justify-content-sm-between  my-1"> <input wire:model="search"   type="search"  style="width: 100%" placeholder="ابحث هنا ......."> </div>
+
     <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
         <thead class="font-size-12">
         <tr>
@@ -51,12 +51,13 @@
         </div>
     </div>
 
+
     <div class="modal fade" id="ModalMyOverEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <button wire:click="CloseEditDialog" type="button" class="btn-close" ></button>
-                    <h1 class="modal-title fs-5 mx-6" id="exampleModalLabel">تعديل مبلغ بالفائض</h1>
+                    <h1 class="modal-title fs-5 mx-6" id="exampleModalLabel">تعديل مبلغ</h1>
                 </div>
                 <div class="modal-body">
                     @livewire('over-tar.edit-over')
@@ -64,6 +65,7 @@
             </div>
         </div>
     </div>
+
 
 
 </div>
@@ -81,6 +83,7 @@
             $("#ModalMyOverEdit").modal('show');
         })
         window.addEventListener('CloseMyEdit', event => {
+            alert('close in script');
             $("#ModalMyOverEdit").modal('hide');
         })
 

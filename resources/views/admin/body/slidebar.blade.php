@@ -89,6 +89,7 @@
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li><a href="{{route('over.input','over')}}" class="link-dark d-inline-flex text-decoration-none rounded">خصم بالفائض</a></li>
                             <li><a href="{{route('over.input','over_a')}}" class="link-dark d-inline-flex text-decoration-none rounded">خصم بالفائض من الأرشيف</a></li>
+                            <li><a href="{{route('over.input','tar_list')}}" class="link-dark d-inline-flex text-decoration-none rounded">ترجيع مبالغ من الفائض او الخطأ</a></li>
 
                         </ul>
                     </div>

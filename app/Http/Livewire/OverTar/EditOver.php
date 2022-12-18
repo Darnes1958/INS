@@ -4,7 +4,7 @@ namespace App\Http\Livewire\OverTar;
 
 use App\Models\OverTar\over_kst;
 use App\Models\OverTar\over_kst_a;
-use App\Models\trans\trans;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Livewire\Component;
@@ -40,6 +40,7 @@ class EditOver extends Component
     'edittran_date.required'=>'يجب ادخال تاريخ صحيح',
   ];
   public function SaveVal(){
+
     $this->validate();
     Config::set('database.connections.other.database', Auth::user()->company);
     if ($this->Proc=='over_kst')
@@ -61,6 +62,7 @@ class EditOver extends Component
   }
   public function render()
     {
+
         return view('livewire.over-tar.edit-over');
     }
 }

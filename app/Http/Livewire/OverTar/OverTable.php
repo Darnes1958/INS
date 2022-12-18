@@ -25,6 +25,7 @@ class OverTable extends Component
     ];
 
     public function closeandrefresh(){
+      info('close ');
       $this->CloseEditDialog();
       $this->render();
     }

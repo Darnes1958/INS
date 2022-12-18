@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Http\Livewire\OverTar;
+
+use App\Models\aksat\kst_trans;
+use App\Models\aksat\main;
+use App\Models\bank\bank;
+use App\Models\OverTar\over_kst;
+use App\Models\OverTar\tar_kst;
+use Illuminate\Queue\Listener;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+use Livewire\Component;
+
+class InpTar extends Component
+{
+  public $bankno;
+  public $tar_date;
+  public $ksm_type=2;
+  public $BankGet=false;
+  public $TheBankListIsSelectd;
+  public $Proc='over_kst';
+
+  protected $listeners =['TakeBankGet',];
+
+  public function TakeBankGet($bankget){
+    $this->BankGet=$bankget;
+  }
+  public function updatedProc(){
+    $this->emitTo('over-tar.tar-table','TakeProc',$this->Proc);
+  }
+  public function updatedTheBankListIsSelectd(){
+    $this->TheBankListIsSelectd=0;
+    $this->ChkBankAndGo();
+  }
+
+  public function ChkBankAndGo(){
+    Config::set('database.connections.other.database', Auth::user()->company);
+
+    if ($this->bankno!=null) {
+      $result = bank::where('bank_no',$this->bankno)->first();
+      if ($result) {
+
+        $this->emitTo('over-tar.tar-table','TakeBank',$this->bankno);
+        $this->emit('goto','no');
+      }}
+
+  }
+
+ public function SaveTar(){
+   $this->emitTo('over-tar.tar-table','SaveTar',$this->tar_date,$this->ksm_type);
+ }
+
+    public function render()
+    {
+        $this->tar_date=date('Y-m-d');
+        return view('livewire.over-tar.inp-tar');
+    }
+}
