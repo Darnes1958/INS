@@ -42,6 +42,18 @@ class DailyRepTable extends Component
   public function render()
     {
       Config::set('database.connections.other.database', Auth::user()->company);
+      if ($this->TableName=='Aksat')
+        return view('livewire.amma.daily-rep-table',[
+          'TableList'=>DB::connection('other')->table('main')
+            ->join('kst_trans', 'main.no', '=', 'kst_trans.no')
+            ->join('bank', 'main.bank', '=', 'bank.bank_no')
+            ->join('ksm_type', 'kst_trans.ksm_type', '=', 'ksm_type.ksm_type_no')
+            ->where('kst_trans.inp_date',$this->DateVal)
+            ->select('main.no','main.name','main.acc','kst_trans.ksm','kst_trans.ksm_date', 'bank.bank_name', 'ksm_type.ksm_type_name')
+            ->paginate(15)
+          ,'TableName'=>$this->TableName]);
+
+
       return view('livewire.amma.daily-rep-table',[
         'TableList'=>DB::connection('other')->table($this->TableName)
           ->where([

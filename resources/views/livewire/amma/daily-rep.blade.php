@@ -23,15 +23,15 @@
             <label class="form-check-label" >أقساط</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" wire:model="RepRadio" value="Over">
+            <input class="form-check-input" type="radio" wire:model="RepRadio" value="over_view">
             <label class="form-check-label" >فائض</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" wire:model="RepRadio"   value="Wrong">
+            <input class="form-check-input" type="radio" wire:model="RepRadio"   value="wrong_view">
             <label class="form-check-label" >بالخطأ</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" wire:model="RepRadio"   value="Tar">
+            <input class="form-check-input" type="radio" wire:model="RepRadio"   value="tar_view">
             <label class="form-check-label" >ترجيع</label>
         </div>
         <div class="form-check form-check-inline">

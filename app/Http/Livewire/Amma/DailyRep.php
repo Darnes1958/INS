@@ -30,6 +30,11 @@ class DailyRep extends Component
         if ($this->RepRadio=='tran_view') {$this->RepSearch1='jeha_name';$this->RepDate='inp_date';}
         if ($this->RepRadio=='main_view') {$this->RepSearch1='name';$this->RepDate='inp_date';}
 
+      if ($this->RepRadio=='over_view') {$this->RepSearch1='name';$this->RepDate='inp_date';}
+      if ($this->RepRadio=='wrong_view') {$this->RepSearch1='name';$this->RepDate='inp_date';}
+      if ($this->RepRadio=='tar_view') {$this->RepSearch1='name';$this->RepDate='inp_date';}
+
+
         $this->emitTo('amma.daily-rep-table','TakeParams',
             $this->RepRadio,$this->RepDate,$this->RepSearch1);
     }

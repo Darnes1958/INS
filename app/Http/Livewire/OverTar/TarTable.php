@@ -59,10 +59,7 @@ class TarTable extends Component
          $field='morahel';
          $no=0;
        }
-       info($res->name);
-       info($this->Proc);
-       info($field);
-       info($key);
+
        if ($res) {
          DB::connection('other')->table('tar_kst')->insert([
            'no' => $no,

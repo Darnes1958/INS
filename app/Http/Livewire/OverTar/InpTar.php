@@ -47,14 +47,29 @@ class InpTar extends Component
       }}
 
   }
+  protected function rules()
+  {
 
+    return [
+      'tar_date' => ['required','date'],
+
+    ];
+  }
+  protected $messages = [
+    'required' => 'لا يجوز ترك فراغ',
+    'ksm_date.required' => 'تاريخ خطأ',
+  ];
  public function SaveTar(){
+   $this->validate();
    $this->emitTo('over-tar.tar-table','SaveTar',$this->tar_date,$this->ksm_type);
+ }
+ public function mount(){
+   $this->tar_date=date('Y-m-d');
  }
 
     public function render()
     {
-        $this->tar_date=date('Y-m-d');
+
         return view('livewire.over-tar.inp-tar');
     }
 }

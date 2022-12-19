@@ -16,6 +16,7 @@
             @livewire('over-tar.inp-over',['proc'=>'over_kst_a'])
           @endif
           @if ($Proc=='tar_list') @livewire('over-tar.inp-tar')  @endif
+          @if ($Proc=='wrong') @livewire('over-tar.inp-wrong')  @endif
 
         </div>
         <div  class="col-md-6 themed-grid-col">
@@ -26,6 +27,7 @@
                 @livewire('over-tar.over-table',['proc'=>'over_kst_a'])
             @endif
             @if ($Proc=='tar_list')  @livewire('over-tar.tar-table')  @endif
+            @if ($Proc=='wrong')     @livewire('over-tar.wrong-table')  @endif
 
         </div>
 

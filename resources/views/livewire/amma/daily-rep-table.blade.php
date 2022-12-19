@@ -51,6 +51,118 @@
                 </tbody>
             </table>
         @endif
+
+      @if ($TableName=='Aksat' )
+        <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
+          <thead class="font-size-12">
+          <tr>
+            <th width="8%">رقم العقد</th>
+            <th width="26%">الإسم</th>
+            <th width="20%">المصرف</th>
+            <th width="12%">رقم الحساب</th>
+            <th width="9%">تاريخ الخصم</th>
+            <th width="9%">القسط المخصوم</th>
+            <th width="8%">طؤيقة الدفع</th>
+
+          </tr>
+          </thead>
+          <tbody id="addRow" class="addRow">
+          @foreach($TableList as $item)
+            <tr class="font-size-12">
+              <td > {{ $item->no }} </td>
+              <td > {{ $item->name }} </td>
+              <td> {{ $item->bank_name }} </td>
+              <td> {{ $item->acc }} </td>
+              <td> {{ $item->ksm_date }} </td>
+              <td> {{ $item->ksm }} </td>
+              <td> {{ $item->ksm_type_name }} </td>
+
+            </tr>
+          @endforeach
+          </tbody>
+        </table>
+      @endif
+
+      @if ($TableName=='over_view' )
+        <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
+          <thead class="font-size-12">
+          <tr>
+            <th width="8%">رقم العقد</th>
+            <th width="26%">الإسم</th>
+            <th width="20%">المصرف</th>
+            <th width="12%">رقم الحساب</th>
+            <th width="9%">التاريخ</th>
+            <th width="9%">المبلغ</th>
+          </tr>
+          </thead>
+          <tbody id="addRow" class="addRow">
+          @foreach($TableList as $item)
+            <tr class="font-size-12">
+              <td > {{ $item->no }} </td>
+              <td > {{ $item->name }} </td>
+              <td> {{ $item->bank_name }} </td>
+              <td> {{ $item->acc }} </td>
+              <td> {{ $item->tar_date }} </td>
+              <td> {{ $item->kst }} </td>
+            </tr>
+          @endforeach
+          </tbody>
+        </table>
+      @endif
+      @if ($TableName=='tar_view' )
+        <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
+          <thead class="font-size-12">
+          <tr>
+            <th width="8%">رقم العقد</th>
+            <th width="26%">الإسم</th>
+            <th width="20%">المصرف</th>
+            <th width="12%">رقم الحساب</th>
+            <th width="9%">التاريخ</th>
+            <th width="9%">المبلغ</th>
+            <th width="14%">طريقة الدفع</th>
+          </tr>
+          </thead>
+          <tbody id="addRow" class="addRow">
+          @foreach($TableList as $item)
+            <tr class="font-size-12">
+              <td > {{ $item->no }} </td>
+              <td > {{ $item->name }} </td>
+              <td> {{ $item->bank_name }} </td>
+              <td> {{ $item->acc }} </td>
+              <td> {{ $item->tar_date }} </td>
+              <td> {{ $item->kst }} </td>
+              <td> {{ $item->ksm_type_name }} </td>
+            </tr>
+          @endforeach
+          </tbody>
+        </table>
+      @endif
+      @if ($TableName=='wrong_view' )
+        <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
+          <thead class="font-size-12">
+          <tr>
+            <th width="8%">الرقم الألي</th>
+            <th width="26%">الإسم</th>
+            <th width="20%">المصرف</th>
+            <th width="12%">رقم الحساب</th>
+            <th width="9%">التاريخ</th>
+            <th width="9%">المبلغ</th>
+          </tr>
+          </thead>
+          <tbody id="addRow" class="addRow">
+          @foreach($TableList as $item)
+            <tr class="font-size-12">
+              <td > {{ $item->wrong_no }} </td>
+              <td > {{ $item->name }} </td>
+              <td> {{ $item->bank_name }} </td>
+              <td> {{ $item->acc }} </td>
+              <td> {{ $item->tar_date }} </td>
+              <td> {{ $item->kst }} </td>
+            </tr>
+          @endforeach
+          </tbody>
+        </table>
+      @endif
         @if ($TableName=='main_view' )
             <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
                 <thead class="font-size-12">
