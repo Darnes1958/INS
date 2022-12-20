@@ -18,6 +18,11 @@
           @if ($Proc=='tar_list') @livewire('over-tar.inp-tar')  @endif
           @if ($Proc=='wrong') @livewire('over-tar.inp-wrong')  @endif
 
+            @if ($Proc=='tar_maksoom')
+              @livewire('over-tar.get-no-and-acc',['towhome'=>'over-tar.tar2-detail','mainorarc'=>'main'])
+              @livewire('over-tar.tar2-detail')
+            @endif
+
         </div>
         <div  class="col-md-6 themed-grid-col">
             @if ($Proc=='over')
@@ -28,6 +33,7 @@
             @endif
             @if ($Proc=='tar_list')  @livewire('over-tar.tar-table')  @endif
             @if ($Proc=='wrong')     @livewire('over-tar.wrong-table')  @endif
+
 
         </div>
 

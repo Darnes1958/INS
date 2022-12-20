@@ -24,7 +24,7 @@ class GetNoAndAcc extends Component
   public $name;
   public $BankGet;
 
-  public $TheBankListIsSelectd;
+  public $TheBankListIsSelected;
   public $TheNoListIsSelectd;
 
   public $MainOrArc;
@@ -37,8 +37,10 @@ class GetNoAndAcc extends Component
     $this->dispatchBrowserEvent('CloseKstManyModal');
   }
 
-  public function updatedTheBankListIsSelectd(){
-    $this->TheBankListIsSelectd=0;
+  public function updatedTheBankListIsSelected(){
+    $this->TheBankListIsSelected=0;
+    info($this->bankno);
+    $this->emitTo('bank.bank-select','TakeBankNo',$this->bankno);
     $this->ChkBankAndGo();
   }
   public function updatedTheNoListIsSelectd(){
@@ -74,7 +76,9 @@ class GetNoAndAcc extends Component
     $this->bankname='';
     if ($this->bankno!=null) {
       $result = bank::where('bank_no',$this->bankno)->first();
-      if ($result) {  $this->bankname=$result->bankname;
+      if ($result) {
+        $this->emitTo('bank.bank-select','TakeBankNo',$this->bankno);
+        $this->bankname=$result->bankname;
         $this->BankGet=true;
         $this->ResetKstHead();
         $this->emitTo('aksat.no-select','bankfound',$this->bankno,$this->bankname);
@@ -110,6 +114,7 @@ class GetNoAndAcc extends Component
       if ($this->MainOrArc=='main') $result = main::where('bank',$this->bankno)->where('no',$this->no)->first();
       if ($this->MainOrArc=='mainarc') $result =MainArc::where('bank',$this->bankno)->where('no',$this->no)->first();
       if ($result) {
+        $this->emitTo('aksat.no-select','nofound',$result);
         $this->name=$result->name;
         $this->acc=$result->acc;
         $this->emitTo($this->ToWhome,'TakeData',$this->bankno,$this->acc,$this->no,$this->name);

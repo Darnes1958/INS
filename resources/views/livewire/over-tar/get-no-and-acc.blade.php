@@ -75,7 +75,7 @@
           $('#Bank_L').on('change', function (e) {
               var data = $('#Bank_L').select2("val");
           @this.set('bankno', data);
-          @this.set('TheBankListIsSelectd', 1);
+          @this.set('TheBankListIsSelected', 1);
           });
       });
       window.livewire.on('bank-change-event',()=>{

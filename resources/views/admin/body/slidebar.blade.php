@@ -91,6 +91,7 @@
                             <li><a href="{{route('over.input','over_a')}}" class="link-dark d-inline-flex text-decoration-none rounded">خصم بالفائض من الأرشيف</a></li>
                             <li><a href="{{route('over.input','wrong')}}" class="link-dark d-inline-flex text-decoration-none rounded">مبلغ وارد بالخطأ</a></li>
                             <li><a href="{{route('over.input','tar_list')}}" class="link-dark d-inline-flex text-decoration-none rounded">ترجيع مبالغ من الفائض او الخطأ</a></li>
+                            <li><a href="{{route('over.input','tar_maksoom')}}" class="link-dark d-inline-flex text-decoration-none rounded">ترجع مبلغ مخصوم من عقد</a></li>
 
                         </ul>
                     </div>

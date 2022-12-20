@@ -19,13 +19,10 @@ class BankSelect extends Component
     'TakeBankNo',
   ];
 
-  public function TakeBankNo($wj,$wn){
+  public function TakeBankNo($bankno){
 
-    if(!is_null($wj)) {
-      $this->BankNo = $wj;
-      $this->BankName = $wn;
+      $this->BankNo = $bankno;
 
-    }
   }
 
   public function hydrate(){

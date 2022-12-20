@@ -34,7 +34,6 @@ class InpOver extends Component
    }
   protected function rules()
   {
-
     return [
       'tar_date' => ['required','date'],
       'kst' => ['required','numeric','gt:0'],
