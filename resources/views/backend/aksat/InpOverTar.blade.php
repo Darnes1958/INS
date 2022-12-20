@@ -6,7 +6,14 @@
     <div class="container-fluid">
       <div class="row mb-3 ">
         @csrf
-        <div  class="col-md-6 themed-grid-col">
+          @if ($Proc=='tar_maksoom')
+              <div  class="col-md-8 themed-grid-col">
+               @livewire('over-tar.get-no-and-acc',['towhome'=>'over-tar.tar2-detail','mainorarc'=>'main'])
+               @livewire('over-tar.tar2-detail')
+              </div>
+          @endif
+
+          <div  class="col-md-6 themed-grid-col">
           @if ($Proc=='over')
             @livewire('over-tar.get-no-and-acc',['towhome'=>'over-tar.inp-over','mainorarc'=>'main'])
             @livewire('over-tar.inp-over',['proc'=>'over_kst'])
@@ -18,10 +25,6 @@
           @if ($Proc=='tar_list') @livewire('over-tar.inp-tar')  @endif
           @if ($Proc=='wrong') @livewire('over-tar.inp-wrong')  @endif
 
-            @if ($Proc=='tar_maksoom')
-              @livewire('over-tar.get-no-and-acc',['towhome'=>'over-tar.tar2-detail','mainorarc'=>'main'])
-              @livewire('over-tar.tar2-detail')
-            @endif
 
         </div>
         <div  class="col-md-6 themed-grid-col">

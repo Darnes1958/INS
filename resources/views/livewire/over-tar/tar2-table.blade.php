@@ -1,4 +1,5 @@
-<div class="col-md-6 mb-2">
+<div x-data x-show="$wire.TarGet" class="col-md-6 mb-2">
+    <label  class="form-label align-right" >الغاء ترجيعات سابقة</label>
   <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
     <thead class="font-size-12">
     <tr>

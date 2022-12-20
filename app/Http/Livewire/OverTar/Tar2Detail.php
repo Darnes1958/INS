@@ -22,14 +22,19 @@ class Tar2Detail extends Component
   public $no=0;
   public $bank=0;
   public $acc='0';
-  public $ksmdate;
+  public $ksm_date;
+  public $kst_date;
   public $ksm;
   public $ser;
   public $name;
   public $tar_date;
+  public $ksm_type=2;
+
+  public $wrec_no;
 
   public $NoGet=false;
   public $TarGet=false;
+  public $SomeThing;
 
   protected $listeners =['TakeData','ShowMe'];
 
@@ -42,6 +47,7 @@ class Tar2Detail extends Component
     $this->acc=$acc;
     $this->bank=$bank;
     $this->name=$name;
+    if (!$this->tar_date) $this->tar_date=date('Y-m-d');
     $this->NoGet=DB::connection('other')->table('kst_trans')
       ->where('no',$this->no)
       ->whereNotNull('ksm_date')!=null;
@@ -55,50 +61,140 @@ class Tar2Detail extends Component
   public function selectItem($ser,$ksm){
     $this->ser=$ser;
     $this->ksm=$ksm;
+    $res=kst_trans::where('no',$this->no)->where('ser',$ser)->first();
+    $this->kst_date=$res->kst_date;
+    $this->ksm_date=$res->ksm_date;
+    $this->SomeThing='inp';
     $this->dispatchBrowserEvent('OpenMyDelete');
   }
+    public function selectItem2($rec){
+        $this->wrec_no=$rec;
+        $this->SomeThing='del';
+        $this->dispatchBrowserEvent('OpenMyDelete');
+    }
   public function CloseDeleteDialog(){$this->dispatchBrowserEvent('CloseMyDelete');}
-  public function delete(){
-    $this->CloseDeleteDialog();
 
+    protected function rules()
+    {
+        return [
+            'tar_date' => ['required','date'],
+
+        ];
+    }
+    protected $messages = [
+        'required' => 'لا يجوز ترك فراغ',
+        'ksm_date.required' => 'تاريخ خطأ',
+    ];
+  public function DoSomeThing(){
+     if ($this->SomeThing=='inp') $this->InpTar();
+     else $this->DelTar();
+  }
+    public function DelTar(){
+
+        $this->CloseDeleteDialog();
+        Config::set('database.connections.other.database', Auth::user()->company);
+        DB::connection('other')->beginTransaction();
+
+        try {
+            $res=tar_kst::find($this->wrec_no);
+                $this->kst_date=$res->kst_date;
+                $this->ksm_date=$res->ksm_date;
+                $this->ser=$res->ser;
+                $this->ksm=$res->kst;
+            $res=main::where('no',$this->no)->first();
+                $kst=$res->kst;
+                $sul_pay=$res->sul_pay;
+                $raseed=$res->raseed;
+
+            kst_trans::insert([
+                'ser'=>$this->ser,
+                'no'=>$this->no,
+                'kst_date'=>$this->kst_date,
+                'ksm_type'=>2,
+                'chk_no'=>0,
+                'kst'=>$kst,
+                'ksm_date'=>$this->ksm_date,
+                'ksm'=>$this->ksm,
+                'kst_notes'=>null,
+                'inp_date'=>date('Y-m-d'),
+                'emp'=>auth::user()->empno,
+            ]);
+
+            DB::connection('other')->table('main')->where('no',$this->no)->update([
+                'sul_pay'=>$sul_pay+$this->ksm,
+                'raseed'=>$raseed-$this->ksm,
+            ]);
+
+            tar_kst::where('wrec_no',$this->wrec_no)->delete();
+
+            DB::connection('other')->commit();
+            $this->render();
+        } catch (\Exception $e) {
+            DB::connection('other')->rollback();
+
+            $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
+        }
+    }
+  public function InpTar(){
+    $this->validate();
+    $this->CloseDeleteDialog();
     Config::set('database.connections.other.database', Auth::user()->company);
-    kst_trans::where('no',$this->no)->where('ser',$this->ser)->delete();
-    $maxdate=kst_trans::where('no',$this->no)->max('kst_date');
-    $newdate=Carbon::parse($maxdate)->addMonth();
-    $maxser=kst_trans::where('no',$this->no)->max('ser')+1;
-    $kst=main::find('no')->kst;
-    kst_trans::insert([
-      'ser'=>$maxser,
-      'no'=>$this->no,
-      'kst_date'=>$maxdate,
-      'ksm_type'=>0,
-      'chk_no'=>0,
-      'kst'=>$kst,
-      'ksm_date'=>null,
-      'ksm'=>0,
-      'kst_notes'=>null,
-      'inp_date'=>null,
-      'emp'=>auth::user()->empno,
-    ]);
-    DB::connection('other')->table('main')->where('no',$this->D_no)->update([
-      'sul_pay'=>$this->sul_pay+$this->ksm,
-      'raseed'=>$this->raseed-$this->ksm,
-    ]);
-    DB::connection('other')->table('tar_kst')->insert([
-      'no' => $this->no,
-      'name' => $this->name,
-      'bank' => $this->bank,
-      'acc' => $this->acc,
-      'kst' => $kst,
-      'tar_type' => 3,
-      'tar_date' => $this->tar_date,
-      'ksm_date' => null,
-      'ser' => $this->ser,
-      'kst_date' => null,
-      'emp' => Auth::user()->empno,
-      'ksm_type' => $ksm_type,
-    ]);
-    $this->render();
+      DB::connection('other')->beginTransaction();
+
+      try {
+
+            kst_trans::where('no',$this->no)->where('ser',$this->ser)->delete();
+            $maxdate=kst_trans::where('no',$this->no)->max('kst_date');
+            $newdate=Carbon::parse($maxdate)->addMonth();
+
+            $maxser=kst_trans::where('no',$this->no)->max('ser')+1;
+
+            $res=main::where('no',$this->no)->first();
+            $kst=$res->kst;
+            $sul_pay=$res->sul_pay;
+            $raseed=$res->raseed;
+
+            kst_trans::insert([
+              'ser'=>$maxser,
+              'no'=>$this->no,
+              'kst_date'=>$newdate,
+              'ksm_type'=>0,
+              'chk_no'=>0,
+              'kst'=>$kst,
+              'ksm_date'=>null,
+              'ksm'=>0,
+              'kst_notes'=>null,
+              'inp_date'=>null,
+              'emp'=>auth::user()->empno,
+            ]);
+
+            DB::connection('other')->table('main')->where('no',$this->no)->update([
+              'sul_pay'=>$sul_pay-$this->ksm,
+              'raseed'=>$raseed+$this->ksm,
+            ]);
+
+            DB::connection('other')->table('tar_kst')->insert([
+              'no' => $this->no,
+              'name' => $this->name,
+              'bank' => $this->bank,
+              'acc' => $this->acc,
+              'kst' => $this->ksm,
+              'tar_type' => 3,
+              'tar_date' => $this->tar_date,
+              'ksm_date' => $this->ksm_date,
+              'ser' => $this->ser,
+              'kst_date' => $this->kst_date,
+              'emp' => Auth::user()->empno,
+              'ksm_type' => $this->ksm_type,
+            ]);
+
+         DB::connection('other')->commit();
+         $this->render();
+      } catch (\Exception $e) {
+          DB::connection('other')->rollback();
+
+          $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
+      }
   }
     public function render()
     {
