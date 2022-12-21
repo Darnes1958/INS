@@ -39,7 +39,7 @@ class GetNoAndAcc extends Component
 
   public function updatedTheBankListIsSelected(){
     $this->TheBankListIsSelected=0;
-    info($this->bankno);
+
     $this->emitTo('bank.bank-select','TakeBankNo',$this->bankno);
     $this->ChkBankAndGo();
   }

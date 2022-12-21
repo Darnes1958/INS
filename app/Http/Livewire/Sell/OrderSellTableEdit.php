@@ -209,7 +209,7 @@ class OrderSellTableEdit extends Component
 
     public function putdata($value)
     {
-      info('putData : '.$this->TablePlaceType);
+
         $One= array_column($this->orderdetail, 'item_no');
         $index = array_search( $value['item_no'], $One);
         if  ($index) {

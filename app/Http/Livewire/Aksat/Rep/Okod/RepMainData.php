@@ -64,6 +64,7 @@ class RepMainData extends Component
       $this->HasArc=!$this->HasArc;
     }
     public function GotoDetail($res){
+      Config::set('database.connections.other.database', Auth::user()->company);
       $this->HasArc=false;
       $this->HasChk=false;
       $this->HasOver=false;

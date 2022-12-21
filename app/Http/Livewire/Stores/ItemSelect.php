@@ -17,7 +17,7 @@ class ItemSelect extends Component
   public $PlaceSelectType;
   public $PlaceToSelect;
   protected $listeners = [
-    'itemfound','B_RefreshSelectItem','RefreshSelectItem => $refresh',
+    'itemfound','B_RefreshSelectItem','RefreshSelectItem => $refresh','TakeItemNo'
   ];
 
   public function B_RefreshSelectItem($PST,$PTS){
@@ -26,8 +26,10 @@ class ItemSelect extends Component
 
    $this->render();
    }
+  public function TakeItemNo($item_no){
+    $this->ItemListNo=$item_no;
+  }
   public function jehafound($wj,$wn){
-
     if(!is_null($wj)) {
       $this->ItemListNo = $wj;
       $this->ItemName = $wn;

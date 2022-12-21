@@ -11,7 +11,7 @@ use App\Http\Controllers\aksat\RepAksatController;
 use App\Http\Controllers\RepAmaaController;
 use App\Http\Controllers\trans\TransController;
 use App\Http\Controllers\Aksat\OverTarController;
-
+use App\Http\Controllers\Stores\StoresController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -80,6 +80,9 @@ Route::controller(OrderSellController::class)->group(function (){
      route::get('/order_sell/add/{price_type}','OrderSell')->name('order_sell.add')->middleware('auth');
      route::get('/order_sell/edit','OrderSellEdit')->name('order_sell.edit')->middleware('auth');
 });
+Route::controller(StoresController::class)->group(function (){
+  route::get('/stores/add/{from_to}','StoresAdd')->name('stores.add')->middleware('auth');
 
+});
 
 

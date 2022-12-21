@@ -46,6 +46,17 @@
                     </div>
                 </li>
                 <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#stores-collapse" aria-expanded="false">
+                        &nbsp   <i class="fa  fas fa-restroom" aria-hidden="true"></i>&nbsp;  مخازن</button>
+                    </button>
+                    <div class="collapse" id="stores-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="{{route('stores.add',11)}}" class="link-dark d-inline-flex text-decoration-none rounded">من مخزن لمخزن</a></li>
+                            <li><a href="{{route('stores.add',12)}}" class="link-dark d-inline-flex text-decoration-none rounded">من مخزن لصالة</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
                     <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
                         &nbsp   <i class="fa  fas fa-restroom" aria-hidden="true"></i>&nbsp;  عملاء</button>
                     </button>
