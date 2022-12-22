@@ -26,17 +26,17 @@
     <input wire:model="price"  class="form-control" name="price" type="number" value=""
            id="price"  style="text-align: center"  readonly>
   </div>
-  <div class="col-6 ">
+  <div class="col-4 my-3">
     <label for="raseed" class="form-label-me" >الرصيد الكلي</label>
     <input wire:model="raseed" class="form-control " name="raseed" type="text" readonly
            id="raseed"   >
   </div>
-  <div class="col-6 ">
+  <div class="col-4 my-3">
     <label for="place1_raseed" class="form-label-me " >{{$place1_label}}</label>
     <input wire:model="place1_raseed" class="form-control "  type="text" readonly
            id="place1_raseed"   >
   </div>
-  <div class="col-6 ">
+  <div class="col-4 my-3">
     <label for="place2_raseed" class="form-label-me " >{{$place2_label}}</label>
     <input wire:model="place2_raseed" class="form-control "  type="text" readonly
            id="place2_raseed"   >

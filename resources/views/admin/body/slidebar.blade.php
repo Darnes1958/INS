@@ -53,6 +53,9 @@
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li><a href="{{route('stores.add',11)}}" class="link-dark d-inline-flex text-decoration-none rounded">من مخزن لمخزن</a></li>
                             <li><a href="{{route('stores.add',12)}}" class="link-dark d-inline-flex text-decoration-none rounded">من مخزن لصالة</a></li>
+                            <li><a href="{{route('stores.add',21)}}" class="link-dark d-inline-flex text-decoration-none rounded">من صالة لمخزن</a></li>
+                            <li><a href="{{route('stores.add',22)}}" class="link-dark d-inline-flex text-decoration-none rounded">من صالة لصالة</a></li>
+
                         </ul>
                     </div>
                 </li>
@@ -63,9 +66,7 @@
                     <div class="collapse" id="orders-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li><a href="{{route('customer.all')}}" class="link-dark d-inline-flex text-decoration-none rounded">عرض الزبائن</a></li>
-                            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Processed</a></li>
-                            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Shipped</a></li>
-                            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Returned</a></li>
+
                         </ul>
                     </div>
                 </li>

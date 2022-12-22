@@ -31,6 +31,18 @@ class StoreHead extends Component
   public $ThePlace1ListIsSelected;
   public $ThePlace2ListIsSelected;
 
+  public $listeners=['mounthead'];
+
+  public function mounthead(){
+    $this->Place1Geted=false;
+    $this->Place2Geted=false;
+    $this->PlaceGeted=false;
+    $this->HeadOpen=true;
+    $this->place_no1='';
+    $this->place_no2='';
+    $this->emit('goto','place_no1');
+  }
+
   public function updatedThePlace1ListIsSelected(){
     $this->ThePlace1ListIsSelected=0;
     $this->ChkPlace1AndGo();
@@ -69,6 +81,8 @@ class StoreHead extends Component
       if ($this->FromTo==12 || $this->FromTo==22)
         $result =halls_names::where('hall_no',$this->place_no2)->first();
       if ($result) {
+        if (($this->FromTo==11 || $this->FromTo==22) && $this->place_no1==$this->place_no2)
+        {$this->dispatchBrowserEvent('mmsg','لا يجوز النقل لنفس المكان');return(false);}
         $this->Place2Geted=true;
         if ($this->FromTo==11 || $this->FromTo==21)
           $this->place_name2=$result->st_name;
@@ -86,6 +100,7 @@ class StoreHead extends Component
   public function BtnHeader(){
     $this->HeadOpen=False;
     $this->emitTo('stores.store-detail','TakeParams',$this->place_no1,$this->place_no2,$this->Table1,$this->Table2,$this->place_name1,$this->place_name2);
+    $this->emitTo('stores.store-table','TakeParams',$this->place_no1,$this->place_no2,$this->FromTo,$this->Table1);
   }
 
   public function render()
@@ -108,7 +123,7 @@ class StoreHead extends Component
         $this->Table1='Salat';
         $this->Table2='Makazen';
       }
-      if ($this->FromTo==21) {
+      if ($this->FromTo==22) {
         $this->From='من صالة';
         $this->To='إلي صالة';
         $this->Table1='Salat';

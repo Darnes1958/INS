@@ -30,7 +30,14 @@ class StoreDetail extends Component
   public $TheItemListIsSelectd;
   public $perdetail=[];
 
-  protected $listeners =['TakeParams'];
+  protected $listeners =['TakeParams','edititem','mountdetail'];
+
+  public function monuntdetail(){
+    $this->ClearDetail();
+    $this->StoreDetailOpen=false;
+    $this->DetailOpen=false;
+    $this->ItemGeted=false;
+  }
 
   public function TakeParams($place_no1,$place_no2,$table1,$table2,$name1,$name2){
     $this->place1_label='رصيد '.$name1;
@@ -40,6 +47,15 @@ class StoreDetail extends Component
     $this->place_no1=$place_no1;
     $this->place_no2=$place_no2;
     $this->StoreDetailOpen=true;
+    $this->emitTo('stores.item-select','B_RefreshSelectItem',$this->Table1,$place_no1);
+
+  }
+  public function edititem($value)
+  {
+    $this->item=$value['item_no'];
+    $this->item_name=$value['item_name'];
+    $this->quant=$value['quant'];
+    $this->ChkItemAndGo();
 
   }
   public function updatedTheItemListIsSelectd(){

@@ -6,7 +6,7 @@
     @error('place_no1') <span class="error">{{ $message }}</span> @enderror
   </div>
   <div   class="col-md-7" >
-    <label  class="form-label-me">.</label>
+    <label  class="form-label-me">&nbsp;</label>
     @livewire('stores.store-select1',['table'=>$Table1])
   </div>
 
@@ -17,13 +17,13 @@
     @error('place_no2') <span class="error">{{ $message }}</span> @enderror
   </div>
   <div   class="col-md-7" >
-    <label  class="form-label-me">.</label>
+    <label  class="form-label-me">&nbsp;</label>
     @livewire('stores.store-select2',['table'=>$Table2])
   </div>
 
-  <div  class="my-3 align-center justify-content-center "  style="display: flex">
+  <div  class="my-4 align-center justify-content-center "  style="display: flex">
     <input  type="button"  id="head-btn"   class=" btn btn-outline-success  waves-effect waves-light   "
-            x-bind:disabled="!$wire.PlaceGeted || !$wire.HeadOpen" wire:click.prevent="BtnHeader"   value="موافق" />
+            x-bind:disabled="!$wire.PlaceGeted || !$wire.HeadOpen" wire:click.prevent="BtnHeader"   value=" موافق " />
   </div>
 
 </div>
