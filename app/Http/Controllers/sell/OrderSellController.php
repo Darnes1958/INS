@@ -19,4 +19,7 @@ class OrderSellController extends Controller
   function OrderSellEdit (){
     return view('backend.sell.edit_sell');
   }
+  function OrderSellRep (){
+    return view('backend.sell.rep_sell_order');
+  }
 }

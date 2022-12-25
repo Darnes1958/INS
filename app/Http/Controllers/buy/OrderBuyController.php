@@ -45,5 +45,8 @@ class OrderBuyController extends Controller
         return response()->json($witems);
     }
 
+  function OrderBuyRep (){
+    return view('backend.buy.rep_buy_order');
+}
     //
 }
