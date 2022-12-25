@@ -12,6 +12,7 @@ use App\Http\Controllers\RepAmaaController;
 use App\Http\Controllers\trans\TransController;
 use App\Http\Controllers\Aksat\OverTarController;
 use App\Http\Controllers\Stores\StoresController;
+use App\Http\Controllers\PasswordController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,7 +40,10 @@ Route::controller(OverTarController::class)->group(function (){
   route::get('/overtar/inpover/{Proc}', 'OverInp')->name('over.input')->middleware('auth') ;
 
 });
+Route::controller(PasswordController::class)->group(function (){
+    route::get('/pass/edit', 'EditPass')->name('pass.edit')->middleware('auth') ;
 
+});
 Route::controller(TransController::class)->group(function (){
   route::get('/trans/input}', 'TransInp')->name('trans.input')->middleware('auth') ;
 });

@@ -15,16 +15,23 @@
     </div>
 
   <div class="col-md-4">
-    <label  for="bank_no" class="form-label ">المصرف</label>
-    <input wire:model="bank"  wire:keydown.Enter="ChkBankAndGo" type="number" class=" form-control "
+    <div class="row ">
+      <div class="col-md-4  gx-3">
+         <label  for="bank_no" class="form-label ">المصرف</label>
+      </div>
+      <div class="col-md-8  gx-3">
+         <input wire:model="bank"  wire:keydown.Enter="ChkBankAndGo" type="number" class=" form-control "
            id="bank_no"   autofocus >
-    @error('bankno') <span class="error">{{ $message }}</span> @enderror
+          @error('bankno') <span class="error">{{ $message }}</span> @enderror
+      </div>
+    </div>
   </div>
   <div   class="col-md-8" >
-    <label   class="form-label " style="color: #0a53be"> حافظة رقم : {{$hafitha}} </label>
+
     @livewire('bank.bank-haf-select')
   </div>
   <div class="col-md-4">
+      <label   class="form-label " style="color: #0a53be"> حافظة رقم : {{$hafitha}} </label>
     <div >
       <label for="no" class="form-label">تاريخ الحافظة</label>
       <input wire:model="hafitha_date"  class="form-control" type="text"  id="hafitha_date" readonly>

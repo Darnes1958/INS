@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Admin;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 
@@ -11,7 +13,7 @@ class InpUser extends Component
   public $name;
   public $username;
   public $database;
-  public $password;
+  public $password=12345678;
   public $email;
   public $IsAdmin=0;
   public $empno;
@@ -19,6 +21,24 @@ class InpUser extends Component
   public $Show=false;
 
   protected $listeners = ['show'];
+
+    public $TheDatabaseListIsSelectd;
+
+    public function updatedTheDatabaseListIsSelectd(){
+        $this->TheDatabaseListIsSelectd=0;
+        $this->emitTo('admin.empno-select','comp',$this->database);
+    }
+    public $TheEmpListIsSelectd;
+
+    public function updatedTheEmpListIsSelectd(){
+     $this->TheEmpListIsSelectd=0;
+        Config::set('database.connections.other.database',$this->database );
+        $res=DB::connection('other')->table('pass')->where('EMP_NO',$this->empno)->first();
+
+        $this->name=$res->EMP_NAME;
+        $this->username=$res->EMP_NAME;
+
+    }
 
   public function show($show){
 

@@ -2,20 +2,33 @@
 
 
 <div x-data  class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
-  <div class="col-md-5">
-    <label  for="orderno" class="form-label-me ">رقم الفاتورة</label>
-    <input wire:model="orderno"  wire:keydown.enter="ChkOrderAndGo" type="number" class=" form-control "
+   <div class="col-md-5">
+    <div class="row ">
+        <div class="col-md-4  gx-3">
+          <label  for="orderno" class="form-label-me ">رقم الفاتورة</label>
+        </div>
+        <div class="col-md-8 ">
+         <input wire:model="orderno"  wire:keydown.enter="ChkOrderAndGo" type="number" class=" form-control "
            id="orderno"   autofocus >
+        </div>
+    </div>
     @error('order_no') <span class="error">{{ $message }}</span> @enderror
   </div>
   <div   class="col-md-7" >
-    <label  class="form-label-me">.</label>
+
     @livewire('aksat.order-select')
   </div>
   <div class="col-md-12 mb-2" >
-    <label  for="name" class="form-label-me">اسم الزبون</label>
-    <input  x-bind:disabled="!$wire.OrderGet" wire:model="name" readonly
+      <div class="row ">
+          <div class="col-md-2  gx-3">
+            <label  for="name" class="form-label-me">اسم الزبون</label>
+          </div>
+      <div class="col-md-10 ">
+          <input  x-bind:disabled="!$wire.OrderGet" wire:model="name" readonly
+
             class="form-control"   type="text"   >
+      </div>
+      </div>
   </div>
   <div class="col-md-4 mb-2" >
     <label  for="sul_tot" class="form-label-me">اجمالي الفاتورة</label>
@@ -45,14 +58,20 @@
     @error('sul_date') <span class="error">{{ $message }}</span> @enderror
   </div>
 
-  <div class="col-md-5">
-    <label  for="bankno" class="form-label-me ">المصرف</label>
-    <input x-bind:disabled="!$wire.OrderGet" wire:model="bankno" min="1" max="999" wire:keydown.enter="ChkBankAndGo" type="number" class=" form-control "
-           id="bankno"   autofocus >
-    @error('bankno') <span class="error">{{ $message }}</span> @enderror
+  <div class="col-md-5 gy-2">
+      <div class="row ">
+        <div class="col-md-4  gx-3">
+            <label  for="bankno" class="form-label-me ">المصرف</label>
+        </div>
+        <div class="col-md-8  gx-3">
+              <input x-bind:disabled="!$wire.OrderGet" wire:model="bankno" min="1" max="999" wire:keydown.enter="ChkBankAndGo" type="number" class=" form-control "
+               id="bankno"   autofocus >
+                 @error('bankno') <span class="error">{{ $message }}</span> @enderror
+        </div>
+      </div>
   </div>
-  <div x-bind:disabled="!$wire.OrderGet"  class="col-md-7" >
-    <label  class="form-label-me">.</label>
+  <div x-bind:disabled="!$wire.OrderGet"  class="col-md-7 gy-2" >
+
     @livewire('bank.bank-select')
   </div>
 
@@ -73,22 +92,34 @@
   </div>
 
   <div class="col-md-5">
-   <label  for="place" class="form-label-me">جهة العمل</label>
-   <input x-bind:disabled="!$wire.OrderGet" wire:model="place" wire:keydown.enter="ChkPlaceAndGo"
-          class="form-control  "
-          name="place" type="number"  id="place" >
+      <div class="row ">
+          <div class="col-md-4  gx-3">
+              <label  for="place" class="form-label-me">جهة العمل</label>
+          </div>
+          <div class="col-md-8  gx-3">
+             <input x-bind:disabled="!$wire.OrderGet" wire:model="place" wire:keydown.enter="ChkPlaceAndGo"
+                  class="form-control  "
+                name="place" type="number"  id="place" >
+          </div>
    @error('st_no') <span class="error">{{ $message }}</span> @enderror
+      </div>
   </div>
   <div x-bind:disabled="!$wire.OrderGet"  class="col-md-7" >
-    <label  class="form-label-me">.</label>
+
     @livewire('aksat.place-select')
   </div>
 
-  <div class="col-md-12">
-    <label for="notes" class="form-label-me">ملاحظات</label>
-    <input x-bind:disabled="!$wire.OrderGet" wire:model="notes" wire:keydown.enter="$emit('goto','kstcount')"
-           class="form-control  "
-           type="text"  id="notes" >
+  <div class="col-md-12 gy-2">
+      <div class="row ">
+          <div class="col-md-2  gx-3">
+            <label for="notes" class="form-label-me">ملاحظات</label>
+          </div>
+          <div class="col-md-10  ">
+             <input x-bind:disabled="!$wire.OrderGet" wire:model="notes" wire:keydown.enter="$emit('goto','kstcount')"
+                class="form-control  "
+                   type="text"  id="notes" >
+          </div>
+      </div>
   </div>
   <div class="col-md-6">
     <label for="kstcount" class="form-label-me">عدد الأقساط</label>

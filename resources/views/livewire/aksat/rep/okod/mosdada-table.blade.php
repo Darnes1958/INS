@@ -1,11 +1,11 @@
 <div>
   <div  x-data="{ open:@entangle('ShowTar'), progress: @entangle('ArcProgress'),count: @entangle('ArcCount')}"
         class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
-    <div class="col-md-4">
+    <div class="col-md-5">
       @livewire('aksat.rep.bank-comp',
       ['sender' => 'aksat.rep.okod.mosdada-table',])
     </div>
-    <div class="col-md-3 my-2  ">
+    <div class="col-md-2 my-2  ">
       <input wire:model="search" class="form-control mx-0 text-center" type="search"   placeholder="ابحث هنا .......">
     </div>
     <div class="col-md-2 my-2 mx-0 d-inline-flex ">
@@ -17,11 +17,7 @@
       " style="height: 30px;" >نقل للأرشيف</button>
       <progress wire:loading wire:target="ArcTarheel" x-bind:max="count" x-bind:value="progress"></progress>
     </div>
-    <div  x-show="open" class="col-md-1  my-2 checkbox">
-      <label>
-        <input wire:click="DoCheckAll" type="checkbox" class="check" id="checkAll"> تحديد الكل
-      </label>
-    </div>
+    
 
   </div>
 

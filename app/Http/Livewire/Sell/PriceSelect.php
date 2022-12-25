@@ -22,7 +22,7 @@ class PriceSelect extends Component
   public function TakeTypeNo($wo){
 
       $this->type_no = $wo;
-info($this->type_no);
+
 
   }
 

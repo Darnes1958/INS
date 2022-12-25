@@ -1,9 +1,9 @@
 <div x-data  class="row gy-1 my-1"  >
-  <div class="col-md-2 mx-0">
-    <label  for="bank_no" class="form-label mx-0" >المصرف</label>
+  <div class="col-md-2 ">
+    <label  for="bank_no" class="form-label-me " >المصرف</label>
   </div>
-  <div class="col-md-4 mx-0">
-   <input wire:model="bank_no"  wire:keydown.enter="ChkBankAndGo" type="text" class=" form-control mx-0 "
+  <div class="col-md-3 ">
+   <input wire:model="bank_no"  wire:keydown.enter="ChkBankAndGo" type="text" class=" form-control  "
            id="bank_no"   autofocus >
     @error('bank_no') <span class="error">{{ $message }}</span> @enderror
   </div>
@@ -16,7 +16,7 @@
       </div>
     </div>
   @endif
-  <div   class="col-md-6 mx-0" >
+  <div   class="col-md-7 mx-0" >
     @livewire('bank.bank-select')
   </div>
 </div>

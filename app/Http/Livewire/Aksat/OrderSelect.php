@@ -41,7 +41,7 @@ class OrderSelect extends Component
       if (!$this->MainTwo) {
       $this->OrderList=DB::connection('other')->table('sells_view')
       ->where('price_type',2)
-      ->where('order_date','>',Carbon::now()->subYear(1))
+      ->where('order_date','>',Carbon::now()->subMonth(1))
 
         ->whereNotIn('order_no', function($q){
           $q->select('order_no')->from('main');
