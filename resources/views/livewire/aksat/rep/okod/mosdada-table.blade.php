@@ -17,15 +17,12 @@
       " style="height: 30px;" >نقل للأرشيف</button>
       <progress wire:loading wire:target="ArcTarheel" x-bind:max="count" x-bind:value="progress"></progress>
     </div>
-    
-
   </div>
 
 
   <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
     <thead class="font-size-12">
     <tr>
-
       <th width="7%">رقم العقد</th>
       <th width="12%">رقم الحساب</th>
       <th width="16%">الاسم</th>
