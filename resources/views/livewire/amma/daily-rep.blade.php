@@ -39,13 +39,7 @@
             <label class="form-check-label" >عقود</label>
         </div>
 
-        <div class="my-2  "  >
 
-            <input  type="button"  id="BackupBtn"
-                   class=" btn btn-outline-success  waves-effect waves-light   "
-                   wire:click.prevent="BackupBtn"   value="نسخ احتياطي" />
-
-        </div>
     </div>
     <div>
         @livewire('amma.daily-rep-table',['tablename'=>$RepRadio,'inpdate'=>$RepDate,'searachfield1'=>$RepSearch1 ])

@@ -53,17 +53,7 @@
                     </ul>
                 </div>
             </li>
-            <li class="mb-1">
-                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
-                    &nbsp   <i class="fa  fas fa-restroom" aria-hidden="true"></i>&nbsp;  عملاء</button>
-                </button>
-                <div class="collapse" id="orders-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="{{route('customer.all')}}" class="link-dark d-inline-flex text-decoration-none rounded">عرض الزبائن</a></li>
 
-                    </ul>
-                </div>
-            </li>
             <li class="border-top my-3"></li>
             <li class="mb-1">
                 <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#okod-collapse" aria-expanded="false">
@@ -143,6 +133,7 @@
                         <li><a href="{{route('repamma','daily')}}" class="link-dark d-inline-flex text-decoration-none rounded">الحركة اليومية</a></li>
                         <li><a href="{{route('order_sell.rep')}}" class="link-dark d-inline-flex text-decoration-none rounded">فاتورة مبيعات</a></li>
                         <li><a href="{{route('order_buy.rep')}}" class="link-dark d-inline-flex text-decoration-none rounded">فاتورة مشتريات</a></li>
+                        <li><a href="{{route('customer.all')}}" class="link-dark d-inline-flex text-decoration-none rounded">عرض الزبائن</a></li>
                     </ul>
                 </div>
             </li>
