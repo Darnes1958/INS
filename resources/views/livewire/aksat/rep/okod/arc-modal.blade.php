@@ -14,6 +14,11 @@
         <input  wire:model="name" type="text" class="form-control" id="name" readonly style="width: 80%" >
       </div>
       <div class="d-inline-flex align-items-center">
+        <label for="bank_name" class="form-label align-right" style="width: 20% ">المصرف</label>
+        <input  wire:model="bank_name" type="text" class="form-control" id="bank_name" readonly style="width: 80%" >
+      </div>
+
+      <div class="d-inline-flex align-items-center">
         <label for="ksm_date" class="form-label" style="width: 20%">تاريخ العقد</label>
         <input  wire:model="sul_date"  class="form-control"   type="date" style="width: 30%" id="ksm_date" readonly>
         <label for="order_no" class="form-label" style="width: 20% ">&nbsp;&nbsp;رقم الفاتورة</label>

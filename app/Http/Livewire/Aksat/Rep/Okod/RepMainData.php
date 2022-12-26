@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Aksat\Rep\Okod;
 
 use App\Models\aksat\chk_tasleem;
 use App\Models\aksat\MainArc;
+use App\Models\bank\bank;
 use App\Models\jeha\jeha;
 use App\Models\OverTar\over_kst;
 use App\Models\OverTar\tar_kst;
@@ -20,6 +21,7 @@ class RepMainData extends Component
     public $no=0;
     public $acc;
     public $name;
+    public $bank;
     public $bank_name;
     public $order_no;
     public $jeha=0;
@@ -84,6 +86,8 @@ class RepMainData extends Component
       $this->chk_in=$res['chk_in'];
       $this->chk_out=$res['chk_out'];
       $this->notes=$res['notes'];
+      $this->bank=$res['bank'];
+      $this->bank_name=bank::find($this->bank)->bank_name;
 
       $tel=jeha::where('jeha_no',$this->jeha)->first();
        $this->libyana=$tel['libyana'];

@@ -5,6 +5,11 @@
      <input  wire:model="jeha" type="text" class="form-control " id="name" readonly style="width: 20%" >
      <input  wire:model="name" type="text" class="form-control " id="name" readonly style="width: 60%;margin-right: 4px;" >
    </div>
+   <div class="d-inline-flex align-items-center">
+     <label for="bank_name" class="form-label align-right" style="width: 20% ">المصرف</label>
+     <input  wire:model="bank_name" type="text" class="form-control " id="bank_name" readonly style="width: 80%" >
+
+   </div>
     <div class="d-inline-flex align-items-center">
         <label for="no" class="form-label" style="width: 20%">الرقم الألي</label>
         <input  wire:model="no"

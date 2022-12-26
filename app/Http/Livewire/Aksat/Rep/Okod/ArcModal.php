@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Aksat\Rep\Okod;
 
 use App\Models\aksat\chk_tasleem;
 use App\Models\aksat\MainArc;
+use App\Models\bank\bank;
 use App\Models\OverTar\over_kst_a;
 use App\Models\OverTar\tar_kst;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,7 @@ class ArcModal extends Component
   public $no=0;
   public $acc;
   public $name;
+  public $bank;
   public $bank_name;
   public $order_no=0;
   public $jeha=0;
@@ -87,12 +89,16 @@ class ArcModal extends Component
     $this->kst=$res['kst'];
     $this->chk_in=$res['chk_in'];
     $this->chk_out=$res['chk_out'];
-    $this->notes=$res['notes'];}
+    $this->notes=$res['notes'];
+    $this->bank=$res['bank'];
+      $this->bank_name=bank::find($this->bank)->bank_name;
+    }
 
     $this->OverKst=over_kst_a::where('no',$this->no)->count();
     $this->TarKst=tar_kst::where('no',$this->no)->count();
     $this->ArcMain=MainArc::where('jeha',$this->jeha)->where('no','!=',$this->no)->count();
     $this->ChkTasleem=chk_tasleem::where('no',$this->no)->count();
+
 
 
   }
