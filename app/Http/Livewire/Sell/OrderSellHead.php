@@ -69,7 +69,14 @@ public function ChkPlace(){
       }
     else {return ('empty');}
 }
+ public function updatedOredrSellRadio(){
+     Config::set('database.connections.other.database', Auth::user()->company);
+     $this->stores_names=stores_names::all();
+     $this->halls_names=halls_names::all();
+ }
   public function ChangePlace(){
+
+
     if ($this->OredrSellRadio=='Makazen') {
 
       $this->PlaceLabel ='المخزن';
@@ -199,6 +206,8 @@ public function ChkPlace(){
     public function render()
     {
         Config::set('database.connections.other.database', Auth::user()->company);
+        info(Auth::user()->company);
+        info(DB::connection('other')->getDatabaseName());
         $this->stores_names=stores_names::all();
         $this->halls_names=halls_names::all();
         return view('livewire.sell.order-sell-head',[

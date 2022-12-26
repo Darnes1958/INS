@@ -31,7 +31,7 @@
             </li>
             <li class="mb-1">
                 <button class="btn btn-toggle d-inline-flex align-items-center rounded    border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#trans-collapse" aria-expanded="false">
-                    &nbsp  <i class="fa fas fa-cart-plus" aria-hidden="true"></i>&nbsp;  إيصالات قبض ودفع
+                    &nbsp  <i class="fa fas fa-hand-holding-usd" aria-hidden="true"></i>&nbsp;  إيصالات قبض ودفع
                 </button>
                 <div class="collapse" id="trans-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
@@ -41,7 +41,7 @@
             </li>
             <li class="mb-1">
                 <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#stores-collapse" aria-expanded="false">
-                    &nbsp   <i class="fa  fas fa-restroom" aria-hidden="true"></i>&nbsp;  مخازن</button>
+                    &nbsp   <i class="fa  fas fas fas fa-city" aria-hidden="true"></i>&nbsp;  مخازن</button>
                 </button>
                 <div class="collapse" id="stores-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
@@ -57,7 +57,7 @@
             <li class="border-top my-3"></li>
             <li class="mb-1">
                 <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#okod-collapse" aria-expanded="false">
-                    &nbsp <i class="fa  fas fa-restroom" aria-hidden="true"></i>&nbsp عقود</button>
+                    &nbsp <i class="fa  fas fa-file-alt" aria-hidden="true"></i>&nbsp عقود</button>
                 <div class="collapse" id="okod-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="{{route('main.input',1)}}" class="link-dark d-inline-flex text-decoration-none rounded">ادخال عقد جديد</a></li>
@@ -69,7 +69,7 @@
             </li>
             <li class="mb-1">
                 <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
-                    &nbsp <i class="fa  fas fa-restroom" aria-hidden="true"></i>&nbsp اقساط</button>
+                    &nbsp <i class="fa  fas fa-coins" aria-hidden="true"></i>&nbsp اقساط</button>
                 <div class="collapse" id="account-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="{{route('kst.input')}}" class="link-dark d-inline-flex text-decoration-none rounded">قسط مصرفي</a></li>
@@ -80,7 +80,7 @@
             </li>
             <li class="mb-1">
                 <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#over-collapse" aria-expanded="false">
-                    &nbsp <i class="fa  fas fa-restroom" aria-hidden="true"></i>&nbsp فائض وترجيع</button>
+                    &nbsp <i class="fa  fas fa-chart-line" aria-hidden="true"></i>&nbsp فائض وترجيع</button>
                 <div class="collapse" id="over-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="{{route('over.input','over')}}" class="link-dark d-inline-flex text-decoration-none rounded">خصم بالفائض</a></li>
