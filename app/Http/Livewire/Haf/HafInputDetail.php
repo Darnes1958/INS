@@ -94,7 +94,7 @@ class HafInputDetail extends Component
 
         $this->FillDetail($result,$kst);
         $this->NoGeted=true;
-        $this->emit('kstdetail_goto','ksm_date');
+        $this->emit('kstdetail_goto','ksm');
       }
 
       else
@@ -152,7 +152,7 @@ class HafInputDetail extends Component
           $result = main::on(Auth()->user()->company)->where('bank',$this->bank)->where('acc',$this->acc)->first();
           $this->name=$result->name;
           $this->no=$result->no;
-          $this->emit('kstdetail_goto','no');
+          $this->ChkNoAndGo();
         }
       }
       else
@@ -180,7 +180,7 @@ class HafInputDetail extends Component
     }
    public function Resetdetail(){
     $this->NoGeted=false;
-    $this->acc='';
+
     $this->name='';
     $this->sul_pay='';
     $this->sul='';
@@ -189,7 +189,7 @@ class HafInputDetail extends Component
     $this->sul_tot='';
     $this->raseed='';
     $this->kst_count='';
-    $this->emit('kstdetail_goto','no');
+    $this->emit('kstdetail_goto','acc');
    }
    public function StoreRec($baky){
 

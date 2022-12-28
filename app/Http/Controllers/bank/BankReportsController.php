@@ -14,11 +14,11 @@ class BankReportsController extends Controller
 {
     function Rep_Bank ($bankno){
 
-        Config::set('database.connections.other.database', Auth::user()->company);
-        $datatable=rep_bank::where('bank',$bankno)->paginate(15);
 
-        $bankdata=bank::where('bank_no',$bankno)->first();
-        $banklist=bank::all();
+        $datatable=rep_bank::on(auth()->user()->company)->where('bank',$bankno)->paginate(15);
+
+        $bankdata=bank::on(auth()->user()->company)->where('bank_no',$bankno)->first();
+        $banklist=bank::on(auth()->user()->company)->get();
         return view('backend.bank.rep_bank',
             compact('datatable','bankdata','banklist'))
             ->withtitle($bankdata->bank_name);
@@ -28,21 +28,21 @@ class BankReportsController extends Controller
 
     function PagiRepBank ($bankno)
     {
-            Config::set('database.connections.other.database', Auth::user()->company);
+
         if ($bankno==0) {
-            $datatable=rep_bank::where('bank',0)->paginate(15);
-            $banklist=bank::all();
+            $datatable=rep_bank::on(auth()->user()->company)->where('bank',0)->paginate(15);
+            $banklist=bank::on(auth()->user()->company)->get();
             return view('backend.bank.rep_bank', compact('datatable','banklist'));
         }
         else {
-            $datatable = rep_bank::where('bank', $bankno)->paginate(15);
+            $datatable = rep_bank::on(auth()->user()->company)->where('bank', $bankno)->paginate(15);
             return view('backend.bank.bankpaginate', compact('datatable'))->render();
         }
     }
     function SearchRepBank (Request $request)
     {
-        Config::set('database.connections.other.database', Auth::user()->company);
-        $datatable = rep_bank::where('bank',$request->bankid)
+
+        $datatable = rep_bank::on(auth()->user()->company)->where('bank',$request->bankid)
         ->where('name', 'like' ,'%'.$request->search_string.'%')
         ->orwhere('sul', 'like' ,'%'.$request->search_string.'%') ->paginate(10);
 
@@ -56,8 +56,8 @@ class BankReportsController extends Controller
 
     function Rep_Banks (){
 
-        Config::set('database.connections.other.database', Auth::user()->company);
-        $datatable=rep_banks::all();
+
+        $datatable=rep_banks::on(auth()->user()->company)->get();
 
         return view('backend.bank.rep_banks', compact('datatable'));
 

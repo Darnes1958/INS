@@ -140,7 +140,7 @@ class OrderSellDetail extends Component
    }
     public function ItemKeyDown(){
         $this->item_name='';
-        $this->quant=0;
+        $this->quant=1;
         $this->price=0;
         $res=$this->ChkItem();
         if ($res=='ok') {$this->emit('ChkIfDataExist',$this->item);
@@ -152,7 +152,7 @@ class OrderSellDetail extends Component
     public function updatedItem()
     {
         $this->item_name='';
-        $this->quant=0;
+        $this->quant=1;
         $this->price=0;
     }
 

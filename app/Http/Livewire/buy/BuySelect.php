@@ -20,11 +20,8 @@ class BuySelect extends Component
   ];
 
   public function TakeOrderNo($wo){
-
     if(!is_null($wo)) {
       $this->OrderNo = $wo;
-
-
     }
   }
 

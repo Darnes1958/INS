@@ -12,8 +12,8 @@ class BankController extends Controller
 {
     function BankList ($bankno){
 
-        Config::set('database.connections.other.database', Auth::user()->company);
-        $datatable=bank::all();
+
+        $datatable=bank::on(auth()->user()->company)->get();
 
         return view('backend.bank.rep_bank', compact('datatable'));
 

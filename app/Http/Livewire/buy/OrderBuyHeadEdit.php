@@ -126,6 +126,7 @@ class OrderBuyHeadEdit extends Component
       buy_tran::on(Auth()->user()->company)->where('order_no',$this->orderno)->delete();
       buys::on(Auth()->user()->company)->where('order_no',$this->orderno)->delete();
       DB::connection(Auth()->user()->company)->commit();
+      $this->emitTo('buy.buy-select','refreshComponent');
       $this->emit('mounttable');
 
       $this->emitTo('buy.order-buy-detail-edit','dismountdetail');

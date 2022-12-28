@@ -18,11 +18,11 @@ class OrderBuyController extends Controller
 {
     function OrderBuy (){
 
-        Config::set('database.connections.other.database', Auth::user()->company);
-        $jeha=jeha::where('jeha_type',2)->where('available',1)->get();
-        $stores=stores::where('raseed','>',0)->get();
-        $stores_names=stores_names::all();
-        $items=items::where('raseed','>',0)->get();
+
+        $jeha=jeha::on(auth()->user()->company)->where('jeha_type',2)->where('available',1)->get();
+        $stores=stores::on(auth()->user()->company)->where('raseed','>',0)->get();
+        $stores_names=stores_names::on(auth()->user()->company)->get();
+        $items=items::on(auth()->user()->company)->where('raseed','>',0)->get();
         $date = date('Y-m-d');
 
 
@@ -36,9 +36,9 @@ class OrderBuyController extends Controller
 
     function GetItemsInStore (Request $request)
     {
-        Config::set('database.connections.other.database', Auth::user()->company);
+
         $wst=$request->store_id;
-        $witems = stores::with ('storeitems')
+        $witems = stores::on(auth()->user()->company)->with ('storeitems')
             ->where('st_no',$wst)
             ->where('raseed','>',0)->get();
 

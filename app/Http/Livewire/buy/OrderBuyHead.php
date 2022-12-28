@@ -35,13 +35,18 @@ class OrderBuyHead extends Component
 
   }
 
-
+  public $TheJehaIsSelected;
   public $HeadOpen;
   public $HeadDataOpen;
 
     protected $listeners = [
         'mounthead','jehaadded',
     ];
+
+  public function updatedTheJehaIsSelected(){
+    $this->TheJehaIsSelected=0;
+    $this->emit('gotonext','storeno');
+  }
     public function jehaadded($wj){
       $this->jeha=$wj;
     }

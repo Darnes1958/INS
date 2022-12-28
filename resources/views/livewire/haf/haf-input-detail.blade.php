@@ -137,6 +137,7 @@
             if (postid=='ksm_date') {  $("#ksm_date").focus();$("#ksm_date").select(); }
             if (postid=='ksm') {  $("#ksm").focus(); $("#ksm").select();}
             if (postid=='no') {  $("#no").focus(); $("#no").select();}
+            if (postid=='acc') {  $("#acc").focus(); $("#acc").select();}
         })
 
         $(document).ready(function ()

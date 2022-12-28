@@ -15,10 +15,7 @@ class customercontroller extends Controller
 {
   function CustomerAll (Request $request)
   {
-
-      Config::set('database.connections.other.database', Auth::user()->company);
-      $jeharep = jeha::where('jeha_type',1)->paginate(15);
-     // dd($jeharep);
+      $jeharep = jeha::on(auth()->user()->company)->where('jeha_type',1)->paginate(15);
       if ($request->ajax()) {
           return view('backend.jeha.CustomerPagi', compact('jeharep'));
       } else {
@@ -31,9 +28,9 @@ class customercontroller extends Controller
     }
     function CustomerStore (Request $request)
     {
-        Config::set('database.connections.other.database', Auth::user()->company);
-       $wid = jeha::max('jeha_no')+1;
-        jeha::insert([
+
+       $wid = jeha::on(auth()->user()->company)->max('jeha_no')+1;
+        jeha::on(auth()->user()->company)->insert([
             'jeha_no'=>$wid,
             'jeha_name'=>$request->jeha_name,
            'jeha_type'=>1,
@@ -53,16 +50,16 @@ class customercontroller extends Controller
     }
     function CustomerEdit ($id)
     {
-        Config::set('database.connections.other.database', Auth::user()->company);
-      $customer=jeha::findorfail($id);
+
+      $customer=jeha::on(auth()->user()->company)->findorfail($id);
         return view('backend.jeha.customer_edit',compact('customer'));
     }
 
     function CustomerUpdate (Request $request)
     {
-        Config::set('database.connections.other.database', Auth::user()->company);
+
         $wid = $request->id;
-        jeha::findorfail($wid)->update([
+        jeha::on(auth()->user()->company)->findorfail($wid)->update([
 
             'jeha_name'=>$request->jeha_name,
 
@@ -84,7 +81,7 @@ class customercontroller extends Controller
     {
         Config::set('database.connections.other.database', Auth::user()->company);
 
-        jeha::findorfail($id)->delete();
+        jeha::on(auth()->user()->company)->findorfail($id)->delete();
         $notification = array(
             'message'=> 'تم الغاء البيانات بنجاح','alert-type'=>'success'
         );
@@ -95,8 +92,8 @@ class customercontroller extends Controller
 
     function SearchCustomerall (Request $request)
     {
-        Config::set('database.connections.other.database', Auth::user()->company);
-        $jeharep = jeha::where('jeha_type',1)
+
+        $jeharep = jeha::on(auth()->user()->company)->where('jeha_type',1)
             ->where('Jeha_name', 'like' ,'%'.$request->search_string.'%')
             ->orwhere('address', 'like' ,'%'.$request->search_string.'%')
             ->orwhere('libyana', 'like' ,'%'.$request->search_string.'%')

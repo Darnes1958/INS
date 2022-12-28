@@ -26,6 +26,12 @@ class OrderBuyDetail extends Component
     public $OrderDetailOpen;
 
     public $ItemGeted=false;
+    public $TheItemIsSelected;
+
+  public function updatedTheItemIsSelected(){
+    $this->TheItemIsSelected=0;
+    $this->ChkItemAndGo();
+  }
 
     public function OpenFirst(){
         $this->dispatchBrowserEvent('OpenFirst');

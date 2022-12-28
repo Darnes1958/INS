@@ -126,7 +126,7 @@
             $('#Item_L').on('change', function (e) {
                 var data = $('#Item_L').select2("val");
             @this.set('item', data);
-
+            @this.set('TheItemIsSelected', 1);
             });
         });
         window.livewire.on('item-change-event',()=>{

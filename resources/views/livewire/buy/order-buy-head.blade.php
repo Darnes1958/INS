@@ -149,6 +149,7 @@
           $('#Supp_L').on('change', function (e) {
             var data = $('#Supp_L').select2("val");
             @this.set('jeha', data);
+            @this.set('TheJehaIsSelected', 1);
 
           });
       });
@@ -156,7 +157,7 @@
           $('#Supp_L').select2({
               closeOnSelect: true
           });
-          Livewire.emit('gotonext', 'jehano');
+
 
       });
   </script>
