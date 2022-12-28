@@ -125,7 +125,7 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
-        'BokrahAli' => [
+        'BokreahAli' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL_OTHER'),
             'host' => env('DB_HOST_OTHER', 'localhost'),
