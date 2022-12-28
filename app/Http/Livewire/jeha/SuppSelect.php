@@ -34,9 +34,9 @@ class SuppSelect extends Component
   }
     public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
 
-      $this->SuppList=jeha::where('jeha_type',2)->where('available',1)->get();
+
+      $this->SuppList=jeha::on(Auth()->user()->company)->where('jeha_type',2)->where('available',1)->get();
       return view('livewire.jeha.supp-select',$this->SuppList);
     }
 }

@@ -42,14 +42,13 @@ class TarTable extends Component
   }
 
   public function SaveTar($tar_date,$ksm_type){
-    Config::set('database.connections.other.database', Auth::user()->company);
-    info($tar_date);
+    DB::connection(Auth()->user()->company)->beginTransaction();
     try {
     foreach ($this->mychecked as $key=>$value)
     {
      if ($value==1) {
 
-       $res = DB::connection('other')->table($this->Proc)->where('wrec_no', $key)->first();
+       $res = DB::connection(Auth()->user()->company)->table($this->Proc)->where('wrec_no', $key)->first();
        if ($this->Proc == 'over_kst') {
          $tar_type = 1;
          $field='letters';
@@ -61,7 +60,7 @@ class TarTable extends Component
        }
 
        if ($res) {
-         DB::connection('other')->table('tar_kst')->insert([
+         DB::connection(Auth()->user()->company)->table('tar_kst')->insert([
            'no' => $no,
            'name' => $res->name,
            'bank' => $res->bank,
@@ -75,17 +74,17 @@ class TarTable extends Component
            'emp' => Auth::user()->empno,
            'ksm_type' => $ksm_type,
          ]);
-         DB::connection('other')->table($this->Proc)->where('wrec_no',$key)->update([$field=>1]);
+         DB::connection(Auth()->user()->company)->table($this->Proc)->where('wrec_no',$key)->update([$field=>1]);
 
        }
      }}
-        DB::connection('other')->commit();
+        DB::connection(Auth()->user()->company)->commit();
         $this->mychecked=[];
         $this->render();
 
       } catch (\Exception $e) {
 
-        DB::connection('other')->rollback();
+        DB::connection(Auth()->user()->company)->rollback();
         $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
       }
 
@@ -99,16 +98,16 @@ class TarTable extends Component
 
     public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
+
       if ($this->Proc=='over_kst')
-      $data=DB::connection('other')->table('over_kst')
+      $data=DB::connection(Auth()->user()->company)->table('over_kst')
         ->selectRaw('no,acc,name,letters as morahel,kst,tar_date,wrec_no')
         ->where([
           ['bank', $this->bankno],
           ['letters',0],
           ['name', 'like', '%'.$this->search.'%'],])->paginate(15);
       if ($this->Proc=='wrong_kst')
-      $data=DB::connection('other')->table('wrong_kst')
+      $data=DB::connection(Auth()->user()->company)->table('wrong_kst')
         ->selectraw('0 as no,acc,name,morahel,kst,tar_date,wrec_no')
         ->where([
           ['bank', '=', $this->bankno],

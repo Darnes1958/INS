@@ -71,18 +71,18 @@ class HafInputDetail extends Component
   }
 
   public function ChkNoAndGo(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     if ($this->no!=null) {
-      $result = main::where('no',$this->no)-> first();
+      $result = main::on(Auth()->user()->company)->where('no',$this->no)-> first();
       if ($result) {
-        $ser=DB::connection('other')->table('kst_trans')
+        $ser=DB::connection(Auth()->user()->company)->table('kst_trans')
           ->where('no',$this->no)
           ->where('ksm','!=',null)
           ->where('ksm','!=','0')->max('ser');
         if ($ser==null) {$kst=$result->kst; }
-        else {$res=DB::connection('other')->table('kst_trans')->where('no',$this->no)->where('ser',$ser)->first();
+        else {$res=DB::connection(Auth()->user()->company)->table('kst_trans')->where('no',$this->no)->where('ser',$ser)->first();
               $kst=$res->ksm; }
-        $sumkst=hafitha_tran::select(DB::connection('other')->raw('sum(kst + baky) as total'))
+        $sumkst=hafitha_tran::select(DB::connection(Auth()->user()->company)->raw('sum(kst + baky) as total'))
                               ->where('hafitha',$this->hafitha)->where('no',$this->no)->first();
         if ($sumkst->total != null)
          {$this->SumKst=$sumkst->total;}
@@ -100,17 +100,17 @@ class HafInputDetail extends Component
       else
 
       {
-        $result = MainArc::where('no',$this->no)->first();
+        $result = MainArc::on(Auth()->user()->company)->where('no',$this->no)->first();
         if ($result) {
           $this->kst_type=5;
-          $ser=DB::connection('other')->table('TransArc')
+          $ser=DB::connection(Auth()->user()->company)->table('TransArc')
             ->where('no',$this->no)
             ->where('ksm','!=',null)
             ->where('ksm','!=','0')->max('ser');
 
           if ($ser==null) {$kst=$result->kst;}
           else {
-            $res=DB::connection('other')->table('TransArc')->where('no',$this->no)->where('ser',$ser)->first();
+            $res=DB::connection(Auth()->user()->company)->table('TransArc')->where('no',$this->no)->where('ser',$ser)->first();
             $kst=$res->ksm;
           }
 
@@ -142,14 +142,14 @@ class HafInputDetail extends Component
         $this->emit('bankfound',$this->bank,'');
     }
     public function ChkAccAndGo(){
-      Config::set('database.connections.other.database', Auth::user()->company);
-      $result = main::where('bank',$this->bank)->where('acc',$this->acc)->get();
+
+      $result = main::on(Auth()->user()->company)->where('bank',$this->bank)->where('acc',$this->acc)->get();
       if (count($result)!=0) {
         if (count($result)>1){
           $this->emit('GotoManyAcc',$this->bank,$this->acc);
           $this->dispatchBrowserEvent('OpenKstManyModal');}
         else {
-          $result = main::where('bank',$this->bank)->where('acc',$this->acc)->first();
+          $result = main::on(Auth()->user()->company)->where('bank',$this->bank)->where('acc',$this->acc)->first();
           $this->name=$result->name;
           $this->no=$result->no;
           $this->emit('kstdetail_goto','no');
@@ -192,11 +192,11 @@ class HafInputDetail extends Component
     $this->emit('kstdetail_goto','no');
    }
    public function StoreRec($baky){
-    Config::set('database.connections.other.database', Auth::user()->company);
-    $serinhafitha= hafitha_tran::where('hafitha',$this->hafitha)->max('ser_in_hafitha')+1;
-     DB::connection('other')->beginTransaction();
+
+    $serinhafitha= hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->max('ser_in_hafitha')+1;
+     DB::connection(Auth()->user()->company)->beginTransaction();
      try {
-        DB::connection('other')->table('hafitha_tran')->insert([
+        DB::connection(Auth()->user()->company)->table('hafitha_tran')->insert([
           'hafitha'=>$this->hafitha,
           'ser_in_hafitha'=>$serinhafitha,
           'ser'=>0,
@@ -210,24 +210,24 @@ class HafInputDetail extends Component
           'page_no'=>1,
           'emp'=>auth::user()->empno,
         ]);
-        $summorahel=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',1)->sum('kst');
-        $sumover1=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',2)->sum('kst');
-        $sumover2=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',5)->sum('kst');
-        $sumover3=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',3)->sum('baky');
+        $summorahel=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',1)->sum('kst');
+        $sumover1=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',2)->sum('kst');
+        $sumover2=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',5)->sum('kst');
+        $sumover3=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',3)->sum('baky');
         if ($sumover1==null) {$sumover1=0;}
         if ($sumover2==null) {$sumover2=0;}
         if ($sumover3==null) {$sumover3=0;}
         $sumover=$sumover1+$sumover2+$sumover3;
-        $sumhalfover=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',3)->sum('kst');
-         DB::connection('other')->table('hafitha')->where('hafitha_no',$this->hafitha)->update([
+        $sumhalfover=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',3)->sum('kst');
+         DB::connection(Auth()->user()->company)->table('hafitha')->where('hafitha_no',$this->hafitha)->update([
            'kst_morahel'=>$summorahel,'kst_over'=>$sumover,'kst_half_over'=>$sumhalfover,
          ]);
 
-       DB::connection('other')->commit();
+       DB::connection(Auth()->user()->company)->commit();
        $this->emit('DoChkBankNo');
 
      } catch (\Exception $e) {
-       DB::connection('other')->rollback();
+       DB::connection(Auth()->user()->company)->rollback();
        $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
      }
    }

@@ -72,8 +72,8 @@ class OrderSellHeadEdit extends Component
   public function ChkOrderNoAndGo(){
     if ($this->order_no) {
       $this->emit('mounttable');
-      Config::set('database.connections.other.database', Auth::user()->company);
-      $res = sells::find($this->order_no);
+
+      $res = sells::on(Auth()->user()->company)->find($this->order_no);
       if ($res) {
         $this->jeha_no=$res->jeha;
         $this->stno=$res->place_no;
@@ -84,14 +84,14 @@ class OrderSellHeadEdit extends Component
         $this->madfooh=$res->cash;
         $this->notes=$res->notes;
         $this->Price_type=$res->price_type;
-        $this->jeha_name=jeha::find($this->jeha_no)->jeha_name;
+        $this->jeha_name=jeha::on(Auth()->user()->company)->find($this->jeha_no)->jeha_name;
         if ($res->sell_type==1){
           $this->PlaceType='Makazen';
-          $this->st_name=stores_names::find($this->stno)->st_name;
+          $this->st_name=stores_names::on(Auth()->user()->company)->find($this->stno)->st_name;
           $this->PlaceLabel='المخزن';
         } else{
           $this->PlaceType='Salat';
-          $this->st_name=halls_names::find($this->stno)->hall_name;
+          $this->st_name=halls_names::on(Auth()->user()->company)->find($this->stno)->hall_name;
           $this->PlaceLabel='الصالة';
         }
 
@@ -111,21 +111,21 @@ class OrderSellHeadEdit extends Component
     $this->dispatchBrowserEvent('dodelete');
   }
   public function DoDelete(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
 
     if ($this->Price_type==2) {
-      $res=main::where('order_no',$this->order_no)->first();
+      $res=main::on(Auth()->user()->company)->where('order_no',$this->order_no)->first();
       if ($res) {
         $this->dispatchBrowserEvent('mmsg', 'هذه الفاتورة مقيدة بعقد تقسيط .. لا يجوز الغاءها');
         return false;
       }
     }
 
-    DB::connection('other')->beginTransaction();
+    DB::connection(Auth()->user()->company)->beginTransaction();
       try {
-            sell_tran::where('order_no',$this->order_no)->delete();
-            sells::where('order_no',$this->order_no)->delete();
-            DB::connection('other')->commit();
+            sell_tran::on(Auth()->user()->company)->where('order_no',$this->order_no)->delete();
+            sells::on(Auth()->user()->company)->where('order_no',$this->order_no)->delete();
+            DB::connection(Auth()->user()->company)->commit();
             $this->emitTo('sell.order-sell-table-edit','mounttable');
             $this->emitTo('sell.order-sell-detail-edit','dismountdetail');
             $this->emitSelf('mounthead');
@@ -155,7 +155,7 @@ class OrderSellHeadEdit extends Component
 
     public function mount()
     {
-        Config::set('database.connections.other.database', Auth::user()->company);
+
         $this->order_no='';
         $this->order_date='';
         $this->stno;
@@ -171,7 +171,7 @@ class OrderSellHeadEdit extends Component
 
     public function render()
     {
-        Config::set('database.connections.other.database', Auth::user()->company);
+
 
         return view('livewire.sell.order-sell-head-edit');
     }

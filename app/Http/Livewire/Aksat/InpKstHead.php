@@ -52,25 +52,25 @@ class InpKstHead extends Component
     $this->The_ser=$id;
   }
   public function DeleteTheKst(){
-    Config::set('database.connections.other.database', Auth::user()->company);
-    DB::connection('other')->beginTransaction();
+
+    DB::connection(Auth()->user()->company)->beginTransaction();
     try {
-    DB::connection('other')->table('kst_trans')->where('no',$this->no)->where('ser',$this->The_ser)->update([
+    DB::connection(Auth()->user()->company)->table('kst_trans')->where('no',$this->no)->where('ser',$this->The_ser)->update([
       'ksm'=>0,
       'ksm_date'=>null,
       'kst_notes'=>null,
       'emp'=>auth::user()->empno,
     ]);
-    $sul_pay=kst_trans::where('no',$this->no)->where('ksm','!=',null)->sum('ksm');
-    $sul=main::where('no',$this->no)->first();
+    $sul_pay=kst_trans::on(Auth()->user()->company)->where('no',$this->no)->where('ksm','!=',null)->sum('ksm');
+    $sul=main::on(Auth()->user()->company)->where('no',$this->no)->first();
     $raseed=$sul->sul-$sul_pay;
-    main::where('no',$this->no)->update(['sul_pay'=>$sul_pay,'raseed'=>$raseed]);
+    main::on(Auth()->user()->company)->where('no',$this->no)->update(['sul_pay'=>$sul_pay,'raseed'=>$raseed]);
 
-    DB::connection('other')->commit();
+    DB::connection(Auth()->user()->company)->commit();
     $this->ChkNoAndGo();
     $this->emitTo('tools.my-table','refreshComponent');
     } catch (\Exception $e) {
-      DB::connection('other')->rollback();
+      DB::connection(Auth()->user()->company)->rollback();
 
       $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
     }
@@ -100,10 +100,10 @@ public function Go(){
   }
   public function ChkBankAndGo(){
 
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     $this->bankname='';
     if ($this->bankno!=null) {
-      $result = bank::where('bank_no',$this->bankno)->first();
+      $result = bank::on(Auth()->user()->company)->where('bank_no',$this->bankno)->first();
 
       if ($result) {  $this->bankname=$result->bankname;
         $this->BankGet=true;
@@ -122,10 +122,10 @@ public function Go(){
     $this->emit('GoResetKstDetail');
   }
   public function FillHead(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     $this->acc='';
     if ($this->no!=null) {
-      $result = main::where('bank',$this->bankno)->where('no',$this->no)->first();
+      $result = main::on(Auth()->user()->company)->where('bank',$this->bankno)->where('no',$this->no)->first();
       if ($result) {
         $this->name=$result->name;
         $this->acc=$result->acc;
@@ -136,10 +136,10 @@ public function Go(){
   public function ChkNoAndGo(){
     $this->resetValidation('acc');
     $this->validate();
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     $this->acc='';
     if ($this->no!=null) {
-      $result = main::where('bank',$this->bankno)->where('no',$this->no)->first();
+      $result = main::on(Auth()->user()->company)->where('bank',$this->bankno)->where('no',$this->no)->first();
       if ($result) {
         $this->name=$result->name;
         $this->acc=$result->acc;
@@ -164,13 +164,13 @@ public function Go(){
       ['acc' => 'required|string|exists:other.main,acc'],
       ['required' => 'لا يجوز','exists' => 'هذا الحساب غير موجود'])->validate();
 
-    $result = main::where('bank',$this->bankno)->where('acc',$this->acc)->get();
+    $result = main::on(Auth()->user()->company)->where('bank',$this->bankno)->where('acc',$this->acc)->get();
     if (count($result)!=0) {
         if (count($result)>1){
           $this->emit('GotoManyAcc',$this->bankno,$this->acc);
           $this->dispatchBrowserEvent('OpenKstManyModal');}
         else {
-          $result = main::where('bank',$this->bankno)->where('acc',$this->acc)->first();
+          $result = main::on(Auth()->user()->company)->where('bank',$this->bankno)->where('acc',$this->acc)->first();
           $this->name=$result->name;
           $this->no=$result->no;
 

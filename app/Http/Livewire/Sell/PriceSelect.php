@@ -31,8 +31,8 @@ class PriceSelect extends Component
   }
   public function render()
   {
-    Config::set('database.connections.other.database', Auth::user()->company);
-    $this->PriceList=price_type::where('type_no','!=',2)->get();
+
+    $this->PriceList=price_type::on(Auth::user()->company)->where('type_no','!=',2)->get();
 
     return view('livewire.sell.price-select',$this->PriceList);
 

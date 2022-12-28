@@ -35,20 +35,20 @@ class OrderSellTable extends Component
     }
 
     public function store(){
-
+        $conn=Auth()->user()->company;
         if (count($this->orderdetail)==1){
             session()->flash('message', 'لم يتم ادخال اصناف بعد');
 
         }
         else {
-            Config::set('database.connections.other.database', Auth::user()->company);
+
             $this->HasRaseed=true;
-            DB::connection('other')->beginTransaction();
+            DB::connection($conn)->beginTransaction();
 
             try {
 
                if ($this->PlaceType=='Makazen') $pt=1; else $pt=2;
-                DB::connection('other')->table('sells')->insert([
+                DB::connection($conn)->table('sells')->insert([
                     'order_no' => $this->order_no,
                     'jeha' => $this->jeha_no,
                     'order_date' => $this->order_date,
@@ -76,7 +76,7 @@ class OrderSellTable extends Component
                     if ($this->PlaceType='Makazen')
                      {
                       $pt=1;
-                      $st_quant=DB::connection('other')->table('stores')
+                      $st_quant=DB::connection($conn)->table('stores')
                         ->where('st_no', '=', $this->st_no)
                         ->where('item_no','=',$item['item_no'])
                         ->pluck('raseed');
@@ -94,7 +94,7 @@ class OrderSellTable extends Component
                      }
 
                     if ($this->HasRaseed)
-                    {DB::connection('other')->table('sell_tran')->insert([
+                    {DB::connection($conn)->table('sell_tran')->insert([
                         'order_no' => $this->order_no,
                         'item_no' => $item['item_no'],
                         'quant' => $item['quant'],
@@ -107,8 +107,8 @@ class OrderSellTable extends Component
                 }
                 if ($this->HasRaseed && $this->madfooh != 0) {
 
-                    $tran_no = trans::max('tran_no') + 1;
-                    DB::connection('other')->table('trans')->insert([
+                    $tran_no = trans::on($conn)->max('tran_no') + 1;
+                    DB::connection($conn)->table('trans')->insert([
                         'tran_no' => $tran_no,
                         'jeha' => $this->jeha_no,
                         'val' => $this->madfooh,
@@ -126,16 +126,16 @@ class OrderSellTable extends Component
                 }
               if ($this->HasRaseed)
               {
-                DB::connection('other')->commit();
+                DB::connection($conn)->commit();
                 $this->emit('mounttable');
                 $this->emit('dismountdetail');
                 $this->emit('mounthead');
-              } else {DB::connection('other')->rollback();}
+              } else {DB::connection($conn)->rollback();}
 
 
 
             } catch (\Exception $e) {
-                DB::connection('other')->rollback();
+                DB::connection($conn)->rollback();
                 $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
             }
 

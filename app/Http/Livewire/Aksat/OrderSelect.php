@@ -37,9 +37,9 @@ class OrderSelect extends Component
   }
     public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
+
       if (!$this->MainTwo) {
-      $this->OrderList=DB::connection('other')->table('sells_view')
+      $this->OrderList=DB::connection(Auth()->user()->company)->table('sells_view')
       ->where('price_type',2)
       ->where('order_date','>',Carbon::now()->subMonth(1))
 
@@ -54,7 +54,7 @@ class OrderSelect extends Component
         })
       ->get();}
         if ($this->MainTwo) {
-            $this->OrderList=DB::connection('other')->table('sells_view')
+            $this->OrderList=DB::connection(Auth()->user()->company)->table('sells_view')
                 ->where('price_type',2)
                 ->where('order_date','>',Carbon::now()->subYear(1))
                 ->whereNotIn('order_no', function($q){

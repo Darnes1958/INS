@@ -114,11 +114,10 @@ public function delete(){
       $this->myquery[$x]=$this->ColNames[$x].' as Col'.$x+1;
     }
 
-    Config::set('database.connections.other.database', Auth::user()->company);
 
     if ($this->HasWhereEquel) {
       return view('livewire.tools.my-table',[
-        'TableList' => DB::connection('other')->table($this->TableName)
+        'TableList' => DB::connection(Auth()->user()->company)->table($this->TableName)
           ->select($this->myquery)
           ->where($this->WhereEquelField,'=', $this->WhereEquelValue)
           ->paginate($this->PagNo),
@@ -127,7 +126,7 @@ public function delete(){
 
     } else {
         return view('livewire.tools.my-table',[
-          'TableList' => DB::connection('other')->table($this->TableName)
+          'TableList' => DB::connection(Auth()->user()->company)->table($this->TableName)
             ->select($this->myquery)
             ->when($this->HasWhereEquel,function ($q) {
               return $q->where($this->WhereEquelField,'=', $this->WhereEquelValue) ;     })

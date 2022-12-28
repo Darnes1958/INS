@@ -37,11 +37,11 @@ class RepMainHeadArc extends Component
    $this->ChkNoAndGo();
  }
  public function ChkNoAndGo(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     $this->acc='';
 
     if ($this->no!=null) {
-        $result = MainArc::where('no',$this->no)->first();
+        $result = MainArc::on(Auth()->user()->company)->where('no',$this->no)->first();
         if ($result) {
             $this->acc=$result->acc;
             $this->emit('GotoDetail',$result);
@@ -54,7 +54,7 @@ class RepMainHeadArc extends Component
     public function render()
     {
         return view('livewire.aksat.rep.okod.rep-main-head-arc',[
-            'TableList' => DB::connection('other')->table('MainArc')
+            'TableList' => DB::connection(Auth()->user()->company)->table('MainArc')
                 ->select('no','acc', 'name','sul')
                 ->where('name', 'like', '%'.$this->search.'%')
                 ->orwhere('acc', 'like', '%'.$this->search.'%')

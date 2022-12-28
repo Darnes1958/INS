@@ -27,9 +27,9 @@ class InpWrong extends Component
     $this->BankGet=false;
   }
   public function ChkBankAndGo(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     if ($this->bankno!=null) {
-      $result = bank::where('bank_no',$this->bankno)->first();
+      $result = bank::on(Auth()->user()->company)->where('bank_no',$this->bankno)->first();
       if ($result) {
         $this->BankGet=true;
         $this->emitTo('over-tar.wrong-table','TakeBank',$this->bankno);
@@ -37,9 +37,9 @@ class InpWrong extends Component
       }}
   }
   public function SaveWrong(){
-    Config::set('database.connections.other.database', Auth::user()->company);
-    $wrong_no=wrong_Kst::max('wrong_no')+1;
-    wrong_Kst::insert([
+
+    $wrong_no=wrong_Kst::on(Auth()->user()->company)->max('wrong_no')+1;
+    wrong_Kst::on(Auth()->user()->company)->insert([
       'wrong_no'=>$wrong_no,
       'name'=>$this->name,
       'bank'=>$this->bankno,

@@ -23,7 +23,7 @@ class AddSupp extends Component
   ];
   public function WithJehaType($jeha_type)
   {
-    info($this->jeha_type);
+
     $this->jeha_type=$jeha_type;
   }
 
@@ -48,9 +48,9 @@ class AddSupp extends Component
   {
     $this->validate();
 
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     $this->jeha_no = jeha::max('jeha_no')+1;
-    DB::connection('other')->table('jeha')->insert([
+    DB::connection(Auth()->user()->company)->table('jeha')->insert([
 
       'jeha_no' => $this->jeha_no,
       'jeha_name' => $this->jehaname,

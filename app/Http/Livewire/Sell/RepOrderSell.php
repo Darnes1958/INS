@@ -60,8 +60,8 @@ class RepOrderSell extends Component
   }
   public function ChkOrderNoAndGo(){
     if ($this->order_no) {
-      Config::set('database.connections.other.database', Auth::user()->company);
-      $res=sells::find($this->order_no);
+
+      $res=sells::on(Auth()->user()->company)->find($this->order_no);
 
     if ($res) {
       $this->order_date=$res->order_date;
@@ -76,18 +76,18 @@ class RepOrderSell extends Component
       $this->not_cash=$res->not_cash;
       $this->notes=$res->notes;
 
-      $this->jeha_name=jeha::find($this->jeha_no)->jeha_name;
-      if ($this->place_type==1){ $this->place_name=stores_names::find($this->place_no)->st_name;}
-      if ($this->place_type==2){ $this->place_name=halls_names::find($this->place_no)->hall_name;}
-      $this->type_name=price_type::find($this->price_type)->type_name;
+      $this->jeha_name=jeha::on(Auth()->user()->company)->find($this->jeha_no)->jeha_name;
+      if ($this->place_type==1){ $this->place_name=stores_names::on(Auth()->user()->company)->find($this->place_no)->st_name;}
+      if ($this->place_type==2){ $this->place_name=halls_names::on(Auth()->user()->company)->find($this->place_no)->hall_name;}
+      $this->type_name=price_type::on(Auth()->user()->company)->find($this->price_type)->type_name;
     } else {$this->dispatchBrowserEvent('mmsg','هذا الرقم غير مخزون');$this->clearData();}
   }}
 
   public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
+
       return view('livewire.sell.rep-order-sell',[
-        'orderdetail'=>rep_sell_tran::where('order_no',$this->order_no)->paginate(15)
+        'orderdetail'=>rep_sell_tran::on(Auth()->user()->company)->where('order_no',$this->order_no)->paginate(15)
       ]);
     }
 }

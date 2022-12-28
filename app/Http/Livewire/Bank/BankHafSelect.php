@@ -29,8 +29,8 @@ class BankHafSelect extends Component
   }
   public function render()
   {
-    Config::set('database.connections.other.database', Auth::user()->company);
-    $this->BankHafList=DB::connection('other')->
+
+    $this->BankHafList=DB::connection(Auth()->user()->company)->
     table('hafitha_view')->where('hafitha_state','=',0)
     ->get();
     return view('livewire.bank.bank-haf-select',$this->BankHafList);

@@ -25,7 +25,7 @@ class OverTable extends Component
     ];
 
     public function closeandrefresh(){
-      info('close ');
+
       $this->CloseEditDialog();
       $this->render();
     }
@@ -43,8 +43,8 @@ class OverTable extends Component
     public function delete(){
       $this->CloseDeleteDialog();
 
-      if ($this->Proc=='over_kst') over_kst::where('wrec_no',$this->wrec_no)->delete();
-      if ($this->Proc=='over_kst_a') over_kst_a::where('wrec_no',$this->wrec_no)->delete();
+      if ($this->Proc=='over_kst') over_kst::on(Auth()->user()->company)->where('wrec_no',$this->wrec_no)->delete();
+      if ($this->Proc=='over_kst_a') over_kst_a::on(Auth()->user()->company)->where('wrec_no',$this->wrec_no)->delete();
       $this->render();
     }
 
@@ -54,9 +54,9 @@ class OverTable extends Component
 
     public function render()
     {
-     Config::set('database.connections.other.database', Auth::user()->company);
+
      return view('livewire.over-tar.over-table',[
-        'TableList'=>DB::connection('other')->table($this->Proc)
+        'TableList'=>DB::connection(Auth()->user()->company)->table($this->Proc)
             ->where('no',$this->no)
             ->where('letters',0)
             ->orderBy('Wrec_no','asc')

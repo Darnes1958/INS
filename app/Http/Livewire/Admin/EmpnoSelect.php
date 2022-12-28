@@ -22,8 +22,8 @@ class EmpnoSelect extends Component
     }
     public function render()
     {
-        Config::set('database.connections.other.database',$this->Comp );
-        $this->ItemList=DB::connection('other')->table('pass')->get();
+
+        $this->ItemList=DB::connection(Auth()->user()->company)->table('pass')->get();
 
         return view('livewire.admin.empno-select',$this->ItemList);
 

@@ -17,18 +17,18 @@ trait MyLib {
     public $ItemExistsInOrder=false;
 
     public function IfBuyItemExists($order_no,$item_no,$stno){
-        Config::set('database.connections.other.database', Auth::user()->company);
-        $res=buy_tran::where('order_no',$order_no)->where('item_no',$item_no)->first();
+        $conn=Auth()->user()->company;
+        $res=buy_tran::on($conn)->where('order_no',$order_no)->where('item_no',$item_no)->first();
         if ($res) {$this->OldItemQuant=$res->quant;
-                   $ras=stores::where('st_no',$stno)->where('item_no',$item_no)->first();
+                   $ras=stores::on($conn)->where('st_no',$stno)->where('item_no',$item_no)->first();
                    $this->PlaceItemQuant=$ras->raseed;
                    $this->ItemExistsInOrder=true;
                    return (true);}
         else {$this->OldItemQuant=0; $this->ItemExistsInOrder=false; return (false);}
     }
   public function IfSellItemExists($order_no,$item_no,$placetype,$stno){
-    Config::set('database.connections.other.database', Auth::user()->company);
-    $res=sell_tran::where('order_no',$order_no)->where('item_no',$item_no)->first();
+    $conn=Auth()->user()->company;
+    $res=sell_tran::on($conn)->where('order_no',$order_no)->where('item_no',$item_no)->first();
     if ($res) {$this->OldItemQuant=$res->quant;
                $this->RetPlaceRaseed($item_no,$placetype,$stno);
                $this->ItemExistsInOrder=true;
@@ -37,22 +37,23 @@ trait MyLib {
   }
 
   public function RetPlaceRaseed($item_no,$placetype,$stno){
-    Config::set('database.connections.other.database', Auth::user()->company);
+    $conn=Auth()->user()->company;
     if ($placetype=='Makazen')
-     {$ras=stores::where('st_no',$stno)->where('item_no',$item_no)->first();}
+     {$ras=stores::on($conn)->where('st_no',$stno)->where('item_no',$item_no)->first();}
     else
-     {$ras=halls::where('hall_no',$stno)->where('item_no',$item_no)->first();}
+     {$ras=halls::on($conn)->where('hall_no',$stno)->where('item_no',$item_no)->first();}
     if ($ras) $this->PlaceItemQuant=$ras->raseed;
     else $this->PlaceItemQuant=0;
     return $this->PlaceItemQuant;
   }
  public function RetItemData($item){
-  $result=items::where('item_no', $item)->first();
+     $conn=Auth()->user()->company;
+  $result=items::on($conn)->where('item_no', $item)->first();
   return $result;
  }
  public function RetItemPrice($item,$pricetype){
-   Config::set('database.connections.other.database', Auth::user()->company);
-   $pr=DB::connection('other')->table('item_price_sell')
+     $conn=Auth()->user()->company;
+   $pr=DB::connection($conn)->table('item_price_sell')
      ->where('price_type', '=', $pricetype)
      ->where('item_no','=',$item)
      ->first('price');

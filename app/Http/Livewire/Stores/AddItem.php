@@ -27,11 +27,11 @@ class AddItem extends Component
         'itemtypeadded','gotoaddonetype'
     ];
     public function resetitem(){
-      Config::set('database.connections.other.database', Auth::user()->company);
-      $this->item_no=items::max('item_no')+1;
+
+      $this->item_no=items::on(Auth()->user()->company)->max('item_no')+1;
       $this->item_name='';
-      $this->itemtype=item_type::min('type_no');
-      $this->itemtypel=item_type::min('type_no');
+      $this->itemtype=item_type::on(Auth()->user()->company)->min('type_no');
+      $this->itemtypel=item_type::on(Auth()->user()->company)->min('type_no');
       $this->price_sell=0;
       $this->price_buy=0;
 
@@ -79,10 +79,10 @@ class AddItem extends Component
 
     public function SaveItem(){
         $this->validate();
+        DB::connection(Auth()->user()->company)->beginTransaction();
 
-        Config::set('database.connections.other.database', Auth::user()->company);
         try {
-              DB::connection('other')->table('items')->insert([
+              DB::connection(Auth()->user()->company)->table('items')->insert([
                 'item_no' => $this->item_no,
                 'item_name' => $this->item_name,
                 'item_type' => $this->itemtype,
@@ -92,21 +92,21 @@ class AddItem extends Component
                 'available' => 1
 
               ]);
-              DB::connection('other')->table('item_price_buy')->insert([
+              DB::connection(Auth()->user()->company)->table('item_price_buy')->insert([
                 'item_no' => $this->item_no,
                 'price_type' => 1,
                 'price' => $this->price_buy,
               ]);
-              DB::connection('other')->table('item_price_sell')->insert([
+              DB::connection(Auth()->user()->company)->table('item_price_sell')->insert([
                 'item_no' => $this->item_no,
                 'price_type' => 1,
                 'price' => $this->price_sell,
               ]);
 
-             DB::commit();
+            DB::connection(Auth()->user()->company)->commit();
 
             } catch (\Exception $e) {
-                   DB::rollback();
+            DB::connection(Auth()->user()->company)->rollBack();
                    // something went wrong
                                     }
 
@@ -120,6 +120,6 @@ class AddItem extends Component
     }
     public function render()
     {
-        return view('livewire.stores.add-item',['item_types'=>item_type::all(),]);
+        return view('livewire.stores.add-item',['item_types'=>item_type::on(Auth()->user()->company)->get(),]);
     }
 }

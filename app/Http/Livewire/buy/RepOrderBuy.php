@@ -57,8 +57,8 @@ class RepOrderBuy extends Component
   }
   public function ChkOrderNoAndGo(){
     if ($this->order_no) {
-      Config::set('database.connections.other.database', Auth::user()->company);
-      $res=buys::find($this->order_no);
+
+      $res=buys::on(Auth()->user()->company)->find($this->order_no);
 
     if ($res) {
       $this->order_date=$res->order_date;
@@ -72,17 +72,17 @@ class RepOrderBuy extends Component
       $this->not_cash=$res->not_cash;
       $this->notes=$res->notes;
 
-      $this->jeha_name=jeha::find($this->jeha_no)->jeha_name;
-      $this->place_name=stores_names::find($this->place_no)->st_name;
+      $this->jeha_name=jeha::on(Auth()->user()->company)->find($this->jeha_no)->jeha_name;
+      $this->place_name=stores_names::on(Auth()->user()->company)->find($this->place_no)->st_name;
 
     } else {$this->dispatchBrowserEvent('mmsg','هذا الرقم غير مخزون');$this->clearData();}
   }}
 
   public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
+
       return view('livewire.buy.rep-order-buy',[
-        'orderdetail'=>rep_buy_tran::where('order_no',$this->order_no)->paginate(15)
+        'orderdetail'=>rep_buy_tran::on(Auth()->user()->company)->where('order_no',$this->order_no)->paginate(15)
       ]);
     }
 }

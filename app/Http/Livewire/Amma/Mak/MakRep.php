@@ -26,10 +26,10 @@ class MakRep extends Component
 
     public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
+
       if ($this->RepChk) {
        return view('livewire.amma.mak.mak-rep',[
-          'RepTable'=>DB::connection('other')->table('rep_makzoon')
+          'RepTable'=>DB::connection(Auth()->user()->company)->table('rep_makzoon')
             ->where('item_name', 'like', '%'.$this->search.'%')
             ->orwhere('item_no', 'like', '%'.$this->search.'%')
             ->orwhere('type_name', 'like', '%'.$this->search.'%')
@@ -38,7 +38,7 @@ class MakRep extends Component
         ]);}
       else {
         return view('livewire.amma.mak.mak-rep',[
-          'RepTable'=>DB::connection('other')->table('rep_makzoon')
+          'RepTable'=>DB::connection(Auth()->user()->company)->table('rep_makzoon')
             ->where('raseed','!=',0)
             ->where('place_ras','!=',0)
             ->where([

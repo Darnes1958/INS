@@ -6,11 +6,13 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Http\Traits\GlobalTrait;
+use Illuminate\Support\Facades\Session;
 
 trait AuthenticatesUsers
 {
     use RedirectsUsers, ThrottlesLogins;
-
+    use GlobalTrait;
     /**
      * Show the application's login form.
      *
@@ -44,6 +46,8 @@ trait AuthenticatesUsers
         }
 
         if ($this->attemptLogin($request)) {
+
+
             if ($request->hasSession()) {
                 $request->session()->put('auth.password_confirmed_at', time());
             }

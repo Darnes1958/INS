@@ -58,8 +58,8 @@ class OrderBuyHeadEdit extends Component
     public function ChkOrderNoAndGo(){
       if ($this->orderno) {
         $this->emit('mounttable');
-        Config::set('database.connections.other.database', Auth::user()->company);
-        $res = buys::find($this->orderno);
+
+        $res = buys::on(Auth()->user()->company)->find($this->orderno);
         if ($res) {
           $this->jeha=$res->jeha;
           $this->stno=$res->place_no;
@@ -70,8 +70,8 @@ class OrderBuyHeadEdit extends Component
           $this->madfooh=$res->cash;
           $this->notes=$res->notes;
 
-          $this->jeha_name=jeha::find($this->jeha)->jeha_name;
-          $this->st_name=stores_names::find($this->stno)->st_name;
+          $this->jeha_name=jeha::on(Auth()->user()->company)->find($this->jeha)->jeha_name;
+          $this->st_name=stores_names::on(Auth()->user()->company)->find($this->stno)->st_name;
           $this->emit('GetOrderData',$this->orderno,$this->ksm,$this->madfooh,$this->tot1,$this->tot,$this->jeha,$this->stno,$this->notes);
           $this->OrderNoFound=true;
 
@@ -81,7 +81,7 @@ class OrderBuyHeadEdit extends Component
     }
     protected function rules()
     {
-        Config::set('database.connections.other.database', Auth::user()->company);
+
         return [
 
             'order_date' => ['required','date']
@@ -109,11 +109,11 @@ class OrderBuyHeadEdit extends Component
   }
   public function DoDelete(){
 
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     $this->Good=true;
-    $res=buy_tran::where('order_no',$this->orderno)->get();
+    $res=buy_tran::on(Auth()->user()->company)->where('order_no',$this->orderno)->get();
     foreach ($res as $item){
-      $st_raseed=stores::where('st_no',$this->stno)->where('item_no',$item->item_no)->first();
+      $st_raseed=stores::on(Auth()->user()->company)->where('st_no',$this->stno)->where('item_no',$item->item_no)->first();
       if ($st_raseed && $item->quant>$st_raseed->raseed){
         $this->dispatchBrowserEvent('mmsg', 'الصنف رقم :  '.$item->item_no.'  سيصبح رصيده فالمخزن اقل من الصفر');
         $this->Good=false;
@@ -121,17 +121,17 @@ class OrderBuyHeadEdit extends Component
       }
     }
     if ($this->Good){
-    DB::connection('other')->beginTransaction();
+    DB::connection(Auth()->user()->company)->beginTransaction();
     try {
-      buy_tran::where('order_no',$this->orderno)->delete();
-      buys::where('order_no',$this->orderno)->delete();
-      DB::connection('other')->commit();
+      buy_tran::on(Auth()->user()->company)->where('order_no',$this->orderno)->delete();
+      buys::on(Auth()->user()->company)->where('order_no',$this->orderno)->delete();
+      DB::connection(Auth()->user()->company)->commit();
       $this->emit('mounttable');
 
       $this->emitTo('buy.order-buy-detail-edit','dismountdetail');
       $this->emitSelf('mounthead');
     } catch (\Exception $e) {
-      DB::connection('other')->rollback();
+      DB::connection(Auth()->user()->company)->rollback();
 
     }}
 

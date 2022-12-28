@@ -84,16 +84,16 @@ class RepMainDataArc extends Component
       $this->chk_out=$res['chk_out'];
       $this->notes=$res['notes'];
 
-      $tel=jeha::where('jeha_no',$this->jeha)->first();
+      $tel=jeha::on(Auth()->user()->company)->where('jeha_no',$this->jeha)->first();
       $this->libyana=$tel['libyana'];
       $this->mdar=$tel['mdar'];
       if ($this->libyana==null){$this->libyana='';}
       if ($this->mdar==null){$this->mdar='';}
 
-      $this->OverKst=over_kst_a::where('no',$this->no)->count();
-      $this->TarKst=tar_kst::where('no',$this->no)->count();
-      $this->ArcMain=MainArc::where('jeha',$this->jeha)->where('no','!=',$this->no)->count();
-      $this->ChkTasleem=chk_tasleem::where('no',$this->no)->count();
+      $this->OverKst=over_kst_a::on(Auth()->user()->company)->where('no',$this->no)->count();
+      $this->TarKst=tar_kst::on(Auth()->user()->company)->where('no',$this->no)->count();
+      $this->ArcMain=MainArc::on(Auth()->user()->company)->where('jeha',$this->jeha)->where('no','!=',$this->no)->count();
+      $this->ChkTasleem=chk_tasleem::on(Auth()->user()->company)->where('no',$this->no)->count();
 
     }
   public function CloseArc(){
@@ -107,21 +107,21 @@ class RepMainDataArc extends Component
     public function render()
     {
 
-      Config::set('database.connections.other.database', Auth::user()->company);
+
         return view('livewire.aksat.rep.okod.rep-main-data-arc',[
-            'TableOver' => DB::connection('other')->table('over_kst_a')
+            'TableOver' => DB::connection(Auth()->user()->company)->table('over_kst_a')
                 ->select('tar_date','kst')
                 ->where('no',$this->no)
                 ->paginate(5),
-            'TableTar' => DB::connection('other')->table('tar_kst')
+            'TableTar' => DB::connection(Auth()->user()->company)->table('tar_kst')
                 ->select('tar_date','kst')
                 ->where('no',$this->no)
                 ->paginate(5),
-            'TableChk' => DB::connection('other')->table('chk_tasleem')
+            'TableChk' => DB::connection(Auth()->user()->company)->table('chk_tasleem')
                 ->select('wdate','chk_count')
                 ->where('no',$this->no)
                 ->paginate(5),
-            'TableArc' => DB::connection('other')->table('MainArc')
+            'TableArc' => DB::connection(Auth()->user()->company)->table('MainArc')
                 ->select('sul_date','no')
                 ->where('jeha',$this->jeha)
                 ->where('no','!=',$this->no)

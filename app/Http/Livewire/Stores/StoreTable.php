@@ -72,7 +72,7 @@ class StoreTable extends Component
     else {
       Config::set('database.connections.other.database', Auth::user()->company);
       $this->HasRaseed=true;
-      DB::connection('other')->beginTransaction();
+      DB::connection(Auth()->user()->company)->beginTransaction();
       try {
         if ($this->FromTo==11 or $this->FromTo==21) {$st_no2=$this->place_no2;$hall_no=0;}
         if ($this->FromTo==12 or $this->FromTo==22) {$st_no2=0;$hall_no=$this->place_no2;}
@@ -80,7 +80,7 @@ class StoreTable extends Component
         if ($this->FromTo==12) $per_type=2;
         if ($this->FromTo==21) $per_type=3;
         if ($this->FromTo==22) $per_type=4;
-        $per_no=store_exp::max('per_no')+1;
+        $per_no=store_exp::on(Auth()->user()->company)->max('per_no')+1;
 
         foreach ($this->perdetail as $item) {
           if ($item['item_no'] == 0) {
@@ -91,7 +91,7 @@ class StoreTable extends Component
             $this->HasRaseed=false;
             break;
           }
-          DB::connection('other')->table('store_exp')->insert([
+          DB::connection(Auth()->user()->company)->table('store_exp')->insert([
             'st_no'=>$this->place_no1,
             'per_no'=>$per_no,
             'item_no' => $item['item_no'],
@@ -108,16 +108,16 @@ class StoreTable extends Component
 
         if ($this->HasRaseed)
         {
-          DB::connection('other')->commit();
+          DB::connection(Auth()->user()->company)->commit();
           $this->mount();
           $this->emitTo('stores.store-head','mounthead');
           $this->emit('stores.store-detail','mountdetail');
-        } else {DB::connection('other')->rollback();}
+        } else {DB::connection(Auth()->user()->company)->rollback();}
 
 
 
       } catch (\Exception $e) {
-        DB::connection('other')->rollback();
+        DB::connection(Auth()->user()->company)->rollback();
         info($e);
         $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
       }

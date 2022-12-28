@@ -52,9 +52,9 @@ class TransTable extends Component
 
     public function render()
     {
-     Config::set('database.connections.other.database', Auth::user()->company);
+
      return view('livewire.trans.trans-table',[
-        'TableList'=>DB::connection('other')->table('trans')
+        'TableList'=>DB::connection(Auth()->user()->company)->table('trans')
             ->where([
                 ['jeha',$this->jeha],
                 ['imp_exp',$this->imp_exp],

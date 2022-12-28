@@ -18,9 +18,9 @@ class EditTran extends Component
     'ToEditTran',
   ];
   public function ToEditTran($tran_no){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     $this->edittran_no=$tran_no;
-    $res=trans::find($tran_no);
+    $res=trans::on(Auth()->user()->company)->find($tran_no);
     $this->edittran_date=$res->tran_date;
     $this->editval=$res->val;
     $this->editnotes=$res->notes;
@@ -39,8 +39,8 @@ class EditTran extends Component
   ];
   public function SaveVal(){
     $this->validate();
-    Config::set('database.connections.other.database', Auth::user()->company);
-    trans::where('tran_no',$this->edittran_no)->update(
+
+    trans::on(Auth()->user()->company)->where('tran_no',$this->edittran_no)->update(
       [
         'val'=>$this->editval,
         'tran_date'=>$this->edittran_date,

@@ -105,23 +105,23 @@ class EditMainData extends Component
     $this->acc='';
   }
   public function ChkPlaceAndGo(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     if ($this->place!=null){
-      $res=place::find($this->place);
+      $res=place::on(Auth()->user()->company)->find($this->place);
       if (!$res){$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ');$this->emit('goto','place');}
       else {$this->emit('goto','notes'); $this->emit('TakePlaceNo',$res->place_no,$res->place_name);};}
   }
   public function ChkBankAndGo(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     if ($this->bankno){
-      $res=bank::find($this->bankno);
+      $res=bank::on(Auth()->user()->company)->find($this->bankno);
       if (!$res ){$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ');$this->emit('goto','bank_no');}
       else {$this->BankGet=true; $this->emit('goto','acc');$this->emit('TakeBankNo',$res->bank_no,$res->bank_name);};}
   }
   public function ChkAccAndGo(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     if ($this->acc) {
-      $res = main::where('bank', $this->bankno)->where('acc', $this->acc)->first();
+      $res = main::on(Auth()->user()->company)->where('bank', $this->bankno)->where('acc', $this->acc)->first();
 
       if ($res && $this->jeha != $res->jeha) {
         session()->flash('message', 'انتبه .. هذا الحساب لنفس المصرف مخزون لزبون اخر .. ورقمه ( '.$res->jeha.')');
@@ -150,36 +150,36 @@ class EditMainData extends Component
 
   public function SaveCont(){
     $this->validate();
-    Config::set('database.connections.other.database', Auth::user()->company);
-    DB::connection('other')->beginTransaction();
+
+    DB::connection(Auth()->user()->company)->beginTransaction();
     try {
-      DB::connection('other')->table('main')->where('no',$this->no)->update([
+      DB::connection(Auth()->user()->company)->table('main')->where('no',$this->no)->update([
         'bank'=>$this->bankno,'acc'=>$this->acc,
         'place'=>$this->place,'notes'=>$this->notes,'chk_in'=>$this->chk_in,'ref_no'=>$this->ref_no,
         'emp'=>auth::user()->empno,]);
-      over_kst::where('bank',$this->OldBank)->where('acc',$this->OldAcc)->update([
+      over_kst::on(Auth()->user()->company)->where('bank',$this->OldBank)->where('acc',$this->OldAcc)->update([
         'bank'=>$this->bankno,'acc'=>$this->acc,
       ]);
-      over_kst_a::where('bank',$this->OldBank)->where('acc',$this->OldAcc)->update([
+      over_kst_a::on(Auth()->user()->company)->where('bank',$this->OldBank)->where('acc',$this->OldAcc)->update([
         'bank'=>$this->bankno,'acc'=>$this->acc,
       ]);
-      tar_kst::where('bank',$this->OldBank)->where('acc',$this->OldAcc)->update([
+      tar_kst::on(Auth()->user()->company)->where('bank',$this->OldBank)->where('acc',$this->OldAcc)->update([
         'bank'=>$this->bankno,'acc'=>$this->acc,
       ]);
-      stop_kst::where('bank',$this->OldBank)->where('acc',$this->OldAcc)->update([
+      stop_kst::on(Auth()->user()->company)->where('bank',$this->OldBank)->where('acc',$this->OldAcc)->update([
         'bank'=>$this->bankno,'acc'=>$this->acc,
       ]);
-      tar_kst_before::where('bank',$this->OldBank)->where('acc',$this->OldAcc)->update([
+      tar_kst_before::on(Auth()->user()->company)->where('bank',$this->OldBank)->where('acc',$this->OldAcc)->update([
         'bank'=>$this->bankno,'acc'=>$this->acc,
       ]);
-      main::where('jeha',$this->jeha)->update([
+      main::on(Auth()->user()->company)->where('jeha',$this->jeha)->update([
         'bank'=>$this->bankno,'acc'=>$this->acc,
       ]);
-      MainArc::where('jeha',$this->jeha)->update([
+      MainArc::on(Auth()->user()->company)->where('jeha',$this->jeha)->update([
         'bank'=>$this->bankno,'acc'=>$this->acc,
       ]);
 
-      DB::connection('other')->commit();
+      DB::connection(Auth()->user()->company)->commit();
       $this->no=''; $this->orderno='';$this->name='';$this->bankno='';$this->acc='';$this->place='';
       $this->sul='';$this->sul_tot='';$this->dofa='';$this->kst='';
       $this->kstcount='';$this->notes='';$this->ref_no='';$this->chk_in='';
@@ -188,7 +188,7 @@ class EditMainData extends Component
       $this->emit('OpenTable');
 
     } catch (\Exception $e) {
-      DB::connection('other')->rollback();
+      DB::connection(Auth()->user()->company)->rollback();
 
       $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
     }
@@ -196,17 +196,17 @@ class EditMainData extends Component
 
   public function DeleteCont(){
     $this->validate();
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     DB::connection('other')->beginTransaction();
     try {
-      tar_kst::where('no',$this->no)->delete();
-      over_kst::where('no',$this->no)->delete();
-      stop_kst::where('no',$this->no)->delete();
-      tar_kst_before::where('no',$this->no)->delete();
-      kst_trans::where('no',$this->no)->delete();
-      main::where('no',$this->no)->delete();
+      tar_kst::on(Auth()->user()->company)->where('no',$this->no)->delete();
+      over_kst::on(Auth()->user()->company)->where('no',$this->no)->delete();
+      stop_kst::on(Auth()->user()->company)->where('no',$this->no)->delete();
+      tar_kst_before::on(Auth()->user()->company)->where('no',$this->no)->delete();
+      kst_trans::on(Auth()->user()->company)->where('no',$this->no)->delete();
+      main::on(Auth()->user()->company)->where('no',$this->no)->delete();
 
-      DB::connection('other')->commit();
+      DB::connection(Auth()->user()->company)->commit();
       $this->no=''; $this->orderno='';$this->name='';$this->bankno='';$this->acc='';$this->place='';
       $this->sul='';$this->sul_tot='';$this->dofa='';$this->kst='';
       $this->kstcount='';$this->notes='';$this->ref_no='';$this->chk_in='';
@@ -216,7 +216,7 @@ class EditMainData extends Component
       $this->emit('OpenTable');
 
     } catch (\Exception $e) {
-      DB::connection('other')->rollback();
+      DB::connection(Auth()->user()->company)->rollback();
 
       $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
     }

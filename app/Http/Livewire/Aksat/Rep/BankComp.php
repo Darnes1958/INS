@@ -24,12 +24,12 @@ class BankComp extends Component
     }
   public function ChkBankAndGo(){
 
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     $this->bank_name='';
     if ($this->bank_no!=null) {
-      $result = bank::where('bank_no',$this->bank_no)->first();
+      $result = bank::on(Auth()->user()->company)->where('bank_no',$this->bank_no)->first();
       if ($result) {
-        info('the sender '.$this->Sender);
+
         $this->bank_name=$result->bank_name;
         $this->emitTo($this->Sender,'TakeBank',$this->bank_no);
       } else {$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون');}

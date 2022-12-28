@@ -25,8 +25,8 @@ class UpdateKst extends Component
 
   public function ParamToUpdate($haf,$ser)
   {
-    Config::set('database.connections.other.database', Auth::user()->company);
-    $res=hafitha_tran::where('hafitha',$haf)->where('ser_in_hafitha',$ser)->first();
+
+    $res=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$haf)->where('ser_in_hafitha',$ser)->first();
     $this->updatedate = $res->ksm_date;
     $this->updatekst = $res->kst;
     $this->hafithano = $haf;
@@ -52,9 +52,9 @@ class UpdateKst extends Component
   {
     $this->validate();
 
-    Config::set('database.connections.other.database', Auth::user()->company);
+
       if ($this->hafkst_type==1 || $this->hafkst_type==3)
-       { $res=main::find($this->hafno)->first();
+       { $res=main::on(Auth()->user()->company)->find($this->hafno)->first();
           $raseed=$res->raseed;
           if ($this->updatekst>$raseed)
           {if ($raseed==0) {$kst=$this->updatekst;$baky=0;$type=2;}
@@ -66,9 +66,9 @@ class UpdateKst extends Component
 
 
 
-    DB::connection('other')->beginTransaction();
+    DB::connection(Auth()->user()->company)->beginTransaction();
     try {
-      DB::connection('other')->table('hafitha_tran')
+      DB::connection(Auth()->user()->company)->table('hafitha_tran')
         ->where('hafitha',$this->hafithano)-> where('ser_in_hafitha',$this->hafser)->update([
         'ksm_date' => $this->updatedate,
         'kst' => $kst,
@@ -77,27 +77,27 @@ class UpdateKst extends Component
         'emp' => auth::user()->empno,
       ]);
 
-        $summorahel=hafitha_tran::where('hafitha',$this->hafithano)->where('kst_type',1)->sum('kst');
-        $sumover1=hafitha_tran::where('hafitha',$this->hafithano)->where('kst_type',2)->sum('kst');
-        $sumover2=hafitha_tran::where('hafitha',$this->hafithano)->where('kst_type',5)->sum('kst');
-        $sumover3=hafitha_tran::where('hafitha',$this->hafithano)->where('kst_type',3)->sum('baky');
+        $summorahel=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafithano)->where('kst_type',1)->sum('kst');
+        $sumover1=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafithano)->where('kst_type',2)->sum('kst');
+        $sumover2=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafithano)->where('kst_type',5)->sum('kst');
+        $sumover3=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafithano)->where('kst_type',3)->sum('baky');
         if ($sumover1==null) {$sumover1=0;}
         if ($sumover2==null) {$sumover2=0;}
         if ($sumover3==null) {$sumover3=0;}
         $sumover=$sumover1+$sumover2+$sumover3;
-        $sumhalfover=hafitha_tran::where('hafitha',$this->hafithano)->where('kst_type',3)->sum('kst');
-        $sumwrong=hafitha_tran::where('hafitha',$this->hafithano)->where('kst_type',4)->sum('kst');
-        DB::connection('other')->table('hafitha')->where('hafitha_no',$this->hafithano)->update([
+        $sumhalfover=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafithano)->where('kst_type',3)->sum('kst');
+        $sumwrong=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafithano)->where('kst_type',4)->sum('kst');
+        DB::connection(Auth()->user()->company)->table('hafitha')->where('hafitha_no',$this->hafithano)->update([
             'kst_morahel'=>$summorahel,'kst_over'=>$sumover,'kst_half_over'=>$sumhalfover,'kst_wrong'=>$sumwrong,
         ]);
 
 
 
-      DB::connection('other')->commit();
+      DB::connection(Auth()->user()->company)->commit();
       $this->emit('CloseUpdate');
       $this->emit('ResetFromUpdate');
     } catch (\Exception $e) {
-      DB::connection('other')->rollback();
+      DB::connection(Auth()->user()->company)->rollback();
 
       $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
     }

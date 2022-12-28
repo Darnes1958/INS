@@ -80,17 +80,17 @@ class InpMainHead extends Component
 
   }
   public function ChkBankAndGo(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     if ($this->bankno){
 
-      $res=bank::find($this->bankno);
+      $res=bank::on(Auth()->user()->company)->find($this->bankno);
       if (!$res ){$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ');$this->emit('goto','bank_no');}
       else {$this->BankGet=true; $this->emit('goto','acc');$this->emit('TakeBankNo',$res->bank_no,$res->bank_name);};}
   }
   public function ChkAccAndGo(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     if ($this->acc) {
-      $res = main::where('bank', $this->bankno)->where('acc', $this->acc)->first();
+      $res = main::on(Auth()->user()->company)->where('bank', $this->bankno)->where('acc', $this->acc)->first();
 
       if ($res && $this->jeha != $res->jeha) {
         session()->flash('message', 'انتبه .. هذا الحساب لنفس المصرف مخزون لزبون اخر .. ورقمه ( '.$res->jeha.')');
@@ -99,16 +99,16 @@ class InpMainHead extends Component
     }
   }
   public function ChkNoAndGo(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
    if ($this->no){
-    $res=main::find($this->no);
+    $res=main::on(Auth()->user()->company)->find($this->no);
     if ($res){$this->dispatchBrowserEvent('mmsg', 'هذا الرقم مخزون مسبقا');$this->emit('goto','no');}
     else {$this->emit('goto','sul_date');};}
   }
   public function ChkOrderAndGo(){
 
-    Config::set('database.connections.other.database', Auth::user()->company);
-   $res=sells_view::where('order_no',$this->orderno)
+
+   $res=sells_view::on(Auth()->user()->company)->where('order_no',$this->orderno)
      ->whereNotIn('order_no', function($q){
        $q->select('order_no')->from('main');
      })
@@ -134,9 +134,9 @@ class InpMainHead extends Component
    } else {$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ');}
   }
   public function ChkPlaceAndGo(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     if ($this->place){
-      $res=place::find($this->place);
+      $res=place::on(Auth()->user()->company)->find($this->place);
       if (!$res){$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ');$this->emit('goto','place');}
       else {$this->emit('goto','notes'); $this->emit('TakePlaceNo',$res->place_no,$res->place_name);};}
   }
@@ -192,17 +192,17 @@ class InpMainHead extends Component
   ];
   public function SaveCont(){
       $this->validate();
-      Config::set('database.connections.other.database', Auth::user()->company);
-      DB::connection('other')->beginTransaction();
+
+      DB::connection(Auth()->user()->company)->beginTransaction();
       try {
-         DB::connection('other')->table('main')->insert([
+         DB::connection(Auth()->user()->company)->table('main')->insert([
            'no'=>$this->no,'name'=>$this->name,'bank'=>$this->bankno,'acc'=>$this->acc,'sul_date'=>$this->sul_date,'sul_type'=>1,'sul_tot'=>$this->sul_tot,
            'dofa'=>$this->dofa,'sul'=>$this->sul,'kst'=>$this->kst,'kst_count'=>$this->kstcount,'sul_pay'=>0,'raseed'=>$this->sul,'order_no'=>$this->orderno,
            'jeha'=>$this->jeha,'place'=>$this->place,'notes'=>$this->notes,'chk_in'=>$this->chk_in,'chk_out'=>0,'last_order'=>0,'ref_no'=>$this->ref_no,
            'emp'=>auth::user()->empno,'inp_date'=>date('Y-m-d'),]);
-         $res=sell_tran::where('order_no',$this->orderno)->get();
+         $res=sell_tran::on(Auth()->user()->company)->where('order_no',$this->orderno)->get();
          foreach ($res as $item) {
-           main_items::insert(['no'=>$this->no,'item_no'=>$item->item_no]);
+           main_items::on(Auth()->user()->company)->insert(['no'=>$this->no,'item_no'=>$item->item_no]);
          }
           $day = date('d', strtotime($this->sul_date));
           $month = date('m', strtotime($this->sul_date));
@@ -212,7 +212,7 @@ class InpMainHead extends Component
           $date=$date->format('Y-m-d');
           if ($day>$this->DAY_OF_KSM) {$date = date('Y-m-d', strtotime($date . "+1 month"));}
           for ($i=1;$i<=$this->kstcount;$i++) {
-              kst_trans::insert([
+              kst_trans::on(Auth()->user()->company)->insert([
                 'ser'=>$i,
                 'no'=>$this->no,
                 'kst_date'=>$date,
@@ -229,7 +229,7 @@ class InpMainHead extends Component
               $date = date('Y-m-d', strtotime($date . "+1 month"));
           }
 
-        DB::connection('other')->commit();
+        DB::connection(Auth()->user()->company)->commit();
         $this->no=''; $this->orderno='';$this->name='';$this->bankno='';$this->acc='';$this->place='';
         $this->sul='';$this->sul_tot='';$this->dofa='';$this->kst='';
         $this->kstcount='';$this->notes='';$this->ref_no='';$this->chk_in='';
@@ -237,15 +237,15 @@ class InpMainHead extends Component
         $this->emit('goto','orderno');
 
       } catch (\Exception $e) {
-        DB::connection('other')->rollback();
+        DB::connection(Auth()->user()->company)->rollback();
 
         $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
       }
   }
     public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
-      $res=DB::connection('other')->table('settings')->where('no',3)->first();
+
+      $res=DB::connection(Auth()->user()->company)->table('settings')->where('no',3)->first();
       $this->DAY_OF_KSM=$res->s1;
 
         return view('livewire.aksat.inp-main-head');

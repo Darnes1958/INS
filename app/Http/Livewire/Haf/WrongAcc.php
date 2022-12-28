@@ -37,11 +37,11 @@ class WrongAcc extends Component
   ];
  public function WrongSave(){
    $this->validate();
-   Config::set('database.connections.other.database', Auth::user()->company);
-   $serinhafitha= hafitha_tran::where('hafitha',$this->hafno)->max('ser_in_hafitha')+1;
-   DB::connection('other')->beginTransaction();
+
+   $serinhafitha= hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafno)->max('ser_in_hafitha')+1;
+   DB::connection(Auth()->user()->company)->beginTransaction();
    try {
-     DB::connection('other')->table('hafitha_tran')->insert([
+     DB::connection(Auth()->user()->company)->table('hafitha_tran')->insert([
        'hafitha'=>$this->hafno,
        'ser_in_hafitha'=>$serinhafitha,
        'ser'=>0,
@@ -55,14 +55,14 @@ class WrongAcc extends Component
        'page_no'=>1,
        'emp'=>auth::user()->empno,
      ]);
-     $sumwrong=hafitha_tran::where('hafitha',$this->hafno)->where('kst_type',4)->sum('kst');
-     DB::connection('other')->table('hafitha')->where('hafitha_no',$this->hafno)->update([
+     $sumwrong=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafno)->where('kst_type',4)->sum('kst');
+     DB::connection(Auth()->user()->company)->table('hafitha')->where('hafitha_no',$this->hafno)->update([
        'kst_wrong'=>$sumwrong,
      ]);
-     DB::connection('other')->commit();
+     DB::connection(Auth()->user()->company)->commit();
      $this->emit('ResetFromWrong');
    } catch (\Exception $e) {
-     DB::connection('other')->rollback();
+     DB::connection(Auth()->user()->company)->rollback();
 
      $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
    }

@@ -97,18 +97,18 @@ function ResetKstDetail (){
       $ksm=$this->raseed;
       $over=$this->ksm-$this->raseed;
     }
-    Config::set('database.connections.other.database', Auth::user()->company);
-    DB::connection('other')->beginTransaction();
+
+    DB::connection(Auth()->user()->company)->beginTransaction();
     try {
         if ($ksm!=0){
-          $results=kst_trans::where('no',$this->D_no)->where(function ($query) {
+          $results=kst_trans::on(Auth()->user()->company)->where('no',$this->D_no)->where(function ($query) {
             $query->where('ksm', '=', null)
               ->orWhere('ksm', '=', 0);
           })->min('ser');
           $ser= empty($results)? 0 : $results;
 
             if ($ser!=0) {
-              DB::connection('other')->table('kst_trans')->where('no',$this->D_no)->where('ser',$ser)->update([
+              DB::connection(Auth()->user()->company)->table('kst_trans')->where('no',$this->D_no)->where('ser',$ser)->update([
                 'ksm'=>$ksm,
                 'ksm_date'=>$this->ksm_date,
                 'ksm_type'=>2,
@@ -119,9 +119,9 @@ function ResetKstDetail (){
 
             } else
             {
-             $max=(kst_trans::where('no',$this->D_no)->max('ser'))+1;
+             $max=(kst_trans::on(Auth()->user()->company)->where('no',$this->D_no)->max('ser'))+1;
 
-              DB::connection('other')->table('kst_trans')->insert([
+              DB::connection(Auth()->user()->company)->table('kst_trans')->insert([
                 'ser'=>$max,
                 'no'=>$this->D_no,
                 'kst_date'=>$this->ksm_date,
@@ -139,7 +139,7 @@ function ResetKstDetail (){
           }
          if ($over!=0) {
 
-          DB::connection('other')->table('over_kst')->insert([
+          DB::connection(Auth()->user()->company)->table('over_kst')->insert([
             'no'=>$this->D_no,
             'name'=>$this->name,
             'bank'=>$this->D_bank,
@@ -152,12 +152,12 @@ function ResetKstDetail (){
           ]);
           }
 
-          DB::connection('other')->table('main')->where('no',$this->D_no)->update([
+          DB::connection(Auth()->user()->company)->table('main')->where('no',$this->D_no)->update([
             'sul_pay'=>$this->sul_pay+$ksm,
             'raseed'=>$this->raseed-$ksm,
           ]);
 
-          DB::connection('other')->commit();
+          DB::connection(Auth()->user()->company)->commit();
 
           $this->ResetKstDetail();
           $this->emitTo('tools.my-table','refreshComponent');
@@ -165,9 +165,9 @@ function ResetKstDetail (){
 
 
         } catch (\Exception $e) {
-        DB::connection('other')->rollback();
+        DB::connection(Auth()->user()->company)->rollback();
 
-        // something went wrong
+
       }
 }
   protected function rules()

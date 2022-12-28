@@ -72,10 +72,10 @@ class GetNoAndAcc extends Component
     $this->emitTo($this->ToWhome,'BankIsUpdating');
   }
   public function ChkBankAndGo(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     $this->bankname='';
     if ($this->bankno!=null) {
-      $result = bank::where('bank_no',$this->bankno)->first();
+      $result = bank::on(Auth()->user()->company)->where('bank_no',$this->bankno)->first();
       if ($result) {
         $this->emitTo('bank.bank-select','TakeBankNo',$this->bankno);
         $this->bankname=$result->bankname;
@@ -93,11 +93,11 @@ class GetNoAndAcc extends Component
     $this->emitTo($this->ToWhome,'NoIsUpdating');
   }
   public function FillHead(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     $this->acc='';
     if ($this->no!=null) {
-      if ($this->MainOrArc=='main') $result = main::where('bank',$this->bankno)->where('no',$this->no)->first();
-      if ($this->MainOrArc=='mainarc') $result =MainArc::where('bank',$this->bankno)->where('no',$this->no)->first();
+      if ($this->MainOrArc=='main') $result = main::on(Auth()->user()->company)->where('bank',$this->bankno)->where('no',$this->no)->first();
+      if ($this->MainOrArc=='mainarc') $result =MainArc::on(Auth()->user()->company)->where('bank',$this->bankno)->where('no',$this->no)->first();
       if ($result) {
         $this->name=$result->name;
         $this->acc=$result->acc;
@@ -108,11 +108,11 @@ class GetNoAndAcc extends Component
   public function ChkNoAndGo(){
     $this->resetValidation('acc');
     $this->validate();
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     $this->acc='';
     if ($this->no!=null) {
-      if ($this->MainOrArc=='main') $result = main::where('bank',$this->bankno)->where('no',$this->no)->first();
-      if ($this->MainOrArc=='mainarc') $result =MainArc::where('bank',$this->bankno)->where('no',$this->no)->first();
+      if ($this->MainOrArc=='main') $result = main::on(Auth()->user()->company)->where('bank',$this->bankno)->where('no',$this->no)->first();
+      if ($this->MainOrArc=='mainarc') $result =MainArc::on(Auth()->user()->company)->where('bank',$this->bankno)->where('no',$this->no)->first();
       if ($result) {
         $this->emitTo('aksat.no-select','nofound',$result);
         $this->name=$result->name;
@@ -136,14 +136,14 @@ class GetNoAndAcc extends Component
 
     if ($this->MainOrArc=='main')
     {
-      $result = main::where('bank',$this->bankno)->where('acc',$this->acc)->get();
+      $result = main::on(Auth()->user()->company)->where('bank',$this->bankno)->where('acc',$this->acc)->get();
 
         if (count($result)!=0) {
           if (count($result) > 1) {
             $this->emit('GotoManyAcc', $this->bankno, $this->acc);
             $this->dispatchBrowserEvent('OpenKstManyModal');
           } else {
-            $result = main::where('bank', $this->bankno)->where('acc', $this->acc)->first();
+            $result = main::on(Auth()->user()->company)->where('bank', $this->bankno)->where('acc', $this->acc)->first();
             $this->name = $result->name;
             $this->no = $result->no;
 

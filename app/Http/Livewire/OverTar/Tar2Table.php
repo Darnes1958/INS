@@ -23,7 +23,7 @@ class Tar2Table extends Component
     public function render()
     {
         return view('livewire.over-tar.tar2-table',[
-          'TableList'=>DB::connection('other')->table('tar_kst')
+          'TableList'=>DB::connection(Auth()->user()->company)->table('tar_kst')
             ->where('no',$this->no)
             ->where('bank',$this->bank)
             ->where('acc',$this->acc)

@@ -35,7 +35,7 @@ class HafMiniRep extends Component
     public function render()
     {
         return view('livewire.haf.haf-mini-rep',[
-            'HafithaTable' =>DB::connection('other')
+            'HafithaTable' =>DB::connection(Auth()->user()->company)
                 ->table('hafitha_tran_view')
                 ->when($this->search || $this->DisRadio=='DisAll', function($q)  {
                     return $q->where([

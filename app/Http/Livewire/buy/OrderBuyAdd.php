@@ -46,12 +46,12 @@ class OrderBuyAdd extends Component
     public function render()
     {
         return view('livewire.buy.order-buy-add',[
-            'jeha'=>jeha::where('jeha_type',2)->where('available',1)->get(),
-            'stores'=>stores::where('raseed','>',0)->get(),
-            'stores_names'=>stores_names::all(),
-            'items'=>items::where('raseed','>',0)->get(),
+            'jeha'=>jeha::on(Auth()->user()->companyAuth()->user()->company)->where('jeha_type',2)->where('available',1)->get(),
+            'stores'=>stores::on(Auth()->user()->company)->where('raseed','>',0)->get(),
+            'stores_names'=>stores_names::on(Auth()->user()->company)-> all(),
+            'items'=>items::on(Auth()->user()->company)->where('raseed','>',0)->get(),
             'date' => date('Y-m-d'),
-            'wid' => buys::max('order_no')+1,
+            'wid' => buys::on(Auth()->user()->company)->max('order_no')+1,
 
 
         ]);

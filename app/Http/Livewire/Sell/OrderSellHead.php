@@ -14,8 +14,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
+
+
+
 class OrderSellHead extends Component
 {
+
+    public $MyConn;
     public $order_no;
     public $order_date;
     public $jeha_no;
@@ -54,15 +59,15 @@ class OrderSellHead extends Component
 }
 public function ChkPlace(){
     $this->storel='';
-    Config::set('database.connections.other.database', Auth::user()->company);
+    $conn=Auth()->user()->company;
     if ($this->stno!=null) {
         if ($this->OredrSellRadio=='Makazen'){
-            $res=stores_names::find($this->stno);
+            $res=stores_names::on($conn)->find($this->stno);
             if ($res) {$this->storel=$res->st_no; $this->st_name=$res->st_name; return('ok');}
             else  {$this->dispatchBrowserEvent('mmsg','هذا الرقم غير مخزون ؟'); return('not');}
         }
         if ($this->OredrSellRadio=='Salat'){
-            $res=halls_names::find($this->stno);
+            $res=halls_names::on($conn)->find($this->stno);
             if ($res) {$this->storel=$res->hall_no; $this->st_name=$res->hall_name;return('ok');}
             else {$this->dispatchBrowserEvent('mmsg','هذا الرقم غير مخزون');return('not');}
         }
@@ -70,9 +75,10 @@ public function ChkPlace(){
     else {return ('empty');}
 }
  public function updatedOredrSellRadio(){
-     Config::set('database.connections.other.database', Auth::user()->company);
-     $this->stores_names=stores_names::all();
-     $this->halls_names=halls_names::all();
+     $conn=Auth()->user()->company;
+     $this->stores_names=DB::connection($conn)->table('stores_names')->get();
+     $this->halls_names=DB::connection($conn)->table('halls_names')->get();
+
  }
   public function ChangePlace(){
 
@@ -99,10 +105,11 @@ public function ChkPlace(){
 
   public function Chkjeha(){
       if ($this->jeha_no !=null ) {
-          Config::set('database.connections.other.database', Auth::user()->company);
+
           $this->jeha_name = '';
           $this->jeha_type = 0;
-          $res = jeha::find($this->jeha_no);
+          $conn=Auth()->user()->company;
+          $res = jeha::on($conn)->find($this->jeha_no);
           if ($res) {
               if ($res->jeha_no==1) {return('amaa');}
               if ($res->jeha_type==2) {return('supp');}
@@ -179,8 +186,8 @@ public function ChkPlace(){
 
     public function mount()
     {
-        Config::set('database.connections.other.database', Auth::user()->company);
-        $this->order_no=sells::max('order_no')+1;
+        $conn=Auth()->user()->company;
+        $this->order_no=DB::connection($conn)->table('sells')->max('order_no')+1;
         $this->order_date=date('Y-m-d');
         $this->stno;
         $this->st_name;
@@ -205,11 +212,9 @@ public function ChkPlace(){
 
     public function render()
     {
-        Config::set('database.connections.other.database', Auth::user()->company);
-        info(Auth::user()->company);
-        info(DB::connection('other')->getDatabaseName());
-        $this->stores_names=stores_names::all();
-        $this->halls_names=halls_names::all();
+        $conn=Auth()->user()->company;
+        $this->stores_names=DB::connection($conn)->table('stores_names')->get();
+        $this->halls_names=DB::connection($conn)->table('halls_names')->get();
         return view('livewire.sell.order-sell-head',[
             'stores_names'=>$this->stores_names,
             'halls_names'=>$this->halls_names,

@@ -91,13 +91,13 @@ class ArcModal extends Component
     $this->chk_out=$res['chk_out'];
     $this->notes=$res['notes'];
     $this->bank=$res['bank'];
-      $this->bank_name=bank::find($this->bank)->bank_name;
+      $this->bank_name=bank::on(Auth()->user()->company)->find($this->bank)->bank_name;
     }
 
-    $this->OverKst=over_kst_a::where('no',$this->no)->count();
-    $this->TarKst=tar_kst::where('no',$this->no)->count();
-    $this->ArcMain=MainArc::where('jeha',$this->jeha)->where('no','!=',$this->no)->count();
-    $this->ChkTasleem=chk_tasleem::where('no',$this->no)->count();
+    $this->OverKst=over_kst_a::on(Auth()->user()->company)->where('no',$this->no)->count();
+    $this->TarKst=tar_kst::on(Auth()->user()->company)->where('no',$this->no)->count();
+    $this->ArcMain=MainArc::on(Auth()->user()->company)->where('jeha',$this->jeha)->where('no','!=',$this->no)->count();
+    $this->ChkTasleem=chk_tasleem::on(Auth()->user()->company)->where('no',$this->no)->count();
 
 
 
@@ -105,32 +105,32 @@ class ArcModal extends Component
     public function render()
     {
 
-      Config::set('database.connections.other.database', Auth::user()->company);
 
-      $res=MainArc::where('no',$this->no)->first();
+
+      $res=MainArc::on(Auth()->user()->company)->where('no',$this->no)->first();
       $this->GotoDetail($res);
         return view('livewire.aksat.rep.okod.arc-modal',[
-          'TableTrans' => DB::connection('other')->table('transarc')
+          'TableTrans' => DB::connection(Auth()->user()->company)->table('transarc')
             ->select('ser','kst_date','ksm_date','kst','ksm')
             ->where('no',$this->no)
             ->paginate(15),
-          'TableItems' => DB::connection('other')->table('rep_sell_tran')
+          'TableItems' => DB::connection(Auth()->user()->company)->table('rep_sell_tran')
             ->select('item_no','item_name','quant','price','sub_tot')
             ->where('order_no',$this->order_no)
             ->paginate(15),
-          'TableOver' => DB::connection('other')->table('over_kst_a')
+          'TableOver' => DB::connection(Auth()->user()->company)->table('over_kst_a')
             ->select('tar_date','kst')
             ->where('no',$this->no)
             ->paginate(5),
-          'TableTar' => DB::connection('other')->table('tar_kst')
+          'TableTar' => DB::connection(Auth()->user()->company)->table('tar_kst')
             ->select('tar_date','kst')
             ->where('no',$this->no)
             ->paginate(5),
-          'TableChk' => DB::connection('other')->table('chk_tasleem')
+          'TableChk' => DB::connection(Auth()->user()->company)->table('chk_tasleem')
             ->select('wdate','chk_count')
             ->where('no',$this->no)
             ->paginate(5),
-          'TableArc' => DB::connection('other')->table('MainArc')
+          'TableArc' => DB::connection(Auth()->user()->company)->table('MainArc')
             ->select('sul_date','no')
             ->where('jeha',$this->jeha)
             ->where('no','!=',$this->no)

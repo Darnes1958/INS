@@ -26,8 +26,8 @@ class NoSelectAll extends Component
     }
     public function render()
     {
-        Config::set('database.connections.other.database', Auth::user()->company);
-        $this->MainList=DB::connection('other')->table('main')
+
+        $this->MainList=DB::connection(Auth()->user()->company)->table('main')
         ->select('no','name')
         ->orderBy('name', 'ASC')->get();
         return view('livewire.aksat.no-select-all');

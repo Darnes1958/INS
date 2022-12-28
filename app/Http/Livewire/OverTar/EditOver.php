@@ -20,10 +20,10 @@ class EditOver extends Component
           'ToEditOver',
   ];
   public function ToEditOver($wrec_no,$proc){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     $this->editwrec_no=$wrec_no;
-    if ($proc=='over_kst') $res=over_kst::find($wrec_no);
-    if ($proc=='over_kst_a') $res=over_kst_a::find($wrec_no);
+    if ($proc=='over_kst') $res=over_kst::on(Auth()->user()->company)->find($wrec_no);
+    if ($proc=='over_kst_a') $res=over_kst_a::on(Auth()->user()->company)->find($wrec_no);
     $this->edittar_date=$res->tar_date;
     $this->editkst=$res->kst;
 
@@ -42,16 +42,16 @@ class EditOver extends Component
   public function SaveVal(){
 
     $this->validate();
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     if ($this->Proc=='over_kst')
-     over_kst::where('wrec_no',$this->editwrec_no)->update(
+     over_kst::on(Auth()->user()->company)->where('wrec_no',$this->editwrec_no)->update(
       [
         'kst'=>$this->editkst,
         'tar_date'=>$this->edittar_date,
       ]
     );
       if ($this->Proc=='over_kst_a')
-          over_kst_a::where('wrec_no',$this->editwrec_no)->update(
+          over_kst_a::on(Auth()->user()->company)->where('wrec_no',$this->editwrec_no)->update(
               [
                   'kst'=>$this->editkst,
                   'tar_date'=>$this->edittar_date,

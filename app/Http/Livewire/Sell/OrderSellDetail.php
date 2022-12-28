@@ -71,7 +71,7 @@ class OrderSellDetail extends Component
 
     public function mount()
     {
-        Config::set('database.connections.other.database', Auth::user()->company);
+
         $this->ClearData();
         $this->DetailOpen=false;
         $this->OrderDetailOpen=true;
@@ -112,7 +112,7 @@ class OrderSellDetail extends Component
 
    public function ChkItem()
    {
-     Config::set('database.connections.other.database', Auth::user()->company);
+
      if ($this->item != null) {
 
        $result = $this->RetItemData($this->item);

@@ -51,11 +51,11 @@ class HafInputHeader extends Component
   function DoTarheelHafitha(){
     $this->HafUpload=true;
     $this->HafProgress=0;
-    Config::set('database.connections.other.database', Auth::user()->company);
-    DB::connection('other')->beginTransaction();
+
+    DB::connection(Auth()->user()->company)->beginTransaction();
     try {
-      $this->HafCount=DB::connection('other')->table('hafitha_tran_view')->where('hafitha_no',$this->hafitha)->count();
-      $res=DB::connection('other')->table('hafitha_tran_view')->where('hafitha_no',$this->hafitha)->get();
+      $this->HafCount=DB::connection(Auth()->user()->company)->table('hafitha_tran_view')->where('hafitha_no',$this->hafitha)->count();
+      $res=DB::connection(Auth()->user()->company)->table('hafitha_tran_view')->where('hafitha_no',$this->hafitha)->get();
 
       foreach ($res as $item)
       {
@@ -64,7 +64,7 @@ class HafInputHeader extends Component
         $sul_pay=$item->sul_pay+$item->kst;$raseed=$item->raseed-$item->kst;
 
         if ($item->kst_type==1 or $item->kst_type==3)
-           { $min=DB::connection('other')->table('kst_trans')
+           { $min=DB::connection(Auth()->user()->company)->table('kst_trans')
              ->where([
                ['no', $no],
                ['ksm', null],])
@@ -73,46 +73,46 @@ class HafInputHeader extends Component
                ['ksm', 0],])
              ->min('ser');
              if ($min==null)
-                  {$min=DB::connection('other')->table('kst_trans')->where('no',$no)->max('ser')+1;
-                    DB::connection('other')->table('kst_trans')->insert([
+                  {$min=DB::connection(Auth()->user()->company)->table('kst_trans')->where('no',$no)->max('ser')+1;
+                    DB::connection(Auth()->user()->company)->table('kst_trans')->insert([
                      'ser'=>$min,'no'=>$no,'kst_date'=>$ksm_date,'ksm_type'=>2,'chk_no'=>0,'kst'=>$kst,'ksm_date'=>$ksm_date,'ksm'=>$kst,'emp'=>$emp,
                       'h_no'=>$this->hafitha,'inp_date'=>date('Y-m-d'),]);
                   }
              else {
-                   DB::connection('other')->table('kst_trans')->where('no',$no)->where('ser',$min)->update([
+                   DB::connection(Auth()->user()->company)->table('kst_trans')->where('no',$no)->where('ser',$min)->update([
                    'h_no'=>$this->hafitha,'ksm'=>$kst,'ksm_date'=>$ksm_date,'emp'=>$emp,'inp_date'=>date('Y-m-d'),'ksm_type'=>2,]);
                   }
              if ($baky!=0)
                  {
-                  DB::connection('other')->table('over_kst')->insert([
+                  DB::connection(Auth()->user()->company)->table('over_kst')->insert([
                     'no'=>$no,'name'=>$name,'bank'=>$bank,'acc'=>$acc,'kst'=>$baky,'tar_type'=>1,'tar_date'=>$ksm_date,'letters'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
                  }
 
-             DB::connection('other')->table('main')->where('no',$no)->
+             DB::connection(Auth()->user()->company)->table('main')->where('no',$no)->
              update(['sul_pay'=>$sul_pay,'raseed'=>$raseed]);
            }
        if ($item->kst_type==2)
        {
-         DB::connection('other')->table('over_kst')->insert([
+         DB::connection(Auth()->user()->company)->table('over_kst')->insert([
            'no'=>$no,'name'=>$name,'bank'=>$bank,'acc'=>$acc,'kst'=>$kst,'tar_type'=>1,'tar_date'=>$ksm_date,'letters'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
        }
         if ($item->kst_type==5)
         {
-          DB::connection('other')->table('over_kst_a')->insert([
+          DB::connection(Auth()->user()->company)->table('over_kst_a')->insert([
             'no'=>$no,'name'=>$name,'bank'=>$bank,'acc'=>$acc,'kst'=>$kst,'tar_type'=>1,'tar_date'=>$ksm_date,'letters'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
         }
         if ($item->kst_type==4)
         {
-          $wrong=DB::connection('other')->table('wrong_kst')->max('wrong_no')+1;
-          DB::connection('other')->table('wrong_kst')->insert([
+          $wrong=DB::connection(Auth()->user()->company)->table('wrong_kst')->max('wrong_no')+1;
+          DB::connection(Auth()->user()->company)->table('wrong_kst')->insert([
             'wrong_no'=>$no,'name'=>$name,'bank'=>$bank,'acc'=>$acc,'kst'=>$kst,'tar_date'=>$ksm_date,'morahel'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
         }
         $this->HafProgress++;
 
       }
-      DB::connection('other')->table('hafitha')->where('hafitha_no',$this->hafitha)->update(['hafitha_state'=>1]);
+      DB::connection(Auth()->user()->company)->table('hafitha')->where('hafitha_no',$this->hafitha)->update(['hafitha_state'=>1]);
 
-      DB::connection('other')->commit();
+      DB::connection(Auth()->user()->company)->commit();
       $this->HafHeadDetail=null;
       $this->bank=null;
       $this->HafUpload=false;
@@ -123,8 +123,8 @@ class HafInputHeader extends Component
       $this->dispatchBrowserEvent('mmsg', 'تم ترحيل الحافظة');
 
     } catch (\Exception $e) {
-      DB::connection('other')->rollback();
-      info($e);
+      DB::connection(Auth()->user()->company)->rollback();
+
     }
   }
 
@@ -133,13 +133,13 @@ class HafInputHeader extends Component
   }
   function DoDeleteHafitha(){
 
-    Config::set('database.connections.other.database', Auth::user()->company);
-    DB::connection('other')->beginTransaction();
+
+    DB::connection(Auth()->user()->company)->beginTransaction();
     try {
-      DB::connection('other')->table('hafitha_tran')->where('hafitha',$this->hafitha)->delete();
-      DB::connection('other')->table('pages')->where('hafitha',$this->hafitha)->delete();
-      DB::connection('other')->table('hafitha')->where('hafitha_no',$this->hafitha)->delete();
-      DB::connection('other')->commit();
+      DB::connection(Auth()->user()->company)->table('hafitha_tran')->where('hafitha',$this->hafitha)->delete();
+      DB::connection(Auth()->user()->company)->table('pages')->where('hafitha',$this->hafitha)->delete();
+      DB::connection(Auth()->user()->company)->table('hafitha')->where('hafitha_no',$this->hafitha)->delete();
+      DB::connection(Auth()->user()->company)->commit();
 
       $this->bank=null;
       $this->emit('goto','bank');
@@ -147,7 +147,7 @@ class HafInputHeader extends Component
 
 
     } catch (\Exception $e) {
-      DB::connection('other')->rollback();
+      DB::connection(Auth()->user()->company)->rollback();
 
     }
   }
@@ -168,7 +168,7 @@ class HafInputHeader extends Component
     }
 
   public function updatedbank(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     $this->hafitha=0;
     $this->hafitha_date='';
     $this->hafitha_tot=0;
@@ -176,7 +176,7 @@ class HafInputHeader extends Component
     $this->hafitha_differ=0;
     $this->ShowHafDel=false;
     $this->ShowHafTarheel=false;
-    $this->HafHeadDetail=DB::connection('other')
+    $this->HafHeadDetail=DB::connection(Auth()->user()->company)
       ->table('hafitha_tran')
       ->join('kst_type', 'hafitha_tran.kst_type', '=', 'kst_type_no')
       ->where('hafitha','=',$this->hafitha)
@@ -187,7 +187,7 @@ class HafInputHeader extends Component
     $this->emit('banknotfound');
   }
   public function RefreshHead(){
-    $result=DB::connection('other')->
+    $result=DB::connection(Auth()->user()->company)->
     table('hafitha_view')->where('hafitha_state','=',0)
       ->where('bank',$this->bank)
       ->first();
@@ -204,16 +204,13 @@ class HafInputHeader extends Component
   }
 
   public function ChkBankList(){
-
-    Config::set('database.connections.other.database', Auth::user()->company);
-
     if ($this->bank_l!=null) {
-      $result=DB::connection('other')->
+      $result=DB::connection(Auth()->user()->company)->
       table('bank')->where('bank_no',$this->bank_l)
         ->first();
 
       if ($result) {
-         $have=DB::connection('other')->
+         $have=DB::connection(Auth()->user()->company)->
           table('hafitha')->where('bank',$this->bank_l)
            ->where('hafitha_state',0)
            ->first();
@@ -237,16 +234,16 @@ class HafInputHeader extends Component
 
  public function SaveNewBtn(){
    $this->validate();
-   Config::set('database.connections.other.database', Auth::user()->company);
-   $have=DB::connection('other')->
+
+   $have=DB::connection(Auth()->user()->company)->
    table('hafitha')->where('bank',$this->bank_l)
      ->where('hafitha_state',0)
      ->first();
    if ($have) {$this->dispatchBrowserEvent('mmsg', 'توجد حافظة قائمة لهذا المصرف'); return(false);}
-   DB::connection('other')->beginTransaction();
+   DB::connection(Auth()->user()->company)->beginTransaction();
    try {
-       $hafmax=hafitha::max('hafitha_no')+1;
-       DB::connection('other')->table('hafitha')->insert([
+       $hafmax=hafitha::on(Auth()->user()->company)->max('hafitha_no')+1;
+       DB::connection(Auth()->user()->company)->table('hafitha')->insert([
          'hafitha_no'=>$hafmax,
          'bank'=>$this->bank_l,
          'hafitha_date'=>$this->hafitha_date_new,
@@ -257,30 +254,29 @@ class HafInputHeader extends Component
          'kst_half_over'=>0,
          'kst_wrong'=>0,
        ]);
-       DB::connection('other')->table('pages')->insert([
+       DB::connection(Auth()->user()->company)->table('pages')->insert([
        'hafitha'=>$hafmax,
        'page_no'=>1,
        'page_tot'=>$this->hafitha_tot_new,
        'page_enter'=>0,
        'page_differ'=>0,
         ]);
-     DB::connection('other')->commit();
+     DB::connection(Auth()->user()->company)->commit();
      $this->ShowHafNew=false;
      $this->bank=$this->bank_l;
      $this->emit('goto','bank');
      $this->ChkBankAndGo();
 
    } catch (\Exception $e) {
-     DB::connection('other')->rollback();
+     DB::connection(Auth()->user()->company)->rollback();
    }
 
 
 }
  public function ChkBankAndGo(){
-   Config::set('database.connections.other.database', Auth::user()->company);
 
    if ($this->bank!=null) {
-     $result=DB::connection('other')->
+     $result=DB::connection(Auth()->user()->company)->
      table('hafitha_view')->where('hafitha_state','=',0)
        ->where('bank',$this->bank)
        ->first();
@@ -314,7 +310,7 @@ public function FillHead($res){
   $this->hafitha_enter=number_format($res->kst_morahel+$res->kst_half_over+$res->kst_over+$res->kst_wrong,2, '.', '');
   $this->hafitha_differ=number_format($this->hafitha_tot-$this->hafitha_enter,2, '.', '');
 
-  $this->HafHeadDetail=DB::connection('other')
+  $this->HafHeadDetail=DB::connection(Auth()->user()->company)
     ->table('hafitha_tran')
     ->join('kst_type', 'hafitha_tran.kst_type', '=', 'kst_type_no')
     ->where('hafitha','=',$this->hafitha)
@@ -327,10 +323,9 @@ public function FillHead($res){
 }
     public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
 
       if ($this->bank!=null) {
-        $result=DB::connection('other')->
+        $result=DB::connection(Auth()->user()->company)->
         table('hafitha_view')->where('hafitha_state','=',0)
           ->where('bank',$this->bank)
           ->first();

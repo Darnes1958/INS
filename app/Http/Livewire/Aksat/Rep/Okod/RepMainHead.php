@@ -37,11 +37,11 @@ class RepMainHead extends Component
    $this->ChkNoAndGo();
  }
  public function ChkNoAndGo(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     $this->acc='';
 
     if ($this->no!=null) {
-        $result = main::where('no',$this->no)->first();
+        $result = main::on(Auth()->user()->company)->where('no',$this->no)->first();
         if ($result) {
             $this->acc=$result->acc;
             $this->emit('GotoDetail',$result);
@@ -53,9 +53,9 @@ class RepMainHead extends Component
  }
     public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
+
         return view('livewire.aksat.rep.okod.rep-main-head',[
-            'TableList' => DB::connection('other')->table('main')
+            'TableList' => DB::connection(Auth()->user()->company)->table('main')
                 ->select('no','acc', 'name','sul')
                 ->where('name', 'like', '%'.$this->search.'%')
                 ->orwhere('acc', 'like', '%'.$this->search.'%')

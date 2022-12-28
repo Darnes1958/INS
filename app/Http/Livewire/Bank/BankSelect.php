@@ -30,8 +30,8 @@ class BankSelect extends Component
   }
     public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
-      $this->BankList=DB::connection('other')->table('bank')->get();
+
+      $this->BankList=DB::connection(Auth()->user()->company)->table('bank')->get();
       return view('livewire.bank.bank-select',$this->BankList);
     }
 }

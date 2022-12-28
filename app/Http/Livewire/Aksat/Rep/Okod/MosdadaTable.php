@@ -40,8 +40,8 @@ class MosdadaTable extends Component
   public function TakeBank($bank_no){
     $this->bank_no=$bank_no;
 
-    Config::set('database.connections.other.database', Auth::user()->company);
-    $this->ShowTar=main::where('bank',$bank_no)->where('raseed','<=',0)->count()>0;
+
+    $this->ShowTar=main::on(Auth()->user()->company)->where('bank',$bank_no)->where('raseed','<=',0)->count()>0;
 
   }
   public function ArcTarheel()
@@ -50,36 +50,36 @@ class MosdadaTable extends Component
      $this->ArcProgress=0;
     foreach ($this->mychecked as $key=>$value)
       { if ($value==1) {
-        Config::set('database.connections.other.database', Auth::user()->company);
 
+        DB::connection(Auth()->user()->company)->beginTransaction();
         try {
-          $select = main::where('no',$key)->select('no','name','bank','acc','sul_date','sul_type','sul_tot','dofa','sul',
+          $select = main::on(Auth()->user()->company)->where('no',$key)->select('no','name','bank','acc','sul_date','sul_type','sul_tot','dofa','sul',
             'kst','kst_count','sul_pay','raseed','order_no','jeha','place','notes','chk_in','chk_out','last_order','ref_no','emp','inp_date');
           $bindings = $select->getBindings();
           $insertQuery = 'INSERT into mainarc (no,name,bank,acc,sul_date,sul_type,sul_tot,dofa,sul,kst,kst_count,sul_pay,raseed,order_no,
                                                jeha,place,notes,chk_in,chk_out,last_order,ref_no,emp,inp_date) '. $select->toSql();
-          DB::connection('other')->insert($insertQuery, $bindings);
+          DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
 
-          $select = kst_trans::where('no',$key)->select('ser','no','kst_date','ksm_type','chk_no','kst','ksm_date','ksm','h_no','emp','kst_notes','inp_date');
+          $select = kst_trans::on(Auth()->user()->company)->where('no',$key)->select('ser','no','kst_date','ksm_type','chk_no','kst','ksm_date','ksm','h_no','emp','kst_notes','inp_date');
           $bindings = $select->getBindings();
           $insertQuery = 'INSERT into transarc (ser,no,kst_date,ksm_type,chk_no,kst,ksm_date,ksm,h_no,emp,kst_notes,inp_date) '. $select->toSql();
-          DB::connection('other')->insert($insertQuery, $bindings);
+          DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
 
-          $select = over_kst::where('no',$key)->select('no','name','bank','acc','kst','tar_type','tar_date','letters','emp','h_no','inp_date');
+          $select = over_kst::on(Auth()->user()->company)->where('no',$key)->select('no','name','bank','acc','kst','tar_type','tar_date','letters','emp','h_no','inp_date');
           $bindings = $select->getBindings();
           $insertQuery = 'INSERT into over_kst_a (no,name,bank,acc,kst,tar_type,tar_date,letters,emp,h_no,inp_date) '. $select->toSql();
-          DB::connection('other')->insert($insertQuery, $bindings);
+          DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
 
-          DB::connection('other')->table('over_kst')->where('no',$key)->delete();
-          DB::connection('other')->table('kst_trans')->where('no',$key)->delete();
-          DB::connection('other')->table('main')->where('no',$key)->delete();
-          DB::connection('other')->commit();
+          DB::connection(Auth()->user()->company)->table('over_kst')->where('no',$key)->delete();
+          DB::connection(Auth()->user()->company)->table('kst_trans')->where('no',$key)->delete();
+          DB::connection(Auth()->user()->company)->table('main')->where('no',$key)->delete();
+          DB::connection(Auth()->user()->company)->commit();
           $this->ArcProgress++;
 
 
         } catch (\Exception $e) {
           info($e);
-          DB::connection('other')->rollback();
+          DB::connection(Auth()->user()->company)->rollback();
           $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
         }
         $this->mychecked=[];
@@ -96,9 +96,9 @@ class MosdadaTable extends Component
 
     public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
+
       return view('livewire.aksat.rep.okod.mosdada-table',[
-          'RepTable'=>DB::connection('other')->table('main_view')
+          'RepTable'=>DB::connection(Auth()->user()->company)->table('main_view')
               ->where([
               ['bank', '=', $this->bank_no],
               ['raseed','<=',$this->baky],

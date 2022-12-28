@@ -48,10 +48,10 @@ class Tar2Detail extends Component
     $this->bank=$bank;
     $this->name=$name;
     if (!$this->tar_date) $this->tar_date=date('Y-m-d');
-    $this->NoGet=DB::connection('other')->table('kst_trans')
+    $this->NoGet=DB::connection(Auth()->user()->company)->table('kst_trans')
       ->where('no',$this->no)
       ->whereNotNull('ksm_date')!=null;
-    $this->TarGet=DB::connection('other')->table('tar_kst')
+    $this->TarGet=DB::connection(Auth()->user()->company)->table('tar_kst')
       ->where('no',$this->no)
       ->where('bank',$this->bank)
       ->where('acc',$this->acc)
@@ -61,7 +61,7 @@ class Tar2Detail extends Component
   public function selectItem($ser,$ksm){
     $this->ser=$ser;
     $this->ksm=$ksm;
-    $res=kst_trans::where('no',$this->no)->where('ser',$ser)->first();
+    $res=kst_trans::on(Auth()->user()->company)->where('no',$this->no)->where('ser',$ser)->first();
     $this->kst_date=$res->kst_date;
     $this->ksm_date=$res->ksm_date;
     $this->SomeThing='inp';
@@ -92,21 +92,21 @@ class Tar2Detail extends Component
     public function DelTar(){
 
         $this->CloseDeleteDialog();
-        Config::set('database.connections.other.database', Auth::user()->company);
-        DB::connection('other')->beginTransaction();
+
+        DB::connection(Auth()->user()->company)->beginTransaction();
 
         try {
-            $res=tar_kst::find($this->wrec_no);
+            $res=tar_kst::on(Auth()->user()->company)->find($this->wrec_no);
                 $this->kst_date=$res->kst_date;
                 $this->ksm_date=$res->ksm_date;
                 $this->ser=$res->ser;
                 $this->ksm=$res->kst;
-            $res=main::where('no',$this->no)->first();
+            $res=main::on(Auth()->user()->company)->where('no',$this->no)->first();
                 $kst=$res->kst;
                 $sul_pay=$res->sul_pay;
                 $raseed=$res->raseed;
 
-            kst_trans::insert([
+            kst_trans::on(Auth()->user()->company)->insert([
                 'ser'=>$this->ser,
                 'no'=>$this->no,
                 'kst_date'=>$this->kst_date,
@@ -120,17 +120,17 @@ class Tar2Detail extends Component
                 'emp'=>auth::user()->empno,
             ]);
 
-            DB::connection('other')->table('main')->where('no',$this->no)->update([
+            DB::connection(Auth()->user()->company)->table('main')->where('no',$this->no)->update([
                 'sul_pay'=>$sul_pay+$this->ksm,
                 'raseed'=>$raseed-$this->ksm,
             ]);
 
-            tar_kst::where('wrec_no',$this->wrec_no)->delete();
+            tar_kst::on(Auth()->user()->company)->where('wrec_no',$this->wrec_no)->delete();
 
-            DB::connection('other')->commit();
+            DB::connection(Auth()->user()->company)->commit();
             $this->render();
         } catch (\Exception $e) {
-            DB::connection('other')->rollback();
+            DB::connection(Auth()->user()->company)->rollback();
 
             $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
         }
@@ -138,23 +138,23 @@ class Tar2Detail extends Component
   public function InpTar(){
     $this->validate();
     $this->CloseDeleteDialog();
-    Config::set('database.connections.other.database', Auth::user()->company);
-      DB::connection('other')->beginTransaction();
+
+      DB::connection(Auth()->user()->company)->beginTransaction();
 
       try {
 
-            kst_trans::where('no',$this->no)->where('ser',$this->ser)->delete();
-            $maxdate=kst_trans::where('no',$this->no)->max('kst_date');
+            kst_trans::on(Auth()->user()->company)->where('no',$this->no)->where('ser',$this->ser)->delete();
+            $maxdate=kst_trans::on(Auth()->user()->company)->where('no',$this->no)->max('kst_date');
             $newdate=Carbon::parse($maxdate)->addMonth();
 
-            $maxser=kst_trans::where('no',$this->no)->max('ser')+1;
+            $maxser=kst_trans::on(Auth()->user()->company)->where('no',$this->no)->max('ser')+1;
 
-            $res=main::where('no',$this->no)->first();
+            $res=main::on(Auth()->user()->company)->where('no',$this->no)->first();
             $kst=$res->kst;
             $sul_pay=$res->sul_pay;
             $raseed=$res->raseed;
 
-            kst_trans::insert([
+            kst_trans::on(Auth()->user()->company)->insert([
               'ser'=>$maxser,
               'no'=>$this->no,
               'kst_date'=>$newdate,
@@ -168,12 +168,12 @@ class Tar2Detail extends Component
               'emp'=>auth::user()->empno,
             ]);
 
-            DB::connection('other')->table('main')->where('no',$this->no)->update([
+            DB::connection(Auth()->user()->company)->table('main')->where('no',$this->no)->update([
               'sul_pay'=>$sul_pay-$this->ksm,
               'raseed'=>$raseed+$this->ksm,
             ]);
 
-            DB::connection('other')->table('tar_kst')->insert([
+            DB::connection(Auth()->user()->company)->table('tar_kst')->insert([
               'no' => $this->no,
               'name' => $this->name,
               'bank' => $this->bank,
@@ -188,24 +188,24 @@ class Tar2Detail extends Component
               'ksm_type' => $this->ksm_type,
             ]);
 
-         DB::connection('other')->commit();
+         DB::connection(Auth()->user()->company)->commit();
          $this->render();
       } catch (\Exception $e) {
-          DB::connection('other')->rollback();
+          DB::connection(Auth()->user()->company)->rollback();
 
           $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
       }
   }
     public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
+
         return view('livewire.over-tar.tar2-detail',[
-          'TableList'=>DB::connection('other')->table('kst_trans')
+          'TableList'=>DB::connection(Auth()->user()->company)->table('kst_trans')
             ->where('no',$this->no)
             ->whereNotNull('ksm_date')
             ->orderBy('ser','asc')
             ->paginate(10),
-          'TableList2'=>DB::connection('other')->table('tar_kst')
+          'TableList2'=>DB::connection(Auth()->user()->company)->table('tar_kst')
             ->where('no',$this->no)
             ->where('bank',$this->bank)
             ->where('acc',$this->acc)

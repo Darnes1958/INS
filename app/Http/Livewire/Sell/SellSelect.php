@@ -33,8 +33,8 @@ class SellSelect extends Component
   }
     public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
-      $this->OrderList=DB::connection('other')->table('sells_view')
+
+      $this->OrderList=DB::connection(Auth::user()->company)->table('sells_view')
         ->where('order_date','>',Carbon::now()->subYear(1))
         ->orderBy('order_no', 'DESC')->get();
 

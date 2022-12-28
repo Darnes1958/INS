@@ -33,7 +33,7 @@ class CustSelect extends Component
   }
   public function render()
   {
-    $this->CustList = DB::connection('other')->table('jeha')
+    $this->CustList = DB::connection(Auth()->user()->company)->table('jeha')
       ->select('jeha_no','jeha_name')->where('jeha_type',1)->where('available',1)->get();
 
 

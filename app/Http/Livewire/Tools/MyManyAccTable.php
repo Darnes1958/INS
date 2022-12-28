@@ -42,11 +42,9 @@ class MyManyAccTable extends Component
 
   public function render()
   {
-      Config::set('database.connections.other.database', Auth::user()->company);
-
 
       return view('livewire.tools.my-many-acc-table', [
-          'TableList' => DB::connection('other')->table($this->TableName)
+          'TableList' => DB::connection(Auth()->user()->company)->table($this->TableName)
               ->select('no','name','sul','kst')
               ->where('bank', '=', $this->Bank)
               ->where('acc', '=', $this->Acc)

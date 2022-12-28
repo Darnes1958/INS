@@ -30,7 +30,7 @@ class TransHead extends Component
     'Take_Search_JehaNo',
   ];
   public function updatedImpexp(){
-    info('here');
+
     $this->ChkJehaAndGo();
   }
   public function updatedJeha(){
@@ -49,10 +49,10 @@ class TransHead extends Component
   }
   public function ChkJeha(){
     if ($this->jeha !=null ) {
-      Config::set('database.connections.other.database', Auth::user()->company);
+
       $this->jeha_name = '';
       $this->jeha_type = 0;
-      $res = jeha::find($this->jeha);
+      $res = jeha::on(Auth()->user()->company)->find($this->jeha);
       if ($res) {
         $this->jeha_name = $res->jeha_name;
         $this->jeha_type = $res->jeha_type;
@@ -92,7 +92,7 @@ class TransHead extends Component
   public function ChkTypeAndGo(){
     Config::set('database.connections.other.database', Auth::user()->company);
     if ($this->tran_type){
-      $res=price_type::find($this->tran_type);
+      $res=price_type::on(Auth()->user()->company)->find($this->tran_type);
       if (!$res ){$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ');$this->emit('goto','tran_type');return(false);}
       else {$this->emit('gotonext','jeha');$this->emit('TakePayNo',$res->type_no,$res->type_name);return(true);}
   } else return (false);
@@ -116,8 +116,8 @@ class TransHead extends Component
     if (!$this->ChkTypeAndGo()) $this->emit('gotonext','tran_type');
     if (!$this->ChkJehaAndGo()) $this->emit('gotonext','jeha');
 
-    Config::set('database.connections.other.database', Auth::user()->company);
-    trans::insert([
+
+    trans::on(Auth()->user()->company)->insert([
       'tran_no'=>$this->TranNo,
       'jeha'=>$this->jeha,
       'val'=>$this->val,
@@ -143,7 +143,7 @@ class TransHead extends Component
   }
 
   public function OpenJehaSerachModal(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     $this->emitTo('jeha.cust-search','refreshComponent');
     $this->emitTo('jeha.cust-search','WithJehaType',$this->jeha_type);
     $this->dispatchBrowserEvent('OpenTransjehaModal');
@@ -163,7 +163,7 @@ class TransHead extends Component
    {
 
       $this->tran_date=date('Y-m-d');
-      $this->TranNo=trans::max('tran_no')+1;
+      $this->TranNo=trans::on(Auth()->user()->company)->max('tran_no')+1;
       return view('livewire.trans.trans-head');
    }
 }

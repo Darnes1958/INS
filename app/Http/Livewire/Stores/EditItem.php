@@ -38,7 +38,7 @@ class EditItem extends Component
   {
     $this->validate();
     Config::set('database.connections.other.database', Auth::user()->company);
-    items::findorfail($this->item_no)->update([
+    items::on(Auth()->user()->company)->findorfail($this->item_no)->update([
       'item_name'=>$this->item_name,
       'item_type'=>$this->item_type,
       'price_buy'=>$this->price_buy,
@@ -49,8 +49,8 @@ class EditItem extends Component
   }
   public function GetTheId($TheId){
     $this->item_no=$TheId;
-    Config::set('database.connections.other.database', Auth::user()->company);
-    $items= items::find($this->item_no);
+
+    $items= items::on(Auth()->user()->company)->find($this->item_no);
     $this->item_name=$items->item_name;
     $this->item_type=$items->item_type;
     $this->price_buy=$items->price_buy;
@@ -60,6 +60,6 @@ class EditItem extends Component
   public function render()
   {
     Config::set('database.connections.other.database', Auth::user()->company);
-    return view('livewire.stores.edit-item',['item_types'=>item_type::all(),]);
+    return view('livewire.stores.edit-item',['item_types'=>item_type::on(Auth()->user()->company)->get(),]);
   }
 }

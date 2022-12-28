@@ -53,13 +53,13 @@ class StoreHead extends Component
   }
 
   public function ChkPlace1AndGo(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
 
     if ($this->place_no1!=null) {
       if ($this->FromTo==11 || $this->FromTo==12)
-       $result =stores_names::where('st_no',$this->place_no1)->first();
+       $result =stores_names::on(Auth()->user()->company)->where('st_no',$this->place_no1)->first();
       if ($this->FromTo==21 || $this->FromTo==22)
-        $result =halls_names::where('hall_no',$this->place_no1)->first();
+        $result =halls_names::on(Auth()->user()->company)->where('hall_no',$this->place_no1)->first();
       if ($result) {
         $this->Place1Geted=true;
         if ($this->FromTo==11 || $this->FromTo==12)
@@ -73,13 +73,13 @@ class StoreHead extends Component
     }
   }
   public function ChkPlace2AndGo(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
 
     if ($this->place_no2!=null) {
       if ($this->FromTo==11 || $this->FromTo==21)
-        $result =stores_names::where('st_no',$this->place_no2)->first();
+        $result =stores_names::on(Auth()->user()->company)->where('st_no',$this->place_no2)->first();
       if ($this->FromTo==12 || $this->FromTo==22)
-        $result =halls_names::where('hall_no',$this->place_no2)->first();
+        $result =halls_names::on(Auth()->user()->company)->where('hall_no',$this->place_no2)->first();
       if ($result) {
         if (($this->FromTo==11 || $this->FromTo==22) && $this->place_no1==$this->place_no2)
         {$this->dispatchBrowserEvent('mmsg','لا يجوز النقل لنفس المكان');return(false);}

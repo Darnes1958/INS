@@ -32,12 +32,12 @@ class StoreSelect2 extends Component
   {
     Config::set('database.connections.other.database', Auth::user()->company);
     if ($this->Table=='Makazen') {
-      $this->PlaceList2=DB::connection('other')->table('stores_names')
+      $this->PlaceList2=DB::connection(Auth()->user()->company)->table('stores_names')
         ->selectRaw('st_no as place_no,st_name as place_name')
         ->get();
     }
     if ($this->Table=='Salat') {
-      $this->PlaceList2=DB::connection('other')->table('halls_names')
+      $this->PlaceList2=DB::connection(Auth()->user()->company)->table('halls_names')
         ->selectRaw('hall_no as place_no,hall_name as place_name')
         ->get();
     }

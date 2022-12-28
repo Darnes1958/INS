@@ -41,13 +41,13 @@ class WrongTable extends Component
 
   public function delete(){
     $this->CloseDeleteDialog();
-    wrong_Kst::where('wrong_no',$this->wrong_no)->delete();
+    wrong_Kst::on(Auth()->user()->company)->where('wrong_no',$this->wrong_no)->delete();
     $this->render();
   }
     public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
-        return view('livewire.over-tar.wrong-table',['TableList'=>DB::connection('other')->table('wrong_view')
+
+        return view('livewire.over-tar.wrong-table',['TableList'=>DB::connection(Auth()->user()->company)->table('wrong_view')
           ->where([
             ['bank',$this->bank_no],
             ['name', 'like', '%'.$this->search.'%'],

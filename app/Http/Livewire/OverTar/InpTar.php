@@ -36,10 +36,10 @@ class InpTar extends Component
   }
 
   public function ChkBankAndGo(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
 
     if ($this->bankno!=null) {
-      $result = bank::where('bank_no',$this->bankno)->first();
+      $result = bank::on(Auth()->user()->company)->where('bank_no',$this->bankno)->first();
       if ($result) {
 
         $this->emitTo('over-tar.tar-table','TakeBank',$this->bankno);

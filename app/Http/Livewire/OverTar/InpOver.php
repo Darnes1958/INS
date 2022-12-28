@@ -46,15 +46,15 @@ class InpOver extends Component
 
    public function DoSave(){
      $this->validate();
-     Config::set('database.connections.other.database', Auth::user()->company);
+
      if ($this->Proc=='over_kst')
-       over_kst::insert([
+       over_kst::on(Auth()->user()->company)->insert([
         'no'=>$this->no,'name'=>$this->name,'bank'=>$this->bankno,'acc'=>$this->acc,'kst'=>$this->kst,
         'tar_type'=>1,'tar_date'=>$this->tar_date,'letters'=>0,'emp'=>auth::user()->empno,
         'h_no'=>0,'inp_date'=>date('Y-m-d'),
        ]);
      if ($this->Proc=='over_kst_a')
-       over_kst_a::insert([
+       over_kst_a::on(Auth()->user()->company)->insert([
          'no'=>$this->no,'name'=>$this->name,'bank'=>$this->bankno,'acc'=>$this->acc,'kst'=>$this->kst,
          'tar_type'=>1,'tar_date'=>$this->tar_date,'letters'=>0,'emp'=>auth::user()->empno,
          'h_no'=>0,'inp_date'=>date('Y-m-d'),

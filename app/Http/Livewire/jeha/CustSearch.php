@@ -39,10 +39,10 @@ class CustSearch extends Component
 
   public function render()
   {
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     if ($this->jeha_type!=3)
      return view('livewire.jeha.cust-search', [
-      'TableList' => DB::connection('other')->table('jeha')
+      'TableList' => DB::connection(Auth()->user()->company)->table('jeha')
         ->select('jeha_no', 'jeha_name')
         ->where('jeha_type',$this->jeha_type)
         ->where('jeha_name', 'like', '%'.$this->search.'%')
@@ -50,7 +50,7 @@ class CustSearch extends Component
     ]);
     if ($this->jeha_type==3)
       return view('livewire.jeha.cust-search', [
-        'TableList' => DB::connection('other')->table('jeha')
+        'TableList' => DB::connection(Auth()->user()->company)->table('jeha')
           ->select('jeha_no', 'jeha_name')
           ->whereNotIn('jeha_type',[1,2])
           ->where('jeha_name', 'like', '%'.$this->search.'%')

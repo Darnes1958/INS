@@ -22,7 +22,7 @@ class EditWrong extends Component
 
   public function ToEditWrong($wrong_no){
     $this->wrong_no=$wrong_no;
-    $res=wrong_Kst::where('wrong_no',$this->wrong_no)->first();
+    $res=wrong_Kst::on(Auth()->user()->company)->where('wrong_no',$this->wrong_no)->first();
     $this->name=$res->name;
     $this->kst=$res->kst;
     $this->acc=$res->acc;
@@ -44,8 +44,8 @@ class EditWrong extends Component
   ];
   public function SaveWrong(){
     $this->validate();
-    Config::set('database.connections.other.database', Auth::user()->company);
-    wrong_Kst::where('wrong_no',$this->wrong_no)->update(
+
+    wrong_Kst::on(Auth()->user()->company)->where('wrong_no',$this->wrong_no)->update(
       [
         'kst'=>$this->kst,
         'tar_date'=>$this->tar_date,

@@ -38,8 +38,8 @@ class EditKst extends Component
   public function EditSaveKsm()
   {
     $this->validate();
-    Config::set('database.connections.other.database', Auth::user()->company);
-    DB::connection('other')->table('kst_trans')->where('no',$this->Edit_No)->where('ser',$this->Edit_Ser)->update([
+
+    DB::connection(Auth()->user()->company)->table('kst_trans')->where('no',$this->Edit_No)->where('ser',$this->Edit_Ser)->update([
       'ksm'=>$this->EditKsm,
       'ksm_date'=>$this->EditKsm_Date,
       'kst_notes'=>$this->EditNotes,
@@ -54,8 +54,8 @@ class EditKst extends Component
   public function GetTheId($ser){
 
     $this->Edit_Ser=$ser;
-    Config::set('database.connections.other.database', Auth::user()->company);
-    $res=DB::connection('other')->table('kst_trans')->where('no',$this->Edit_No)->where('ser',$this->Edit_Ser)->first();
+
+    $res=DB::connection(Auth()->user()->company)->table('kst_trans')->where('no',$this->Edit_No)->where('ser',$this->Edit_Ser)->first();
 
     $this->EditKsm_Date=$res->ksm_date;
     $this->EditKsm=$res->ksm;

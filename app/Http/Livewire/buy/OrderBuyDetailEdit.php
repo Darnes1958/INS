@@ -58,9 +58,9 @@ class OrderBuyDetailEdit extends Component
     }
     public function ChkItemAndGo(){
         $this->item_name='';
-        Config::set('database.connections.other.database', Auth::user()->company);
+
         if ($this->item!=null) {
-            $result=items::with('iteminstore')
+            $result=items::on(Auth()->user()->company)->with('iteminstore')
             ->where('item_no', $this->item)->first();
             if ($result) {
                 $this->IfBuyItemExists($this->order_no,$this->item,$this->stno);
@@ -112,7 +112,7 @@ class OrderBuyDetailEdit extends Component
 
     public function mount()
     {
-        Config::set('database.connections.other.database', Auth::user()->company);
+
         $this->ClearData();
         $this->DetailOpen=false;
         $this->OrderDetailOpen=true;

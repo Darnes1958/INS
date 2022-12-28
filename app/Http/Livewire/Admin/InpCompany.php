@@ -16,8 +16,7 @@ class InpCompany extends Component
   protected $listeners = ['show'];
 
   public function show($show){
-    info('in comp ');
-    info($show);
+
     $this->Show=$show;
   }
 

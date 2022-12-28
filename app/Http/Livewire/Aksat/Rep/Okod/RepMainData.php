@@ -66,7 +66,7 @@ class RepMainData extends Component
       $this->HasArc=!$this->HasArc;
     }
     public function GotoDetail($res){
-      Config::set('database.connections.other.database', Auth::user()->company);
+
       $this->HasArc=false;
       $this->HasChk=false;
       $this->HasOver=false;
@@ -87,18 +87,18 @@ class RepMainData extends Component
       $this->chk_out=$res['chk_out'];
       $this->notes=$res['notes'];
       $this->bank=$res['bank'];
-      $this->bank_name=bank::find($this->bank)->bank_name;
+      $this->bank_name=bank::on(Auth()->user()->company)->find($this->bank)->bank_name;
 
-      $tel=jeha::where('jeha_no',$this->jeha)->first();
+      $tel=jeha::on(Auth()->user()->company)->where('jeha_no',$this->jeha)->first();
        $this->libyana=$tel['libyana'];
        $this->mdar=$tel['mdar'];
        if ($this->libyana==null){$this->libyana='';}
       if ($this->mdar==null){$this->mdar='';}
 
-      $this->OverKst=over_kst::where('no',$this->no)->count();
-      $this->TarKst=tar_kst::where('no',$this->no)->count();
-      $this->ArcMain=MainArc::where('jeha',$this->jeha)->count();
-      $this->ChkTasleem=chk_tasleem::where('no',$this->no)->count();
+      $this->OverKst=over_kst::on(Auth()->user()->company)->where('no',$this->no)->count();
+      $this->TarKst=tar_kst::on(Auth()->user()->company)->where('no',$this->no)->count();
+      $this->ArcMain=MainArc::on(Auth()->user()->company)->where('jeha',$this->jeha)->count();
+      $this->ChkTasleem=chk_tasleem::on(Auth()->user()->company)->where('no',$this->no)->count();
 
     }
   public function CloseArc(){
@@ -112,21 +112,21 @@ class RepMainData extends Component
     public function render()
     {
 
-      Config::set('database.connections.other.database', Auth::user()->company);
+
         return view('livewire.aksat.rep.okod.rep-main-data',[
-            'TableOver' => DB::connection('other')->table('over_kst')
+            'TableOver' => DB::connection(Auth()->user()->company)->table('over_kst')
                 ->select('tar_date','kst')
                 ->where('no',$this->no)
                 ->paginate(5),
-            'TableTar' => DB::connection('other')->table('tar_kst')
+            'TableTar' => DB::connection(Auth()->user()->company)->table('tar_kst')
                 ->select('tar_date','kst')
                 ->where('no',$this->no)
                 ->paginate(5),
-            'TableChk' => DB::connection('other')->table('chk_tasleem')
+            'TableChk' => DB::connection(Auth()->user()->company)->table('chk_tasleem')
                 ->select('wdate','chk_count')
                 ->where('no',$this->no)
                 ->paginate(5),
-            'TableArc' => DB::connection('other')->table('MainArc')
+            'TableArc' => DB::connection(Auth()->user()->company)->table('MainArc')
                 ->select('sul_date','no')
                 ->where('jeha',$this->jeha)
                 ->paginate(5),

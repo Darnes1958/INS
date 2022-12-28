@@ -33,8 +33,8 @@ class PaySelect extends Component
   }
   public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
-      $this->PayList=DB::connection('other')->table('price_type')->get();
+
+      $this->PayList=DB::connection(Auth()->user()->company)->table('price_type')->get();
         return view('livewire.tools.pay-select',$this->PayList);
     }
 }

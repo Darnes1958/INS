@@ -30,9 +30,9 @@ class BankOne extends Component
   }
     public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
+
       return view('livewire.aksat.rep.okod.bank-one',[
-        'RepTable'=>rep_bank::
+        'RepTable'=>rep_bank::on(Auth()->user()->company)->
            where([
             ['bank', '=', $this->bank_no],
             ['name', 'like', '%'.$this->search.'%'],])

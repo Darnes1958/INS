@@ -51,9 +51,9 @@ class NoSelect extends Component
   }
   public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
 
-      $this->MainList=DB::connection('other')->table($this->MainOrArc)
+
+      $this->MainList=DB::connection(Auth()->user()->company)->table($this->MainOrArc)
         ->where('bank','=',$this->bank)
         ->orderBy('name', 'DESC')->get();
 

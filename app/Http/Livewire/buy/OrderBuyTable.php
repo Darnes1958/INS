@@ -42,16 +42,16 @@ class OrderBuyTable extends Component
 
        }
       else {
-          Config::set('database.connections.other.database', Auth::user()->company);
 
-          DB::connection('other')->beginTransaction();
+
+          DB::connection(Auth()->user()->company)->beginTransaction();
 
           try {
-            $ord=buys::where('order_no',$this->order_no)->first();
+            $ord=buys::on(Auth()->user()->company)->where('order_no',$this->order_no)->first();
             if ($ord!=null){
-                $this->order_no=buys::max('order_no')+1;
+                $this->order_no=buys::on(Auth()->user()->company)->max('order_no')+1;
               }
-              DB::connection('other')->table('buys')->insert([
+              DB::connection(Auth()->user()->company)->table('buys')->insert([
                   'order_no' => $this->order_no,
                   'order_no2' => 0,
                   'jeha' => $this->jeha_no,
@@ -76,7 +76,7 @@ class OrderBuyTable extends Component
                       continue;
                   }
 
-                  DB::connection('other')->table('buy_tran')->insert([
+                  DB::connection(Auth()->user()->company)->table('buy_tran')->insert([
                       'order_no' => $this->order_no,
                       'item_no' => $item['item_no'],
                       'quant' => $item['quant'],
@@ -89,8 +89,8 @@ class OrderBuyTable extends Component
               }
               if ($this->madfooh != 0) {
 
-                  $tran_no = trans::max('tran_no') + 1;
-                  DB::connection('other')->table('trans')->insert([
+                  $tran_no = trans::on(Auth()->user()->company)->max('tran_no') + 1;
+                  DB::connection(Auth()->user()->company)->table('trans')->insert([
                       'tran_no' => $tran_no,
                       'jeha' => $this->jeha_no,
                       'val' => $this->madfooh,
@@ -107,7 +107,7 @@ class OrderBuyTable extends Component
                   ]);
               }
 
-              DB::connection('other')->commit();
+              DB::connection(Auth()->user()->company)->commit();
 
               $this->emit('mounttable');
               $this->emit('dismountdetail');
@@ -115,9 +115,7 @@ class OrderBuyTable extends Component
 
 
           } catch (\Exception $e) {
-              DB::connection('other')->rollback();
-info($e);
-              // something went wrong
+              DB::connection(Auth()->user()->company)->rollback();
           }
 
       }

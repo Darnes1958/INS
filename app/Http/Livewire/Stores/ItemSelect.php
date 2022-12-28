@@ -48,20 +48,20 @@ class ItemSelect extends Component
     {
 
         if ($this->PlaceSelectType=='items') {
-        Config::set('database.connections.other.database', Auth::user()->company);
-        $this->ItemList=DB::connection('other')->table('items')
+
+        $this->ItemList=DB::connection(Auth()->user()->company)->table('items')
           ->select('item_no', 'raseed', 'item_name')
           ->where('available',1)
           ->get();}
         if ($this->PlaceSelectType=='Makazen') {
-            $this->ItemList=DB::connection('other')->table('stores')
+            $this->ItemList=DB::connection(Auth()->user()->company)->table('stores')
                 ->join('items', 'stores.item_no', '=', 'items.item_no')
                 ->select('stores.item_no', 'stores.raseed', 'items.item_name')
                 ->where('stores.st_no',$this->PlaceToSelect)
                 ->where('stores.raseed','>',0)
                 ->get();}
         if ($this->PlaceSelectType=='Salat') {
-            $this->ItemList=DB::connection('other')->table('halls')
+            $this->ItemList=DB::connection(Auth()->user()->company)->table('halls')
                 ->join('items', 'halls.item_no', '=', 'items.item_no')
                 ->select('halls.item_no', 'halls.raseed', 'items.item_name')
                 ->where('halls.hall_no',$this->PlaceToSelect)

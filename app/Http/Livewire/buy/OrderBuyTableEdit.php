@@ -47,7 +47,7 @@ class OrderBuyTableEdit extends Component
      $this->jeha_no=$jeha;
      $this->st_no=$stno;
      $this->notes=$notes;
-     $res=rep_buy_tran::where('order_no',$this->order_no)->get();
+     $res=rep_buy_tran::on(Auth()->user()->company)->where('order_no',$this->order_no)->get();
      foreach ($res as $value)
         $this->orderdetail[] =
          ['item_no' => $value['item_no'], 'item_name' => $value['item_name'],
@@ -62,16 +62,14 @@ class OrderBuyTableEdit extends Component
 
        }
       else {
-          Config::set('database.connections.other.database', Auth::user()->company);
-
-          DB::connection('other')->beginTransaction();
+          DB::connection(Auth()->user()->company)->beginTransaction();
 
           try {
 
-              buy_tran::where('order_no',$this->order_no)->delete();
-              buys::where('order_no',$this->order_no)->delete();
+              buy_tran::on(Auth()->user()->company)->where('order_no',$this->order_no)->delete();
+              buys::on(Auth()->user()->company)->where('order_no',$this->order_no)->delete();
 
-              DB::connection('other')->table('buys')->insert([
+              DB::connection(Auth()->user()->company)->table('buys')->insert([
                   'order_no' => $this->order_no,
                   'order_no2' => 0,
                   'jeha' => $this->jeha_no,
@@ -105,7 +103,7 @@ class OrderBuyTableEdit extends Component
                   break;}
                 else $this->HasRaseed=True;
 
-                  DB::connection('other')->table('buy_tran')->insert([
+                  DB::connection(Auth()->user()->company)->table('buy_tran')->insert([
                       'order_no' => $this->order_no,
                       'item_no' => $item['item_no'],
                       'quant' => $item['quant'],
@@ -120,8 +118,8 @@ class OrderBuyTableEdit extends Component
 
               if ($this->madfooh != 0 && $this->HasRaseed) {
 
-                  $tran_no = trans::max('tran_no') + 1;
-                  DB::connection('other')->table('trans')->insert([
+                  $tran_no = trans::on(Auth()->user()->company)->max('tran_no') + 1;
+                  DB::connection(Auth()->user()->company)->table('trans')->insert([
                       'tran_no' => $tran_no,
                       'jeha' => $this->jeha_no,
                       'val' => $this->madfooh,
@@ -140,16 +138,16 @@ class OrderBuyTableEdit extends Component
 
               if ($this->HasRaseed) {
 
-                DB::connection('other')->commit();
+                DB::connection(Auth()->user()->company)->commit();
 
                 $this->emit('mounttable');
                 $this->emit('dismountdetail');
                 $this->emit('mounthead');
-              } else {  DB::connection('other')->rollback();}
+              } else {  DB::connection(Auth()->user()->company)->rollback();}
 
 
           } catch (\Exception $e) {
-              DB::connection('other')->rollback();
+              DB::connection(Auth()->user()->company)->rollback();
           }
 
       }

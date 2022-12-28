@@ -13,10 +13,10 @@ class RepMainHead extends Component
  public $acc;
 
  public function ChkNoAndGo(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
     $this->acc='';
     if ($this->no!=null) {
-        $result = main::where('no',$this->no)->first();
+        $result = main::on(Auth()->user()->company)->where('no',$this->no)->first();
         if ($result) {
             $this->acc=$result->acc;
             $this->emit('GotoDetail',$result);

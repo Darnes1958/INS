@@ -50,7 +50,8 @@ class OrderSellTableEdit extends Component
 
     $this->st_no=$stno;
     $this->notes=$notes;
-    $res=rep_sell_tran::where('order_no',$this->order_no)->get();
+      $conn=Auth()->user()->company;
+    $res=rep_sell_tran::on($conn)->where('order_no',$this->order_no)->get();
     foreach ($res as $value)
       $this->orderdetail[] =
        ['item_no' => $value['item_no'], 'item_name' => $value['item_name'],
@@ -65,13 +66,13 @@ class OrderSellTableEdit extends Component
 
     public function store(){
 
-      Config::set('database.connections.other.database', Auth::user()->company);
+        $conn=Auth()->user()->company;
       if (count($this->orderdetail)==1){
             session()->flash('message', 'لم يتم ادخال اصناف بعد');
             return false;
         }
       if ($this->price_type==2) {
-          $res=main::where('order_no',$this->order_no)->first();
+          $res=main::on($conn)->where('order_no',$this->order_no)->first();
           if ($res) {$no=$res->no;$sul_pay=$res->sul_pay;} else $no=0;
           if ($no!=0 && ($this->tot - $this->madfooh)<$res->sul_pay){
             session()->flash('message', 'يجب أن لا تكون قيمة الفاتورة أصغر من المدفوع في العقد');
@@ -80,14 +81,14 @@ class OrderSellTableEdit extends Component
 
         }
             $this->HasRaseed=true;
-            DB::connection('other')->beginTransaction();
+            DB::connection($conn)->beginTransaction();
 
             try {
-              sell_tran::where('order_no',$this->order_no)->delete();
-              sells::where('order_no',$this->order_no)->delete();
+              sell_tran::on($conn)->where('order_no',$this->order_no)->delete();
+              sells::on($conn)->where('order_no',$this->order_no)->delete();
 
               if ($no!=0){
-                main::where('no',$no)->update([
+                main::on($conn)->where('no',$no)->update([
                  'sul_tot'=>$this->tot,
                  'sul'=>$this->tot - $this->madfooh,
                  'dofa'=>$this->madfooh,
@@ -95,7 +96,7 @@ class OrderSellTableEdit extends Component
                 ]);
               }
                if ($this->TablePlaceType=='Makazen') $pt=1; else $pt=2;
-                DB::connection('other')->table('sells')->insert([
+                DB::connection($conn)->table('sells')->insert([
                     'order_no' => $this->order_no,
                     'jeha' => $this->jeha_no,
                     'order_date' => $this->order_date,
@@ -128,7 +129,7 @@ class OrderSellTableEdit extends Component
                     else $this->HasRaseed=True;
 
                     if ($this->HasRaseed)
-                    {DB::connection('other')->table('sell_tran')->insert([
+                    {DB::connection($conn)->table('sell_tran')->insert([
                         'order_no' => $this->order_no,
                         'item_no' => $item['item_no'],
                         'quant' => $item['quant'],
@@ -141,8 +142,8 @@ class OrderSellTableEdit extends Component
                 }
                 if ($this->HasRaseed && $this->madfooh != 0) {
 
-                    $tran_no = trans::max('tran_no') + 1;
-                    DB::connection('other')->table('trans')->insert([
+                    $tran_no = trans::on($conn)->max('tran_no') + 1;
+                    DB::connection($conn)->table('trans')->insert([
                         'tran_no' => $tran_no,
                         'jeha' => $this->jeha_no,
                         'val' => $this->madfooh,
@@ -160,14 +161,14 @@ class OrderSellTableEdit extends Component
                 }
               if ($this->HasRaseed)
               {
-                DB::connection('other')->commit();
+                DB::connection($conn)->commit();
                 $this->emit('mounttable');
                 $this->emit('dismountdetail');
                 $this->emit('mounthead');
-              } else {DB::connection('other')->rollback();}
+              } else {DB::connection($conn)->rollback();}
 
             } catch (\Exception $e) {
-                DB::connection('other')->rollback();
+                DB::connection($conn)->rollback();
                 $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
             }
 

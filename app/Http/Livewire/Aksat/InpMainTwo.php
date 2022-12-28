@@ -91,17 +91,17 @@ class InpMainTwo extends Component
 
 
   public function ChkNoAndGo(){
-    Config::set('database.connections.other.database', Auth::user()->company);
+
    if ($this->no){
 
-    $res=main::where('no',$this->no)->first();
+    $res=main::on(Auth()->user()->company)->where('no',$this->no)->first();
     if ($res){$this->dispatchBrowserEvent('mmsg', 'هذا الرقم مخزون مسبقا');$this->emit('goto','no');}
     else {$this->emit('goto','sul_date');};}
   }
   public function ChkOrderAndGo(){
 
     Config::set('database.connections.other.database', Auth::user()->company);
-   $res=sells_view::where('order_no',$this->orderno)
+   $res=sells_view::on(Auth()->user()->company)->where('order_no',$this->orderno)
      ->whereNotIn('order_no', function($q){
        $q->select('order_no')->from('main');
      })
@@ -116,7 +116,7 @@ class InpMainTwo extends Component
      })
      ->first();
    if ($res){
-     $res_old=main::where('jeha',$res->jeha)->first();
+     $res_old=main::on(Auth()->user()->company)->where('jeha',$res->jeha)->first();
      $this->no_old=$res_old->no;
      $this->order_no_old=$res_old->order_no;
      $this->sul_tot_old=$res_old->sul_tot;
@@ -129,7 +129,7 @@ class InpMainTwo extends Component
      $this->place=$res_old->place;
      $this->chk_in=$res_old->chk_in;
 
-     $this->bank_name=bank::find($this->bankno)->bank_name;
+     $this->bank_name=bank::on(Auth()->user()->company)->find($this->bankno)->bank_name;
 
      $this->jeha=$res->jeha;
      $this->name=$res->jeha_name;
@@ -200,17 +200,17 @@ class InpMainTwo extends Component
   ];
   public function SaveCont(){
       $this->validate();
-      Config::set('database.connections.other.database', Auth::user()->company);
-      DB::connection('other')->beginTransaction();
+
+      DB::connection(Auth()->user()->company)->beginTransaction();
       try {
-         DB::connection('other')->table('main')->insert([
+         DB::connection(Auth()->user()->company)->table('main')->insert([
            'no'=>$this->no,'name'=>$this->name,'bank'=>$this->bankno,'acc'=>$this->acc,'sul_date'=>$this->sul_date,'sul_type'=>1,'sul_tot'=>$this->sul_tot,
            'dofa'=>$this->dofa,'sul'=>$this->sul,'kst'=>$this->kst,'kst_count'=>$this->kstcount,'sul_pay'=>0,'raseed'=>$this->sul,'order_no'=>$this->orderno,
            'jeha'=>$this->jeha,'place'=>$this->place,'notes'=>$this->notes,'chk_in'=>$this->chk_in,'chk_out'=>0,'last_order'=>$this->order_no_old,'ref_no'=>$this->ref_no,
            'emp'=>auth::user()->empno,'inp_date'=>date('Y-m-d'),]);
-         $res=sell_tran::where('order_no',$this->orderno)->get();
+         $res=sell_tran::on(Auth()->user()->company)->where('order_no',$this->orderno)->get();
          foreach ($res as $item) {
-           main_items::insert(['no'=>$this->no,'item_no'=>$item->item_no]);
+           main_items::on(Auth()->user()->company)->insert(['no'=>$this->no,'item_no'=>$item->item_no]);
          }
           $day = date('d', strtotime($this->sul_date));
           $month = date('m', strtotime($this->sul_date));
@@ -220,7 +220,7 @@ class InpMainTwo extends Component
           $date=$date->format('Y-m-d');
           if ($day>$this->DAY_OF_KSM) {$date = date('Y-m-d', strtotime($date . "+1 month"));}
           for ($i=1;$i<=$this->kstcount;$i++) {
-              kst_trans::insert([
+              kst_trans::on(Auth()->user()->company)->insert([
                 'ser'=>$i,
                 'no'=>$this->no,
                 'kst_date'=>$date,
@@ -237,54 +237,54 @@ class InpMainTwo extends Component
               $date = date('Y-m-d', strtotime($date . "+1 month"));
           }
 
-          $results=kst_trans::where('no',$this->no_old)->where(function ($query) {
+          $results=kst_trans::on(Auth()->user()->company)->where('no',$this->no_old)->where(function ($query) {
               $query->where('ksm', '=', null)
                   ->orWhere('ksm', '=', 0);
           })->min('ser');
           $ser= empty($results)? 0 : $results;
 
           if ($ser!=0) {
-              DB::connection('other')->table('kst_trans')->
+              DB::connection(Auth()->user()->company)->table('kst_trans')->
               where('no',$this->no_old)->where('ser',$ser)->update([
                  'ksm'=>$this->raseed_old,'ksm_date'=>$this->sul_date,'ksm_type'=>2,
                   'inp_date'=>date('Y-m-d'),'kst_notes'=>'مبلغ تم دمجه مع العقد رقم '.$this->no_old,
                   'emp'=>auth::user()->empno,]);
 
           } else
-          {  $max=(kst_trans::where('no',$this->D_no)->max('ser'))+1;
-             DB::connection('other')->table('kst_trans')->insert([
+          {  $max=(kst_trans::on(Auth()->user()->company)->where('no',$this->D_no)->max('ser'))+1;
+             DB::connection(Auth()->user()->company)->table('kst_trans')->insert([
                   'ser'=>$max,'no'=>$this->no_old,'kst_date'=>$this->sul_date,'ksm_type'=>2,'chk_no'=>0,
                   'kst'=>$this->kst_old,'ksm_date'=>$this->sul_date,'ksm'=>$this->raseed_old,
                   'kst_notes'=>'مبلغ تم دمجه مع العقد رقم '.$this->no_old,
                   'inp_date'=>date('Y-m-d'),'emp'=>auth::user()->empno,
               ]);
           }
-          DB::connection('other')->table('main')->where('no',$this->no_old)->update([
+          DB::connection(Auth()->user()->company)->table('main')->where('no',$this->no_old)->update([
               'sul_pay'=>$this->sul_old,
               'raseed'=>0,
           ]);
 
-          $select = main::where('no',$this->no_old)->select('no','name','bank','acc','sul_date','sul_type','sul_tot','dofa','sul',
+          $select = main::on(Auth()->user()->company)->where('no',$this->no_old)->select('no','name','bank','acc','sul_date','sul_type','sul_tot','dofa','sul',
               'kst','kst_count','sul_pay','raseed','order_no','jeha','place','notes','chk_in','chk_out','last_order','ref_no','emp','inp_date');
           $bindings = $select->getBindings();
           $insertQuery = 'INSERT into mainarc (no,name,bank,acc,sul_date,sul_type,sul_tot,dofa,sul,kst,kst_count,sul_pay,raseed,order_no,
                                                jeha,place,notes,chk_in,chk_out,last_order,ref_no,emp,inp_date) '. $select->toSql();
-          DB::connection('other')->insert($insertQuery, $bindings);
+          DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
 
-          $select = kst_trans::where('no',$this->no_old)->select('ser','no','kst_date','ksm_type','chk_no','kst','ksm_date','ksm','h_no','emp','kst_notes','inp_date');
+          $select = kst_trans::on(Auth()->user()->company)->where('no',$this->no_old)->select('ser','no','kst_date','ksm_type','chk_no','kst','ksm_date','ksm','h_no','emp','kst_notes','inp_date');
           $bindings = $select->getBindings();
           $insertQuery = 'INSERT into transarc (ser,no,kst_date,ksm_type,chk_no,kst,ksm_date,ksm,h_no,emp,kst_notes,inp_date) '. $select->toSql();
-          DB::connection('other')->insert($insertQuery, $bindings);
+          DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
 
-          $select = over_kst::where('no',$this->no_old)->select('no','name','bank','acc','kst','tar_type','tar_date','letters','emp','h_no','inp_date');
+          $select = over_kst::on(Auth()->user()->company)->where('no',$this->no_old)->select('no','name','bank','acc','kst','tar_type','tar_date','letters','emp','h_no','inp_date');
           $bindings = $select->getBindings();
           $insertQuery = 'INSERT into over_kst_a (no,name,bank,acc,kst,tar_type,tar_date,letters,emp,h_no,inp_date) '. $select->toSql();
-          DB::connection('other')->insert($insertQuery, $bindings);
+          DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
 
-          DB::connection('other')->table('over_kst')->where('no',$this->no_old)->delete();
-          DB::connection('other')->table('kst_trans')->where('no',$this->no_old)->delete();
-          DB::connection('other')->table('main')->where('no',$this->no_old)->delete();
-        DB::connection('other')->commit();
+          DB::connection(Auth()->user()->company)->table('over_kst')->where('no',$this->no_old)->delete();
+          DB::connection(Auth()->user()->company)->table('kst_trans')->where('no',$this->no_old)->delete();
+          DB::connection(Auth()->user()->company)->table('main')->where('no',$this->no_old)->delete();
+        DB::connection(Auth()->user()->company)->commit();
         $this->sul_old='';$this->sul_pay_old='';$this->sul_tot_old='';$this->no_old='';$this->bank_name='';$this->tot='';
         $this->no=''; $this->orderno='';$this->name='';$this->bankno='';$this->acc='';$this->place='';
         $this->sul='';$this->sul_tot='';$this->dofa='';$this->kst='';
@@ -293,15 +293,15 @@ class InpMainTwo extends Component
         $this->emit('goto','orderno');
 
       } catch (\Exception $e) {
-        DB::connection('other')->rollback();
+        DB::connection(Auth()->user()->company)->rollback();
 
         $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
       }
   }
     public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
-      $res=DB::connection('other')->table('settings')->where('no',3)->first();
+
+      $res=DB::connection(Auth()->user()->company)->table('settings')->where('no',3)->first();
       $this->DAY_OF_KSM=$res->s1;
 
         return view('livewire.aksat.inp-main-two');

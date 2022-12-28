@@ -29,9 +29,9 @@ class AddItemType extends Component
 
     public function SaveOne(){
         $this->validate();
-        Config::set('database.connections.other.database', Auth::user()->company);
-        $no=item_type::max('type_no')+1;
-        DB::connection('other')->table('item_type')->insert([
+
+        $no=item_type::on(Auth()->user()->company)->max('type_no')+1;
+        DB::connection(Auth()->user()->company)->table('item_type')->insert([
                 'type_no' => $no,
                 'type_name' => $this->name,
             ]);
@@ -50,7 +50,7 @@ class AddItemType extends Component
     {
 
         return view('livewire.Stores.add-item-type',[
-            'itemtypes' => item_type::paginate(10),
+            'itemtypes' => item_type::on(Auth()->user()->company)->paginate(10),
         ]);
     }
 }

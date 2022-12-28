@@ -12,6 +12,7 @@ use Livewire\Component;
 class OrderSellDetailEdit extends Component
 {
     use MyLib;
+    public $MyConn;
     public $order_no;
     public $stno;
     public $item;
@@ -82,7 +83,7 @@ class OrderSellDetailEdit extends Component
 
     public function mount()
     {
-        Config::set('database.connections.other.database', Auth::user()->company);
+
         $this->ClearData();
         $this->DetailOpen=false;
         $this->OrderDetailOpen=true;
@@ -162,7 +163,7 @@ class OrderSellDetailEdit extends Component
 
     protected function rules()
     {
-        Config::set('database.connections.other.database', Auth::user()->company);
+
         return [
 
             'quant' =>   ['required','integer','gt:0'],
@@ -199,6 +200,7 @@ class OrderSellDetailEdit extends Component
 
     public function render()
     {
+        $this->MyConn=auth()->user()->company;
         return view('livewire.sell.order-sell-detail-edit');
     }
 }

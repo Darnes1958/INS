@@ -34,8 +34,8 @@ class PlaceSelect extends Component
 
     public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
-      $this->PlaceList=DB::connection('other')->table('place')->get();
+
+      $this->PlaceList=DB::connection(Auth()->user()->company)->table('place')->get();
         return view('livewire.aksat.place-select',$this->PlaceList);
     }
 }
