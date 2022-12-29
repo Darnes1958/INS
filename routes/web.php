@@ -13,6 +13,7 @@ use App\Http\Controllers\trans\TransController;
 use App\Http\Controllers\Aksat\OverTarController;
 use App\Http\Controllers\Stores\StoresController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\pdfController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,11 +24,18 @@ Auth::routes();
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/home',function () {    return view('admin.index');});
 
+
+
+
+
+Route::controller(pdfController::class)->group(function (){
+    route::get('/pdf/reporderpdf', 'RepOrderPdf')->name('pdf.reporderpdf') ;
+});
 Route::controller(AdminController::class)->group(function (){
-    route::get('/admin/logout', 'destroy')->name('admin.logout') ;
-    route::get('/admin/profile', 'Profile')->name('admin.profile') ;
-    route::get('/edit/profile', 'EditProfile')->name('edit.profile')->middleware('auth');
-    route::post('/store/profile', 'StoreProfile')->name('store.profile')->middleware('auth') ;
+  route::get('/admin/logout', 'destroy')->name('admin.logout') ;
+  route::get('/admin/profile', 'Profile')->name('admin.profile') ;
+  route::get('/edit/profile', 'EditProfile')->name('edit.profile')->middleware('auth');
+  route::post('/store/profile', 'StoreProfile')->name('store.profile')->middleware('auth') ;
 });
 Route::controller(AKsatController::class)->group(function (){
   route::get('/kst/input', 'InpKst')->name('kst.input')->middleware('auth') ;

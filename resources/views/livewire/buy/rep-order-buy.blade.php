@@ -123,13 +123,19 @@
         </div>
       </div>
     </div>
-    <!--
-    <div class="d-print-none">
+
+  <!--  <div class="d-print-none">
       <div class="float-end">
-     //   <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light"><i class="fa fa-print"></i></a>
-        <input type="button" onclick="printableDiv('printableArea')" value="print a div!" />
+        <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light"><i class="fa fa-print"></i></a>
+        <a href="#" class="btn btn-primary waves-effect waves-light ms-2">Send</a>
+        <a href="#" class="btn btn-primary waves-effect waves-light ms-2">Download</a>
       </div>
     </div> -->
+     < <div >
+
+        <a href="{{route('pdf.reporderpdf')}}" class="link-dark d-inline-flex text-decoration-none rounded">الحركة اليومية</a>
+      </div>
+
   </div>
 </div>
 
@@ -162,7 +168,13 @@
     </table><br>
   {{ $orderdetail->links() }}
 
-
+  <div class="d-print-none">
+    <div class="float-end">
+      <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light"><i class="fa fa-print"></i></a>
+      <a href="#" class="btn btn-primary waves-effect waves-light ms-2">Send</a>
+      <a href="#" class="btn btn-primary waves-effect waves-light ms-2">Download</a>
+    </div>
+  </div>
 
   </div>
 </div>
