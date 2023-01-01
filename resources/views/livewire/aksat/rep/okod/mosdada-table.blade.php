@@ -1,7 +1,7 @@
 <div>
   <div  x-data="{ open:@entangle('ShowTar'), progress: @entangle('ArcProgress'),count: @entangle('ArcCount')}"
         class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
-    <div class="col-md-5">
+    <div class="col-md-4">
       @livewire('aksat.rep.bank-comp',
       ['sender' => 'aksat.rep.okod.mosdada-table',])
     </div>
@@ -16,6 +16,10 @@
       <button x-show="open" wire:click="ArcTarheel" class="  btn btn-outline-warning
       " style="height: 30px;" >نقل للأرشيف</button>
       <progress wire:loading wire:target="ArcTarheel" x-bind:max="count" x-bind:value="progress"></progress>
+    </div>
+    <div  class="col-md-2 my-2 ">
+      <a  href="{{route('pdfmosdada',['bank_no'=>$bank_no,'baky'=>$baky,'bank_name'=>$bank_name])}}"
+          class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
     </div>
   </div>
 

@@ -130,6 +130,7 @@
             break;
     }
     @endif
+
 </script>
 
 <script src="{{asset('backend/assets/js/sidebars.js')}}"></script>

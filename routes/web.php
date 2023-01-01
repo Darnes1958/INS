@@ -14,6 +14,7 @@ use App\Http\Controllers\Aksat\OverTarController;
 use App\Http\Controllers\Stores\StoresController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\pdfController;
+use App\Http\Livewire\Buy\RepOrderBuy;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,12 +25,13 @@ Auth::routes();
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/home',function () {    return view('admin.index');});
 
-
+Route::get('/livewirerep/',[RepOrderBuy::class,'printView'])->name('livego');
 
 
 
 Route::controller(pdfController::class)->group(function (){
-    route::get('/pdf/reporderpdf', 'RepOrderPdf')->name('pdf.reporderpdf') ;
+    route::get('/reporderbuypdf/{order_no?}/{jeha_name?}/{place_name?}', 'RepOrderPdf')->name('reporderbuypdf') ;
+    route::get('/pdfmosdada/{bank_no?}/{baky?}/{bank_name?}', 'PdfMosdada')->name('pdfmosdada') ;
 });
 Route::controller(AdminController::class)->group(function (){
   route::get('/admin/logout', 'destroy')->name('admin.logout') ;

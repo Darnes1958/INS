@@ -21,7 +21,7 @@ class RepOrderBuy extends Component
 
   use WithPagination;
   protected $paginationTheme = 'bootstrap';
-  public $order_no=0;
+  public $orderno=0;
   public $order_date;
   public $jeha_no;
   public $jeha_type;
@@ -40,22 +40,19 @@ class RepOrderBuy extends Component
   public $notes;
 
   public $TheOrderListSelected;
+  public $OrderGeted=false;
 
-  public function printview(){
-    $orderdetail=rep_buy_tran::on(Auth()->user()->company)->where('order_no',$this->order_no)->get();
-   // $reportHtml = view('PrnView.buy.rep-order-buy', ['orderdetail'=>$orderdetail])->output();
-    $reportHtml=View('PrnView.buy.rep-order-buy', ['orderdetail'=>$orderdetail])->render();
+  public function printView(){
+    $orderdetail=rep_buy_tran::on(Auth()->user()->company)->where('order_no',$this->orderno)->get();
+     $pdfContent = PDF::loadView('PrnView.buy.rep-order-buy',
+         ['orderdetail'=>$orderdetail,'order_no'=>$this->orderno,'order_date'=>$this->order_date])->output();
 
-    $arabic = new Arabic();
-    $p = $arabic->arIdentify($reportHtml);
+  //    $pdfContent = PDF::loadView('PrnView.buy.rep-order-buy',compact(
+  //               'orderdetail'));
 
-    for ($i = count($p)-1; $i >= 0; $i-=2) {
-      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
-      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
-    }
 
-    $pdf = PDF::loadHTML($reportHtml);
-    return $pdf->download('purchase.pdf');
+      return response()->streamDownload(
+         fn () => print($pdfContent),"filename.pdf");
 
   }
 
@@ -79,34 +76,39 @@ class RepOrderBuy extends Component
     $this->jeha_name='';
 
   }
+  public function updatedOrderno(){
+      $this->OrderGeted=false;
+  }
   public function ChkOrderNoAndGo(){
-    if ($this->order_no) {
+      $this->OrderGeted=false;
+    if ($this->orderno) {
 
-      $res=buys::on(Auth()->user()->company)->find($this->order_no);
+        $res=buys::on(Auth()->user()->company)->find($this->orderno);
 
-    if ($res) {
-      $this->order_date=$res->order_date;
-      $this->jeha_no=$res->jeha;
-      $this->place_no=$res->place_no;
-      $this->price_type=$res->price_type;
-      $this->tot1=$res->tot1;
-      $this->tot=$res->tot;
-      $this->ksm=$res->ksm;
-      $this->cash=$res->cash;
-      $this->not_cash=$res->not_cash;
-      $this->notes=$res->notes;
+        if ($res) {
+          $this->order_date=$res->order_date;
+          $this->jeha_no=$res->jeha;
+          $this->place_no=$res->place_no;
+          $this->price_type=$res->price_type;
+          $this->tot1=$res->tot1;
+          $this->tot=$res->tot;
+          $this->ksm=$res->ksm;
+          $this->cash=$res->cash;
+          $this->not_cash=$res->not_cash;
+          $this->notes=$res->notes;
 
-      $this->jeha_name=jeha::on(Auth()->user()->company)->find($this->jeha_no)->jeha_name;
-      $this->place_name=stores_names::on(Auth()->user()->company)->find($this->place_no)->st_name;
+          $this->jeha_name=jeha::on(Auth()->user()->company)->find($this->jeha_no)->jeha_name;
+          $this->place_name=stores_names::on(Auth()->user()->company)->find($this->place_no)->st_name;
+          $this->OrderGeted=True;
 
-    } else {$this->dispatchBrowserEvent('mmsg','هذا الرقم غير مخزون');$this->clearData();}
+        } else {$this->dispatchBrowserEvent('mmsg','هذا الرقم غير مخزون');$this->clearData();}
   }}
 
   public function render()
     {
 
       return view('livewire.buy.rep-order-buy',[
-        'orderdetail'=>rep_buy_tran::on(Auth()->user()->company)->where('order_no',$this->order_no)->paginate(15)
+        'orderdetail'=>rep_buy_tran::on(Auth()->user()->company)->where('order_no',$this->orderno)->paginate(15)
       ]);
     }
 }

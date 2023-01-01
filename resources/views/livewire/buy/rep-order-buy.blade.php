@@ -1,4 +1,5 @@
-<div class="row" id="printableArea" dir="rtl">
+<div x-data class="row" id="printableArea" dir="rtl">
+
 <div x-data class="col-md-5 my-2"  >
 
   <div   class="row g-2 " style="border:1px solid lightgray;background: white;">
@@ -11,7 +12,7 @@
           <label  for="order_no" class="form-label-me ">رقم الفاتورة</label>
         </div>
         <div class="col-md-8">
-          <input wire:model="order_no"  wire:keydown.enter="ChkOrderNoAndGo" type="text" class=" form-control "
+          <input wire:model="orderno"  wire:keydown.enter="ChkOrderNoAndGo" type="text" class=" form-control "
                  id="order_no" name="order_no"   >
         </div>
       </div>
@@ -124,17 +125,25 @@
       </div>
     </div>
 
+      <a  href="{{route('reporderbuypdf',
+         ['order_no'=>$orderno,'jeha_name'=>$jeha_name,'place_name'=>$place_name])}}"
+         class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
+
   <!--  <div class="d-print-none">
       <div class="float-end">
         <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light"><i class="fa fa-print"></i></a>
         <a href="#" class="btn btn-primary waves-effect waves-light ms-2">Send</a>
         <a href="#" class="btn btn-primary waves-effect waves-light ms-2">Download</a>
       </div>
-    </div> -->
-     < <div >
+    </div>
+     <a href="{{URL::to('pdf/reporderpdf')}}" class="btnPrint">الحركة اليومية</a>  -->
+   <!--   <a href="{{route('livego')}}" class="link-dark d-inline-flex text-decoration-none rounded">الحركة اليومية</a>
+        < <div >
+          <input type="button"  id="head-btn"
+                 class= " btn btn-outline-success  waves-effect waves-light   "
+                 wire:click.prevent="printView"  value="  طباعة  " />
 
-        <a href="{{route('pdf.reporderpdf')}}" class="link-dark d-inline-flex text-decoration-none rounded">الحركة اليومية</a>
-      </div>
+        </div>-->
 
   </div>
 </div>
@@ -168,13 +177,7 @@
     </table><br>
   {{ $orderdetail->links() }}
 
-  <div class="d-print-none">
-    <div class="float-end">
-      <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light"><i class="fa fa-print"></i></a>
-      <a href="#" class="btn btn-primary waves-effect waves-light ms-2">Send</a>
-      <a href="#" class="btn btn-primary waves-effect waves-light ms-2">Download</a>
-    </div>
-  </div>
+
 
   </div>
 </div>
@@ -198,7 +201,11 @@
       })
 
   </script>
-  <script>
+  <script type="text/javascript">
+      $(document).ready(function()
+      {
+          $('.btnPrint').printPage();
+      });
 
       $(document).ready(function ()
       {
@@ -207,7 +214,7 @@
           });
           $('#Buy_L').on('change', function (e) {
               var data = $('#Buy_L').select2("val");
-          @this.set('order_no', data);
+          @this.set('orderno', data);
           @this.set('TheOrderListSelected',1);
           });
       });

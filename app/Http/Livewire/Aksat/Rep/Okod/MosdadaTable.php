@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Aksat\Rep\Okod;
 
 use App\Models\aksat\kst_trans;
+use App\Models\bank\bank;
 use App\Models\OverTar\over_kst;
 use App\Models\aksat\main;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,7 @@ class MosdadaTable extends Component
   use WithPagination;
   protected $paginationTheme = 'bootstrap';
   public $bank_no=0;
+  public $bank_name;
   public $search;
   public $baky=0;
   public $mychecked=[];
@@ -39,7 +41,7 @@ class MosdadaTable extends Component
   }
   public function TakeBank($bank_no){
     $this->bank_no=$bank_no;
-
+      $this->bank_name=bank::on(Auth()->user()->company)->where('bank_no',$this->bank_no)->first()->bank_name;
 
     $this->ShowTar=main::on(Auth()->user()->company)->where('bank',$bank_no)->where('raseed','<=',0)->count()>0;
 
