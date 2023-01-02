@@ -39,9 +39,22 @@ class pdfController extends Controller
 
 
   //  return view('PrnView.buy.rep-order-buy',compact('orderdetail','res'));
-      $pdf = Pdf::loadView('PrnView.buy.rep-order-buy',
-          ['orderdetail'=>$orderdetail,'res'=>$res,'cus'=>$cus,'jeha_name'=>$jeha_name,'place_name'=>$place_name]);
+   //   $pdf = Pdf::loadView('PrnView.buy.rep-order-buy',
+     //     ['orderdetail'=>$orderdetail,'res'=>$res,'cus'=>$cus,'jeha_name'=>$jeha_name,'place_name'=>$place_name]);
 
+     // return $pdf->download('invoice.pdf');
+
+      $reportHtml = view('PrnView.buy.rep-order-buy',
+          ['orderdetail'=>$orderdetail,'res'=>$res,'cus'=>$cus,'jeha_name'=>$jeha_name,'place_name'=>$place_name])->render();
+      $arabic = new Arabic();
+      $p = $arabic->arIdentify($reportHtml);
+
+      for ($i = count($p)-1; $i >= 0; $i-=2) {
+          $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+          $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+      }
+
+      $pdf = PDF::loadHTML($reportHtml);
       return $pdf->download('invoice.pdf');
 
   }

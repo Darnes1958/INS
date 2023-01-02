@@ -30,10 +30,10 @@
           text-align: center;
       }
       #footer .page:after {
-          content: 'صفحة رقم '  counter(page);
+          content:   counter(page);
       }
       #footer .pageplus1:after {
-          content: counter(pageplus1);
+          content:  counter(pageplus1);
       }
 
       @page {
@@ -63,36 +63,26 @@
 <body  >
 <div  >
 
-   <!-- <div class="d-print-none">
-        <div class="float-end">
-            <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light"><i class="fa fa-print"></i>print</a>
-            <a href="#" class="btn btn-primary waves-effect waves-light ms-2">Send</a>
-            <a href="#" class="btn btn-primary waves-effect waves-light ms-2">Download</a>
-        </div>
-    </div>
-    <br>
-    -->
 
-        <label style="font-family: Amiri; font-size: 30pt; text-align: right;" >{{$cus->CompanyName}}</label>
+        <label style="font-family: Amiri; font-size: 24pt; margin-right: 12px;" >{{$cus->CompanyName}}</label>
     <br>
-        <label style="font-family: Amiri; font-size: 20pt;text-align: right;">{{$cus->CompanyNameSuffix}}</label>
-
+        <label style="font-family: Amiri; font-size: 18pt;margin-right: 12px;">{{$cus->CompanyNameSuffix}}</label>
 
     <br>
     <br>
     <br>
-    <label> فاتورة رقم :  {{$res->order_no}}</label>
+    <label style="margin-right: 12px;"> فاتورة رقم :  {{$res->order_no}}</label>
     <div >
         <label style="font-size: 12px;">{{$res->order_date}}</label>
-        <label >بتاريخ : </label>
+        <label style="margin-right: 12px;" >بتاريخ : </label>
     </div>
     <div >
         <label >{{$jeha_name}}</label>
-        <label >اسم المورد : </label>
+        <label style="margin-right: 12px;" >اسم المورد : </label>
     </div>
     <div >
         <label >{{$place_name}}</label>
-        <label >صدرت من : </label>
+        <label style="margin-right: 12px;">صدرت من : </label>
     </div>
     <br>
   <table  width="100%"   align="right" >
@@ -115,34 +105,34 @@
           <td style=" text-align: right;"> {{ $item['item_name'] }} </td>
           <td style="color: #0c63e4; text-align: center;"> {{ $item['item_no'] }} </td>
       </tr>
-      <div id="footer" style="height: 50px; left: 400px; margin-bottom: 0px; margin-top: 10px;">
-
-          <p class="page"></p>
-
+      <div id="footer" style="height: 50px; width: 100%; margin-bottom: 0px; margin-top: 10px;
+                              display: flex;  justify-content: center;">
+          <label class="page"></label>
+          <label> صفحة رقم </label>
       </div>
     @endforeach
     </tbody>
       <tbody>
       <tr  >
           <td style="font-weight: bold;text-align: right;">{{$res->tot1}}</td>
-          <td  > إجمالي الفاتورة&nbsp;&nbsp;</td>
+          <td style="padding: 4px;" > إجمالي الفاتورة </td>
           <td ></td>
           <td ></td>
           <td ></td>
       </tr>
       <tr >
           <td style="font-weight: bold;text-align: right;">{{$res->ksm}}</td>
-          <td  >الخصم&nbsp;&nbsp;</td>
+          <td style="padding: 4px;" >الخصم </td>
           <td style="font-weight: bold;text-align: right;">{{$res->cash}}</td>
-          <td >المدفوع&nbsp;&nbsp;</td>
+          <td style="padding: 4px;">المدفوع </td>
           <td ></td>
 
       </tr>
       <tr >
           <td style="font-weight: bold;text-align: right;">{{$res->tot}}</td>
-          <td >الصافي&nbsp;&nbsp;</td>
+          <td style="padding: 4px;">الصافي </td>
           <td style="font-weight: bold;text-align: right;">{{$res->not_cash}}</td>
-          <td >المتبقي&nbsp;&nbsp;</td>
+          <td style="padding: 4px;">المتبقي </td>
           <td ></td>
 
       </tr>

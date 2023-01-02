@@ -17,24 +17,20 @@
           direction: rtl;
           font-family: Amiri ;
       }
-      body, h1, h2, h3, h4, h5, h6, table, th, tr, td, div {
-          line-height: 1.1;
 
-      }
 
       #footer {
           height: 30px;
           position: fixed;
-
           margin: 5px;
           bottom: 0;
           text-align: center;
       }
       #footer .page:after {
-          content: 'صفحة رقم '  counter(page);
+          content: counter(page);
       }
       #footer .pageplus1:after {
-          content: counter(pageplus1);
+          content:  counter(pageplus1);
       }
       @page {
           size: 29.7cm 21cm;
@@ -44,7 +40,6 @@
           width: 96%;
           border-collapse: collapse;
           border: 1pt solid  lightgray;
-
           margin-right: 12px;
           font-size: 12px;
       }
@@ -108,10 +103,10 @@
           <td> {{ $item->acc }} </td>
           <td style="text-align: center;"> {{ $item->no }} </td>
       </tr>
-      <div id="footer" style="height: 50px; left: 400px; margin-bottom: 0px; margin-top: 10px;">
-
-          <p class="page"></p>
-
+      <div id="footer" style="height: 50px; width: 100%; margin-bottom: 0px; margin-top: 10px;
+                              display: flex;  justify-content: center;">
+          <label class="page"></label>
+          <label> صفحة رقم </label>
       </div>
     @endforeach
     </tbody>

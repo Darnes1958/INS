@@ -66,6 +66,7 @@ Route::controller(RepAksatController::class)->group(function (){
 });
 Route::controller(RepAmaaController::class)->group(function (){
   route::get('/repamma/{rep}', 'RepAmma')->name('repamma')->middleware('auth');
+
 });
 
 Route::controller(CustomerController::class)->group(function (){
