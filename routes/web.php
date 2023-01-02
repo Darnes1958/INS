@@ -32,6 +32,7 @@ Route::get('/livewirerep/',[RepOrderBuy::class,'printView'])->name('livego');
 Route::controller(pdfController::class)->group(function (){
     route::get('/reporderbuypdf/{order_no?}/{jeha_name?}/{place_name?}', 'RepOrderPdf')->name('reporderbuypdf') ;
     route::get('/pdfmosdada/{bank_no?}/{baky?}/{bank_name?}', 'PdfMosdada')->name('pdfmosdada') ;
+
 });
 Route::controller(AdminController::class)->group(function (){
   route::get('/admin/logout', 'destroy')->name('admin.logout') ;
@@ -44,6 +45,8 @@ Route::controller(AKsatController::class)->group(function (){
   route::get('/haf/input', 'InpHaf')->name('haf.input')->middleware('auth') ;
   route::get('/main/input/{NewOld}', 'MainInp')->name('main.input')->middleware('auth') ;
   route::get('/main/Edit/{EditDel}', 'MainEdit')->name('main.edit')->middleware('auth') ;
+
+
 
 });
 Route::controller(OverTarController::class)->group(function (){
@@ -62,6 +65,8 @@ Route::controller(RepAksatController::class)->group(function (){
   route::get('/repMain/arc', 'RepMainArc')->name('repmain.arc')->middleware('auth') ;
 
   route::get('/rep/okod/{rep}', 'RepOkod')->name('rep.okod')->middleware('auth') ;
+
+  route::get('/pdfmain/{no}', 'PdfMain')->name('pdfmain') ;
 
 });
 Route::controller(RepAmaaController::class)->group(function (){

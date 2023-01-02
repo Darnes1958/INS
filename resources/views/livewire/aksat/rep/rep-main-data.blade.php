@@ -37,6 +37,7 @@
         <label for="notes" class="form-label-me">ملاحظات</label>
         <input wire:model="notes"  class="form-control"   type="text"  id="notes" readonly>
     </div>
+
 </div>
 
 

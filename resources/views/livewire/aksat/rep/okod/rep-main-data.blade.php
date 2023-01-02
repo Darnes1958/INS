@@ -59,6 +59,10 @@
         <label x-show="$wire.notes!='' && $wire.notes!=null && $wire.notes!='0'" for="notes" class="form-label-me" style="width: 20% ">ملاحظات</label>
         <textarea x-show="$wire.notes!='' && $wire.notes!=null && $wire.notes!='0'"  wire:model="notes"  class="form-control"  style="width: 80% " id="notes" readonly></textarea>
     </div>
+   <div class="d-inline-flex align-items-center">
+     <a  href="{{route('pdfmain',$no)}}"
+         class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
+   </div>
     @livewire('tools.my-table2',
     ['TableName' => $mainitems,
     'ColNames' =>['item_no','item_name','quant','price','sub_tot'],

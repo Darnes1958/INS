@@ -24,17 +24,12 @@ class pdfController extends Controller
 
   public function RepOrderPdf(Request $request){
     $order_no=$request->order_no;
-
     $res=buys::on(Auth()->user()->company)->where('order_no',$order_no)->first();
     if ($order_no==null || $order_no==0 || !$res) return(false);
-
     $cus=Customers::where('Company',Auth::user()->company)->first();
-
     $jeha_name=$request->jeha_name;
-
     $place_name=$request->place_name;
     $orderdetail=rep_buy_tran::on(Auth()->user()->company)->where('order_no',$order_no)->get();
-
     $res=buys::on(Auth()->user()->company)->where('order_no',$order_no)->first();
 
 
