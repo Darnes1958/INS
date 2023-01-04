@@ -27,10 +27,10 @@ class RepAksatController extends Controller
 
     $RepDate=date('Y-m-d');
     $cus=Customers::where('Company',Auth::user()->company)->first();
-    $res=DB::connection(Auth()->user()->company)->table('main')
+    $res=DB::connection(Auth()->user()->company)->table('main_view')
       ->where('no',  $no)
       ->first();
-    $res2=DB::connection(Auth()->user()->company)->table('kst_trans')
+    $res2=DB::connection(Auth()->user()->company)->table('kst_tran_view')
       ->where('no',  $no)
       ->orderBy('ser')
       ->get();

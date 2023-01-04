@@ -11,6 +11,11 @@
       @livewire('amma.mak.mak-rep')
     </div>
     @endif
+      @if ($rep=='jehatran')
+          <div >
+              @livewire('jeha.rep-jeha-tran')
+          </div>
+      @endif
       @if ($rep=='itemrep')
           <div class="row g-3 ">
               @livewire('amma.mak.item-rep')

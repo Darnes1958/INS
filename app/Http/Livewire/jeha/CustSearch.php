@@ -34,6 +34,7 @@ class CustSearch extends Component
   {
     $this->emit('Take_Search_JehaNo', $jeha_no);
     $this->dispatchBrowserEvent('CloseSelljehaModal');
+    $this->dispatchBrowserEvent('ClosejehaModal');
     $this->dispatchBrowserEvent('CloseTransjehaModal');
   }
 

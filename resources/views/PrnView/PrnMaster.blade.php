@@ -67,11 +67,13 @@
       }
       tr {
           border: 1pt solid  lightgray;
+          line-height: 12px;
       }
       th {
           text-align: center;
           border: 1pt solid  lightgray;
           font-size: 12px;
+          height: 30px;
       }
       td {
           text-align: right;
@@ -80,16 +82,16 @@
   </style>
 </head>
 <body  >
-<div  >
-  <label style="font-size: 24pt; margin-right: 12px;" >{{$cus->CompanyName}}</label>
-  <br>
-  <label style="font-size: 18pt; margin-right: 12px;">{{$cus->CompanyNameSuffix}}</label>
-  <br>
-  <br>
+ <div>
+  <label style="font-size: 20pt; margin-right: 12px;margin-bottom: 0;padding: 0;" >{{$cus->CompanyName}}</label>
+ </div>
+ <div>
+  <label style="font-size: 16pt; margin-right: 12px; margin-top: 0;padding: 0;">{{$cus->CompanyNameSuffix}}</label>
+ </div>
+<br>
+
 
   @yield('mainrep')
-
-
 
 
 </div>
