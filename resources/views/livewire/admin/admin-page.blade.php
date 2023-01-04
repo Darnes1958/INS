@@ -16,12 +16,17 @@
              <button  wire:click="RepUsers" class="col-md-2 mx-1 btn btn-primary">
                  Report Users
              </button>
+         <button  wire:click="InpRole" class="col-md-2 mx-1 btn btn-primary">
+             Add Roles
+         </button>
 
      </div>
      @livewire('admin.inp-user')
      @livewire('admin.inp-company')
      @livewire('admin.rep-company')
      @livewire('admin.rep-users')
+     @livewire('admin.manage-roles')
+     @livewire('admin.rep-old-roles')
     </div>
 
 

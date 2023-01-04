@@ -15,8 +15,12 @@ class StoreSelect1 extends Component
   public $Table='Makazen';
 
   protected $listeners = [
-    'TakePlaceNo1',
+    'TakePlaceNo1','ResetYou',
   ];
+  public function ResetYou($table){
+      $this->Table=$table;
+
+  }
 
   public function TakePlaceNo1($placeno){
     $this->PlaceNo1 = $placeno;

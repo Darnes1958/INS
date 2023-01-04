@@ -10,31 +10,33 @@ use Livewire\Component;
 class AdminPage extends Component
 {
 
-
+  protected function FalseAll(){
+      $this->emitTo('admin.manage-roles','show',False);
+      $this->emitTo('admin.inp-user','show',False);
+      $this->emitTo('admin.inp-company','show',False);
+      $this->emitTo('admin.rep-company','show',False);
+      $this->emitTo('admin.rep-users','show',False);
+  }
   public function InpUser(){
+    $this->FalseAll();
     $this->emitTo('admin.inp-user','show',True);
-    $this->emitTo('admin.inp-company','show',False);
-    $this->emitTo('admin.rep-company','show',False);
-    $this->emitTo('admin.rep-users','show',False);
-
   }
   public function InpCompany(){
-    $this->emitTo('admin.inp-user','show',False);
+    $this->FalseAll();
     $this->emitTo('admin.inp-company','show',True);
-    $this->emitTo('admin.rep-company','show',False);
-    $this->emitTo('admin.rep-users','show',False);
   }
   public function RepCompany(){
-    $this->emitTo('admin.inp-user','show',False);
-    $this->emitTo('admin.inp-company','show',False);
+    $this->FalseAll();
     $this->emitTo('admin.rep-company','show',True);
-    $this->emitTo('admin.rep-users','show',False);
   }
     public function RepUsers(){
-        $this->emitTo('admin.inp-user','show',False);
-        $this->emitTo('admin.inp-company','show',False);
-        $this->emitTo('admin.rep-company','show',False);
+        $this->FalseAll();
         $this->emitTo('admin.rep-users','show',True);
+    }
+    public function InpRole(){
+        $this->FalseAll();
+        $this->emitTo('admin.manage-roles','show',True);
+        $this->emitTo('admin.rep-old-roles','show',True);
     }
 
 

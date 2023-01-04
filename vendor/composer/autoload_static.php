@@ -35,6 +35,7 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
         '320163ac6b93aebe3dc25b60a0533d56' => __DIR__ . '/..' . '/spatie/laravel-ignition/src/helpers.php',
+        '377b22b161c09ed6e5152de788ca020a' => __DIR__ . '/..' . '/spatie/laravel-permission/src/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -83,6 +84,7 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
             'Svg\\' => 4,
+            'Spatie\\Permission\\' => 18,
             'Spatie\\LaravelPackageTools\\' => 27,
             'Spatie\\LaravelIgnition\\' => 23,
             'Spatie\\Ignition\\' => 16,
@@ -318,6 +320,10 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         'Svg\\' => 
         array (
             0 => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg',
+        ),
+        'Spatie\\Permission\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/spatie/laravel-permission/src',
         ),
         'Spatie\\LaravelPackageTools\\' => 
         array (
@@ -632,6 +638,7 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         'App\\Http\\Livewire\\Aksat\\Rep\\RepMainTrans' => __DIR__ . '/../..' . '/app/Http/Livewire/Aksat/Rep/RepMainTrans.php',
         'App\\Http\\Livewire\\Amma\\DailyRep' => __DIR__ . '/../..' . '/app/Http/Livewire/Amma/DailyRep.php',
         'App\\Http\\Livewire\\Amma\\DailyRepTable' => __DIR__ . '/../..' . '/app/Http/Livewire/Amma/DailyRepTable.php',
+        'App\\Http\\Livewire\\Amma\\Mak\\ItemRep' => __DIR__ . '/../..' . '/app/Http/Livewire/Amma/Mak/ItemRep.php',
         'App\\Http\\Livewire\\Amma\\Mak\\MakRep' => __DIR__ . '/../..' . '/app/Http/Livewire/Amma/Mak/MakRep.php',
         'App\\Http\\Livewire\\Bank\\BankHafSelect' => __DIR__ . '/../..' . '/app/Http/Livewire/Bank/BankHafSelect.php',
         'App\\Http\\Livewire\\Bank\\BankSelect' => __DIR__ . '/../..' . '/app/Http/Livewire/Bank/BankSelect.php',
@@ -670,6 +677,7 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         'App\\Http\\Livewire\\Stores\\AddItemType' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/AddItemType.php',
         'App\\Http\\Livewire\\Stores\\EditItem' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/EditItem.php',
         'App\\Http\\Livewire\\Stores\\ItemSelect' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/ItemSelect.php',
+        'App\\Http\\Livewire\\Stores\\RepStoresTrans' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/RepStoresTrans.php',
         'App\\Http\\Livewire\\Stores\\StoreDetail' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/StoreDetail.php',
         'App\\Http\\Livewire\\Stores\\StoreHead' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/StoreHead.php',
         'App\\Http\\Livewire\\Stores\\StoreSelect1' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/StoreSelect1.php',
@@ -5245,6 +5253,33 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         'Spatie\\LaravelPackageTools\\Exceptions\\InvalidPackage' => __DIR__ . '/..' . '/spatie/laravel-package-tools/src/Exceptions/InvalidPackage.php',
         'Spatie\\LaravelPackageTools\\Package' => __DIR__ . '/..' . '/spatie/laravel-package-tools/src/Package.php',
         'Spatie\\LaravelPackageTools\\PackageServiceProvider' => __DIR__ . '/..' . '/spatie/laravel-package-tools/src/PackageServiceProvider.php',
+        'Spatie\\Permission\\Commands\\CacheReset' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Commands/CacheReset.php',
+        'Spatie\\Permission\\Commands\\CreatePermission' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Commands/CreatePermission.php',
+        'Spatie\\Permission\\Commands\\CreateRole' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Commands/CreateRole.php',
+        'Spatie\\Permission\\Commands\\Show' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Commands/Show.php',
+        'Spatie\\Permission\\Commands\\UpgradeForTeams' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Commands/UpgradeForTeams.php',
+        'Spatie\\Permission\\Contracts\\Permission' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Contracts/Permission.php',
+        'Spatie\\Permission\\Contracts\\Role' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Contracts/Role.php',
+        'Spatie\\Permission\\Exceptions\\GuardDoesNotMatch' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Exceptions/GuardDoesNotMatch.php',
+        'Spatie\\Permission\\Exceptions\\PermissionAlreadyExists' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Exceptions/PermissionAlreadyExists.php',
+        'Spatie\\Permission\\Exceptions\\PermissionDoesNotExist' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Exceptions/PermissionDoesNotExist.php',
+        'Spatie\\Permission\\Exceptions\\RoleAlreadyExists' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Exceptions/RoleAlreadyExists.php',
+        'Spatie\\Permission\\Exceptions\\RoleDoesNotExist' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Exceptions/RoleDoesNotExist.php',
+        'Spatie\\Permission\\Exceptions\\UnauthorizedException' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Exceptions/UnauthorizedException.php',
+        'Spatie\\Permission\\Exceptions\\WildcardPermissionInvalidArgument' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Exceptions/WildcardPermissionInvalidArgument.php',
+        'Spatie\\Permission\\Exceptions\\WildcardPermissionNotProperlyFormatted' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Exceptions/WildcardPermissionNotProperlyFormatted.php',
+        'Spatie\\Permission\\Guard' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Guard.php',
+        'Spatie\\Permission\\Middlewares\\PermissionMiddleware' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Middlewares/PermissionMiddleware.php',
+        'Spatie\\Permission\\Middlewares\\RoleMiddleware' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Middlewares/RoleMiddleware.php',
+        'Spatie\\Permission\\Middlewares\\RoleOrPermissionMiddleware' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Middlewares/RoleOrPermissionMiddleware.php',
+        'Spatie\\Permission\\Models\\Permission' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Models/Permission.php',
+        'Spatie\\Permission\\Models\\Role' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Models/Role.php',
+        'Spatie\\Permission\\PermissionRegistrar' => __DIR__ . '/..' . '/spatie/laravel-permission/src/PermissionRegistrar.php',
+        'Spatie\\Permission\\PermissionServiceProvider' => __DIR__ . '/..' . '/spatie/laravel-permission/src/PermissionServiceProvider.php',
+        'Spatie\\Permission\\Traits\\HasPermissions' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Traits/HasPermissions.php',
+        'Spatie\\Permission\\Traits\\HasRoles' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Traits/HasRoles.php',
+        'Spatie\\Permission\\Traits\\RefreshesPermissionCache' => __DIR__ . '/..' . '/spatie/laravel-permission/src/Traits/RefreshesPermissionCache.php',
+        'Spatie\\Permission\\WildcardPermission' => __DIR__ . '/..' . '/spatie/laravel-permission/src/WildcardPermission.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'Svg\\CssLength' => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg/CssLength.php',
         'Svg\\DefaultStyle' => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg/DefaultStyle.php',

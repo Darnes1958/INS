@@ -2,16 +2,15 @@
   <div class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
 
 
-    <div class="col-md-2 my-2 ">
-      <label  class="form-label-me">&nbsp;</label>
-      <input wire:model="search"  type="search"   placeholder="ابحث هنا .......">
+    <div class="col-md-3 my-2 ">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" name="repchk" type="checkbox" wire:model="RepChk"  >
+            <label class="form-check-label" for="repchk">إضهار الأصناف التي أرصدتها صفر</label>
+        </div>
+
+      <input wire:model="search"  type="search"   placeholder="ابحث هنا ......." style="width: 100%;">
     </div>
-    <div class="col-md-2">
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" name="repchk" type="checkbox" wire:model="RepChk"  >
-        <label class="form-check-label" for="repchk">إضهار الأصناف التي أرصدتها صفر</label>
-      </div>
-    </div>
+
     <div class="col-md-8">
       <div x-data class="row">
         <div class="col-md-3 form-check form-check-inline">
@@ -22,11 +21,20 @@
 
           <input  wire:model="place_no"  wire:keydown.enter="ChkPlaceAndGo" type="number" class=" form-control "
                   id="place_no"   autofocus >
+            <div class="form-check form-check-inline">
+                <input class="form-check-input"  name="placechk" type="radio" wire:model="place_type" value="0" >
+                <label class="form-check-label" >مخزن</label>
+            </div>
         </div>
         <div  x-show="$wire.PlaceChk" class="col-md-4" >
 
           @livewire('stores.store-select1',['table'=>$Table])
+            <div class="form-check form-check-inline">
+                <input class="form-check-input"  name="placechk" type="radio" wire:model="place_type" value="1" >
+                <label class="form-check-label" >صالة</label>
+            </div>
         </div>
+
 
       </div>
     </div>
@@ -37,22 +45,22 @@
   <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
     <thead class="font-size-12">
     <tr>
-      <th width="4%">ت</th>
-      <th width="8%">التصنيف</th>
-      <th width="10%">رقم الصنف</th>
-      <th width="20%">اسم الصنف</th>
-      <th width="10%">سعر الشراء نقداً</th>
-      <th width="10%">سعر البيع نقداً</th>
-      <th width="16%">المخزن / الصالة</th>
-      <th width="12%">رصيد المخزن/الصالة</th>
-      <th width="8">الرصيد الكلي</th>
+
+      <th style="width: 14%" >التصنيف</th>
+      <th style="width: 8%">رقم الصنف</th>
+      <th >اسم الصنف</th>
+      <th style="width: 9%">سعر الشراء نقداً</th>
+      <th style="width: 9%">سعر البيع نقداً</th>
+      <th style="width: 13%">المخزن / الصالة</th>
+      <th style="width: 11%">رصيد المخزن/الصالة</th>
+      <th style="width: 8%">الرصيد الكلي</th>
     </tr>
     </thead>
     <tbody id="addRow" class="addRow">
     @if ($RepTable )
       @foreach($RepTable as $key=>$item)
         <tr class="font-size-12">
-          <td > {{ $key+1 }} </td>
+
           <td > {{ $item->type_name }} </td>
           <td> {{ $item->item_no }} </td>
           <td> {{ $item->item_name }} </td>
