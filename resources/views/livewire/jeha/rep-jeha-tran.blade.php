@@ -3,12 +3,11 @@
     <div class="row">
         <div class="col-md-1">
             <label  for="jehano" class="form-label-me">رقم الزبون</label>
-
         </div>
         <div class="col-md-2">
-
             <input wire:model="jeha_no" wire:keydown.enter="JehaKeyDown"
                    class="form-control"  type="number"  id="jehano" autofocus>
+            @error('jeha_no') <span class="error">{{ $message }}</span> @enderror
         </div>
         <div class="col-md-1" >
             <button wire:click="OpenJehaSerachModal" type="button" class="btn btn-outline-primary btn-sm fa fa-arrow-alt-circle-down" data-bs-toggle="modal"></button>
@@ -18,6 +17,7 @@
         </div>
         <div class="col-md-3">
             <input wire:model="tran_date" wire:keydown.enter="DateKeyDown" class="form-control  "   type="date"  id="tran_date">
+            @error('jeha') <span class="error">{{ $message }}</span> @enderror
         </div>
     </div>
 
@@ -42,14 +42,13 @@
             <th style="width: 14%">دائن</th>
             <th style="width: 20%">رقم المستند</th>
             <th style="width: 20%">طريقة الدفع</th>
-
         </tr>
         </thead>
         <tbody id="addRow" class="addRow">
         @foreach($RepTable as $key=> $item)
             <tr class="font-size-12">
-                <td > {{ $item->data }} </td>
-                <td > {{ $item->order_date }} </td>
+                <td> {{ $item->data }} </td>
+                <td> {{ $item->order_date }} </td>
                 <td> {{ $item->mden }} </td>
                 <td> {{ $item->daen }} </td>
                 <td> {{ $item->order_no }} </td>

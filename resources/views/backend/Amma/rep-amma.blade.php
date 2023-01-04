@@ -11,6 +11,16 @@
       @livewire('amma.mak.mak-rep')
     </div>
     @endif
+    @if ($rep=='RepStoresTrans')
+      <div class=" themed-grid-col px-1">
+        @livewire('stores.rep-stores-trans')
+      </div>
+    @endif
+    @if ($rep=='RepMordeen')
+      <div class=" themed-grid-col px-1">
+        @livewire('jeha.rep-mordeen')
+      </div>
+    @endif
       @if ($rep=='jehatran')
           <div >
               @livewire('jeha.rep-jeha-tran')

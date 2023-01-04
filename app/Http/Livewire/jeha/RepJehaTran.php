@@ -20,10 +20,13 @@ class RepJehaTran extends Component
     use WithPagination;
 
 
-    public $jeha_no=0;
+    public $jeha_no;
     public $jeha_type;
     public $jeha_name;
     public $tran_date;
+
+    public $jehano=0;
+    public $trandate;
     protected $listeners = [
         'Take_Search_JehaNo',
     ];
@@ -49,15 +52,19 @@ class RepJehaTran extends Component
         } else {return ('empty');}
     }
     public function JehaKeyDown(){
+        $this->validate();
         $res=$this->Chkjeha();
         if ($res !='empty' && $res!='not')  {
+            $this->jehano=$this->jeha_no;
             $this->emit('gotonext','tran_date');
 
         }
 
     }
     public function DateKeyDown(){
-$this->validate();
+
+     $this->validate();
+     $this->trandate=$this->tran_date;
 
 
     }
@@ -67,7 +74,7 @@ $this->validate();
 
         return [
 
-            'jeha_no' =>['required','integer','gt:1', 'exist:other.jeha.jeha_no'],
+            'jeha_no' =>['required','integer','gt:0', 'exists:other.jeha,jeha_no'],
             'tran_date' => ['required','date'],
 
 
@@ -95,6 +102,7 @@ $this->validate();
 
         $this->tran_date = $date->copy()->startOfYear();
         $this->tran_date=$this->tran_date->ToDateString();
+        $this->trandate=$this->tran_date;
 
     }
     public function paginate($items, $perPage = 15, $page = null, $options = [])
@@ -111,7 +119,7 @@ $this->validate();
 
         $collection = collect(DB::connection(Auth()->user()->company)->
         select('Select * from dbo.frep_jeha_tran (?) as result where order_date>=? order by order_date,order_no '
-            ,array($this->jeha_no,$this->tran_date)));
+            ,array($this->jehano,$this->trandate)));
 
         $data = $this->paginate($collection);
 
