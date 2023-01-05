@@ -6,6 +6,16 @@
   <div class="container-fluid">
 
     @csrf
+    @if ($rep=='RepPer')
+      <div class=" themed-grid-col px-1">
+        @livewire('stores.rep-per')
+      </div>
+    @endif
+    @if ($rep=='RepTrans')
+      <div class=" themed-grid-col px-1">
+        @livewire('trans.rep-trans')
+      </div>
+    @endif
     @if ($rep=='mak')
     <div class=" themed-grid-col px-1">
       @livewire('amma.mak.mak-rep')

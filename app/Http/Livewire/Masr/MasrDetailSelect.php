@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Http\Livewire\Masr;
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Livewire\Component;
+
+class MasrDetailSelect extends Component
+{
+  public $DetailNo;
+
+  public $TableList;
+  public $MasType;
+
+
+
+  protected $listeners = [
+    'TakeDetailNo','refreshComponent' => '$refresh'
+  ];
+
+  public function TakeDetailNo($wo){
+
+    if(!is_null($wo)) {
+      $this->DetailNo = $wo;
+    }
+  }
+  function mount($MasType=0){
+    $this->MasType=$MasType;
+  }
+  public function hydrate(){
+    $this->emit('detail-change-event');
+  }
+    public function render()
+    {
+      $this->TableList=DB::connection(Auth::user()->company)->table('MasTypeDetails')
+        ->where('MasType',$this->MasType)->get();
+        return view('livewire.masr.masr-detail-select',$this->TableList);
+    }
+}

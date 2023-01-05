@@ -125,6 +125,7 @@
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="{{route('repamma','mak')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن المخزون</a></li>
                         <li><a href="{{route('repamma','RepStoresTrans')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">الحركة اليومية للمخزون</a></li>
+                        <li><a href="{{route('repamma','RepPer')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن اذن صرف</a></li>
 
                     </ul>
                 </div>
@@ -141,6 +142,8 @@
                         <li><a href="{{route('customer.all')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">عرض الزبائن</a></li>
                         <li><a href="{{route('repamma','jehatran')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">حركة زبون</a></li>
                         <li><a href="{{route('repamma','RepMordeen')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن الموردين</a></li>
+                        <li><a href="{{route('repamma','RepTrans')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن ايصالات القبض والدفع</a></li>
+
                     </ul>
                 </div>
             </li>
