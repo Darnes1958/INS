@@ -15,6 +15,7 @@ use App\Http\Controllers\Stores\StoresController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\pdfController;
 use App\Http\Livewire\Buy\RepOrderBuy;
+use App\Http\Controllers\Masr\MasrController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -49,8 +50,12 @@ Route::controller(AKsatController::class)->group(function (){
 
 
 });
+Route::controller(MasrController::class)->group(function (){
+  route::get('/inpmasr', 'MasrInp')->name('inpmasr')->middleware('auth') ;
+
+});
 Route::controller(OverTarController::class)->group(function (){
-  route::get('/overtar/inpover/{Proc}', 'OverInp')->name('over.input')->middleware('auth') ;
+    route::get('/overtar/inpover/{Proc}', 'OverInp')->name('over.input')->middleware('auth') ;
 
 });
 Route::controller(PasswordController::class)->group(function (){

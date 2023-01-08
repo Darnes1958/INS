@@ -261,9 +261,7 @@ class HafInputDetail extends Component
 
   protected $messages = [
     'required' => 'لا يجوز ترك فراغ',
-
     'exists' => 'هذا الرقم غير مخزون',
-
   ];
 
     public function render()

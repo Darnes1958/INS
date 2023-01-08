@@ -32,11 +32,6 @@
     </table>
     {{ $itemtypes->links() }}
 
-
-
-
-
-
 </div>
 
 @push('scripts')
@@ -44,15 +39,9 @@
 
         $(document).ready(function() {
             $.fn.DataTable.ext.pager.numbers_length = 10;
-
-
             $('#itemtype').DataTable( {
                 "pagingType":"full_numbers",
-
             } );
-
-
-
         } );
 
     </script>

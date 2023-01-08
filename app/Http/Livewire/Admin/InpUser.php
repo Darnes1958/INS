@@ -33,7 +33,7 @@ class InpUser extends Component
     public function updatedTheEmpListIsSelectd(){
      $this->TheEmpListIsSelectd=0;
 
-        $res=DB::connection('other')->table(Auth()->user()->company)->where('EMP_NO',$this->empno)->first();
+        $res=DB::connection($this->database)->table('pass')->where('EMP_NO',$this->empno)->first();
 
         $this->name=$res->EMP_NAME;
         $this->username=$res->EMP_NAME;

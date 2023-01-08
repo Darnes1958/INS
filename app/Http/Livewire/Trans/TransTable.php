@@ -44,7 +44,7 @@ class TransTable extends Component
 
     public function delete(){
       $this->CloseDeleteDialog();
-      trans::where('tran_no',$this->edittran_no)->delete();
+      trans::on(Auth()->user()->company)->where('tran_no',$this->edittran_no)->delete();
       $this->render();
     }
 

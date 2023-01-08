@@ -6,6 +6,11 @@
   <div class="container-fluid">
 
     @csrf
+      @if ($rep=='RepMas')
+          <div class=" themed-grid-col px-1">
+              @livewire('masr.rep-mas')
+          </div>
+      @endif
     @if ($rep=='RepPer')
       <div class=" themed-grid-col px-1">
         @livewire('stores.rep-per')

@@ -11,22 +11,24 @@ class MasrDetailSelect extends Component
   public $DetailNo;
 
   public $TableList;
-  public $MasType;
+  public $MasType=0;
 
 
 
   protected $listeners = [
-    'TakeDetailNo','refreshComponent' => '$refresh'
+    'TakeDetailNo','TakeMasType','refreshComponent' => '$refresh'
   ];
-
+  public function TakeMasType($MasType){
+      $this->MasType=$MasType;
+  }
   public function TakeDetailNo($wo){
 
-    if(!is_null($wo)) {
+
       $this->DetailNo = $wo;
-    }
+
   }
-  function mount($MasType=0){
-    $this->MasType=$MasType;
+  function mount(){
+
   }
   public function hydrate(){
     $this->emit('detail-change-event');
