@@ -23,10 +23,10 @@ class MyRole extends Seeder
                 Permission::create(['name' => $item->role]);
         }
 
-        if ( ! Role::where('name','admin')) Role::create(['name' => 'admin']);
-        if ( ! Role::where('name','manager')) Role::create(['name' => 'manager']);
-        if ( ! Role::where('name','SupperUser')) Role::create(['name' => 'SupperUser']);
-        if ( ! Role::where('name','info')) Role::create(['name' => 'info']);
+        if (  Role::where('name','admin')->doesntExist()) Role::create(['name' => 'admin']);
+        if (  Role::where('name','manager')->doesntExist()) Role::create(['name' => 'manager']);
+        if (  Role::where('name','SupperUser')->doesntExist()) Role::create(['name' => 'SupperUser']);
+        if (  Role::where('name','info')->doesntExist()) Role::create(['name' => 'info']);
 
         $oldrole=DB::connection('Daibany')->table('sys_roots')->get();
         foreach ($oldrole as $item) {

@@ -11,6 +11,11 @@
               @livewire('masr.rep-mas')
           </div>
       @endif
+    @if ($rep=='RepMali')
+      <div class=" themed-grid-col px-1">
+        @livewire('amma.rep-mali')
+      </div>
+    @endif
     @if ($rep=='RepPer')
       <div class=" themed-grid-col px-1">
         @livewire('stores.rep-per')

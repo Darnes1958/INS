@@ -148,6 +148,7 @@
                         <li><a href="{{route('repamma','RepMordeen')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن الموردين</a></li>
                         <li><a href="{{route('repamma','RepTrans')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن ايصالات القبض والدفع</a></li>
                         <li><a href="{{route('repamma','RepMas')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن المصروفات</a></li>
+                        <li><a href="{{route('repamma','RepMali')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">التقرير المالي</a></li>
 
                     </ul>
                 </div>
