@@ -27,6 +27,7 @@ class ItemSelect extends Component
    $this->render();
    }
   public function TakeItemNo($item_no){
+
     $this->ItemListNo=$item_no;
   }
   public function jehafound($wj,$wn){

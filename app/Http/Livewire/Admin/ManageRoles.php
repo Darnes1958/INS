@@ -61,6 +61,15 @@ class ManageRoles extends Component
         $this->TheRole='';
 
     }
+  public function SaveUserPermission(){
+    $user=User::where('name',$this->TheUser)->first();
+    $user->givePermissionTo($this->ThePermission);
+
+
+    $this->emitTo('admin.rep-old-roles','refreshComponent');
+    $this->ThePermission='';
+
+  }
     public function render()
     {
 
@@ -78,8 +87,8 @@ class ManageRoles extends Component
                  ->get(),
              'role2Table' =>Role::all(),
 
-             'per2Table' =>Permission::all() ,
-                'users'=>User::all(),
+             'per2Table' =>Permission::orderby('id')->get() ,
+              'users'=>User::all(),
                 ]);
     }
 }

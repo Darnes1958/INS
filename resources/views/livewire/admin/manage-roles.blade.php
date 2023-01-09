@@ -117,6 +117,43 @@
             </div>
         </div>
     </div>
+    <div class="card my-0">
+        <div class="card-header" style="height: 28px;">Permission To User</div>
+        <div class="card-body py-0">
+            <div class="row  ">
+                <div class="col-md-6">
+                    <select  wire:model="TheUser"  id="per2_id" class="form-control  form-select " style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"    >
+                        <option >اختيار</option>
+                        @foreach($users as $s)
+                            <option value="{{ $s->name }}">{{ $s->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <input wire:model="TheUser"  type="text" class="form-control"    autofocus>
+                </div>
+            </div>
+
+            <div class="row  ">
+                <div class="col-md-6  ">
+                    <select  wire:model="ThePermission"  id="peruser2_id" class="form-control  form-select " style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"    >
+                        <option >اختيار</option>
+                        @foreach($per2Table as $s)
+                            <option value="{{ $s->name }}">{{ $s->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-6 ">
+                    <input wire:model="ThePermission"  type="text" class="form-control"    autofocus>
+                </div>
+                <div class="col-md-3 my-2 " style="height: 28px;">
+                    <button  wire:click="SaveUserPermission" class="btn btn-primary" style="height: 28px;">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @push('scripts')

@@ -76,6 +76,7 @@ Route::controller(RepAksatController::class)->group(function (){
 });
 Route::controller(RepAmaaController::class)->group(function (){
   route::get('/repamma/{rep}', 'RepAmma')->name('repamma')->middleware('auth');
+  route::get('/pdfklasa/{date1?}/{date2?}', 'PdfKlasa')->name('pdfklasa') ;
 
 });
 

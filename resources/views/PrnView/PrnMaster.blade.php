@@ -61,35 +61,49 @@
       table {
           width: 96%;
           border-collapse: collapse;
-          border: 1pt solid  lightgray;
+
           margin-right: 12px;
           font-size: 12px;
+
       }
       tr {
-          border: 1pt solid  lightgray;
+
           line-height: 12px;
+
       }
       th {
           text-align: center;
-          border: 1pt solid  lightgray;
+          border: 1pt solid  gray;
           font-size: 12px;
           height: 30px;
+
       }
+      caption {
+          font-family: DejaVu Sans, sans-serif ;
+
+      }
+      thead {
+          font-family: DejaVu Sans, sans-serif;
+      }
+
       td {
           text-align: right;
           border: 1pt solid  lightgray;
+      }
+      .page-break {
+          page-break-after: always;
       }
   </style>
 </head>
 <body  >
  <div>
-  <label style="font-size: 20pt; margin-right: 12px;margin-bottom: 0;padding: 0;" >{{$cus->CompanyName}}</label>
+  <label style="font-size: 20pt; margin-right: 12px;margin-bottom: 0;margin-top: 0;padding: 0;" >{{$cus->CompanyName}}</label>
  </div>
- <div>
-  <label style="font-size: 16pt; margin-right: 12px; margin-top: 0;padding: 0;">{{$cus->CompanyNameSuffix}}</label>
+ <div >
+  <label style="font-size: 16pt; margin-right: 12px;margin-bottom: 0;margin-top: 0;padding: 0;">{{$cus->CompanyNameSuffix}}</label>
  </div>
 <br>
-
+<div>
 
   @yield('mainrep')
 

@@ -11,6 +11,16 @@
               @livewire('masr.rep-mas')
           </div>
       @endif
+    @if ($rep=='RepItemTran')
+      <div class=" themed-grid-col px-1">
+        @livewire('stores.rep-item-tran')
+      </div>
+    @endif
+    @if ($rep=='RepKlasa')
+      <div class=" themed-grid-col px-1">
+        @livewire('amma.klasa')
+      </div>
+    @endif
     @if ($rep=='RepMali')
       <div class=" themed-grid-col px-1">
         @livewire('amma.rep-mali')
