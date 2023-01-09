@@ -16,6 +16,8 @@ class AdminPage extends Component
       $this->emitTo('admin.inp-company','show',False);
       $this->emitTo('admin.rep-company','show',False);
       $this->emitTo('admin.rep-users','show',False);
+      $this->emitTo('admin.rep-old-roles','show',false);
+      $this->emitTo('admin.rep-roles','show',false);
   }
   public function InpUser(){
     $this->FalseAll();
@@ -37,6 +39,11 @@ class AdminPage extends Component
         $this->FalseAll();
         $this->emitTo('admin.manage-roles','show',True);
         $this->emitTo('admin.rep-old-roles','show',True);
+    }
+    public function RepRole(){
+        $this->FalseAll();
+
+        $this->emitTo('admin.rep-roles','show',True);
     }
 
 

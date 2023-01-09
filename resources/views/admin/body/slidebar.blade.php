@@ -4,18 +4,23 @@
 @endphp
     <div id="sidebar"  >
         <ul class="list-unstyled ps-0">
+            @canany('ادخال مشتريات'|'الغاء مشتريات'|'تعديل مشتريات')
             <li class="mb-1">
                 <button class="font-size-14 btn btn-toggle d-inline-flex align-items-center rounded   border-0 collapsed"
                         data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
                     &nbsp <i class="fa  fa-cart-arrow-down" aria-hidden="true"></i>&nbsp;  مشتريات</button>
                 <div class="collapse " id="home-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        @can('ادخال مشتريات')
                         <li><a href="{{route('order_buy.add')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">فاتورة مشتريات</a></li>
+                        @endcan
+                        @canany('الغاء مشتريات'|'تعديل مشتريات')
                         <li><a href="{{route('order_buy.edit')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تعديل فاتورة مشتريات</a></li>
-
+                        @endcan
                     </ul>
                 </div>
             </li>
+            @endcan
             <li class="mb-1">
                 <button class="font-size-14 btn btn-toggle d-inline-flex align-items-center rounded    border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
                     &nbsp  <i class="fa fas fa-cart-plus" aria-hidden="true"></i>&nbsp;  مبيعات
@@ -136,9 +141,9 @@
                     &nbsp <i class="fa  fas fa-list-ul" aria-hidden="true"></i>&nbsp تقارير عامة</button>
                 <div class="collapse" id="repamma-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        @if(Auth()->user()->can('ادخال مشتريات'))
+                        @can('ادخال مشتريات')
                             <li><a href="{{route('repamma','daily')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">الحركة اليومية</a></li>
-                        @endif
+                        @endcan
 
                         <li><a href="{{route('order_sell.rep')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">فاتورة مبيعات</a></li>
                         <li><a href="{{route('order_buy.rep')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">فاتورة مشتريات</a></li>

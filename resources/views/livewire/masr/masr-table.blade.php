@@ -1,8 +1,8 @@
 <div class="card ">
- <div class="card-header " style="background: #0e8cdb;color: white;">
-
-     <input wire:model="dailydate"
-            class="form-control font-size-12 w-25"   type="date"  id="MasDate" ></div>
+ <div class="card-header d-flex" style="background: #0e8cdb;color: white;">
+     <label class="form-label w-auto">تاريخ اليومية</label>
+     <input wire:model="dailydate" class="form-control font-size-12 w-auto"   type="date"  id="MasDate" >
+ </div>
  <div class="card-body">
      <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
          <thead class="font-size-12">
@@ -14,7 +14,6 @@
              <th width="25%">تفاصيل المصروفات</th>
              <th width="5%"></th>
              <th width="5%"></th>
-
          </tr>
          </thead>
          <tbody id="addRow" class="addRow">
