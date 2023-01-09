@@ -6,10 +6,11 @@ use App\Models\Customers;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
+use Jenssegers\Agent\Agent;
 
 class AdminPage extends Component
 {
-
+public $text;
   protected function FalseAll(){
       $this->emitTo('admin.manage-roles','show',False);
       $this->emitTo('admin.inp-user','show',False);
@@ -44,6 +45,10 @@ class AdminPage extends Component
         $this->FalseAll();
 
         $this->emitTo('admin.rep-roles','show',True);
+    }
+    public function Clickme(){
+        $agent = new Agent();
+        $this->text = $agent->platform();
     }
 
 

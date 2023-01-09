@@ -132,6 +132,11 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
             'Laravel\\Sanctum\\' => 16,
             'Laravel\\Sail\\' => 13,
         ),
+        'J' => 
+        array (
+            'Jenssegers\\Agent\\' => 17,
+            'Jaybizzle\\CrawlerDetect\\' => 24,
+        ),
         'I' => 
         array (
             'Illuminate\\Support\\' => 19,
@@ -450,6 +455,14 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         array (
             0 => __DIR__ . '/..' . '/laravel/sail/src',
         ),
+        'Jenssegers\\Agent\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jenssegers/agent/src',
+        ),
+        'Jaybizzle\\CrawlerDetect\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src',
+        ),
         'Illuminate\\Support\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Macroable',
@@ -569,6 +582,13 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
                 0 => __DIR__ . '/..' . '/mockery/mockery/library',
             ),
         ),
+        'D' => 
+        array (
+            'Detection' => 
+            array (
+                0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced',
+            ),
+        ),
     );
 
     public static $classMap = array (
@@ -583,6 +603,7 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         'App\\Http\\Controllers\\Auth\\VerificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/VerificationController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
+        'App\\Http\\Controllers\\Masr\\MasrController' => __DIR__ . '/../..' . '/app/Http/Controllers/Masr/MasrController.php',
         'App\\Http\\Controllers\\PasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/PasswordController.php',
         'App\\Http\\Controllers\\RepAmaaController' => __DIR__ . '/../..' . '/app/Http/Controllers/RepAmaaController.php',
         'App\\Http\\Controllers\\Stores\\StoresController' => __DIR__ . '/../..' . '/app/Http/Controllers/Stores/StoresController.php',
@@ -602,7 +623,10 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         'App\\Http\\Livewire\\Admin\\EmpnoSelect' => __DIR__ . '/../..' . '/app/Http/Livewire/Admin/EmpnoSelect.php',
         'App\\Http\\Livewire\\Admin\\InpCompany' => __DIR__ . '/../..' . '/app/Http/Livewire/Admin/InpCompany.php',
         'App\\Http\\Livewire\\Admin\\InpUser' => __DIR__ . '/../..' . '/app/Http/Livewire/Admin/InpUser.php',
+        'App\\Http\\Livewire\\Admin\\ManageRoles' => __DIR__ . '/../..' . '/app/Http/Livewire/Admin/ManageRoles.php',
         'App\\Http\\Livewire\\Admin\\RepCompany' => __DIR__ . '/../..' . '/app/Http/Livewire/Admin/RepCompany.php',
+        'App\\Http\\Livewire\\Admin\\RepOldRoles' => __DIR__ . '/../..' . '/app/Http/Livewire/Admin/RepOldRoles.php',
+        'App\\Http\\Livewire\\Admin\\RepRoles' => __DIR__ . '/../..' . '/app/Http/Livewire/Admin/RepRoles.php',
         'App\\Http\\Livewire\\Admin\\RepUsers' => __DIR__ . '/../..' . '/app/Http/Livewire/Admin/RepUsers.php',
         'App\\Http\\Livewire\\Admin\\WelcomePage' => __DIR__ . '/../..' . '/app/Http/Livewire/Admin/WelcomePage.php',
         'App\\Http\\Livewire\\Aksat\\DeleteKst' => __DIR__ . '/../..' . '/app/Http/Livewire/Aksat/DeleteKst.php',
@@ -638,8 +662,10 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         'App\\Http\\Livewire\\Aksat\\Rep\\RepMainTrans' => __DIR__ . '/../..' . '/app/Http/Livewire/Aksat/Rep/RepMainTrans.php',
         'App\\Http\\Livewire\\Amma\\DailyRep' => __DIR__ . '/../..' . '/app/Http/Livewire/Amma/DailyRep.php',
         'App\\Http\\Livewire\\Amma\\DailyRepTable' => __DIR__ . '/../..' . '/app/Http/Livewire/Amma/DailyRepTable.php',
+        'App\\Http\\Livewire\\Amma\\Klasa' => __DIR__ . '/../..' . '/app/Http/Livewire/Amma/Klasa.php',
         'App\\Http\\Livewire\\Amma\\Mak\\ItemRep' => __DIR__ . '/../..' . '/app/Http/Livewire/Amma/Mak/ItemRep.php',
         'App\\Http\\Livewire\\Amma\\Mak\\MakRep' => __DIR__ . '/../..' . '/app/Http/Livewire/Amma/Mak/MakRep.php',
+        'App\\Http\\Livewire\\Amma\\RepMali' => __DIR__ . '/../..' . '/app/Http/Livewire/Amma/RepMali.php',
         'App\\Http\\Livewire\\Bank\\BankHafSelect' => __DIR__ . '/../..' . '/app/Http/Livewire/Bank/BankHafSelect.php',
         'App\\Http\\Livewire\\Bank\\BankSelect' => __DIR__ . '/../..' . '/app/Http/Livewire/Bank/BankSelect.php',
         'App\\Http\\Livewire\\Body\\Livefooter' => __DIR__ . '/../..' . '/app/Http/Livewire/Body/Livefooter.php',
@@ -651,6 +677,14 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         'App\\Http\\Livewire\\Haf\\HafMiniRep' => __DIR__ . '/../..' . '/app/Http/Livewire/Haf/HafMiniRep.php',
         'App\\Http\\Livewire\\Haf\\UpdateKst' => __DIR__ . '/../..' . '/app/Http/Livewire/Haf/UpdateKst.php',
         'App\\Http\\Livewire\\Haf\\WrongAcc' => __DIR__ . '/../..' . '/app/Http/Livewire/Haf/WrongAcc.php',
+        'App\\Http\\Livewire\\Masr\\AddMasDetail' => __DIR__ . '/../..' . '/app/Http/Livewire/Masr/AddMasDetail.php',
+        'App\\Http\\Livewire\\Masr\\AddMasType' => __DIR__ . '/../..' . '/app/Http/Livewire/Masr/AddMasType.php',
+        'App\\Http\\Livewire\\Masr\\MasrCenterSelect' => __DIR__ . '/../..' . '/app/Http/Livewire/Masr/MasrCenterSelect.php',
+        'App\\Http\\Livewire\\Masr\\MasrDetailSelect' => __DIR__ . '/../..' . '/app/Http/Livewire/Masr/MasrDetailSelect.php',
+        'App\\Http\\Livewire\\Masr\\MasrInp' => __DIR__ . '/../..' . '/app/Http/Livewire/Masr/MasrInp.php',
+        'App\\Http\\Livewire\\Masr\\MasrTable' => __DIR__ . '/../..' . '/app/Http/Livewire/Masr/MasrTable.php',
+        'App\\Http\\Livewire\\Masr\\MasrTypeSelect' => __DIR__ . '/../..' . '/app/Http/Livewire/Masr/MasrTypeSelect.php',
+        'App\\Http\\Livewire\\Masr\\RepMas' => __DIR__ . '/../..' . '/app/Http/Livewire/Masr/RepMas.php',
         'App\\Http\\Livewire\\ModalOne' => __DIR__ . '/../..' . '/app/Http/Livewire/ModalOne.php',
         'App\\Http\\Livewire\\MyModal' => __DIR__ . '/../..' . '/app/Http/Livewire/MyModal.php',
         'App\\Http\\Livewire\\OverTar\\EditOver' => __DIR__ . '/../..' . '/app/Http/Livewire/OverTar/EditOver.php',
@@ -677,6 +711,9 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         'App\\Http\\Livewire\\Stores\\AddItemType' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/AddItemType.php',
         'App\\Http\\Livewire\\Stores\\EditItem' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/EditItem.php',
         'App\\Http\\Livewire\\Stores\\ItemSelect' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/ItemSelect.php',
+        'App\\Http\\Livewire\\Stores\\PerSelect' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/PerSelect.php',
+        'App\\Http\\Livewire\\Stores\\RepItemTran' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/RepItemTran.php',
+        'App\\Http\\Livewire\\Stores\\RepPer' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/RepPer.php',
         'App\\Http\\Livewire\\Stores\\RepStoresTrans' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/RepStoresTrans.php',
         'App\\Http\\Livewire\\Stores\\StoreDetail' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/StoreDetail.php',
         'App\\Http\\Livewire\\Stores\\StoreHead' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/StoreHead.php',
@@ -689,6 +726,7 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         'App\\Http\\Livewire\\Tools\\PaySelect' => __DIR__ . '/../..' . '/app/Http/Livewire/Tools/PaySelect.php',
         'App\\Http\\Livewire\\Traits\\MyLib' => __DIR__ . '/../..' . '/app/Http/Livewire/Traits/MyLib.php',
         'App\\Http\\Livewire\\Trans\\EditTran' => __DIR__ . '/../..' . '/app/Http/Livewire/Trans/EditTran.php',
+        'App\\Http\\Livewire\\Trans\\RepTrans' => __DIR__ . '/../..' . '/app/Http/Livewire/Trans/RepTrans.php',
         'App\\Http\\Livewire\\Trans\\TransHead' => __DIR__ . '/../..' . '/app/Http/Livewire/Trans/TransHead.php',
         'App\\Http\\Livewire\\Trans\\TransTable' => __DIR__ . '/../..' . '/app/Http/Livewire/Trans/TransTable.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
@@ -730,6 +768,11 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         'App\\Models\\buy\\rep_buy_tran' => __DIR__ . '/../..' . '/app/Models/buy/rep_buy_tran.php',
         'App\\Models\\jeha\\jeha' => __DIR__ . '/../..' . '/app/Models/jeha/jeha.php',
         'App\\Models\\jeha\\jeha_type' => __DIR__ . '/../..' . '/app/Models/jeha/jeha_type.php',
+        'App\\Models\\masr\\MasCenters' => __DIR__ . '/../..' . '/app/Models/masr/MasCenters.php',
+        'App\\Models\\masr\\MasTypeDetails' => __DIR__ . '/../..' . '/app/Models/masr/MasTypeDetails.php',
+        'App\\Models\\masr\\MasTypes' => __DIR__ . '/../..' . '/app/Models/masr/MasTypes.php',
+        'App\\Models\\masr\\MasView' => __DIR__ . '/../..' . '/app/Models/masr/MasView.php',
+        'App\\Models\\masr\\Masrofat' => __DIR__ . '/../..' . '/app/Models/masr/Masrofat.php',
         'App\\Models\\others\\price_type' => __DIR__ . '/../..' . '/app/Models/others/price_type.php',
         'App\\Models\\sell\\price_type' => __DIR__ . '/../..' . '/app/Models/sell/price_type.php',
         'App\\Models\\sell\\rep_kst_tran' => __DIR__ . '/../..' . '/app/Models/sell/rep_kst_tran.php',
@@ -866,6 +909,7 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         'Cron\\MonthField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/MonthField.php',
         'Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/database/factories/UserFactory.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
+        'Database\\Seeders\\MyRole' => __DIR__ . '/../..' . '/database/seeders/MyRole.php',
         'DeepCopy\\DeepCopy' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/DeepCopy.php',
         'DeepCopy\\Exception\\CloneException' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/Exception/CloneException.php',
         'DeepCopy\\Exception\\PropertyException' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/Exception/PropertyException.php',
@@ -890,6 +934,7 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         'DeepCopy\\TypeFilter\\Spl\\SplDoublyLinkedListFilter' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/TypeFilter/Spl/SplDoublyLinkedListFilter.php',
         'DeepCopy\\TypeFilter\\TypeFilter' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/TypeFilter/TypeFilter.php',
         'DeepCopy\\TypeMatcher\\TypeMatcher' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/TypeMatcher/TypeMatcher.php',
+        'Detection\\MobileDetect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced/Detection/MobileDetect.php',
         'Dflydev\\DotAccessData\\Data' => __DIR__ . '/..' . '/dflydev/dot-access-data/src/Data.php',
         'Dflydev\\DotAccessData\\DataInterface' => __DIR__ . '/..' . '/dflydev/dot-access-data/src/DataInterface.php',
         'Dflydev\\DotAccessData\\Exception\\DataException' => __DIR__ . '/..' . '/dflydev/dot-access-data/src/Exception/DataException.php',
@@ -2986,6 +3031,14 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         'Illuminate\\View\\ViewFinderInterface' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewFinderInterface.php',
         'Illuminate\\View\\ViewName' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewName.php',
         'Illuminate\\View\\ViewServiceProvider' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewServiceProvider.php',
+        'Jaybizzle\\CrawlerDetect\\CrawlerDetect' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/CrawlerDetect.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\AbstractProvider' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/AbstractProvider.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\Crawlers' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Crawlers.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\Exclusions' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Exclusions.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\Headers' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Headers.php',
+        'Jenssegers\\Agent\\Agent' => __DIR__ . '/..' . '/jenssegers/agent/src/Agent.php',
+        'Jenssegers\\Agent\\AgentServiceProvider' => __DIR__ . '/..' . '/jenssegers/agent/src/AgentServiceProvider.php',
+        'Jenssegers\\Agent\\Facades\\Agent' => __DIR__ . '/..' . '/jenssegers/agent/src/Facades/Agent.php',
         'Laravel\\Sail\\Console\\InstallCommand' => __DIR__ . '/..' . '/laravel/sail/src/Console/InstallCommand.php',
         'Laravel\\Sail\\Console\\PublishCommand' => __DIR__ . '/..' . '/laravel/sail/src/Console/PublishCommand.php',
         'Laravel\\Sail\\SailServiceProvider' => __DIR__ . '/..' . '/laravel/sail/src/SailServiceProvider.php',
@@ -3527,6 +3580,7 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         'Masterminds\\HTML5\\Serializer\\OutputRules' => __DIR__ . '/..' . '/masterminds/html5/src/HTML5/Serializer/OutputRules.php',
         'Masterminds\\HTML5\\Serializer\\RulesInterface' => __DIR__ . '/..' . '/masterminds/html5/src/HTML5/Serializer/RulesInterface.php',
         'Masterminds\\HTML5\\Serializer\\Traverser' => __DIR__ . '/..' . '/masterminds/html5/src/HTML5/Serializer/Traverser.php',
+        'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
         'Mockery' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery.php',
         'Mockery\\Adapter\\Phpunit\\MockeryPHPUnitIntegration' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryPHPUnitIntegration.php',
         'Mockery\\Adapter\\Phpunit\\MockeryPHPUnitIntegrationAssertPostConditions' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryPHPUnitIntegrationAssertPostConditions.php',

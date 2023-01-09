@@ -22,6 +22,10 @@
          <button  wire:click="RepRole" class="col-md-1 mx-1 btn btn-primary">
              Rep Roles
          </button>
+         <button  wire:click="Clickme" class="col-md-1 mx-1 btn btn-primary">
+             {{$text}}
+         </button>
+
 
      </div>
      @livewire('admin.inp-user')

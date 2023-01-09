@@ -1,6 +1,5 @@
 <div x-data x-show="$wire.Show" class="col-md-8">
     <div class="row">
-
         <div class="col-4">
             <div class="card">
                 <div class="card-header" style="background: #0e8cdb;color: white">Roles</div>
@@ -21,7 +20,6 @@
                 </div>
             </div>
         </div>
-
         <div class="col-4">
             <div class="card">
                 <div class="card-header" style="background: #0e8cdb;color: white">Roles</div>
@@ -38,7 +36,6 @@
                             </tr>
                         @endforeach
                         </tbody> </table>
-
                 </div>
             </div>
         </div>
@@ -59,7 +56,6 @@
                         @endforeach
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>

@@ -157,8 +157,15 @@ class HafInputDetail extends Component
       }
       else
       {
-       $this->emit('ParamToWrong',$this->hafitha,$this->acc,$this->ksm_date);
-       $this->dispatchBrowserEvent('kstwrong');
+          $res= mainarc::on(Auth()->user()->company)
+              ->where('bank',$this->bank)->where('acc',$this->acc)->first();
+          if ($res) {
+              $this->no=$res->no;
+              $this->ChkNoAndGo();
+          } else {
+              $this->emit('ParamToWrong', $this->hafitha, $this->acc, $this->ksm_date);
+              $this->dispatchBrowserEvent('kstwrong');
+          }
       }
 
     }
@@ -170,9 +177,9 @@ class HafInputDetail extends Component
           $baky=$this->SumKst+$this->kst-$this->raseed;
           $this->kst_type=3; }
         }
-          $this->StoreRec($baky);
-          $this->emit('RefreshHead');
-          $this->Resetdetail();
+      $this->StoreRec($baky);
+      $this->emit('RefreshHead');
+      $this->Resetdetail();
     }
 
     function mount(){
@@ -227,6 +234,7 @@ class HafInputDetail extends Component
        $this->emit('DoChkBankNo');
 
      } catch (\Exception $e) {
+         info($e);
        DB::connection(Auth()->user()->company)->rollback();
        $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
      }
