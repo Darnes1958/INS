@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\jeha;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customers;
 use App\Models\jeha\jeha;
+use ArPHP\I18N\Arabic;
+use Barryvdh\DomPDF\Facade\Pdf;
 use DB;
 use Hash;
 use Illuminate\Http\Request;
@@ -107,6 +110,28 @@ class customercontroller extends Controller
                 'status'=>'Nothing',
             ]);
     }
+  public function PdfJehaTran(Request $request){
+    $RepDate=date('Y-m-d');
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+    $res = collect(\Illuminate\Support\Facades\DB::connection(Auth()->user()->company)->
+    select('Select * from dbo.frep_jeha_tran (?) as result where order_date>=? order by order_date,order_no '
+      ,array($request->jeha_no,$request->tran_date)));
+
+    $jeha_name=jeha::on(Auth()->user()->company)->find($request->jeha_no)->jeha_name;
+
+    $reportHtml = view('PrnView.amma.pdf-jeha-tran',
+      ['RepTable'=>$res,'cus'=>$cus,'jeha_name'=>$jeha_name,'Daen'=>$request->Daen,'DaenBefore'=>$request->DaenBefore
+        ,'Mden'=>$request->Mden,'MdenBefore'=>$request->MdenBefore,'RepDate'=>$RepDate,'tran_date'=>$request->tran_date])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('report.pdf');
+  }
 
 
 }

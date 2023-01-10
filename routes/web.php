@@ -88,6 +88,7 @@ Route::controller(CustomerController::class)->group(function (){
     route::post('/customer/update', 'CustomerUpdate')->name('customer.update')->middleware('auth') ;
     route::get('/customer/delete{jeha_no}', 'CustomerDelete')->name('customer.delete')->middleware('auth') ;
     route::get('/search_customerall','SearchCustomerall')->name('search-customerall')->middleware('auth');
+  route::get('/pdfjehatran/{jeha_no?}/{tran_date?}/{Mden?}/{MdenBefore?}/{Daen?}/{DaenBefore?}', 'PdfJehaTran')->name('pdfjehatran') ;
 
 });
 Route::controller(BankReportsController::class)->group(function (){
@@ -110,6 +111,7 @@ Route::controller(OrderSellController::class)->group(function (){
 });
 Route::controller(StoresController::class)->group(function (){
   route::get('/stores/add/{from_to}','StoresAdd')->name('stores.add')->middleware('auth');
+  route::get('/pdfitemtran/{item_no?}/{item_name?}/{tran_date?}', 'PdfItemTran')->name('pdfitemtran') ;
 
 });
 

@@ -1,6 +1,6 @@
 
 <div  >
-  <div class="row">
+  <div class="row my-2">
     <div class="col-md-1">
       <label  for="jehano" class="form-label-me">رقم الصنف</label>
     </div>
@@ -12,10 +12,15 @@
     <div class="col-md-3" >
       @livewire('stores.item-select', ['PlaceSelectType' => 'items'])
     </div>
-    
+
     <div class="col-md-3">
       <input wire:model="tran_date" wire:keydown.enter="DateKeyDown" class="form-control  "   type="date"  id="tran_date">
       @error('tran_date') <span class="error">{{ $message }}</span> @enderror
+    </div>
+
+    <div  class="col-md-2 ">
+      <a  href="{{route('pdfitemtran',['item_no'=>$item_no,'item_name'=>$item_name,'tran_date'=>$tran_date])}}"
+          class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
     </div>
   </div>
 

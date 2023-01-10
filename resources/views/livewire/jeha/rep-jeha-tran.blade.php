@@ -1,10 +1,10 @@
 
 <div  >
-    <div class="row">
+    <div class="row mb-1">
         <div class="col-md-1">
             <label  for="jehano" class="form-label-me">رقم الزبون</label>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-1">
             <input wire:model="jeha_no" wire:keydown.enter="JehaKeyDown"
                    class="form-control"  type="number"  id="jehano" autofocus>
             @error('jeha_no') <span class="error">{{ $message }}</span> @enderror
@@ -15,9 +15,23 @@
         <div class="col-md-4">
            <input wire:model="jeha_name"  class="form-control  "   type="text"  id="jehaname" readonly>
         </div>
-        <div class="col-md-3">
-            <input wire:model="tran_date" wire:keydown.enter="DateKeyDown" class="form-control  "   type="date"  id="tran_date">
-            @error('jeha') <span class="error">{{ $message }}</span> @enderror
+        <div class="col-md-3 " >
+            <div class="row">
+                <div class="col-md-3 ">
+                    <label class="form-check-label " >من تاريخ </label>
+                </div>
+                <div class="col-md-8">
+                    <input wire:model="tran_date" wire:keydown.enter="DateKeyDown" class="form-control "   type="date"  id="tran_date">
+                    @error('tran_date') <span class="error">{{ $message }}</span> @enderror
+
+                </div>
+
+
+            </div>
+        </div>
+        <div  class="col-md-2 ">
+            <a  href="{{route('pdfjehatran',['jeha_no'=>$jeha_no,'Mden'=>$Mden,'MdenBefore'=>$MdenBefore,'Daen'=>$Daen,'DaenBefore'=>$DaenBefore,'tran_date'=>$tran_date])}}"
+                class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
         </div>
     </div>
 
@@ -45,6 +59,15 @@
         </tr>
         </thead>
         <tbody id="addRow" class="addRow">
+        <tr class="font-size-12" style="font-weight: bold">
+            <td>  </td>
+            <td>  رصيد سابق</td>
+            <td style="color: blue"> {{ number_format($MdenBefore,2, '.', ',') }} </td>
+            <td style="color: red"> {{ number_format($DaenBefore,2, '.', ',') }} </td>
+            <td>  </td>
+            <td>  </td>
+        </tr>
+
         @foreach($RepTable as $key=> $item)
             <tr class="font-size-12">
                 <td> {{ $item->data }} </td>
@@ -55,6 +78,14 @@
                 <td> {{ $item->type_name }} </td>
             </tr>
         @endforeach
+        <tr class="font-size-12" style="font-weight: bold">
+            <td>  </td>
+            <td>  الإجمالي</td>
+            <td style="color: blue"> {{ number_format($Mden,2, '.', ',') }} </td>
+            <td style="color: red"> {{ number_format($Daen,2, '.', ',') }} </td>
+            <td> {{ number_format($Mden-$Daen,2, '.', ',') }} </td>
+            <td>  </td>
+        </tr>
         </tbody>
     </table>
     {{ $RepTable->links('custom-pagination-links-view') }}
