@@ -72,6 +72,7 @@ Route::controller(RepAksatController::class)->group(function (){
   route::get('/rep/okod/{rep}', 'RepOkod')->name('rep.okod')->middleware('auth') ;
 
   route::get('/pdfmain/{no}', 'PdfMain')->name('pdfmain') ;
+  route::get('/pdfbanksum', 'PdfBankSum')->name('pdfbanksum') ;
 
 });
 Route::controller(RepAmaaController::class)->group(function (){

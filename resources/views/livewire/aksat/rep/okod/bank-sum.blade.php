@@ -5,7 +5,10 @@
     <div class="col-md-2 my-2 ">
       <input wire:model="search"  type="search"   placeholder="ابحث هنا .......">
     </div>
-
+      <div  class="col-md-2 ">
+          <a  href="{{route('pdfbanksum')}}"
+              class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
+      </div>
 
   </div>
 
