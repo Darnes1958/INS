@@ -2,7 +2,7 @@
   <div class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
     <div class="col-md-2 my-2 d-inline-flex ">
       <label  class="form-label mx-0 text-left " style="width: 30%; ">من تاريخ</label>
-      <input wire:model="date1" wire:keydown.enter="Date1Chk"  class="form-control mr-0 text-center" type="date"  id="date1" style="width: 70%; ">
+      <input wire:model="date1"   class="form-control mr-0 text-center" type="date"  id="date1" style="width: 70%; ">
       @error('date1') <span class="error">{{ $message }}</span> @enderror
     </div>
     <div class="col-md-2 my-2 d-inline-flex ">
