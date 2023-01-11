@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }} " dir="rtl">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
         <title>منظومة المبيعات بالتقسيط</title>
 
@@ -28,8 +28,6 @@
                         <a href="{{ url('/home') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Home</a>
                     @else
                         <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline text-lg">دخــول</a>
-
-
                     @endauth
                 </div>
             @endif
@@ -40,12 +38,7 @@
                          src="{{ url('images/Alwaseet.png')}}" >
                     <img class="rounded-circle header-profile-user mt-0 pt-0"
                          src="{{ url('images/OurTitle.png')}}" >
-
-
                 </div>
-
-
-
             </div>
         </div>
     </body>
