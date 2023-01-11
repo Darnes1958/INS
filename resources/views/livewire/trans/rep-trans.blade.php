@@ -26,12 +26,14 @@
         <label class="form-check-label" >الكل</label>
       </div>
     </div>
+    @can('ايصالات الموردين')
     <div class="col-md-2">
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="checkbox" wire:model="Supp_Only"  name="inlineRadioOptions" id="inlineRadio1" value="false">
         <label class="form-check-label" >الموردين فقط</label>
       </div>
     </div>
+    @endcan
 
     <div class="col-md-2 my-2 ">
       <input wire:model="search"  type="search"   placeholder="ابحث هنا .......">
@@ -82,5 +84,9 @@
               confirmButtonText:  e.detail,
           })
       });
+      Livewire.on('goto',postid=>  {
+          if (postid=='date1') {  $("#date1").focus();$("#date1").select(); }
+          if (postid=='date2') {  $("#date2").focus();$("#date2").select(); }
+      })
   </script>
 @endpush

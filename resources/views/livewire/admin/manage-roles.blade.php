@@ -88,6 +88,7 @@
             <div class="row  ">
                 <div class="col-md-6">
                     <select  wire:model="TheUser"  id="role2_id" class="form-control  form-select " style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"    >
+                        <option >اختيار</option>
                         @foreach($users as $s)
                             <option value="{{ $s->name }}">{{ $s->name }}</option>
                         @endforeach
@@ -101,6 +102,7 @@
             <div class="row  ">
                 <div class="col-md-6  ">
                     <select  wire:model="TheRole"  id="roleuser2_id" class="form-control  form-select " style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"    >
+                        <option >اختيار</option>
                         @foreach($role2Table as $s)
                             <option value="{{ $s->name }}">{{ $s->name }}</option>
                         @endforeach
@@ -109,10 +111,14 @@
                 <div class="col-md-6 ">
                     <input wire:model="TheRole"  type="text" class="form-control"    autofocus>
                 </div>
-                <div class="col-md-3 my-2 " style="height: 28px;">
-                    <button  wire:click="SaveUserRole" class="btn btn-primary" style="height: 28px;">
+                <div class="col-md-3 my-2 d-flex " style="height: 28px;">
+                    <button  wire:click="SaveUserRole" class="btn btn-primary mx-4" style="height: 28px;">
                         Save
                     </button>
+                    <button  wire:click="RemoveUserRole" class="btn btn-danger" style="height: 28px;">
+                        Remove
+                    </button>
+
                 </div>
             </div>
         </div>
@@ -146,9 +152,12 @@
                 <div class="col-md-6 ">
                     <input wire:model="ThePermission"  type="text" class="form-control"    autofocus>
                 </div>
-                <div class="col-md-3 my-2 " style="height: 28px;">
-                    <button  wire:click="SaveUserPermission" class="btn btn-primary" style="height: 28px;">
+                <div class="col-md-3 my-2 d-flex" style="height: 28px;">
+                    <button  wire:click="SaveUserPermission" class="btn btn-primary mx-4" style="height: 28px;">
                         Save
+                    </button>
+                    <button  wire:click="RemoveUserPermission" class="btn btn-danger" style="height: 28px;">
+                        Remove
                     </button>
                 </div>
             </div>

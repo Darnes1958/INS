@@ -50,17 +50,28 @@ class ManageRoles extends Component
         if ($this->newPermission) {Permission::create(['name' => $this->newPermission]);
             $this->newPermission='';
             $this->emitTo('admin.rep-old-roles','refreshComponent');}
-
     }
+  public function RemoveUserPermission(){
+    $user=User::where('name',$this->TheUser)->first();
+    $user->revokePermissionTo($this->ThePermission);
+    $this->emitTo('admin.rep-old-roles','refreshComponent');
+    $this->ThePermission='';
+  }
+
     public function SaveUserRole(){
         $user=User::where('name',$this->TheUser)->first();
         $user->assignRole($this->TheRole);
-
-
         $this->emitTo('admin.rep-old-roles','refreshComponent');
         $this->TheRole='';
 
     }
+  public function RemoveUserRole(){
+    $user=User::where('name',$this->TheUser)->first();
+    $user->removeRole($this->TheRole);
+    $this->emitTo('admin.rep-old-roles','refreshComponent');
+    $this->TheRole='';
+
+  }
   public function SaveUserPermission(){
     $user=User::where('name',$this->TheUser)->first();
     $user->givePermissionTo($this->ThePermission);

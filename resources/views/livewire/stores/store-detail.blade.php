@@ -21,11 +21,13 @@
            id="quant"  style="text-align: center" >
     @error('quant') <span class="error">{{ $message }}</span> @enderror
   </div>
+  @can('سعر الشراء')
   <div class="col-4">
     <label for="price" class="form-label-me">السعر</label>
     <input wire:model="price"  class="form-control" name="price" type="number" value=""
            id="price"  style="text-align: center"  readonly>
   </div>
+  @endcan
   <div class="col-4 my-3">
     <label for="raseed" class="form-label-me" >الرصيد الكلي</label>
     <input wire:model="raseed" class="form-control " name="raseed" type="text" readonly

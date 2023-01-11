@@ -16,6 +16,19 @@ trait MyLib {
     public $PlaceItemQuant;
     public $ItemExistsInOrder=false;
 
+  function isDate($value) {
+    if (!$value) {
+      return false;
+    } else {
+      $date = date_parse($value);
+      if($date['error_count'] == 0 && $date['warning_count'] == 0){
+        return checkdate($date['month'], $date['day'], $date['year']);
+      } else {
+        return false;
+      }
+    }
+  }
+
     public function IfBuyItemExists($order_no,$item_no,$stno){
         $conn=Auth()->user()->company;
         $res=buy_tran::on($conn)->where('order_no',$order_no)->where('item_no',$item_no)->first();
