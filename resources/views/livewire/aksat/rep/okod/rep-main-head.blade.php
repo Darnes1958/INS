@@ -1,8 +1,16 @@
 <div x-data  class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
 
     <div x-data  class="col-md-12 my-1">
-        <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "
-                class="form-control"   type="text"  >
+        <div class="row">
+           <div class="col-md-10">
+               <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "  class="form-control"   type="text"  >
+           </div>
+           <div class="col-md-2">
+              <button wire:click="$emit('CloseOkod')"  type="button" class="btn btn-outline-danger btn-sm fa fa-arrow-alt-circle-down" ></button>
+           </div>
+        </div>
+
+
         <div x-show="$wire.IsSearch">
             <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
                 <thead class="font-size-12">

@@ -52,7 +52,10 @@
     @include('admin.body.header')
     <div class=" wrapper d-flex align-items-stretch "  >
         <!-- ========== Left Sidebar Start ========== -->
-        @include('admin.body.slidebar')
+        @unlessrole('info')
+         @include('admin.body.slidebar')
+        @endunlessrole
+
         <div  id="content" class="p-1 p-md-1 pt-1"  dir="rtl">
 
             @yield('admin')

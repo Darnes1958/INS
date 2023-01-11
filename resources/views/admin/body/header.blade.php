@@ -2,22 +2,24 @@
 
  <div id="header" class="row ">
 
+ @role('info')
+     <div class="d-flex col-md-8 mt-0 pt-0" style="height: 40px"></div>
+ @else
   <div class="d-flex col-md-2 mt-0 pt-0" style="height: 40px">
     <button type="button" id="sidebarCollapse" class="btn btn-outline-primary border-0">
         <i class="fa fa-bars"></i>
         <span class="sr-only">Toggle Menu</span>
     </button>
   </div>
-
   <div class="d-flex col-md-2 mt-0 pt-0" style="height: 40px">
       <button type="button" class="btn btn-outline-success border-0 not-icon waves-effect"  data-toggle="fullscreen">
           <i class="ri-fullscreen-line"></i>
       </button>
   </div>
-
   <div class="d-flex col-md-4 mt-0 py-1" style="height: 40px;">
     <a href="{{ url('/home') }}" class="btn btn-outline-success border-0 fas fa-home waves-effect "></a>
   </div>
+@endrole
 
     @auth
          @php

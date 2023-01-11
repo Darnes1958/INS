@@ -15,6 +15,15 @@ class InfoPage extends Component
     public $showokod=false;
     public $showokodarc=false;
 
+    protected $listeners = ['CloseOkod','CloseOkodArc',];
+
+    public function CloseOkod(){
+        $this->showokod=false;
+    }
+    public function CloseOkodArc(){
+        $this->showokodarc=false;
+    }
+
     public function mount(){
         $this->Company=Auth::user()->company;
         $res=Customers::where('company',$this->Company)->first();
@@ -28,7 +37,7 @@ class InfoPage extends Component
 
     }
     public function OkodArc(){
-        $this->showokodArc=true;
+        $this->showokodarc=true;
         $this->showokod=false;
 
     }

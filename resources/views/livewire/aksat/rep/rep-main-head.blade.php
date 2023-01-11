@@ -3,6 +3,7 @@
 
         @livewire('aksat.no-select-all')
     </div>
+
     <div class="d-inline-flex align-items-center">
         <label for="no" class="form-label" style="width: 20%">الرقم الألي</label>
         <input  wire:model="no" wire:keydown.enter="ChkNoAndGo"
