@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class DailyRep extends Component
 {
-    public $RepRadio='buys_view';
+    public $RepRadio='sells_view';
     public $RepDate='order_date_input';
     public $RepSearch1='jeha_name';
 

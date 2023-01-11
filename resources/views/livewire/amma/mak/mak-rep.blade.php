@@ -49,7 +49,9 @@
       <th style="width: 14%" >التصنيف</th>
       <th style="width: 8%">رقم الصنف</th>
       <th >اسم الصنف</th>
+      @can('سعر الشراء')
       <th style="width: 9%">سعر الشراء نقداً</th>
+      @endcan
       <th style="width: 9%">سعر البيع نقداً</th>
       <th style="width: 13%">المخزن / الصالة</th>
       <th style="width: 11%">رصيد المخزن/الصالة</th>
@@ -64,7 +66,9 @@
           <td > {{ $item->type_name }} </td>
           <td> {{ $item->item_no }} </td>
           <td> {{ $item->item_name }} </td>
+          @can('سعر الشراء')
           <td> {{ $item->price_buy }} </td>
+          @endcan
           <td> {{ $item->price_sell }} </td>
           <td> {{ $item->place_name }} </td>
           <td> {{ $item->place_ras }} </td>

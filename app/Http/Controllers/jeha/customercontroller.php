@@ -5,6 +5,8 @@ namespace App\Http\Controllers\jeha;
 use App\Http\Controllers\Controller;
 use App\Models\Customers;
 use App\Models\jeha\jeha;
+use App\Models\sell\sells;
+use App\Models\trans\trans;
 use ArPHP\I18N\Arabic;
 use Barryvdh\DomPDF\Facade\Pdf;
 use DB;
@@ -83,8 +85,13 @@ class customercontroller extends Controller
     function CustomerDelete ($id)
     {
         Config::set('database.connections.other.database', Auth::user()->company);
-
-        jeha::on(auth()->user()->company)->findorfail($id)->delete();
+        if (sells::where('jeha',$id)->exists() || trans::where('jeha',$id)->exists()) {
+          $notification = array(
+            'message'=> 'هذا الزبون تم استخدامه ولا يجوز الغاءه','alert-type'=>'success'
+          );
+          return false;
+        }
+       // jeha::on(auth()->user()->company)->findorfail($id)->delete();
         $notification = array(
             'message'=> 'تم الغاء البيانات بنجاح','alert-type'=>'success'
         );

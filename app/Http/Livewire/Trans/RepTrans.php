@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Trans;
 
+use App\Http\Livewire\Traits\MyLib;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\DB;
@@ -11,6 +12,7 @@ use Livewire\WithPagination;
 
 class RepTrans extends Component
 {
+  use MyLib;
   use WithPagination;
   protected $paginationTheme = 'bootstrap';
   public $date1;
@@ -19,6 +21,7 @@ class RepTrans extends Component
   public $tran_date2;
   public $RepRadio=0;
   public $Supp_Only=false;
+  public $NoSupp=true;
   public $search;
 
   protected function rules()
@@ -37,10 +40,39 @@ class RepTrans extends Component
     'required.date2' => 'يجب ادخال تاريخ صحيح',
 
   ];
+
+  public function updatedDate2(){
+    if ($this->isDate($this->date1) && $this->isDate($this->date2)) {
+
+      $this->tran_date1=$this->date1;
+      $this->tran_date2=$this->date2;
+    }
+  }
+  public function updatedDate1(){
+    if ($this->isDate($this->date1) && $this->isDate($this->date2)) {
+
+      $this->tran_date1=$this->date1;
+      $this->tran_date2=$this->date2;
+    }
+  }
   public function Date2Chk(){
     $this->validate();
     $this->tran_date1=$this->date1;
     $this->tran_date2=$this->date2;
+  }
+
+  public function Date1Chk(){
+    if ($this->isDate($this->date1) && $this->isDate($this->date2)) {
+
+      $this->tran_date1=$this->date1;
+      $this->tran_date2=$this->date2;
+    }
+    $this->emit('goto','date2');
+  }
+  public function mount(){
+    $user=Auth::user();
+    if ($user->can('ايصالات الموردين')) $this->NoSupp=true ;
+      else $this->NoSupp=false;
   }
   public function render()
     {
@@ -54,6 +86,8 @@ class RepTrans extends Component
                 ->orWhere('val', 'like', '%'.$this->search.'%');})
             ->when($this->Supp_Only,function ($q) {
              return $q->where('jeha_type','=', 2);})
+            ->when( ! $this->NoSupp,function ($q) {
+              return $q->where('jeha_type','!=', 2);})
             ->paginate(15)
 
         ]);
@@ -67,6 +101,8 @@ class RepTrans extends Component
              ->orWhere('val', 'like', '%'.$this->search.'%');})
          ->when($this->Supp_Only,function ($q) {
            return $q->where('jeha_type','=', 2);})
+         ->when( ! $this->NoSupp,function ($q) {
+           return $q->where('jeha_type','!=', 2);})
          ->paginate(15)
      ]);
 

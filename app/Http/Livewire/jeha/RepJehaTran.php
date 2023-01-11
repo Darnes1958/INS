@@ -66,6 +66,11 @@ class RepJehaTran extends Component
         $this->validate();
         $res=$this->Chkjeha();
         if ($res !='empty' && $res!='not')  {
+            if ( $this->jeha_type==2 && ! Auth()->user()->can('تقرير الموردين')) {
+              $this->dispatchBrowserEvent('mmsg', 'هذا العميل من الموردين');
+              return(false);
+
+            }
             $this->jehano=$this->jeha_no;
             $this->emit('gotonext','tran_date');
 

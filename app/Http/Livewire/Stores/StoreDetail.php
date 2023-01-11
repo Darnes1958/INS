@@ -72,7 +72,7 @@ class StoreDetail extends Component
       if ($result) {
         $this->item_name=$result->item_name;
         $this->raseed= $result->raseed;
-        $this->price=$result->price_sell;
+        $this->price=$result->price_buy;
         $this->price=number_format($this->price, 2, '.', '')  ;
         $this->place1_raseed=$this->RetPlaceRaseed($this->item,$this->Table1,$this->place_no1);
         $this->place2_raseed=$this->RetPlaceRaseed($this->item,$this->Table2,$this->place_no2);

@@ -7,10 +7,13 @@
         @error('tran_date') <span class="error">{{ $message }}</span> @enderror
     </div>
     <div class="col-md-9 my-2">
+       @role('مشتريات')
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" wire:model="RepRadio"   value="buys_view">
             <label class="form-check-label" >مشتريات</label>
-        </div><div class="form-check form-check-inline">
+        </div>
+        @endrole
+        <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" wire:model="RepRadio"  value="sells_view">
             <label class="form-check-label" >مبيعات</label>
         </div>

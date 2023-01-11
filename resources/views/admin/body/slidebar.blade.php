@@ -180,9 +180,9 @@
                         @can('فاتورة مبيعات')
                         <li><a href="{{route('order_sell.rep')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">فاتورة مبيعات</a></li>
                             @endcan
-                        @can('فاتورة مشتريات')
+                        @role('مشتريات')
                        <li><a href="{{route('order_buy.rep')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">فاتورة مشتريات</a></li>
-                            @endcan
+                            @endrole
                        @can('العملاء')
                        <li><a href="{{route('customer.all')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">عرض الزبائن</a></li>
                        <li><a href="{{route('repamma','jehatran')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">حركة زبون</a></li>
