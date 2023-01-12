@@ -2,14 +2,22 @@
 
 namespace App\Http\Livewire\Jeha;
 
+use App\Models\buy\buy_tran;
+use App\Models\buy\buys;
 use App\Models\jeha\jeha;
+use App\Models\jeha\jeha_type;
+use App\Models\sell\sells;
+use App\Models\trans\trans;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class AddSupp extends Component
 {
+  use WithPagination;
+  protected $paginationTheme = 'bootstrap';
   public $jeha_no;
   public $jehaname;
   public $address;
@@ -18,12 +26,15 @@ class AddSupp extends Component
   public $others;
   public $jeha_type=2;
 
+  public $jeha_type_name;
+
+  public $UpdateMod=false;
+
   protected $listeners = [
     'refreshComponent' => '$refresh','WithJehaType'
   ];
   public function WithJehaType($jeha_type)
   {
-
     $this->jeha_type=$jeha_type;
   }
 
@@ -49,36 +60,82 @@ class AddSupp extends Component
     $this->validate();
 
 
-    $this->jeha_no = jeha::max('jeha_no')+1;
-    DB::connection(Auth()->user()->company)->table('jeha')->insert([
 
-      'jeha_no' => $this->jeha_no,
+
+    if ($this->UpdateMod)
+    DB::connection(Auth()->user()->company)->table('jeha')->where('jeha_no',$this->jeha_no)->update([
       'jeha_name' => $this->jehaname,
       'address' => $this->address,
       'libyana' => $this->libyana,
       'mdar' => $this->mdar,
       'others' => $this->others,
-      'charge_by'=>0,
       'emp'=>auth::user()->empno,
-      'available'=>1,
-      'jeha_type'=>$this->jeha_type,
-
     ]);
-
+    else {
+      $this->jeha_no = jeha::max('jeha_no') + 1;
+      DB::connection(Auth()->user()->company)->table('jeha')->insert([
+        'jeha_no' => $this->jeha_no,
+        'jeha_name' => $this->jehaname,
+        'address' => $this->address,
+        'libyana' => $this->libyana,
+        'mdar' => $this->mdar,
+        'others' => $this->others,
+        'charge_by' => 0,
+        'emp' => auth::user()->empno,
+        'available' => 1,
+        'jeha_type' => $this->jeha_type,
+      ]);
+    }
+    $this->UpdateMod=false;
     $this->emit('jehaadded',$this->jeha_no);
     $this->resetModal();
     $this->dispatchBrowserEvent('CloseModal');
 
   }
+  public function selectItem($jeha_no,$action){
+    $this->jeha_no=$jeha_no;
+    if ($action=='delete') {$this->UpdateMod=false; $this->dispatchBrowserEvent('OpenMyDelete');}
+    if ($action=='update') {
 
-    public function mount(){
+      $res=jeha::on(Auth()->user()->company)->where('jeha_no',$this->jeha_no)->first();
+
+      $this->jehaname=$res->jeha_name;
+      $this->address=$res->address;
+      $this->libyana=$res->libyana;
+      $this->mdar=$res->mdar;
+      $this->others=$res->others;
+      $this->UpdateMod=true;
+      $this->emit('gotonext','jeha_name');}
+  }
+  public function CloseDeleteDialog(){$this->dispatchBrowserEvent('CloseMyDelete');}
+
+
+  public function delete(){
+    $this->CloseDeleteDialog();
+    if (buys::on(Auth()->user()->company)->where('jeha',$this->jeha_no)->exists() ||
+        sells::on(Auth()->user()->company)->where('jeha',$this->jeha_no)->exists()  ||
+        trans::on(Auth()->user()->company)->where('jeha',$this->jeha_no)->exists()) {
+      $this->dispatchBrowserEvent('mmsg', 'هذا العميل مستخدم مسبقا ولا يمكن الغاءه');
+      return false;
+    }
+    jeha::on(Auth()->user()->company)->where('jeha_no',$this->jeha_no)->delete();
+    $this->render();
+  }
+
+    public function mount($jeha_type=1){
 
 
      $this->resetModal();
+     $this->jeha_type=$jeha_type;
+     $this->jeha_type_name=jeha_type::on(Auth()->user()->company)->where('type_no',$this->jeha_type)->first()->type_name;
 
     }
     public function render()
     {
-        return view('livewire.jeha.add-Supp');
+        return view('livewire.jeha.add-Supp',[
+          'JehaTable'=>jeha::on(Auth()->user()->company)->where('jeha_type',$this->jeha_type)
+            ->orderBy('jeha_no','desc')
+            ->paginate(15),
+        ]);
     }
 }

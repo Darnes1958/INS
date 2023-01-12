@@ -16,6 +16,7 @@ use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\pdfController;
 use App\Http\Livewire\Buy\RepOrderBuy;
 use App\Http\Controllers\Masr\MasrController;
+use App\Http\Controllers\bank\BankController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -89,13 +90,20 @@ Route::controller(CustomerController::class)->group(function (){
     route::post('/customer/update', 'CustomerUpdate')->name('customer.update')->middleware('auth') ;
     route::get('/customer/delete{jeha_no}', 'CustomerDelete')->name('customer.delete')->middleware('auth') ;
     route::get('/search_customerall','SearchCustomerall')->name('search-customerall')->middleware('auth');
-  route::get('/pdfjehatran/{jeha_no?}/{tran_date?}/{Mden?}/{MdenBefore?}/{Daen?}/{DaenBefore?}', 'PdfJehaTran')->name('pdfjehatran') ;
+    route::get('/pdfjehatran/{jeha_no?}/{tran_date?}/{Mden?}/{MdenBefore?}/{Daen?}/{DaenBefore?}', 'PdfJehaTran')->name('pdfjehatran') ;
+    route::get('/inpcust/{jeha_type}', 'InpCust')->name('inpcust')->middleware('auth') ;
 
+
+});
+Route::controller(BankController::class)->group(function (){
+
+  route::get('/banksinput/{who}','BanksInput')->name('banksinput')->middleware('auth');
 });
 Route::controller(BankReportsController::class)->group(function (){
     route::get('/rep_banks/sum', 'Rep_Banks')->name('rep_banks.sum')->middleware('auth') ;
     route::get('/pagi_rep_bank/{bankno}','PagiRepBank')->name('pagi-rep_bank')->middleware('auth');
     route::get('/search_rep_bank','SearchRepBank')->name('search-rep_bank')->middleware('auth');
+
 });
 
 Route::controller(OrderBuyController::class)->group(function (){

@@ -10,13 +10,12 @@ use Illuminate\Support\Facades\Config;
 
 class BankController extends Controller
 {
-    function BankList ($bankno){
+  function BankList ($bankno){
+     $datatable=bank::on(auth()->user()->company)->get();
+    return view('backend.bank.rep_bank', compact('datatable'));
+    }
+  function BanksInput ($who){
 
-
-        $datatable=bank::on(auth()->user()->company)->get();
-
-        return view('backend.bank.rep_bank', compact('datatable'));
-
-
-    }   //
+    return view('backend.bank.banks-input',compact('who'));
+  }
 }

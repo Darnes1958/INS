@@ -123,6 +123,23 @@
                 </div>
             </li>
             @endcan
+            @can('مصارف')
+                <li class="mb-1">
+                    <button class="font-size-14 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#other-collapse" aria-expanded="false">
+                        &nbsp <i class="fa  fas fa-chart-line" aria-hidden="true"></i>&nbsp زبائن مصارف ...</button>
+                    <div class="collapse" id="other-collapse">
+
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+
+                            <li><a href="{{route('banksinput','bank')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">مصارف</a></li>
+                            <li><a href="{{route('banksinput','taj')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">مصارف تجميعية</a></li>
+                            <li><a href="{{route('inpcust',1)}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">زبائن</a></li>
+                            <li><a href="{{route('inpcust',2)}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">موردين</a></li>
+
+                        </ul>
+                    </div>
+                </li>
+            @endcan
             <li class="border-top my-3"></li>
             @can('عقود')
             <li class="mb-1">

@@ -27,6 +27,11 @@ class customercontroller extends Controller
           return view('backend.jeha.customer_all', compact('jeharep'));
       }
   }
+  function InpCust ($jeha_type)
+  {
+      return view('backend.jeha.inp-cust', compact('jeha_type'));
+
+  }
     function CustomerAdd (Request $request)
     {
         return view('backend.jeha.customer_add');
