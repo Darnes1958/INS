@@ -41,18 +41,16 @@
       </div>
 
       <div class="col-md-4">
-          <label  for="storeno" class="form-label-me">المخزن</label>
-          <input  wire:model="stno" wire:keydown.enter="$emit('gotonext','head-btn')"
-                 class="form-control  "
-                 name="storeno" type="text"  id="storeno" >
+          <label   class="form-label-me">المخزن</label>
+          <input  wire:model="st_no" wire:keydown.enter="$emit('gotonext','head-btn')"
+                 class="form-control  "  type="text"  id="st_no" >
           @error('st_no') <span class="error">{{ $message }}</span> @enderror
       </div>
       <div  class="col-md-8" >
           <label  class="form-label-me">اختيار من القائمة</label>
-          <select  wire:model="storel" name="store_id" id="store_id" class="form-control  form-select "
-                   style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"
-                   >
-              <option value="1">المخزن الرئيسي</option>
+          <select  wire:model="st_nol"   class="form-control  form-select "
+                   style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"  >
+              <option >اختيار</option>
               @foreach($stores_names as $s)
                   <option value="{{ $s->st_no }}">{{ $s->st_name }}</option>
               @endforeach
@@ -122,7 +120,7 @@
             if (postid=='orderno') {  $("#order_no").focus();$("#order_no").select(); };
             if (postid=='date') {  $("#date").focus();$("#date").select(); };
             if (postid=='jehano') {  $("#jehano").focus(); $("#jehano").select();};
-            if (postid=='storeno') {  $("#storeno").focus(); $("#storeno").select();};
+            if (postid=='st_no') {  $("#st_no").focus(); $("#st_no").select();};
             if (postid=='head-btn') {
                 setTimeout(function() { document.getElementById('head-btn').focus(); },100);};
         })

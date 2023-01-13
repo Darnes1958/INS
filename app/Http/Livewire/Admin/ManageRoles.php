@@ -36,6 +36,16 @@ class ManageRoles extends Component
         $this->emit('gotonext','ThePermission');
 
     }
+    public function RemoveRelation(){
+        $role=Role::where('name',$this->TheRole)->first();
+        $permession=Permission::where('name',$this->ThePermission)->first();
+        $role->revokePermissionTo($this->ThePermission);
+        $this->emitTo('admin.rep-old-roles','TakeRoleId',$role->id);
+        $this->emitTo('admin.rep-old-roles','refreshComponent');
+
+
+        $this->ThePermission='';
+    }
     public function show($show){
 
         $this->Show=$show;

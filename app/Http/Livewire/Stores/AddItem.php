@@ -59,21 +59,26 @@ class AddItem extends Component
         Config::set('database.connections.other.database', Auth::user()->company);
         return [
             'item_no' => ['required','integer','gt:0', 'unique:other.items,item_no'],
-            'item_name' => ['required'],
+            'item_name' => ['required', 'unique:other.items,item_name'],
             'itemtype' => ['required','integer','gt:0','exists:other.item_type,type_no'],
             'price_buy' => ['required','numeric','gt:0'],
             'price_sell' => ['required','numeric','gt:0'],
         ];
     }
+    protected $messages = [
+        'required' => 'لا يجوز ترك فراغ',
+        'item_name.unique' => 'هذا الاسم مخزون مسبقا',
+        'unique' => 'هذا الرقم مخزون مسبقا',
+
+
+    ];
 
     public function updatedItemtypel(){
         $this->itemtype=$this->itemtypel;
         $this->emit('gotonext','itemtype');
     }
     public function updatedItemtype(){
-
         $this->itemtypel=$this->itemtype;
-
     }
 
 
@@ -111,6 +116,7 @@ class AddItem extends Component
                                     }
 
         $this->resetitem();
+        $this->emitTo('stores.item-select','RefreshSelectItem');
         $this->dispatchBrowserEvent('CloseFirst');
     }
     public function mount()

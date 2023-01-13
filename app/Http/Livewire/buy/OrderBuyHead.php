@@ -17,23 +17,11 @@ class OrderBuyHead extends Component
     public $order_date;
     public $jeha;
     public $jeha_type;
-    public $stno;
-    public $storel;
+    public $st_no;
+    public $st_nol;
     public $st_name;
     public $jeha_name;
 
-
-  public function updatedStno()
-  {
-    $this->storel=$this->stno;
-  }
-
-  public function updatedStorel()
-  {
-    $this->stno=$this->storel;
-    $this->emit('gotonext', 'storeno');
-
-  }
 
   public $TheJehaIsSelected;
   public $HeadOpen;
@@ -43,10 +31,33 @@ class OrderBuyHead extends Component
         'mounthead','jehaadded',
     ];
 
-  public function updatedTheJehaIsSelected(){
-    $this->TheJehaIsSelected=0;
-    $this->emit('gotonext','storeno');
-  }
+    public function updated($field)
+    {
+        if ($field=='st_nol') {
+            $this->st_no=$this->st_nol;
+            $this->emit('gotonext', 'st_no');
+        }
+        if ($field=='st_no')
+            $this->st_nol=$this->st_no;
+
+
+        if ($field=='TheJehaIsSelected'){
+            $this->TheJehaIsSelected=0;
+            $this->emit('gotonext','storeno');
+        }
+        if ($field=='jeha'){
+            $this->jeha_name='';
+            $this->jeha_type=0;
+            if ($this->jeha!=null) {
+                $result = jeha::on(Auth()->user()->company)->where('jeha_type',2)->where('jeha_no',$this->jeha)->first();
+
+                if ($result) {  $this->jeha_name=$result->jeha_name;
+                    $this->jeha_type=$result->jeha_type;
+                    $this->emit('jehafound',$this->jeha,$this->jeha_name);
+                }}
+        }
+    }
+
     public function jehaadded($wj){
       $this->jeha=$wj;
     }
@@ -63,21 +74,6 @@ class OrderBuyHead extends Component
         $this->mount();
     }
 
-
-    public function updatedJeha()
-    {
-
-        $this->jeha_name='';
-        $this->jeha_type=0;
-        if ($this->jeha!=null) {
-        $result = jeha::on(Auth()->user()->company)->where('jeha_type',2)->where('jeha_no',$this->jeha)->first();
-
-        if ($result) {  $this->jeha_name=$result->jeha_name;
-                        $this->jeha_type=$result->jeha_type;
-                        $this->emit('jehafound',$this->jeha,$this->jeha_name);
-        }}
-    }
-
     protected function rules()
     {
         Config::set('database.connections.other.database', Auth::user()->company);
@@ -85,7 +81,7 @@ class OrderBuyHead extends Component
             'order_no' => ['required','integer','gt:0', 'unique:other.buys,order_no'],
             'order_date' => 'required',
             'jeha_type' => ['integer','size:2'],
-            'stno' => ['required','integer','gt:0', 'exists:other.stores_names,st_no'],
+            'st_no' => ['required','integer','gt:0', 'exists:other.stores_names,st_no'],
         ];
     }
     protected $messages = [
@@ -100,7 +96,8 @@ class OrderBuyHead extends Component
 
         $this->order_no=buys::on(Auth()->user()->company)->max('order_no')+1;
         $this->order_date=date('Y-m-d');
-        $this->stno='1';
+        $this->st_no='1';
+        $this->st_nol=1;
         $this->st_name='المخزن الرئيسي';
         $this->jeha='2';
         $this->jeha_name='مشتريات عامة';
@@ -112,18 +109,18 @@ class OrderBuyHead extends Component
     public function BtnHeader()
     {
         $this->validate();
+        $this->st_name=stores_names::on(Auth()->user()->company)
+            ->where('st_no',$this->st_no)->first()->st_name;
         $this->HeadOpen=false;
         $this->HeadDataOpen=true;
-        $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha,$this->stno);
-        $this->emitTo('buy.order-buy-detail','TakeParam',$this->order_no,$this->stno);
+        $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha,$this->st_no);
+        $this->emitTo('buy.order-buy-detail','TakeParam',$this->order_no,$this->st_no);
         $this->emit('mountdetail');
     }
 
 
     public function render()
     {
-
-
         return view('livewire.buy.order-buy-head',[
             'jeha'=>jeha::on(Auth()->user()->company)->where('jeha_type',2)->where('available',1)->get(),
             'stores'=>stores::on(Auth()->user()->company)->where('raseed','>',0)->get(),

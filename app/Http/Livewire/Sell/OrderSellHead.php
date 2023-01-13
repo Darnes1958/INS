@@ -111,7 +111,7 @@ public function ChkPlace(){
           $conn=Auth()->user()->company;
           $res = jeha::on($conn)->find($this->jeha_no);
           if ($res) {
-              if ($res->jeha_no==1) {return('amaa');}
+              if ($res->jeha_no==1  && $this->price_type==2) {return('amaa');}
               if ($res->jeha_type==2) {return('supp');}
               $this->jeha_name = $res->jeha_name;
               $this->jeha_type = $res->jeha_type;
@@ -127,7 +127,7 @@ public function ChkPlace(){
       if ($res =='ok')  {
         $this->emit('gotonext','orderno');
       }
-      if ($res =='amaa') {
+      if ($res =='amaa' ) {
           $this->dispatchBrowserEvent('mmsg', 'لا تجوز المبيعات العامة هنا ؟');
       }
       if ($res =='supp')  {
@@ -168,11 +168,9 @@ public function ChkPlace(){
 
         return [
             'order_no' => ['required','integer','gt:0', 'unique:other.sells,order_no'],
-            'jeha_no' =>['required','integer','gt:1', Rule::exists('other.jeha')->where(function ($query) {
-                $query->where('jeha_type', 1);
-            })],
+            'jeha_no' =>['required','integer','gt:0', 'exists:other.jeha,jeha_no'],
             'order_date' => 'required',
-            'jeha_type' => ['integer','size:1'],
+
 
         ];
     }
@@ -180,7 +178,7 @@ public function ChkPlace(){
         'exists' => 'هذا الرقم غير مخزون',
         'required' => 'لا يجوز ترك فراغ',
         'unique' => 'هذا الرقم مخزون مسبقا',
-        'size' => ' هذا العميل ليس من الزبائن',
+
         'order_date.required'=>'يجب ادخال تاريخ صحيح',
     ];
 
@@ -193,7 +191,7 @@ public function ChkPlace(){
         $this->st_name;
         $this->jeha_no;
         $this->jeha_name;
-        $this->jeha_type='2';
+        $this->jeha_type='1';
         $this->HeadOpen=True;
         $this->HeadDataOpen=false;
 
@@ -202,6 +200,7 @@ public function ChkPlace(){
     public function BtnHeader()
     {
         $this->validate();
+        $this->JehaKeyDown();
         if ($this->ChkPlace()=='empty') {$this->dispatchBrowserEvent('mmsg', 'يجب ادخال نقطة البيع ؟'); return(false);}
         $this->HeadOpen=false;
         $this->HeadDataOpen=true;

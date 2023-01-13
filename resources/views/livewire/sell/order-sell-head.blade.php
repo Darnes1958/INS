@@ -15,8 +15,8 @@
                 <input wire:model="jeha_no" wire:keydown.enter="JehaKeyDown"
                        class="form-control  "
                        name="jehano" type="text"  id="jehano" autofocus>
-                @error('jeha') <span class="error">{{ $message }}</span> @enderror
-                @error('jeha_type') <span class="error">{{ $message }}</span> @enderror
+                @error('jeha_no') <span class="error">{{ $message }}</span> @enderror
+
             </div>
             <div class="col-md-2">
                 <label class="form-label-me">&nbsp</label>
@@ -122,7 +122,7 @@
         </div>
 
         <div class="col-md-12">
-            <label  class="form-label-me">المورد</label>
+            <label  class="form-label-me">اسم الزبون</label>
             <input wire:model="jeha_name"   class="form-control  " type="text"  readonly >
         </div>
         <div   class="col-md-12" >

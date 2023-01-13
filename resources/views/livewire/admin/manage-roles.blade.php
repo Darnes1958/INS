@@ -74,9 +74,12 @@
                 <div class="col-md-6 ">
                     <input wire:model="ThePermission"  type="text" class="form-control"    autofocus>
                 </div>
-                <div class="col-md-3 my-2 " style="height: 28px;">
-                    <button  wire:click="SaveRelation" class="btn btn-primary" style="height: 28px;">
+                <div class="col-md-3 my-2 d-flex " style="height: 28px;">
+                    <button  wire:click="SaveRelation" class="btn btn-primary mx-4" style="height: 28px;">
                         Save
+                    </button>
+                    <button  wire:click="RemoveRelation" class="btn btn-danger" style="height: 28px;">
+                        Remove
                     </button>
                 </div>
             </div>
