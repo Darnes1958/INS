@@ -28,18 +28,22 @@
       </div>
 
     </div>
-    <div x-data class="col-md-8">
+    <div x-data class="col-md-10">
       <div x-show="$wire.Report=='imp'">
         <table  class="table table-striped table-bordered table-sm">
           <thead class="font-size-12">
           <tr>
-            <th style="width: 10%">رقم إذن الاستلام</th>
-            <th style="width: 25%">إلــــــــي</th>
-            <th style="width: 10%">رقم فاتورة الشراء</th>
-            <th style="width: 10%">رقم الصنف</th>
-            <th style="width: 25%">اسم الصنف</th>
-            <th style="width: 10%">الكمية</th>
-            <th style="width: 10%">السعر</th>
+            <th style="width: 8%">رقم إذن الاستلام</th>
+            <th style="width: 12%">إلــــــــي</th>
+            <th style="width: 8%">رقم فاتورة الشراء</th>
+            <th style="width: 8%">رقم الصنف</th>
+            <th >اسم الصنف</th>
+            <th style="width: 6%">الكمية</th>
+              @can('سعر الشراء')
+            <th style="width: 8%">سعر الشراء</th>
+              @endcan
+            <th style="width: 8%">البيع نقدي</th>
+            <th style="width: 8%">البيع تقسيط</th>
           </tr>
           </thead>
           <tbody id="addRow" class="addRow">
@@ -51,7 +55,11 @@
               <td> {{$item->item_no }} </td>
               <td> {{$item->item_name }} </td>
               <td> {{$item->quant }} </td>
-              <td> {{$item->price }} </td>
+              @can('سعر الشراء')
+                <td> {{$item->price }} </td>
+              @endcan
+             <td> {{$item->price_sell }} </td>
+             <td> {{$item->price_tak }} </td>
             </tr>
           @endforeach
           </tbody>

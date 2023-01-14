@@ -99,7 +99,7 @@ class RepAksatController extends Controller
         if ($request->DisRadio=='DisMe'){
             $who='مدخلة بواسطة : '.Auth()->user()->name;
         } else $who='';
-       
+
         $reportHtml = view('PrnView.aksat.pdf-haf-mini',
             ['RepTable'=>$res,'cus'=>$cus,'bank_name'=>$bank_name,'kst_type_name'=>$kst_type_name
                 ,'hafitha'=>$request->hafitha ,'who'=>$who ,'RepDate'=>$RepDate])->render();

@@ -16,6 +16,9 @@ class StoresController extends Controller
   function StoresAdd($from_to){
     return view('backend.stores.stores_add',compact('from_to'));
   }
+    function ItemPrices(){
+        return view('backend.stores.item-prices');
+    }
   function PdfItemTran(Request $request){
     $RepDate=date('Y-m-d');
     $cus=Customers::where('Company',Auth::user()->company)->first();

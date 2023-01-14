@@ -25,6 +25,11 @@ class HafInputTable extends Component
   public $SerToAction;
   public $search;
   public $DisRadio='DisAll';
+  public $index='ser_in_hafitha';
+
+  public function DoIndex($index){
+      $this->index=$index;
+  }
 
   public function updatingSearch()
     {
@@ -130,8 +135,8 @@ class HafInputTable extends Component
                     ['hafitha_no', '=', $this->hafitha],
                     ['emp','=',Auth::user()->empno], ]);       })
 
-            ->orderBy('acc','asc')
-            ->orderBy('ser_in_hafitha','asc')
+            ->orderBy($this->index,'asc')
+
             ->paginate(15)]);
     }
 }

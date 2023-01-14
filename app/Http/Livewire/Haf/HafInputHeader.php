@@ -32,6 +32,7 @@ class HafInputHeader extends Component
  public $ModalTitle;
  public $ShowHafNew=false;
  public $ShowHafDel=false;
+ public $ShowHafUpd=false;
  public $ShowHafTarheel=false;
 
  public $HafUpload=false;
@@ -39,8 +40,11 @@ class HafInputHeader extends Component
  public $HafCount=100;
 
   protected $listeners = [
-    'RefreshHead','CloseMini','DoDeleteHafitha','DoTarheelHafitha','DoChkBankNo',
+    'RefreshHead','CloseMini','DoDeleteHafitha','DoTarheelHafitha','DoChkBankNo'
+      ,'TheHafUpdated'=>'CloseEditDialog'
   ];
+
+    public function CloseEditDialog(){$this->dispatchBrowserEvent('CloseMyEdit');}
   function DoChkBankNo(){
     $this->ChkBankAndGo();
   }
@@ -131,6 +135,10 @@ class HafInputHeader extends Component
   function DeleteHafitha(){
     $this->dispatchBrowserEvent('DelHafitha');
   }
+    function UpdateHafitha(){
+        $this->emit('ToEditHaf',$this->hafitha,$this->hafitha_date,$this->hafitha_tot);
+        $this->dispatchBrowserEvent('OpenMyEdit');
+    }
   function DoDeleteHafitha(){
 
 
@@ -175,6 +183,7 @@ class HafInputHeader extends Component
     $this->hafitha_enter=0;
     $this->hafitha_differ=0;
     $this->ShowHafDel=false;
+    $this->ShowHafUpd=false;
     $this->ShowHafTarheel=false;
     $this->HafHeadDetail=DB::connection(Auth()->user()->company)
       ->table('hafitha_tran')
@@ -284,6 +293,7 @@ class HafInputHeader extends Component
      if ($result) {
        $this->FillHead($result);
        $this->ShowHafDel=true;
+       $this->ShowHafUpd=true;
 
        $this->emit('TakeHafithaDetail',$this->hafitha,$this->bank);
        $this->emit('TakeHafBankNo',$this->bank,$result->bank_name);

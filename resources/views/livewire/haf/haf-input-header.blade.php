@@ -83,9 +83,11 @@
           <i  @click="ShowNew = true" id="add-btn"  class=" mx-2 btn btn-outline-success    fa fa-plus "
                    >&nbsp;&nbsp; حافظة جديدة</i>
           <i  x-show="ShowDel" wire:click="DeleteHafitha" id="del-btn"  class=" mx-2 btn btn-outline-danger    fas fa-times "
-                   >&nbsp;&nbsp;الغاء الحافظة</i>
+                   >&nbsp;&nbsp;الغاء </i>
+          <i  x-show="ShowUpd" wire:click="UpdateHafitha" id="upd-btn"  class=" mx-2 btn btn-outline-primary    fa fa-edit "
+            >&nbsp;&nbsp;تعديل </i>
           <i  x-show="ShowTarheel" id="tar-btn"  wire:click="TarheelHafitha" class=" mx-2 btn btn-outline-info      fas fa-external-link-alt"
-                   >&nbsp;&nbsp;ترحيل الحافظة</i>
+                   >&nbsp;&nbsp;ترحيل </i>
         </div>
 
 
@@ -130,11 +132,30 @@
         </div>
     </div>
   </div>
+
+    <div class="modal fade" id="ModalMyEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button wire:click="CloseEditDialog" type="button" class="btn-close" ></button>
+                    <h1 class="modal-title fs-5 mx-6" id="exampleModalLabel">تعديل الحافظة</h1>
+                </div>
+                <div class="modal-body">
+                    @livewire('haf.edit-haf')
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @push('scripts')
   <script type="text/javascript">
-
+      window.addEventListener('OpenMyEdit', event => {
+          $("#ModalMyEdit").modal('show');
+      })
+      window.addEventListener('CloseMyEdit', event => {
+          $("#ModalMyEdit").modal('hide');
+      })
 
       Livewire.on('goto',postid=>  {
 

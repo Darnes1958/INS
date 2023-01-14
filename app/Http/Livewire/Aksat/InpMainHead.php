@@ -6,6 +6,7 @@ use App\Models\aksat\kst_trans;
 use App\Models\aksat\main;
 use App\Models\aksat\main_items;
 use App\Models\aksat\place;
+use App\Models\sell\rep_sell_tran;
 use App\Models\sell\sell_tran;
 use App\Models\sell\sells;
 use App\Models\bank\bank;
@@ -248,6 +249,10 @@ class InpMainHead extends Component
       $res=DB::connection(Auth()->user()->company)->table('settings')->where('no',3)->first();
       $this->DAY_OF_KSM=$res->s1;
 
-        return view('livewire.aksat.inp-main-head');
+        return view('livewire.aksat.inp-main-head',[
+
+            'RepTable'=>rep_sell_tran::on(Auth()->user()->company)
+                ->where('order_no',$this->order_no)->paginate(10),
+        ]);
     }
 }

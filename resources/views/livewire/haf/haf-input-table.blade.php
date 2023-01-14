@@ -16,10 +16,10 @@
       <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
         <thead class="font-size-12">
         <tr>
-          <th width="6%">ت</th>
-          <th width="16%">رقم العقد</th>
-          <th width="18%">رقم الحساب</th>
-          <th width="26%">الاسم</th>
+          <th width="6%"><a wire:click="DoIndex('ser_in_hafitha')" href="#">ت</a></th>
+          <th width="16%"><a wire:click="DoIndex('no')" href="#">رقم العقد</a></th>
+          <th width="18%"><a wire:click="DoIndex('acc')" href="#">رقم الحساب</a></th>
+          <th width="26%"><a wire:click="DoIndex('name')" href="#">الاسم</a></th>
           <th width="10%">القسط</th>
           <th width="10%">الباقي</th>
           <th width="8%">الحالة</th>
@@ -64,7 +64,7 @@
             </div>
         </div>
 
-      {{ $HafithaTable->links('custom-pagination-links-view') }}
+      {{ $HafithaTable->links() }}
 
 </div>
 

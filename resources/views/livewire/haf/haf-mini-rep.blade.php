@@ -43,7 +43,7 @@
     </table>
 
 
-    {{ $HafithaTable->links('custom-pagination-links-view') }}
+    {{ $HafithaTable->links() }}
 
 </div>
 

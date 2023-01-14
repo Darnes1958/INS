@@ -122,7 +122,7 @@ Route::controller(OrderSellController::class)->group(function (){
 Route::controller(StoresController::class)->group(function (){
   route::get('/stores/add/{from_to}','StoresAdd')->name('stores.add')->middleware('auth');
   route::get('/pdfitemtran/{item_no?}/{item_name?}/{tran_date?}', 'PdfItemTran')->name('pdfitemtran') ;
-
+  route::get('/itemprices','ItemPrices')->name('itemprices')->middleware('auth');
 });
 
 
