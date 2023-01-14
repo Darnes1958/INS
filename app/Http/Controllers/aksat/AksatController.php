@@ -3,10 +3,15 @@
 namespace App\Http\Controllers\aksat;
 
 use App\Http\Controllers\Controller;
+use App\Models\aksat\hafitha;
+use App\Models\aksat\ksm_type;
 use App\Models\aksat\main;
+use App\Models\bank\bank;
+use App\Models\Customers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 class AksatController extends Controller
 {
@@ -28,4 +33,5 @@ class AksatController extends Controller
 
     return view('backend.aksat.EditMain',compact('EditDel'));
   }
+
 }

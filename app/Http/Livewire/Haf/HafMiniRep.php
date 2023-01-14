@@ -23,6 +23,7 @@ class HafMiniRep extends Component
     public $rep_type;
 
     public function TakeKstTypeName($ksttypeno){
+
       $this->rep_type=$ksttypeno;
     }
     public function updatingSearch()
@@ -55,6 +56,7 @@ class HafMiniRep extends Component
                         ->orwhere([
                             ['hafitha_no', '=', $this->hafitha],
                             ['kst_type', '=', $this->rep_type],
+                            ['emp','=',Auth::user()->empno],
                             ['acc', 'like', '%'.$this->search.'%'],]);       })
 
                 ->when(!$this->search || $this->DisRadio=='DisAll', function($q)  {
@@ -69,6 +71,6 @@ class HafMiniRep extends Component
 
                 ->orderBy('acc','asc')
                 ->orderBy('ser_in_hafitha','asc')
-                ->paginate(15)]);
+                ->paginate(12)]);
     }
 }

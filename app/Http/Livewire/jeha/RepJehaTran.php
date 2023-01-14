@@ -47,7 +47,7 @@ class RepJehaTran extends Component
 
             $this->jeha_name = '';
             $this->jeha_type = 0;
-            $conn=Auth()->user()->company;
+
             $res = jeha::on(Auth()->user()->company)->find($this->jeha_no);
             if ($res) {
                 $this->jeha_name = $res->jeha_name;

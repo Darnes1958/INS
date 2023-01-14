@@ -74,6 +74,7 @@ Route::controller(RepAksatController::class)->group(function (){
 
   route::get('/pdfmain/{no}', 'PdfMain')->name('pdfmain') ;
   route::get('/pdfbanksum', 'PdfBankSum')->name('pdfbanksum') ;
+    route::get('/pdfhafmini/{hafitha?}/{rep_type?}/{DisRadio?}}', 'PdfHafMini')->name('pdfhafmini') ;
 
 });
 Route::controller(RepAmaaController::class)->group(function (){

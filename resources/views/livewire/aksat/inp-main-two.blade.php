@@ -1,7 +1,10 @@
+<div class="row ">
 
 
+<div  class="col-md-6 ">
 
-<div x-data  class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
+
+<div x-data  class="row  my-1" style="border:1px solid lightgray;background: white; " >
   <div class="col-md-5">
     <label   class="form-label-me ">رقم الفاتورة الجديدة</label>
     <input wire:model="orderno"  wire:keydown.enter="ChkOrderAndGo" type="number" class=" form-control "
@@ -112,6 +115,66 @@
            wire:click.prevent="SaveCont"   value="تخزين العقد" />
 
   </div>
+</div>
+</div>
+
+<div  class="col-md-6 p-1 my-1" >
+        <div>
+            <table class="table table-sm table-bordered table-striped table-light " width="100%"   >
+                <caption class="caption-top">بيان الفاتورة القديمة</caption>
+                <thead class="font-size-12">
+                <tr>
+                    <th style="width: 14%">رقم الصنف</th>
+                    <th >اسم الصنف</th>
+                    <th style="width: 10%">الكمية</th>
+                    <th style="width: 14%">السعر</th>
+                    <th style="width: 16%">المجموع</th>
+                </tr>
+                </thead>
+                <tbody id="addRow" class="addRow">
+                @foreach($RepTableOld as $key=> $item)
+                    <tr class="font-size-12">
+                        <td> {{ $item->item_no }} </td>
+                        <td> {{ $item->item_name }} </td>
+                        <td> {{ $item->quant }} </td>
+                        <td> {{ $item->price}} </td>
+                        <td> {{ $item->sub_tot }} </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+            {{ $RepTableOld->links() }}
+        </div>
+        <div>
+            <table class="table table-sm table-bordered table-striped table-light " width="100%"   >
+                <caption class="caption-top">بيان الفاتورة الجديدة</caption>
+                <thead class="font-size-12">
+                <tr>
+
+                    <th style="width: 14%">رقم الصنف</th>
+                    <th >اسم الصنف</th>
+                    <th style="width: 10%">الكمية</th>
+                    <th style="width: 14%">السعر</th>
+                    <th style="width: 16%">المجموع</th>
+                </tr>
+                </thead>
+                <tbody id="addRow" class="addRow">
+                @foreach($RepTableNew as $key=> $item)
+                    <tr class="font-size-12">
+                        <td> {{ $item->item_no }} </td>
+                        <td> {{ $item->item_name }} </td>
+                        <td> {{ $item->quant }} </td>
+                        <td> {{ $item->price}} </td>
+                        <td> {{ $item->sub_tot }} </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+            {{ $RepTableNew->links() }}
+        </div>
+    </div>
+
+
 
 </div>
 

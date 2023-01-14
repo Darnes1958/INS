@@ -2,12 +2,19 @@
 
     <div x-data  class="col-md-12 my-1">
         <div class="row">
-            <div class="col-md-10">
+            @role('info')
+            <div class="col-md-11">
                 <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "  class="form-control"   type="text"  >
             </div>
-            <div class="col-md-2">
-                <button wire:click="$emit('CloseOkodArc')"  type="button" class="btn btn-outline-danger btn-sm fa fa-arrow-alt-circle-down" ></button>
+            <div class="col-md-1">
+                <button wire:click="$emit('CloseOkodArc')"  type="button" class="btn btn-outline-danger btn-sm far fa-window-close" ></button>
             </div>
+            @else
+                <div class="col-md-12">
+                    <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "  class="form-control"   type="text"  >
+                </div>
+
+                @endrole
         </div>
         <div x-show="$wire.IsSearch">
             <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >

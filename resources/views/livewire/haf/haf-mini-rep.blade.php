@@ -12,6 +12,10 @@
                name="inlineRadioOptions" id="inlineRadio2" value="DisMe">
         <label class="form-check-label" for="inlineRadio2">عرض ادخالاتي فقط</label>
     </div>
+    <div class="form-check form-check-inline">
+        <a  href="{{route('pdfhafmini',['hafitha'=>$hafitha,'rep_type'=>$rep_type,'DisRadio'=>$DisRadio])}}"
+            class="btn btn-outline-primary btn-sm fas fa-print"></a>
+    </div>
 
     <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
         <thead class="font-size-12">
@@ -22,9 +26,6 @@
             <th width="28%">الاسم</th>
             <th width="10%">القسط</th>
             <th width="10%">الباقي</th>
-
-
-
         </tr>
         </thead>
         <tbody id="addRow" class="addRow">
@@ -36,8 +37,6 @@
                 <td> {{ $item->name }} </td>
                 <td> {{ $item->kst }} </td>
                 <td> {{ $item->baky }} </td>
-
-
             </tr>
         @endforeach
         </tbody>

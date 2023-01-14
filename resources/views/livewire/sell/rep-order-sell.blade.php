@@ -5,23 +5,23 @@
     <div class="col-md-12" >
       @livewire('sell.sell-select')
     </div>
-    <div class="col-md-6">
+    <div class="col-md-7">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-5">
           <label  for="order_no" class="form-label-me ">رقم الفاتورة</label>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
           <input wire:model="order_no"  wire:keydown.enter="ChkOrderNoAndGo" type="text" class=" form-control "
                  id="order_no" name="order_no"   >
         </div>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-5">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="date" class="form-label-me">التاريخ</label>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9">
           <input wire:model="order_date"
                  class="form-control  "  name="date" type="date"  id="date" readonly>
 
@@ -31,12 +31,12 @@
 
 
 
-      <div class="col-md-6">
+      <div class="col-md-7">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-5">
             <label  for="jehano" class="form-label-me">رقم الزبون</label>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-7">
             <input wire:model="jeha_no"
                    class="form-control  "  name="jehano" type="text"  id="jehano" readonly>
           </div>
@@ -44,91 +44,91 @@
       </div>
       <div class="col-md-12">
         <div class="row">
-          <div class="col-md-2">
+          <div class="col-md-3">
             <label   class="form-label-me" > اسم الزبون</label>
           </div>
-          <div class="col-md-10">
+          <div class="col-md-9">
             <input wire:model="jeha_name"   type="text" class=" form-control "  id="jeha_name"   readonly >
           </div>
         </div>
       </div>
     <div class="col-md-12">
       <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-3">
           <label   class="form-label-me ">ملاحظات</label>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-9">
           <input wire:model="notes"   class="form-control" readonly    type="text"   >
         </div>
       </div>
     </div>
     <div class="col-md-12">
       <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-3">
           <label   class="form-label-me ">صدرت من </label>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-9">
           <input wire:model="place_name"   class="form-control" readonly    type="text"   >
         </div>
       </div>
     </div>
     <div class="col-md-12">
       <div class="row">
-        <div class="col-md-2">
-          <label   class="form-label-me ">ظريقة الدفع </label>
+        <div class="col-md-3">
+          <label   class="form-label-me ">'طريقة الدفع </label>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-9">
           <input wire:model="type_name"   class="form-control" readonly    type="text"   >
         </div>
       </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-7">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-5">
           <label  class="form-label-me ">إجمالي الفاتورة</label>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
           <input wire:model="tot1"   type="text" class=" form-control "  readonly >
         </div>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-5">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label  class="form-label-me ">الخصم</label>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9">
           <input wire:model="ksm"   type="text" class=" form-control "  readonly >
         </div>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-7">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-5">
           <label  class="form-label-me ">الاجمالي النهائي</label>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
           <input wire:model="tot"   type="text" class=" form-control "  readonly >
         </div>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-5">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label  class="form-label-me ">المدفوع</label>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9">
           <input wire:model="cash"   type="text" class=" form-control "  readonly >
         </div>
       </div>
     </div>
-    <div class="col-md-6 mb-2">
+    <div class="col-md-7 mb-2">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-5">
           <label  class="form-label-me ">الباقي</label>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
           <input wire:model="not_cash"   type="text" class=" form-control "  readonly >
         </div>
       </div>

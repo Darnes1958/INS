@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\aksat;
 
 use App\Http\Controllers\Controller;
+use App\Models\aksat\hafitha;
+use App\Models\aksat\ksm_type;
+use App\Models\aksat\kst_type;
 use App\Models\aksat\main;
+use App\Models\bank\bank;
 use App\Models\bank\rep_banks;
 use App\Models\Customers;
 use ArPHP\I18N\Arabic;
@@ -77,6 +81,37 @@ class RepAksatController extends Controller
         $pdf = PDF::loadHTML($reportHtml);
         return $pdf->download('report.pdf');
 
+    }
+    public function PdfHafMini(Request $request){
+        $RepDate=date('Y-m-d');
+        $cus=Customers::where('Company',Auth::user()->company)->first();
+        $res = DB::connection(Auth()->user()->company)
+            ->table('hafitha_tran_view')
+            ->where('hafitha_no',  $request->hafitha)
+            ->where('kst_type',  $request->rep_type)
+            ->when( $request->DisRadio=='DisMe', function($q)  {
+                return $q->where(   'emp',Auth::user()->empno); })
+            ->orderBy('acc','asc')
+            ->orderBy('ser_in_hafitha','asc')->get();
+        $bank_no=hafitha::on(Auth()->user()->company)->find($request->hafitha)->bank;
+        $bank_name=bank::on(Auth()->user()->company)->find($bank_no)->bank_name;
+        $kst_type_name=kst_type::on(Auth()->user()->company)->find($request->rep_type)->kst_type_name;
+        if ($request->DisRadio=='DisMe'){
+            $who='مدخلة بواسطة : '.Auth()->user()->name;
+        } else $who='';
+       
+        $reportHtml = view('PrnView.aksat.pdf-haf-mini',
+            ['RepTable'=>$res,'cus'=>$cus,'bank_name'=>$bank_name,'kst_type_name'=>$kst_type_name
+                ,'hafitha'=>$request->hafitha ,'who'=>$who ,'RepDate'=>$RepDate])->render();
+        $arabic = new Arabic();
+        $p = $arabic->arIdentify($reportHtml);
+
+        for ($i = count($p)-1; $i >= 0; $i-=2) {
+            $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+            $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+        }
+        $pdf = PDF::loadHTML($reportHtml);
+        return $pdf->download('report.pdf');
     }
 
 

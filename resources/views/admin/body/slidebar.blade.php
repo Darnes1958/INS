@@ -92,7 +92,7 @@
                 </div>
             </li>
             @endcan
-            @can('ادخال أقساط')
+            @canany(['ادخال أقساط','ادخال حوافظ'])
             <li class="mb-1">
                 <button class="font-size-14 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
                     &nbsp <i class="fa  fas fa-coins" aria-hidden="true"></i>&nbsp اقساط</button>
@@ -104,7 +104,7 @@
                     </ul>
                 </div>
             </li>
-            @endcan
+            @endcanany
             @can('ادخال فائض وترجيع')
             <li class="mb-1">
                 <button class="font-size-14 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#over-collapse" aria-expanded="false">

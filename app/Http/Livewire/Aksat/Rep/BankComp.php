@@ -14,9 +14,12 @@ class BankComp extends Component
   public $Sender;
 
   public $TheBankListIsSelectd;
+
   public function updatedTheBankListIsSelectd(){
     $this->TheBankListIsSelectd=0;
     $this->emit('goto','bank_no');
+
+
     $this->ChkBankAndGo();
   }
   public function mount($sender=null){
@@ -32,6 +35,8 @@ class BankComp extends Component
 
         $this->bank_name=$result->bank_name;
         $this->emitTo($this->Sender,'TakeBank',$this->bank_no);
+
+        $this->emitTo('bank.bank-select','TakeBankNo',$this->bank_no);
       } else {$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون');}
     }
 

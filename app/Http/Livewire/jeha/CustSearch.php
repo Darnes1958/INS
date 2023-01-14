@@ -41,21 +41,32 @@ class CustSearch extends Component
   public function render()
   {
 
-    if ($this->jeha_type!=3)
+    if ($this->jeha_type!=3 && $this->jeha_type!=13)
      return view('livewire.jeha.cust-search', [
       'TableList' => DB::connection(Auth()->user()->company)->table('jeha')
         ->select('jeha_no', 'jeha_name')
         ->where('jeha_type',$this->jeha_type)
         ->where('jeha_name', 'like', '%'.$this->search.'%')
+        ->orderBy('jeha_no','desc')
         ->paginate($this->PagNo)
     ]);
+      if ($this->jeha_type==13)
+          return view('livewire.jeha.cust-search', [
+              'TableList' => DB::connection(Auth()->user()->company)->table('jeha')
+                  ->select('jeha_no', 'jeha_name')
+                  ->where('jeha_type','!=',2)
+                  ->where('jeha_name', 'like', '%'.$this->search.'%')
+                  ->orderBy('jeha_no','desc')
+                  ->paginate($this->PagNo)
+          ]);
     if ($this->jeha_type==3)
       return view('livewire.jeha.cust-search', [
         'TableList' => DB::connection(Auth()->user()->company)->table('jeha')
           ->select('jeha_no', 'jeha_name')
           ->whereNotIn('jeha_type',[1,2])
           ->where('jeha_name', 'like', '%'.$this->search.'%')
-          ->paginate($this->PagNo)
+            ->orderBy('jeha_no','desc')
+            ->paginate($this->PagNo)
       ]);
 
   }

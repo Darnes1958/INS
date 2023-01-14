@@ -7,6 +7,7 @@ use App\Models\aksat\main;
 use App\Models\aksat\main_items;
 use App\Models\aksat\place;
 use App\Models\OverTar\over_kst;
+use App\Models\sell\rep_sell_tran;
 use App\Models\sell\sell_tran;
 use App\Models\sell\sells;
 use App\Models\bank\bank;
@@ -17,10 +18,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use DateTime;
+use Livewire\WithPagination;
 
 class InpMainTwo extends Component
 {
-
+ use WithPagination;
+ protected $paginationTheme = 'bootstrap';
   public $no;
   public $acc;
   public $name;
@@ -59,6 +62,10 @@ class InpMainTwo extends Component
   public $TheBankNoListIsSelectd;
   public $TheOrderNoListIsSelectd;
   public $ThePlaceNoListIsSelectd;
+
+  public $mainitems='rep_sell_tran';
+
+
   public function updatedTheBankNoListIsSelectd(){
     $this->TheBankNoListIsSelectd=0;
     $this->ChkBankAndGo();
@@ -102,6 +109,7 @@ class InpMainTwo extends Component
 
     Config::set('database.connections.other.database', Auth::user()->company);
    $res=sells_view::on(Auth()->user()->company)->where('order_no',$this->orderno)
+     ->where('price_type',2)
      ->whereNotIn('order_no', function($q){
        $q->select('order_no')->from('main');
      })
@@ -111,12 +119,14 @@ class InpMainTwo extends Component
      ->whereNotIn('order_no', function($q){
        $q->select('order_no')->from('MainRes');
      })
-     ->whereIn('jeha', function($q){
-           $q->select('jeha')->from('main');
-     })
      ->first();
+
    if ($res){
      $res_old=main::on(Auth()->user()->company)->where('jeha',$res->jeha)->first();
+     if (! $res_old){
+         $this->dispatchBrowserEvent('mmsg', 'لا يوجد عقد سابق لهذا الزبون ليتم ضمه ');
+         return false;
+     }
      $this->no_old=$res_old->no;
      $this->order_no_old=$res_old->order_no;
      $this->sul_tot_old=$res_old->sul_tot;
@@ -143,6 +153,9 @@ class InpMainTwo extends Component
      $this->emit('goto','no');
      $this->emit('TakeOrderNo',$res->order_no,$res->jeha_name);
      $this->sul_date=date('Y-m-d');
+
+       $this->emit('GetWhereEquelValue2',$this->order_no_old);
+       $this->emit('GetWhereEquelValue',$this->order_no);
 
    } else {$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ');}
   }
@@ -304,6 +317,11 @@ class InpMainTwo extends Component
       $res=DB::connection(Auth()->user()->company)->table('settings')->where('no',3)->first();
       $this->DAY_OF_KSM=$res->s1;
 
-        return view('livewire.aksat.inp-main-two');
+        return view('livewire.aksat.inp-main-two',[
+            'RepTableOld'=>rep_sell_tran::on(Auth()->user()->company)
+            ->where('order_no',$this->order_no_old)->paginate(10),
+            'RepTableNew'=>rep_sell_tran::on(Auth()->user()->company)
+                ->where('order_no',$this->order_no)->paginate(10),
+        ]);
     }
 }

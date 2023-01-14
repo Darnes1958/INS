@@ -2,7 +2,7 @@
   <select  x-bind:disabled="!$wire.NoSelectOpen" wire:model="MainNo" id="Main_L" class="Main_L" >
     <option value="">اختيار من القائمة</option>
     @foreach($MainList as $s)
-      <option value="{{ $s->no }}">{{ $s->name }} | {{ $s->no }} | القسط {{ $s->kst }}</option>
+      <option value="{{ $s->no }}">{{ $s->name }} | {{ $s->no }} | {{ $s->acc }} | القسط  {{ $s->kst }}</option>
     @endforeach
   </select>
 </div>

@@ -2,12 +2,20 @@
 
     <div x-data  class="col-md-12 my-1">
         <div class="row">
-           <div class="col-md-10">
-               <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "  class="form-control"   type="text"  >
+
+          @role('info')
+            <div class="col-md-11">
+                <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "  class="form-control"   type="text"  >
+            </div>
+           <div class="col-md-1">
+              <button wire:click="$emit('CloseOkod')"  type="button" class="btn btn-outline-danger btn-sm far fa-window-close" ></button>
            </div>
-           <div class="col-md-2">
-              <button wire:click="$emit('CloseOkod')"  type="button" class="btn btn-outline-danger btn-sm fa fa-arrow-alt-circle-down" ></button>
-           </div>
+           @else
+                <div class="col-md-12">
+                    <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "  class="form-control"   type="text"  >
+                </div>
+
+           @endrole
         </div>
 
 
