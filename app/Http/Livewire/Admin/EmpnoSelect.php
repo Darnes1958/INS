@@ -15,6 +15,7 @@ class EmpnoSelect extends Component
     protected $listeners = ['comp'];
 
     public function comp($comp){
+
         $this->Comp=$comp;
     }
     public function hydrate(){
@@ -23,7 +24,9 @@ class EmpnoSelect extends Component
     public function render()
     {
 
-        $this->ItemList=DB::connection(Auth()->user()->company)->table('pass')->get();
+        $this->ItemList=DB::connection($this->Comp)
+        ->table('pass')
+        ->get();
 
         return view('livewire.admin.empno-select',$this->ItemList);
 

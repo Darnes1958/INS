@@ -99,6 +99,7 @@
             $('#Database_L').on('change', function (e) {
                 var data = $('#Database_L').select2("val");
             @this.set('database', data);
+
             @this.set('TheDatabaseListIsSelectd', 1);
 
             });

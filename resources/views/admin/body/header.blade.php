@@ -20,9 +20,11 @@
     <a href="{{ url('/home') }}" class="btn btn-outline-success border-0 fas fa-home waves-effect "></a>
   </div>
      <div class="d-flex col-md-2 mt-0 py-1" style="height: 40px;">
-       <a href="{{ url('/dobackup') }}" class="btn btn-outline-success border-0 fas fa-address-card waves-effect "></a>
+       <a href="{{ url('/dodownload') }}" class="btn btn-outline-success border-0 fas fa-address-card waves-effect "></a>
      </div>
-@endrole
+
+
+ @endrole
 
     @auth
          @php
@@ -53,6 +55,8 @@
                 </div>
             </div>
   </div>
+
+
 
  </div>
 

@@ -23,40 +23,34 @@ use Illuminate\Support\Facades\Storage;
 
 class pdfController extends Controller
 {
+    function DoDownload()
+    {
+       // return response()->download(storage_path('app\Daibany_20230115.bak'));
+       // return Storage::download($file);
+        return view('backend.do-backup');
+    }
 
   function DoBackup(){
 
-  //  DB::unprepared(DB::raw("BACKUP DATABASE Daibany TO DISK = 'c:\backup\backup.bak'"));
+
     sqlsrv_configure('WarningsReturnAsErrors',0);
 
     $serverName = ".";
     $connectionInfo = array( "Database"=>"master","TrustServerCertificate"=>"True","UID"=>"hameed",
       "PWD"=>"Medo_2003", "CharacterSet" => "UTF-8");
     $conn = sqlsrv_connect( $serverName, $connectionInfo);
-    $connectionInfo = array(
-      "UID"=>"user",
-      "PWD"=>"password",
-      "Database"=>"ProdDB"
-    );
-  if( $conn === false )
-  {
-    info("Could not connect.");
 
-  }
- else {info('connect');}
+
 $comp=Auth()->user()->company;
     $filename=$comp.'_'.date('Ymd').'.bak';
-    Storage::download($filename);
-    info($filename);
-
-    Storage::put('file.sql', 'declare 
+    Storage::put('file.sql', 'declare
     @path varchar(100),
     @fileDate varchar(20),
     @fileName varchar(140)
 
-    SET @path = \'D:\INS\storage\app\ \'   
-    SELECT @fileDate = CONVERT(VARCHAR(20), GETDATE(), 112)  
-    SET @fileName = @path + \''.$filename.'\'  
+    SET @path = \'D:\INS\storage\app\\\'
+    SELECT @fileDate = CONVERT(VARCHAR(20), GETDATE(), 112)
+    SET @fileName = @path + \''.$filename.'\'
     BACKUP DATABASE '.$comp.' TO DISK=@fileName');
 
 
@@ -67,12 +61,15 @@ $comp=Auth()->user()->company;
       if ($query === false) {
         die(var_export(sqlsrv_errors(), true));
       } else {
-        sleep(5);
-        echo "Success";
+       info($filename);
+
       }
     }
-    sleep(5);
-  return  Storage::download($filename);
+
+
+   // $this->DoDownload($filename);
+   //   Storage::download($filename);
+   return true;
   //  Storage::delete($filename);
 
   }
