@@ -29,8 +29,14 @@ class pdfController extends Controller
     sqlsrv_configure('WarningsReturnAsErrors',0);
 
     $serverName = ".";
-    $connectionInfo = array( "Database"=>"master","TrustServerCertificate"=>"True", "CharacterSet" => "UTF-8");
+    $connectionInfo = array( "Database"=>"master","TrustServerCertificate"=>"True","UID"=>"hameed",
+      "PWD"=>"Medo_2003", "CharacterSet" => "UTF-8");
     $conn = sqlsrv_connect( $serverName, $connectionInfo);
+    $connectionInfo = array(
+      "UID"=>"user",
+      "PWD"=>"password",
+      "Database"=>"ProdDB"
+    );
   if( $conn === false )
   {
     info("Could not connect.");
