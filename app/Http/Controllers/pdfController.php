@@ -18,6 +18,7 @@ use Illuminate\Database\PDO;
 use ArPHP\I18N\Arabic;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 
 class pdfController extends Controller
@@ -43,7 +44,24 @@ class pdfController extends Controller
 
   }
  else {info('connect');}
-    $strSQL = file_get_contents("c:\backup\arch.sql");
+$comp=Auth()->user()->company;
+    $filename=$comp.'_'.date('Ymd').'.bak';
+    Storage::download($filename);
+    info($filename);
+
+    Storage::put('file.sql', 'declare 
+    @path varchar(100),
+    @fileDate varchar(20),
+    @fileName varchar(140)
+
+    SET @path = \'D:\INS\storage\app\ \'   
+    SELECT @fileDate = CONVERT(VARCHAR(20), GETDATE(), 112)  
+    SET @fileName = @path + \''.$filename.'\'  
+    BACKUP DATABASE '.$comp.' TO DISK=@fileName');
+
+
+    $strSQL = Storage::get('file.sql');
+ //   $strSQL = file_get_contents("c:\backup\arch.sql");
     if (!empty($strSQL)) {
       $query = sqlsrv_query($conn, $strSQL);
       if ($query === false) {
@@ -53,6 +71,9 @@ class pdfController extends Controller
         echo "Success";
       }
     }
+    sleep(5);
+  return  Storage::download($filename);
+  //  Storage::delete($filename);
 
   }
    function RepOrderPdf(Request $request){
