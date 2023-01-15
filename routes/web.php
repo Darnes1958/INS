@@ -25,6 +25,8 @@ Route::get('/', function () {
 Auth::routes();
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
 Route::get('/home',function () {    return view('admin.index');});
 
 Route::get('/livewirerep/',[RepOrderBuy::class,'printView'])->name('livego');
@@ -34,6 +36,7 @@ Route::get('/livewirerep/',[RepOrderBuy::class,'printView'])->name('livego');
 Route::controller(pdfController::class)->group(function (){
     route::get('/reporderbuypdf/{order_no?}/{jeha_name?}/{place_name?}', 'RepOrderPdf')->name('reporderbuypdf') ;
     route::get('/pdfmosdada/{bank_no?}/{baky?}/{bank_name?}', 'PdfMosdada')->name('pdfmosdada') ;
+    route::get('/dobackup', 'DoBackup')->name('dobackup') ;
 
 });
 Route::controller(AdminController::class)->group(function (){

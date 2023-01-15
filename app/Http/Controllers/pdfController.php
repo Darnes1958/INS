@@ -22,7 +22,24 @@ use Illuminate\Support\Facades\DB;
 class pdfController extends Controller
 {
 
-  public function RepOrderPdf(Request $request){
+  function DoBackup(){
+    $serverName = ".";
+    $connectionInfo = array( "Database"=>"Daibany","TrustServerCertificate"=>"True", "CharacterSet" => "UTF-8");
+    $cn = sqlsrv_connect( $serverName, $connectionInfo);
+    $backup_file = "C:\backup\TestDB_Backup.bak";
+    $sql = "BACKUP DATABASE Daibany TO DISK = '".$backup_file."'";
+    $stmt = sqlsrv_query($cn, $sql);
+    if($stmt === false)
+    {
+      die(print_r(sqlsrv_errors()));
+    }
+    else
+    {
+      echo "Database backed up to $backup_file";
+    }
+
+  }
+   function RepOrderPdf(Request $request){
     $order_no=$request->order_no;
     $res=buys::on(Auth()->user()->company)->where('order_no',$order_no)->first();
     if ($order_no==null || $order_no==0 || !$res) return(false);
