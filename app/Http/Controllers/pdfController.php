@@ -11,6 +11,7 @@ use App\Models\stores\stores_names;
 use Illuminate\Http\Request;
 
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Database\PDO;
 
 
 
@@ -23,19 +24,28 @@ class pdfController extends Controller
 {
 
   function DoBackup(){
+
+  //  DB::unprepared(DB::raw("BACKUP DATABASE Daibany TO DISK = 'c:\backup\backup.bak'"));
+    sqlsrv_configure('WarningsReturnAsErrors',0);
+
     $serverName = ".";
-    $connectionInfo = array( "Database"=>"Daibany","TrustServerCertificate"=>"True", "CharacterSet" => "UTF-8");
-    $cn = sqlsrv_connect( $serverName, $connectionInfo);
-    $backup_file = "C:\backup\TestDB_Backup.bak";
-    $sql = "BACKUP DATABASE Daibany TO DISK = '".$backup_file."'";
-    $stmt = sqlsrv_query($cn, $sql);
-    if($stmt === false)
-    {
-      die(print_r(sqlsrv_errors()));
-    }
-    else
-    {
-      echo "Database backed up to $backup_file";
+    $connectionInfo = array( "Database"=>"master","TrustServerCertificate"=>"True", "CharacterSet" => "UTF-8");
+    $conn = sqlsrv_connect( $serverName, $connectionInfo);
+  if( $conn === false )
+  {
+    info("Could not connect.");
+
+  }
+ else {info('connect');}
+    $strSQL = file_get_contents("c:\backup\arch.sql");
+    if (!empty($strSQL)) {
+      $query = sqlsrv_query($conn, $strSQL);
+      if ($query === false) {
+        die(var_export(sqlsrv_errors(), true));
+      } else {
+        sleep(5);
+        echo "Success";
+      }
     }
 
   }
