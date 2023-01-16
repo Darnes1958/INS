@@ -20,7 +20,7 @@ class BankSelect extends Component
   ];
 
   public function TakeBankNo($bankno){
-info($bankno);
+
       $this->BankNo = $bankno;
 
   }

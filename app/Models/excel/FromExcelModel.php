@@ -13,6 +13,6 @@ class FromExcelModel extends Model
   protected $guarded = [];
   protected $table = 'FromExcel';
 
-  public $incrementing = false;
+
   public $timestamps = false;
 }

@@ -19,11 +19,10 @@ class FromExcel extends Component
   public $filename;
   public $Show=false;
   public $ShowDo=false;
+  public $TajNo=0;
 
 
   protected $listeners = ['show'];
-
-
 
   public function show($show){
 
