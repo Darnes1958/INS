@@ -19,6 +19,8 @@ public $text;
       $this->emitTo('admin.rep-users','show',False);
       $this->emitTo('admin.rep-old-roles','show',false);
       $this->emitTo('admin.rep-roles','show',false);
+      $this->emitTo('admin.from-excel','show',false);
+      $this->emitTo('admin.to-hafitha','show',false);
   }
   public function InpUser(){
     $this->FalseAll();
@@ -46,6 +48,19 @@ public $text;
 
         $this->emitTo('admin.rep-roles','show',True);
     }
+  public function FromExcel(){
+    $this->FalseAll();
+
+    $this->emitTo('admin.from-excel','show',True);
+  }
+  public function ToHafitha(){
+    $this->FalseAll();
+
+    $this->emitTo('admin.to-hafitha','show',True);
+  }
+
+
+
     public function Clickme(){
         $agent = new Agent();
         $this->text = $agent->platform();

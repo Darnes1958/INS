@@ -25,6 +25,12 @@
          <button  wire:click="Clickme" class="col-md-1 mx-1 btn btn-primary">
              {{$text}}
          </button>
+       <button  wire:click="FromExcel" class="col-md-1 mx-1 btn btn-danger fas fa fa-file-excel">
+         From Excell
+       </button>
+       <button  wire:click="ToHafitha" class="col-md-1 mx-1 btn btn-danger fas fa fa-table">
+         Excell To Hafitha
+       </button>
 
 
      </div>
@@ -35,6 +41,8 @@
      @livewire('admin.manage-roles')
      @livewire('admin.rep-old-roles')
      @livewire('admin.rep-roles')
+     @livewire('admin.from-excel')
+      @livewire('admin.to-hafitha')
     </div>
 
 

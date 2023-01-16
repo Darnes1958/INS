@@ -17,6 +17,7 @@ use App\Http\Controllers\pdfController;
 use App\Http\Livewire\Buy\RepOrderBuy;
 use App\Http\Controllers\Masr\MasrController;
 use App\Http\Controllers\bank\BankController;
+use App\Http\Controllers\ExcelController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,6 +31,11 @@ Auth::routes();
 Route::get('/home',function () {    return view('admin.index');});
 
 Route::get('/livewirerep/',[RepOrderBuy::class,'printView'])->name('livego');
+
+Route::controller(ExcelController::class)->group(function (){
+
+  route::get('/impfromSheet/{filename}', 'ImportFromSheet')->name('impfromsjeet')->middleware('auth');
+});
 
 
 
