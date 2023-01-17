@@ -18,6 +18,8 @@ class ToHafitha extends Component
   public $FromExcel;
   public $BankList;
   public $BankList2;
+  public $bankl=0;
+  public $theone;
   protected $listeners = ['show'];
 
   public function show($show){
@@ -104,10 +106,13 @@ class ToHafitha extends Component
 }
   protected function FillKstHaf($bank){
 
-
+     
     $NoList=FromExcelModel::on(Auth()->user()->company)->select('no','MainArcWrong')
+        ->where('bank',$bank)
         ->where('no','!=',0)
         ->distinct()->get();
+
+
        foreach ($NoList as $NoAndType) {$this->FillNoData($NoAndType);}
 
 
@@ -127,12 +132,29 @@ class ToHafitha extends Component
 
   }
     public function Do2(){
-        $this->BankList=FromExcelModel::on(Auth()->user()->company)->select('bank')->distinct()->get();
+
+
+            $this->FillKstHaf(1);
+        $this->FillKstHaf(2);
+
+    }
+    public function Do21(){
+        $this->BankList=FromExcelModel::on(Auth()->user()->company)
+            ->where('bank','>',2)
+            ->select('bank')->distinct()->get();
         foreach ($this->BankList as $bank){
             $this->FillKstHaf($bank->bank);
         }
     }
-    public function Do3(){
+    public function fillOne(){
+      $this->theone=$this->bankl;
+    }
+    public function DoOne(){
+
+            $this->FillKstHaf($this->theone);
+
+    }
+    public function DoWrong(){
         $this->BankList2=FromExcelModel::on(Auth()->user()->company)
         ->where('no',0)
         ->select('bank')->distinct()->get();
@@ -209,6 +231,10 @@ class ToHafitha extends Component
 
     public function render()
     {
-        return view('livewire.admin.to-hafitha');
+        return view('livewire.admin.to-hafitha',[
+        'form_bank'=>FromExcelModel::on(Auth()->user()->company)
+            ->select('bank')
+            ->orderBy('bank')
+            ->distinct()->get()]);
     }
 }
