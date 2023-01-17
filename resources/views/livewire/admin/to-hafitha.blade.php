@@ -1,6 +1,10 @@
 <div x-data x-show="$wire.Show" class="col-md-12">
   <div class="card">
+<<<<<<< HEAD
     <div class="card-header" style="background: lightblue">ملء الحافظة</div>
+=======
+    <div class="card-header">ملء الحافظة</div>
+>>>>>>> 98f7920a652c240252e5ebfe67638204456b6db2
     <div class="card-body">
       <div class="row my-1">
         <div class=" col-md-4">

@@ -12,7 +12,10 @@
         <div x-show="$wire.ShowDo" class="col-md-2">
           <a   href="{{route('impfromsheet',['filename'=>$filename,'TajNo'=>$TajNo])}}"
                class="btn btn-outline-success border-0   ">Do</a>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 98f7920a652c240252e5ebfe67638204456b6db2
         </div>
 
       </div>
