@@ -26,7 +26,7 @@ class InpUser extends Component
 
     public function updatedTheDatabaseListIsSelectd(){
         $this->TheDatabaseListIsSelectd=0;
-        
+
         $this->emitTo('admin.empno-select','comp',$this->database);
     }
     public $TheEmpListIsSelectd;

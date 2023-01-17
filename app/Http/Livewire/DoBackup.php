@@ -16,14 +16,16 @@ class DoBackup extends Component
      //   $this->DeleteTheFile();
     }
     public function DeleteTheFile(){
-        info($this->filename);
+
         Storage::delete($this->filename);
         //return response()->download(storage_path('app\\'.$this->filename));
       //  return Storage::download($this->filename);
+      return redirect()->to('/home');
     }
     public function DoBackup(){
         sqlsrv_configure('WarningsReturnAsErrors',0);
 
+        $path=storage_path().'\app';
         $serverName = ".";
         $connectionInfo = array( "Database"=>"master","TrustServerCertificate"=>"True","UID"=>"hameed",
             "PWD"=>"Medo_2003", "CharacterSet" => "UTF-8");
@@ -38,7 +40,7 @@ class DoBackup extends Component
     @fileDate varchar(20),
     @fileName varchar(140)
 
-    SET @path = \'D:\INS\storage\app\\\'
+    SET @path = \''.$path.'\\\'
     SELECT @fileDate = CONVERT(VARCHAR(20), GETDATE(), 112)
     SET @fileName = @path + \''.$this->filename.'\'
     BACKUP DATABASE '.$this->comp.' TO DISK=@fileName');

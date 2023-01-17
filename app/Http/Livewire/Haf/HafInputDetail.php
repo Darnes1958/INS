@@ -234,7 +234,7 @@ class HafInputDetail extends Component
        $this->emit('DoChkBankNo');
 
      } catch (\Exception $e) {
-         info($e);
+
        DB::connection(Auth()->user()->company)->rollback();
        $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
      }

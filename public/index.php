@@ -3,6 +3,7 @@
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
+set_time_limit(300);
 define('LARAVEL_START', microtime(true));
 
 /*

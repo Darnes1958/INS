@@ -20,7 +20,10 @@ use Livewire\Component;
 class OrderSellHead extends Component
 {
 
-    public $MyConn;
+    public $ToSal_L;
+    public $ToSal=false;
+
+
     public $order_no;
     public $order_date;
     public $jeha_no;
@@ -44,6 +47,7 @@ class OrderSellHead extends Component
   protected $listeners = [
     'mounthead','jehaadded','Take_Search_JehaNo',
   ];
+
 
   public function updatedThePriceListIsSelected(){
     $this->ThePriceListIsSelected=0;
@@ -202,9 +206,16 @@ public function ChkPlace(){
         $this->validate();
         $this->JehaKeyDown();
         if ($this->ChkPlace()=='empty') {$this->dispatchBrowserEvent('mmsg', 'يجب ادخال نقطة البيع ؟'); return(false);}
+        if ($this->ToSal){
+          if ($this->ToSal_L==null || !(halls_names::on(auth()->user()->company)->where('hall_no',$this->ToSal_L)->first()->exists())){
+            $this->dispatchBrowserEvent('mmsg', 'يجب ادخال رقم صالة صحيح');
+            return false;
+          }
+        }
+
         $this->HeadOpen=false;
         $this->HeadDataOpen=true;
-        $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha_no,$this->OredrSellRadio,$this->stno,$this->price_type);
+        $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha_no,$this->OredrSellRadio,$this->stno,$this->price_type,$this->ToSal,$this->ToSal_L);
         $this->emit('mountdetail',$this->OredrSellRadio,$this->stno,$this->st_name,$this->price_type);
         return (true);
     }

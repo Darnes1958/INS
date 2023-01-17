@@ -34,7 +34,7 @@ Route::get('/livewirerep/',[RepOrderBuy::class,'printView'])->name('livego');
 
 Route::controller(ExcelController::class)->group(function (){
 
-  route::get('/impfromSheet/{filename}', 'ImportFromSheet')->name('impfromsjeet')->middleware('auth');
+  route::get('/impfromsheet/{filename?}/{TajNo?}', 'ImportFromSheet')->name('impfromsheet')->middleware('auth');
 });
 
 

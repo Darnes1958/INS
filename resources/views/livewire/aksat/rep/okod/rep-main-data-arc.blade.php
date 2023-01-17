@@ -54,6 +54,15 @@
       <label x-show="$wire.notes!='' && $wire.notes!=null && $wire.notes!='0'" for="notes" class="form-label-me" style="width: 20% ">ملاحظات</label>
       <textarea x-show="$wire.notes!='' && $wire.notes!=null && $wire.notes!='0'"  wire:model="notes"  class="form-control"  style="width: 80% " id="notes" readonly></textarea>
     </div>
+
+
+     @unlessrole('info')
+     <div  >
+       <a wire:click="Retrieve" class="btn btn-info waves-effect waves-light mx-10"><i class="fa fa-archive"> &nbsp;&nbsp;استرجاع&nbsp;&nbsp;</i></a>
+     </div>
+     @endunlessrole
+
+
     @livewire('tools.my-table2',
     ['TableName' => $mainitems,
     'ColNames' =>['item_no','item_name','quant','price','sub_tot'],
@@ -135,8 +144,15 @@
         window.addEventListener('OpenArcModal', event => {
             $("#ModalArc").modal('show');
         })
-    </script>
-    <script type="text/javascript">
+        window.addEventListener('retrieve',function(e){
+            MyConfirm.fire({
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Livewire.emit('DoRetrieve');
+                }
+            })
+        });
 
         window.addEventListener('mmsg',function(e){
             MyMsg.fire({

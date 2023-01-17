@@ -59,10 +59,18 @@
         <label x-show="$wire.notes!='' && $wire.notes!=null && $wire.notes!='0'" for="notes" class="form-label-me" style="width: 20% ">ملاحظات</label>
         <textarea x-show="$wire.notes!='' && $wire.notes!=null && $wire.notes!='0'"  wire:model="notes"  class="form-control"  style="width: 80% " id="notes" readonly></textarea>
     </div>
-   <div class="d-inline-flex align-items-center">
-     <a  href="{{route('pdfmain',$no)}}"
-         class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
+   <div class="row">
+     <div class="col-md-2">
+       <a  href="{{route('pdfmain',$no)}}" class="btn btn-success waves-effect waves-light "><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
+     </div>
+     <div class="col-md-7"> </div>
+     @unlessrole('info')
+      <div class="col-md-3 " >
+        <a wire:click="Archive" class="btn btn-info waves-effect waves-light mx-10"><i class="fa fa-archive"> &nbsp;&nbsp;نقل للأرشيف&nbsp;&nbsp;</i></a>
+      </div>
+     @endunlessrole
    </div>
+
     @livewire('tools.my-table2',
     ['TableName' => $mainitems,
     'ColNames' =>['item_no','item_name','quant','price','sub_tot'],
@@ -144,9 +152,15 @@
         window.addEventListener('OpenArcModal', event => {
             $("#ModalArc").modal('show');
         })
-    </script>
-    <script type="text/javascript">
-
+        window.addEventListener('arch',function(e){
+            MyConfirm.fire({
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Livewire.emit('DoArch');
+                }
+            })
+        });
         window.addEventListener('mmsg',function(e){
             MyMsg.fire({
                 confirmButtonText:  e.detail,

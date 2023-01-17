@@ -69,7 +69,7 @@
             @error('order_date') <span class="error">{{ $message }}</span> @enderror
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4 my-2">
             <label   for="storeno" class="form-label-me">{{$PlaceLabel}}</label>
             <input  wire:model="stno" wire:keydown.enter="PlaceKeyEnter"
                     class="form-control  "
@@ -78,7 +78,7 @@
         </div>
 
         @if ($OredrSellRadio=='Salat')
-        <div  class="col-md-8" >
+        <div  class="col-md-8 my-2" >
            <label  class="form-label-me">اختيار من القائمة</label>
             <select  wire:model="storel" wire:click="FillStno" name="store_id" id="store_id" class="form-control  form-select "
                      style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"
@@ -90,7 +90,7 @@
         </div>
         @endif
         @if ($OredrSellRadio=='Makazen')
-            <div  class="col-md-8" >
+            <div  class="col-md-8 my-2" >
                 <label  class="form-label-me">اختيار من القائمة</label>
                 <select  wire:model="storel"   name="store_id" id="store_id" class="form-control  form-select "
                          style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"
@@ -102,11 +102,37 @@
             </div>
         @endif
 
-        <div class="my-3 align-center justify-content-center "  style="display: flex">
-
-            <input type="button"  id="head-btn"
+        <div class=" col-md-12 my-3 align-center justify-content-center "  style="display: flex">
+            <div class="col-md-3 align-center justify-content-center">
+               <input type="button"  id="head-btn"
                    class=" btn btn-outline-success  waves-effect waves-light   "
                    wire:click.prevent="BtnHeader"  wire:keydown.enter="BtnHeader" value="موافق" />
+            </div>
+
+            @if ($OredrSellRadio=='Makazen')
+             <div  class="col-md-2">
+                <input class="form-check-input" name="repchk" type="checkbox" wire:model="ToSal"  >
+                <label class="form-check-label" for="repchk">نقل للصالة</label>
+             </div>
+            <div class="col-md-2">
+                <input  wire:model="ToSal_L"
+                        class="form-control  "
+                         type="text"  id="ToSal_No" >
+                @error('ToSal_L') <span class="error">{{ $message }}</span> @enderror
+            </div>
+            <div class="col-md-4 mx-1">
+
+              <select   wire:model="ToSal_L" name="sal_l_id" id="sal_l_id" class="form-control  form-select "
+                        style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;width: 100%"         >
+                  @foreach($halls_names as $key=>$s)
+                      <option value="{{ $s->hall_no }}">{{ $s->hall_name }}</option>
+                  @endforeach
+              </select>
+           </div>
+           @endif
+
+
+
 
         </div>
     </div>

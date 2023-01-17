@@ -112,27 +112,33 @@ class HafInputTable extends Component
             ->when($this->search || $this->DisRadio=='DisAll', function($q)  {
                 return $q->where([
                             ['hafitha_no', '=', $this->hafitha],
+                            ['hafitha_state', '=', 0],
                             ['name', 'like', '%'.$this->search.'%'],])
                          ->orwhere([
                             ['hafitha_no', '=', $this->hafitha],
+                            ['hafitha_state', '=', 0],
                             ['acc', 'like', '%'.$this->search.'%'],]);       })
             ->when($this->search || $this->DisRadio=='DisMe', function($q)  {
                 return $q->where([
                     ['hafitha_no', '=', $this->hafitha],
+                    ['hafitha_state', '=', 0],
                     ['emp','=',Auth::user()->empno],
                     ['name', 'like', '%'.$this->search.'%'],])
                     ->orwhere([
                         ['hafitha_no', '=', $this->hafitha],
+                        ['hafitha_state', '=', 0],
                         ['acc', 'like', '%'.$this->search.'%'],]);       })
 
 
 
             ->when(!$this->search || $this->DisRadio=='DisAll', function($q)  {
                 return $q->where([
-                    ['hafitha_no', '=', $this->hafitha],]);       })
+                    ['hafitha_no', '=', $this->hafitha],
+                    ['hafitha_state', '=', 0],]);       })
             ->when(!$this->search || $this->DisRadio=='DisMe', function($q)  {
                 return $q->where([
                     ['hafitha_no', '=', $this->hafitha],
+                    ['hafitha_state', '=', 0],
                     ['emp','=',Auth::user()->empno], ]);       })
 
             ->orderBy($this->index,'asc')

@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Aksat\Rep\Okod;
 
 use App\Models\aksat\chk_tasleem;
+use App\Models\aksat\kst_trans;
+use App\Models\aksat\main;
 use App\Models\aksat\MainArc;
 use App\Models\bank\bank;
 use App\Models\jeha\jeha;
@@ -50,8 +52,80 @@ class RepMainData extends Component
     public $HasArc=false;
 
     protected $listeners = [
-        'GotoDetail',
+        'GotoDetail','DoArch','refreshme'=>'$refresh'
     ];
+
+    public function Archive(){
+      $this->dispatchBrowserEvent('arch');
+    }
+    public function DoArch(){
+      DB::connection(Auth()->user()->company)->beginTransaction();
+      try {
+        $select = main::on(Auth()->user()->company)->where('no',$this->no)->select('no','name','bank','acc','sul_date','sul_type','sul_tot','dofa','sul',
+          'kst','kst_count','sul_pay','raseed','order_no','jeha','place','notes','chk_in','chk_out','last_order','ref_no','emp','inp_date');
+        $bindings = $select->getBindings();
+        $insertQuery = 'INSERT into mainarc (no,name,bank,acc,sul_date,sul_type,sul_tot,dofa,sul,kst,kst_count,sul_pay,raseed,order_no,
+                                               jeha,place,notes,chk_in,chk_out,last_order,ref_no,emp,inp_date) '. $select->toSql();
+        DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
+
+        $select = kst_trans::on(Auth()->user()->company)->where('no',$this->no)->select('ser','no','kst_date','ksm_type','chk_no','kst','ksm_date','ksm','h_no','emp','kst_notes','inp_date');
+        $bindings = $select->getBindings();
+        $insertQuery = 'INSERT into transarc (ser,no,kst_date,ksm_type,chk_no,kst,ksm_date,ksm,h_no,emp,kst_notes,inp_date) '. $select->toSql();
+        DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
+
+        $select = over_kst::on(Auth()->user()->company)->where('no',$this->no)->select('no','name','bank','acc','kst','tar_type','tar_date','letters','emp','h_no','inp_date');
+        $bindings = $select->getBindings();
+        $insertQuery = 'INSERT into over_kst_a (no,name,bank,acc,kst,tar_type,tar_date,letters,emp,h_no,inp_date) '. $select->toSql();
+        DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
+
+        DB::connection(Auth()->user()->company)->table('over_kst')->where('no',$this->no)->delete();
+        DB::connection(Auth()->user()->company)->table('kst_trans')->where('no',$this->no)->delete();
+        DB::connection(Auth()->user()->company)->table('main')->where('no',$this->no)->delete();
+        DB::connection(Auth()->user()->company)->commit();
+
+
+
+        $this->emit('GotoTrans',0);
+        $this->emit('GetWhereEquelValue2',0);
+        $this->HasArc=false;
+        $this->HasChk=false;
+        $this->HasOver=false;
+        $this->HasTar=false;
+        $this->no=0;
+        $this->acc='';
+        $this->name='';
+        $this->order_no='';
+        $this->jeha=0;
+        $this->sul_tot='';
+        $this->sul='';
+        $this->sul_date='';
+        $this->sul_pay='';
+        $this->raseed='';
+        $this->kst_count='';
+        $this->kst='';
+        $this->chk_in='';
+        $this->chk_out='';
+        $this->notes='';
+        $this->bank='';
+        $this->bank_name='';
+
+        $tel='';
+        $this->libyana='';
+        $this->mdar='';
+
+        $this->OverKst='';
+        $this->TarKst='';
+        $this->ArcMain='';
+        $this->ChkTasleem='';
+
+      } catch (\Exception $e) {
+
+        DB::connection(Auth()->user()->company)->rollback();
+        $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
+      }
+
+
+    }
 
     public function ShowOver(){
        $this->HasOver=!$this->HasOver;
