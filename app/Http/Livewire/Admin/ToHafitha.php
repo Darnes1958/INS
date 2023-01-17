@@ -17,6 +17,7 @@ class ToHafitha extends Component
   public $Show=false;
   public $FromExcel;
   public $BankList;
+  public $BankList2;
   protected $listeners = ['show'];
 
   public function show($show){
@@ -109,22 +110,36 @@ class ToHafitha extends Component
         ->distinct()->get();
        foreach ($NoList as $NoAndType) {$this->FillNoData($NoAndType);}
 
-    $AccList=FromExcelModel::on(Auth()->user()->company)->select('bank','acc')
-         ->where('no','=',0)
-         ->where('bank',$bank)
-         ->distinct()->get();
+
+  }
+    protected function Fillwrong($bank){
+        $AccList=FromExcelModel::on(Auth()->user()->company)->select('bank','acc')
+            ->where('no','=',0)
+            ->where('bank',$bank)
+            ->distinct()->get();
 
         foreach ($AccList as $BankAndAcc){$this->FillWrongData($BankAndAcc);  }
-  }
+    }
   public function Do(){
     $this->FromExcel=FromExcelModel::on(Auth()->user()->company)->get();
     if (!$this->FillNoBankMainArc($this->FromExcel)) return false;
 
-    $this->BankList=FromExcelModel::on(Auth()->user()->company)->select('bank')->distinct()->get();
-    foreach ($this->BankList as $bank){
-       $this->FillKstHaf($bank->bank);
-    }
+
   }
+    public function Do2(){
+        $this->BankList=FromExcelModel::on(Auth()->user()->company)->select('bank')->distinct()->get();
+        foreach ($this->BankList as $bank){
+            $this->FillKstHaf($bank->bank);
+        }
+    }
+    public function Do3(){
+        $this->BankList2=FromExcelModel::on(Auth()->user()->company)
+        ->where('no',0)
+        ->select('bank')->distinct()->get();
+        foreach ($this->BankList2 as $bank){
+            $this->Fillwrong($bank->bank);
+        }
+    }
   public function Tarheel(){
       $BankList=FromExcelModel::on(Auth()->user()->company)->select('bank','h_no')->distinct()->get();
       DB::connection(Auth()->user()->company)->beginTransaction();
@@ -186,11 +201,12 @@ class ToHafitha extends Component
 
 
       } catch (\Exception $e) {
-info($e);
+
           DB::connection(Auth()->user()->company)->rollback();
           $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
       }
   }
+
     public function render()
     {
         return view('livewire.admin.to-hafitha');
