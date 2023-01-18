@@ -3,6 +3,9 @@
     <div class="row justify-content-center">
 
      <div class="row col-md-12 my-1 ">
+       <div class="col-md-2">
+         @livewire('admin.database-select')
+       </div>
 
              <button  wire:click="InpUser" class="col-md-1 mx-1 btn btn-primary">
                  Input New User
@@ -44,6 +47,33 @@
      @livewire('admin.from-excel')
       @livewire('admin.to-hafitha')
     </div>
+
+    @push('scripts')
+
+      <script>
+
+          $(document).ready(function ()
+          {
+              $('#Database_L').select2({
+                  closeOnSelect: true
+              });
+              $('#Database_L').on('change', function (e) {
+                  var data = $('#Database_L').select2("val");
+              @this.set('database', data);
+
+              @this.set('ThedatabaseListIsSelectd', 1);
+
+              });
+          });
+          window.livewire.on('database-change-event',()=>{
+              $('#Database_L').select2({
+                  closeOnSelect: true
+              });
+
+          });
+      </script>
+    @endpush
+
 
 
 

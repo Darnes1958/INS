@@ -11,6 +11,16 @@ use Jenssegers\Agent\Agent;
 class AdminPage extends Component
 {
 public $text;
+
+public $database='Daibany';
+public $ThedatabaseListIsSelectd;
+
+  public function updatedThedatabaseListIsSelectd(){
+    $this->ThedatabaseListIsSelectd=0;
+    User::find(auth()->user()->id)->update(['company'=>$this->database]);
+
+    $this->emitTo('admin.empno-select','comp',$this->database);
+  }
   protected function FalseAll(){
       $this->emitTo('admin.manage-roles','show',False);
       $this->emitTo('admin.inp-user','show',False);

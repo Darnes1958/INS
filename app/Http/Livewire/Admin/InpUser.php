@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Admin;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -12,9 +13,9 @@ class InpUser extends Component
 {
   public $name;
   public $username;
-  public $database;
+
   public $password=12345678;
-  public $email;
+  public $email='Nuri@Gmail';
   public $IsAdmin=0;
   public $empno;
 
@@ -22,19 +23,13 @@ class InpUser extends Component
 
   protected $listeners = ['show'];
 
-    public $TheDatabaseListIsSelectd;
 
-    public function updatedTheDatabaseListIsSelectd(){
-        $this->TheDatabaseListIsSelectd=0;
-
-        $this->emitTo('admin.empno-select','comp',$this->database);
-    }
     public $TheEmpListIsSelectd;
 
     public function updatedTheEmpListIsSelectd(){
      $this->TheEmpListIsSelectd=0;
 
-        $res=DB::connection($this->database)->table('pass')->where('EMP_NO',$this->empno)->first();
+        $res=DB::connection(Auth()->user()->company)->table('pass')->where('EMP_NO',$this->empno)->first();
 
         $this->name=$res->EMP_NAME;
         $this->username=$res->EMP_NAME;
@@ -52,7 +47,7 @@ class InpUser extends Component
       'email' => $this->email,
       'password' => Hash::make($this->password),
       'username' => $this->username,
-      'company' => $this->database,
+      'company' =>Auth()->user()->company,
       'empno' => $this->empno,
       'IsAdmin' => $this->IsAdmin,
     ]);
@@ -66,6 +61,7 @@ class InpUser extends Component
   }
     public function render()
     {
+
         return view('livewire.admin.inp-user');
     }
 }

@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 class AdminController extends Controller
 {
+  public function ManagerPage (){
+
+    return view('backend.manager');
+
+  }
     public function destroy(Request $request)
     {
         Auth::guard('web')->logout();

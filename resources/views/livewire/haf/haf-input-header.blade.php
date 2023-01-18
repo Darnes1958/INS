@@ -78,7 +78,7 @@
 
     </table><br>
       <div x-data="{isUploading:  @entangle('HafUpload'), progress: @entangle('HafProgress'),count: @entangle('HafCount'),
-          ShowNew : @entangle('ShowHafNew'),ShowDel : @entangle('ShowHafDel'),ShowTarheel : @entangle('ShowHafTarheel')}">
+          ShowNew : @entangle('ShowHafNew'),ShowUpd : @entangle('ShowHafUpd'),ShowDel : @entangle('ShowHafDel'),ShowTarheel : @entangle('ShowHafTarheel')}">
         <div  class="my-3 py-3 align-center justify-content-center  "  style="display: flex;border: solid lightgray 1px;">
           <i  @click="ShowNew = true" id="add-btn"  class=" mx-2 btn btn-outline-success    fa fa-plus "
                    >&nbsp;&nbsp; حافظة جديدة</i>

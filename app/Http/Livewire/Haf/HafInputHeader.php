@@ -123,7 +123,9 @@ class HafInputHeader extends Component
       $this->ChkBankAndGo();
       $this->emit('refreshBankHafSelect');
       $this->emit('refreshHafInputTable');
-
+      $this->ShowHafDel=false;
+      $this->ShowHafUpd=false;
+      $this->ShowHafTarheel=false;
       $this->dispatchBrowserEvent('mmsg', 'تم ترحيل الحافظة');
 
     } catch (\Exception $e) {

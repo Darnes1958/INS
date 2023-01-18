@@ -24,7 +24,7 @@ class EmpnoSelect extends Component
     public function render()
     {
 
-        $this->ItemList=DB::connection($this->Comp)
+        $this->ItemList=DB::connection(Auth()->user()->company)
         ->table('pass')
         ->get();
 
