@@ -106,7 +106,7 @@ class ToHafitha extends Component
 }
   protected function FillKstHaf($bank){
 
-     
+
     $NoList=FromExcelModel::on(Auth()->user()->company)->select('no','MainArcWrong')
         ->where('bank',$bank)
         ->where('no','!=',0)

@@ -1,6 +1,6 @@
 <div x-data x-show="$wire.Show" class="row">
 
-<div  class="col-md-3">
+<div  class="col-md-2 px-1">
   <div class="card my-0">
     <div class="card-header" style="height: 28px;">منح وحجب الصلاحيات للمستخدمين</div>
     <div class="card-body my-2">
@@ -10,29 +10,23 @@
           <label  class=" col-form-label ">اسم المستخدم</label>
           <input wire:model="name"  type="text" class="form-control"   readonly>
         </div>
-        <div  >
-          <button  wire:click="GiveInfo" class="btn btn-primary" >
-            منح صلاحية الاستفسار
-          </button>
-        </div>
-
 
     </div>
   </div>
 </div>
 
-  <div class="col-md-3">
+  <div class="col-md-4 px-1">
 
-    <div class="card">
+    <div class="card my-0">
       <div class="card-header" style="background: #0e8cdb;color: white">الباقات</div>
-      <div class="card-body">
+      <div class="card-body py-0">
 
         <div class="row">
           <div class="col-md-6">
             <table class="table table-sm table-bordered table-striped  "  >
               <caption class="caption-top text-center font-weight-bold">منح</caption>
               <thead class="font-size-12 font-weight-bolder " >
-              <tr style="background: royalblue; color: white"><th >الباقة</th></tr>
+              <tr style="background: royalblue; color: white"><th >الباقات الغير ممنوحة</th></tr>
               </thead>
               <tbody >
               @foreach($NotHasRole as $item)
@@ -47,7 +41,7 @@
             <table class="table table-sm table-bordered table-striped  "  >
               <caption class="caption-top text-center">حجب</caption>
               <thead class="font-size-12 font-weight-bolder " >
-              <tr style="background: royalblue; color: white"><th >الباقة</th></tr>
+              <tr style="background: royalblue; color: white"><th >الباقات الممنوحة</th></tr>
               </thead>
               <tbody >
               @foreach($HasRole as $item)
@@ -66,11 +60,11 @@
     </div>
   </div>
 
-  <div class="col-md-3">
+  <div class="col-md-6 px-1">
 
     <div class="card">
       <div class="card-header" style="background: #0e8cdb;color: white">صلاحية مفردة</div>
-      <div class="card-body">
+      <div class="card-body py-0">
 
         <div class="row">
           <div class="col-md-6">

@@ -47,7 +47,7 @@ class ItemSelect extends Component
   }
     public function render()
     {
-info('yes');
+
         if ($this->PlaceSelectType=='items') {
 
         $this->ItemList=DB::connection(Auth()->user()->company)->table('items')

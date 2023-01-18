@@ -43,6 +43,7 @@ class InpUserm extends Component
 
     $this->password='';
     $this->emit('gotonext','name');
+    $this->emitTo('manager.user-select','RefreshMe');
 
   }
   public function render()

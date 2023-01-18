@@ -58,26 +58,28 @@ class InpRolem extends Component
     public function render()
     {
         $activeRoles = DB::table('model_has_roles')->select('role_id')->where('model_id', $this->UserNo);
-        $activePer   = DB::table('model_has_permissions')->select('role_id')->where('model_id', $this->UserNo);
+        $activePer   = DB::table('model_has_permissions')->select('permission_id')->where('model_id', $this->UserNo);
+        $perinrole=DB::table('role_has_permissions')->select('permission_id')->whereIn('role_id', $activeRoles);
         return view('livewire.manager.inp-rolem',[
           'HasRole'=>DB::table('model_has_roles')->where('model_id',$this->UserNo)
             ->join('roles','model_has_roles.role_id','=','roles.id')
             ->whereNotIn('roles.name', [ 'manager', 'admin','SupperUser'])
           ->select('roles.id','roles.name')
-          ->paginate(15),
+          ->paginate(12,  ['*'],'HasRolePage'),
           'NotHasRole'=>DB::table('roles')
             ->whereNotIn('id', $activeRoles)
             ->whereNotIn('roles.name', [ 'manager', 'admin','SupperUser'])
-            ->paginate(15),
+            ->paginate(12, ['*'], 'NotHasRolePage'),
           'HasPer'=>DB::table('model_has_permissions')->where('model_id',$this->UserNo)
             ->join('permissions','model_has_permissions.permission_id','=','permissions.id')
+            ->whereNotIn('permissions.id',$perinrole)
 
             ->select('permissions.id','permissions.name')
-            ->paginate(15),
+            ->paginate(12, ['*'], 'HasPerPage'),
           'NotHasPer'=>DB::table('permissions')
-            ->whereNotIn('id', $activeRoles)
-
-            ->paginate(15),
+            ->whereNotIn('id', $activePer)
+            ->whereNotIn('id',$perinrole)
+            ->paginate(12, ['*'], 'NotHasPerPage'),
 
         ]);
     }

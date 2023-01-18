@@ -13,7 +13,7 @@ class UserSelect extends Component
 
 
   protected $listeners = [
-    'TakeUserNo',
+    'TakeUserNo','RefreshMe'=>'$refresh',
   ];
 
   public function TakeUserNo($userno){
