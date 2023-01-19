@@ -147,7 +147,7 @@ class InpMainTwo extends Component
      $this->sul_tot=$res->tot+$res_old->raseed;
      $this->dofa=$res->cash;
      $this->sul=$res->not_cash+$res_old->raseed;
-     $this->no=main::max('no')+1;
+     $this->no=main::on(Auth()->user()->company)->max('no')+1;
      $this->OrderGet=true;
      $this->order_no=$this->orderno;
      $this->emit('goto','no');
