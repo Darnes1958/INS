@@ -5,8 +5,13 @@ namespace App\Http\Livewire\Aksat;
 use App\Models\aksat\kst_trans;
 use App\Models\aksat\main;
 use App\Models\aksat\main_items;
+use App\Models\aksat\MainArc;
 use App\Models\aksat\place;
 use App\Models\OverTar\over_kst;
+use App\Models\OverTar\over_kst_a;
+use App\Models\OverTar\stop_kst;
+use App\Models\OverTar\tar_kst;
+use App\Models\OverTar\tar_kst_before;
 use App\Models\sell\rep_sell_tran;
 use App\Models\sell\sell_tran;
 use App\Models\sell\sells;
@@ -26,6 +31,8 @@ class InpMainTwo extends Component
  protected $paginationTheme = 'bootstrap';
   public $no;
   public $acc;
+  public $accToEdit;
+  public $ShowEditAcc=false;
   public $name;
   public $bankno;
   public $bank_name;
@@ -65,6 +72,36 @@ class InpMainTwo extends Component
 
   public $mainitems='rep_sell_tran';
 
+  public function DoEditAcc(){
+    $this->ShowEditAcc=true;
+    $this->accToEdit=$this->acc;
+
+    $this->emit('goto','accToEdit');
+
+  }
+  public function SaveAcc()
+  {
+    if ($this->accToEdit != '') {
+      DB::connection(Auth()->user()->company)->beginTransaction();
+      try {
+        DB::connection(Auth()->user()->company)->table('main')->where('no', $this->no)->update(['acc' => $this->accToEdit,]);
+        over_kst::on(Auth()->user()->company)->where('bank', $this->bankno)->where('acc',$this->acc)->update(['acc' => $this->accToEdit,]);
+        over_kst_a::on(Auth()->user()->company)->where('bank', $this->bankno)->where('acc',$this->acc)->update(['acc' => $this->accToEdit,]);
+        tar_kst::on(Auth()->user()->company)->where('bank', $this->bankno)->where('acc',$this->acc)->update(['acc' => $this->accToEdit,]);
+        stop_kst::on(Auth()->user()->company)->where('bank', $this->bankno)->where('acc',$this->acc)->update(['acc' => $this->accToEdit,]);
+        tar_kst_before::on(Auth()->user()->company)->where('bank', $this->bankno)->where('acc',$this->acc)->update(['acc' => $this->accToEdit,]);
+        main::on(Auth()->user()->company)->where('jeha', $this->jeha)->update(['acc' => $this->accToEdit,]);
+        MainArc::on(Auth()->user()->company)->where('jeha', $this->jeha)->update(['acc' => $this->accToEdit,]);
+        DB::connection(Auth()->user()->company)->commit();
+        $this->acc = $this->accToEdit;
+        $this->ShowEditAcc = false;
+      } catch (\Exception $e) {
+        DB::connection(Auth()->user()->company)->rollback();
+
+        $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
+      }
+    }
+  }
 
   public function updatedTheBankNoListIsSelectd(){
     $this->TheBankNoListIsSelectd=0;

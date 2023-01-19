@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Stores;
 
 
 use App\Models\stores\halls_names;
+use App\Models\stores\store_exp;
 use App\Models\stores\stores_names;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -21,6 +22,8 @@ class StoreHead extends Component
   public $place_no2;
   public $place_name1;
   public $place_name2;
+
+  public $themax;
 
   public $Place1Geted=false;
   public $Place2Geted=false;
@@ -105,6 +108,7 @@ class StoreHead extends Component
 
   public function render()
     {
+      $this->themax=store_exp::on(Auth()->user()->company)->max('per_no')+1;
       if ($this->FromTo==11) {
         $this->From='من مخزن';
         $this->To='إلي مخزن';

@@ -1,4 +1,11 @@
 <div x-data    class="row gy-3 my-1" style="border:1px solid lightgray;background: white; " >
+  <div class="col-md-5"  >
+    <label   class="form-label-me ">رقم اذن الصرف</label>
+    <input  wire:model="themax"   type="text" class=" form-control "  style="color: blue"   readonly   >
+
+  </div>
+  <div class="col-md-7"></div>
+
   <div  class="col-md-5">
     <label  for="place_no1" class="form-label-me ">{{ $From }}</label>
     <input x-bind:disabled="!$wire.HeadOpen" wire:model="place_no1"  wire:keydown.enter="ChkPlace1AndGo" type="text" class=" form-control "
