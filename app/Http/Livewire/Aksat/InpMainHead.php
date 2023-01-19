@@ -20,7 +20,8 @@ use DateTime;
 
 class InpMainHead extends Component
 {
-
+  public $ShowEditName=false;
+  public $NameToEdit;
   public $no;
   public $acc;
   public $name;
@@ -58,6 +59,25 @@ class InpMainHead extends Component
   public function updatedTheOrderNoListIsSelectd(){
     $this->TheOrderNoListIsSelectd=0;
     $this->ChkOrderAndGo();
+  }
+
+  public function DoEditName(){
+   $this->ShowEditName=true;
+   $this->NameToEdit=$this->name;
+
+   $this->emit('goto','NameToEdit');
+
+  }
+  public function SaveName(){
+    if ($this->NameToEdit!=''){
+    DB::connection(Auth()->user()->company)->table('main')
+      ->where('no',$this->no)
+      ->update(['name'=>$this->NameToEdit]);
+    DB::connection(Auth()->user()->company)->table('jeha')
+      ->where('jeha_no',$this->jeha)
+      ->update(['jeha_name'=>$this->NameToEdit]);
+    $this->name=$this->NameToEdit;
+    $this->ShowEditName=false;}
   }
   public function updatedThePlaceNoListIsSelectd(){
     $this->ThePlaceNoListIsSelectd=0;
@@ -126,7 +146,7 @@ class InpMainHead extends Component
      $this->sul_tot=$res->tot;
      $this->dofa=$res->cash;
      $this->sul=$res->not_cash;
-     $this->no=main::max('no')+1;
+     $this->no=main::on(Auth()->user()->company)->max('no')+1;
      $this->OrderGet=true;
      $this->order_no=$this->orderno;
      $this->emit('goto','no');

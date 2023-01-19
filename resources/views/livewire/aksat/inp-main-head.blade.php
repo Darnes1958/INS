@@ -1,4 +1,4 @@
-<div class="row ">
+<div class="row " x-data="{open:  @entangle('ShowEditName')}">
 
  <div  class="col-md-6 ">
 
@@ -25,12 +25,26 @@
           <div class="col-md-2  gx-3">
             <label  for="name" class="form-label-me">اسم الزبون</label>
           </div>
-      <div class="col-md-10 ">
-          <input  x-bind:disabled="!$wire.OrderGet" wire:model="name" readonly
+          <div class="col-md-10 d-flex">
+              <input  x-bind:disabled="!$wire.OrderGet" wire:model="name" readonly
 
-            class="form-control"   type="text"   >
+                class="form-control"   type="text"   >
+            <button wire:click="DoEditName" x-show="$wire.name!=null"
+                    type="button" class="btn btn-outline-primary btn-sm fa fa-edit border-0" ></button>
+
+          </div>
+
+
       </div>
+    <div class="row"  x-show:="open" @click.outside="open = false">
+      <div class="col-md-2  gx-3"></div>
+      <div class="col-md-9 ">
+        <input  wire:model="NameToEdit" wire:keydown.enter="SaveName"  class="form-control"   type="text"  id="NameToEdit" autofocus>
       </div>
+
+    </div>
+
+
   </div>
   <div class="col-md-4 mb-2" >
     <label  for="sul_tot" class="form-label-me">اجمالي الفاتورة</label>
@@ -211,6 +225,7 @@
           if (postid=='chk_in') {  $("#chk_in").focus();$("#chk_in").select(); }
           if (postid=='ref_no') {  $("#ref_no").focus();$("#ref_no").select(); }
           if (postid=='sul_date') {  $("#sul_date").focus();$("#sul_date").select(); }
+          if (postid=='NameToEdit') {  $("#NameToEdit").focus();$("#NameToEdit").select(); }
           if (postid=='SaveBtn') {
               setTimeout(function() { document.getElementById('SaveBtn').focus(); },100);};
       })

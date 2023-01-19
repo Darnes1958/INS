@@ -162,6 +162,7 @@
           if (postid=='bank') {  $("#bank_no").focus();$("#bank_no").select(); }
           if (postid=='hafitha_date_new') {  $("#hafitha_date_new").focus();$("#hafitha_date_new").select(); }
           if (postid=='hafitha_tot_new') {  $("#hafitha_tot_new").focus();$("#hafitha_tot_new").select(); }
+
           if (postid=='Save-new-btn') {
               setTimeout(function() { document.getElementById('Save-new-btn').focus(); },100);}
 

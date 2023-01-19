@@ -4,7 +4,7 @@
 <div  class="col-md-6 ">
 
 
-<div x-data  class="row  my-1" style="border:1px solid lightgray;background: white; " >
+<div  x-data="{open:  @entangle('ShowEditAcc')}" class="row  my-1" style="border:1px solid lightgray;background: white; " >
   <div class="col-md-5">
     <label   class="form-label-me ">رقم الفاتورة الجديدة</label>
     <input wire:model="orderno"  wire:keydown.enter="ChkOrderAndGo" type="number" class=" form-control "
@@ -16,18 +16,31 @@
     @livewire('aksat.order-select',['maintwo'=>true])
   </div>
 
-    <div class="col-md-3">
+    <div class="col-md-3" >
         <label  class="form-label-me">رقم العقد السابق</label>
         <input   wire:model="no_old"  class="form-control" readonly>
     </div>
-    <div class="col-md-3 mb-2" >
+    <div class="col-md-3 mb-2 " >
         <label   class="form-label-me">رقم الحساب</label>
+      <div class="d-flex">
         <input  wire:model="acc"  class="form-control"  readonly >
+        <button wire:click="DoEditAcc" x-show="$wire.acc!=null"
+                type="button" class="btn btn-outline-primary btn-sm fa fa-edit border-0" ></button>
+      </div>
     </div>
     <div class="col-md-6">
       <label  class="form-label-me ">المصرف</label>
       <input  wire:model="bank_name"  class=" form-control "  readonly >
     </div>
+
+  <div class="col-md-3"  x-show:="open" >
+  </div>
+  <div class="col-md-3 mb-2"  x-show:="open" @click.outside="open = false">
+
+    <input  wire:model="accToEdit" wire:keydown.enter="SaveAcc" class="form-control"  id="accToEdit" >
+  </div>
+  <div class="col-md-6"  x-show:="open" >
+  </div>
 
   <div class="col-md-4 mb-2" >
     <label   class="form-label-me">اجمالي العقد السابق</label>
@@ -195,6 +208,7 @@
           if (postid=='chk_in') {  $("#chk_in").focus();$("#chk_in").select(); }
           if (postid=='ref_no') {  $("#ref_no").focus();$("#ref_no").select(); }
           if (postid=='sul_date') {  $("#sul_date").focus();$("#sul_date").select(); }
+          if (postid=='accToEdit') {  $("#accToEdit").focus();$("#accToEdit").select(); }
           if (postid=='SaveBtn') {
               setTimeout(function() { document.getElementById('SaveBtn').focus(); },100);};
       })
