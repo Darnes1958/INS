@@ -27,7 +27,7 @@ class DoBackup extends Component
 
         $path=storage_path().'\app';
         $serverName = ".";
-        $connectionInfo = array( "Database"=>"master","TrustServerCertificate"=>"True","UID"=>"hameed",
+        $connectionInfo = array( "Database"=>"master","TrustServerCertificate"=>"True","UID"=>"sa",
             "PWD"=>"Medo_2003", "CharacterSet" => "UTF-8");
         $conn = sqlsrv_connect( $serverName, $connectionInfo);
         $this->comp=Auth()->user()->company;
