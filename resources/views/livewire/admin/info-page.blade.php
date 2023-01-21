@@ -1,5 +1,5 @@
 <div x-data class="row justify-content-center">
-    <div x-show=" ! $wire.showokod && ! $wire.showokodarc" class="col-md-8 ">
+    <div x-show=" ! $wire.showokod && ! $wire.showokodarc && ! $wire.showitemrep" class="col-md-8 ">
         <div class="card justify-content-center">
             <div class="card-header">مرحبا بكم {{$CompanyName}}</div>
             <div class="card-body">
@@ -10,6 +10,10 @@
                 <button  wire:click="OkodArc" class="col-md-6  my-4 btn btn-primary"
                          style="margin-right: 25%;margin-left: 25%;">
                     استفسار عن عقود من الأرشيف
+                </button>
+                <button  wire:click="RepItem" class="col-md-6  my-4 btn btn-primary"
+                         style="margin-right: 25%;margin-left: 25%;">
+                    استفسار عن اصناف
                 </button>
             </div>
         </div>
@@ -31,5 +35,12 @@
         <div  class="col-md-6 themed-grid-col px-1">
             @livewire('aksat.rep.okod.rep-main-trans-arc')
         </div>
+    </div>
+    <div x-show="$wire.showitemrep" class="row mb-3 ">
+        <div  class="col-md-10 themed-grid-col">
+            @livewire('amma.mak.item-rep')
+
+        </div>
+
     </div>
 </div>

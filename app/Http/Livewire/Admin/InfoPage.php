@@ -14,8 +14,9 @@ class InfoPage extends Component
     public $CompanyName;
     public $showokod=false;
     public $showokodarc=false;
+    public $showitemrep=false;
 
-    protected $listeners = ['CloseOkod','CloseOkodArc',];
+    protected $listeners = ['CloseOkod','CloseOkodArc','CloseItemRep'];
 
     public function CloseOkod(){
         $this->showokod=false;
@@ -23,7 +24,9 @@ class InfoPage extends Component
     public function CloseOkodArc(){
         $this->showokodarc=false;
     }
-
+    public function CloseItemRep(){
+        $this->showitemrep=false;
+    }
     public function mount(){
         $this->Company=Auth::user()->company;
         $res=Customers::where('company',$this->Company)->first();
@@ -34,11 +37,19 @@ class InfoPage extends Component
     public function Okod(){
        $this->showokod=true;
        $this->showokodarc=false;
+       $this->showitemrep=false;
 
     }
     public function OkodArc(){
         $this->showokodarc=true;
         $this->showokod=false;
+        $this->showitemrep=false;
+
+    }
+    public function RepItem(){
+        $this->showitemrep=true;
+        $this->showokod=false;
+        $this->showokodarc=false;
 
     }
     public function render()

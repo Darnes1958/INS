@@ -1,8 +1,19 @@
 <div x-data class="col-md-8" style="border:1px solid lightgray;background: white;">
-  <div class="row my-3">
-    <div class="col-md-12" >
-        @livewire('stores.item-select')
-    </div>
+  <div class="row my-3 mx-1">
+
+      @role('info')
+      <div class="col-md-11" >
+          @livewire('stores.item-select')
+      </div>
+      <div class="col-md-1">
+          <button wire:click="$emit('CloseItemRep')"  type="button" class="btn btn-outline-danger btn-sm far fa-window-close" ></button>
+      </div>
+      @else
+          <div class="col-md-12" >
+              @livewire('stores.item-select')
+          </div>
+      @endrole
+
     <div class="col-md-4" >
         <label  for="itemno" class="form-label-me ">رقم الصنف</label>
         <input wire:model="itemno"  wire:keydown.enter="ChkItemAndGo"  x-bind:disabled="!$wire.DetailOpen"

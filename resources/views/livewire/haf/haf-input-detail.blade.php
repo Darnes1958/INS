@@ -3,12 +3,14 @@
 
 <div x-data class="row gy-1 my-1" style="border:1px solid lightgray;background: white;">
 
-    <div   class="col-md-12" >
 
-        @livewire('aksat.no-select')
+    <div   class="d-flex justify-content-center " >
+        <label   class="form-label  mx-1 ri-search-2-line" style="color: blue">&nbsp;برقم الحساب أو الإسم &nbsp;</label>
+        @livewire('haf.search-acc',['sender'=>'haf.haf-input-detail','bank'=>$bank])
     </div>
 
     <div class="d-inline-flex align-items-center">
+
         <label  for="acc" class="form-label" style="width: 20%">رقم الحساب</label>
         <input  wire:model="acc" wire:keydown.enter="ChkAccAndGo"  x-bind:disabled="!$wire.BankGeted"
                 class="form-control"  name="acc" type="text"  id="acc" style="width: 30%">
@@ -138,6 +140,8 @@
             if (postid=='ksm') {  $("#ksm").focus(); $("#ksm").select();}
             if (postid=='no') {  $("#no").focus(); $("#no").select();}
             if (postid=='acc') {  $("#acc").focus(); $("#acc").select();}
+            if (postid=='search_box') {  $("#search_box").focus(); $("#search_box").select();}
+
         })
 
         $(document).ready(function ()
@@ -161,5 +165,6 @@
 
     </script>
 @endpush
+
 
 

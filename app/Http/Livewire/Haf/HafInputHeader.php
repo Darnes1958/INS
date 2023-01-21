@@ -17,7 +17,7 @@ class HafInputHeader extends Component
 
  public $hafitha;
  public $bank;
-  public $bank_l;
+ public $bank_l;
  public $hafitha_date;
  public $hafitha_date_new;
 
@@ -44,7 +44,9 @@ class HafInputHeader extends Component
       ,'TheHafUpdated'=>'CloseEditDialog'
   ];
 
-    public function CloseEditDialog(){$this->dispatchBrowserEvent('CloseMyEdit');}
+   public function CloseEditDialog(){$this->dispatchBrowserEvent('CloseMyEdit');}
+
+
   function DoChkBankNo(){
     $this->ChkBankAndGo();
   }
@@ -171,7 +173,7 @@ class HafInputHeader extends Component
     public function OpenMini($ktno,$kstname) {
 
         $this->ModalTitle=$kstname;
-        $this->emit('TakeKstTypeName',$ktno);
+        $this->emit('TakeKstTypeName',$ktno,$this->bank);
 
         $this->dispatchBrowserEvent('OpenMiniModal');
 
@@ -299,6 +301,7 @@ class HafInputHeader extends Component
 
        $this->emit('TakeHafithaDetail',$this->hafitha,$this->bank);
        $this->emit('TakeHafBankNo',$this->bank,$result->bank_name);
+       $this->emitTo('haf.search-acc','TakeBank',$this->bank);
 
        if ($this->hafitha_differ==0) {$this->ShowHafTarheel=True;}
        else {$this->ShowHafTarheel=false;}

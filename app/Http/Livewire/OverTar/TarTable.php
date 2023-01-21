@@ -49,11 +49,12 @@ class TarTable extends Component
      if ($value==1) {
 
        $res = DB::connection(Auth()->user()->company)->table($this->Proc)->where('wrec_no', $key)->first();
-       if ($this->Proc == 'over_kst') {
+       if ($this->Proc == 'over_kst' || $this->Proc == 'over_kst_a') {
          $tar_type = 1;
          $field='letters';
          $no=$res->no;
-       } else {
+       }
+       if ($this->Proc == 'wrong_kst') {
          $tar_type = 2;
          $field='morahel';
          $no=0;
@@ -113,6 +114,14 @@ class TarTable extends Component
           ['bank', '=', $this->bankno],
           ['morahel',0],
           ['name', 'like', '%'.$this->search.'%'],])->paginate(15);
+      if ($this->Proc=='over_kst_a')
+          $data=DB::connection(Auth()->user()->company)->table('over_kst_a')
+                ->selectRaw('no,acc,name,letters as morahel,kst,tar_date,wrec_no')
+                ->where([
+                    ['bank', $this->bankno],
+                    ['letters',0],
+                    ['name', 'like', '%'.$this->search.'%'],])->paginate(15);
+
 
 
       return view('livewire.over-tar.tar-table',['TableList'=>$data ]);

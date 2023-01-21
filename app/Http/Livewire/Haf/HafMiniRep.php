@@ -2,6 +2,14 @@
 
 namespace App\Http\Livewire\Haf;
 
+use App\Models\aksat\hafitha_tran;
+use App\Models\aksat\main;
+use App\Models\aksat\MainArc;
+use App\Models\OverTar\over_kst;
+use App\Models\OverTar\over_kst_a;
+use App\Models\OverTar\stop_kst;
+use App\Models\OverTar\tar_kst;
+use App\Models\OverTar\tar_kst_before;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -13,18 +21,80 @@ class HafMiniRep extends Component
     protected $paginationTheme = 'bootstrap';
 
     protected $listeners = [
-        'TakeHafithaMini','TakeKstTypeName',
+        'TakeHafithaMini','TakeKstTypeName','TakeTheNo',
     ];
     public $hafitha=0;
+    public $bank;
 
 
     public $search;
     public $DisRadio='DisAll';
     public $rep_type;
 
-    public function TakeKstTypeName($ksttypeno){
+    public function TakeTheNo($no,$acc,$accToEdit,$jeha){
+      DB::connection(Auth()->user()->company)->beginTransaction();
+       try {
+        DB::connection(Auth()->user()->company)->table('main')->where('no', $no)->update(['acc' => $accToEdit,]);
+        over_kst::on(Auth()->user()->company)->where('bank', $this->bank)->where('acc',$acc)->update(['acc' => $accToEdit,]);
+        over_kst_a::on(Auth()->user()->company)->where('bank', $this->bank)->where('acc',$acc)->update(['acc' => $accToEdit,]);
+        tar_kst::on(Auth()->user()->company)->where('bank', )->where('acc',$acc)->update(['acc' => $accToEdit,]);
+        stop_kst::on(Auth()->user()->company)->where('bank', )->where('acc',$acc)->update(['acc' => $accToEdit,]);
+        tar_kst_before::on(Auth()->user()->company)->where('bank', $this->bank)->where('acc',$acc)->update(['acc' => $accToEdit,]);
+        main::on(Auth()->user()->company)->where('jeha', $jeha)->update(['acc' => $accToEdit,]);
+        MainArc::on(Auth()->user()->company)->where('jeha', $jeha)->update(['acc' => $accToEdit,]);
+
+           $raseed=main::on(Auth()->user()->company)->find($no)->raseed;
+           $NoList=hafitha_tran::on(Auth()->user()->company)
+               ->where('hafitha', $this->hafitha)
+               ->where('acc','=',str($accToEdit))->get();
+
+
+           $sumkst=0;
+           foreach ($NoList as $List) {
+
+               $sumkst += $List->ksm;
+               if ($raseed >= $sumkst) {
+                   hafitha_tran::on(Auth()->user()->company)->
+                   where('hafitha', $this->hafitha)
+                   ->where('ser_in_hafitha',$List->ser_in_hafitha)->update([
+                           'name'=>$List->name,'no'=>$no,'kst_type' => 1, 'baky' => 0,]);
+               } else {
+                   if (($sumkst - $raseed) < $List->ksm) {
+                       hafitha_tran::on(Auth()->user()->company)->where('hafitha', $this->hafitha)
+                           ->where('ser_in_hafitha',$List->ser_in_hafitha)->update([
+                           'name'=>$List->name,'no'=>$no, 'kst' => $raseed, 'kst_type' => 3, 'baky' => $sumkst - $raseed,]);
+                   } else hafitha_tran::on(Auth()->user()->company)->where('hafitha', $this->hafitha)
+                       ->where('ser_in_hafitha',$List->ser_in_hafitha)->update([
+                           'name'=>$List->name,'no'=>$no,'kst' => $List->ksm, 'kst_type' => 2, 'baky' => 0,]);
+               }
+           }
+           $summorahel=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',1)->sum('kst');
+           $sumover1=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',2)->sum('kst');
+           $sumover2=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',5)->sum('kst');
+           $sumover3=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',3)->sum('baky');
+           if ($sumover1==null) {$sumover1=0;}
+           if ($sumover2==null) {$sumover2=0;}
+           if ($sumover3==null) {$sumover3=0;}
+           $sumover=$sumover1+$sumover2+$sumover3;
+           $sumhalfover=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',3)->sum('kst');
+           DB::connection(Auth()->user()->company)->table('hafitha')->where('hafitha_no',$this->hafitha)->update([
+               'kst_morahel'=>$summorahel,'kst_over'=>$sumover,'kst_half_over'=>$sumhalfover,
+           ]);
+
+        DB::connection(Auth()->user()->company)->commit();
+
+           $this->resetPage();
+        } catch (\Exception $e) {
+           info($e);
+            DB::connection(Auth()->user()->company)->rollback();
+            $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
+        }
+    }
+
+    public function TakeKstTypeName($ksttypeno,$bank){
 
       $this->rep_type=$ksttypeno;
+      $this->bank=$bank;
     }
     public function updatingSearch()
     {

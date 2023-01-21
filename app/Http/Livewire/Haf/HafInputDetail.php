@@ -41,8 +41,12 @@ class HafInputDetail extends Component
 
   protected $listeners = [
         'TakeHafithaDetail','Take_ManyAcc_No','OpenWrong',
-        'ResetFromWrong','ResetFromUpdate','BankIsUpdating',
+        'ResetFromWrong','ResetFromUpdate','BankIsUpdating','TakeTheNo',
     ];
+  public function TakeTheNo($no){
+      $this->no=$no;
+      $this->ChkNoAndGo();
+  }
   public function BankIsUpdating(){
     $this->BankGeted=false;
   }
@@ -196,7 +200,7 @@ class HafInputDetail extends Component
     $this->sul_tot='';
     $this->raseed='';
     $this->kst_count='';
-    $this->emit('kstdetail_goto','acc');
+    $this->emit('kstdetail_goto','search_box');
    }
    public function StoreRec($baky){
 

@@ -22,6 +22,10 @@
               @livewire('over-tar.get-no-and-acc',['towhome'=>'over-tar.inp-over','mainorarc'=>'mainarc'])
             @livewire('over-tar.inp-over',['proc'=>'over_kst_a'])
           @endif
+              @if ($Proc=='stop_kst')
+                  @livewire('over-tar.get-no-and-acc',['towhome'=>'over-tar.inp-stop','mainorarc'=>'main'])
+                  @livewire('over-tar.inp-stop')
+              @endif
           @if ($Proc=='tar_list') @livewire('over-tar.inp-tar')  @endif
           @if ($Proc=='wrong') @livewire('over-tar.inp-wrong')  @endif
 
@@ -34,6 +38,9 @@
             @if ($Proc=='over_a')
                 @livewire('over-tar.over-table',['proc'=>'over_kst_a'])
             @endif
+                @if ($Proc=='stop_kst')
+                    @livewire('over-tar.stop-table')
+                @endif
             @if ($Proc=='tar_list')  @livewire('over-tar.tar-table')  @endif
             @if ($Proc=='wrong')     @livewire('over-tar.wrong-table')  @endif
 

@@ -78,6 +78,7 @@ class GetNoAndAcc extends Component
       $result = bank::on(Auth()->user()->company)->where('bank_no',$this->bankno)->first();
       if ($result) {
         $this->emitTo('bank.bank-select','TakeBankNo',$this->bankno);
+        $this->emitTo('over-tar.stop-table','TakeBankNo',$this->bankno);
         $this->bankname=$result->bankname;
         $this->BankGet=true;
         $this->ResetKstHead();
@@ -149,6 +150,7 @@ class GetNoAndAcc extends Component
 
             $this->emit('NoAtUpdate', $result);
             $this->emit('goto', 'no');
+
           }
         }
     }

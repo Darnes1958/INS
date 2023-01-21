@@ -1,7 +1,7 @@
-<div x-data class="col-md-12 " style="margin-bottom: 20px;margin-top: 16px;" xmlns="http://www.w3.org/1999/html">
+<div x-data  class="col-md-12 " style="margin-bottom: 20px;margin-top: 16px;" xmlns="http://www.w3.org/1999/html">
     <div  x-show="$wire.HeadOpen" class="row g-3 " style="border:1px solid lightgray;background: white;">
 
-        <div class="row g-3 ">
+        <div class="row g-3 " >
             <div x-show="$wire.price_type!=2" class="col-md-12"   >
                 <div class="row ">
                     <div class="col-md-12" >

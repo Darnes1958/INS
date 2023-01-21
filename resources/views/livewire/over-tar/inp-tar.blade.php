@@ -1,6 +1,6 @@
 <div x-data  class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
 
-  <div class="col-md-6 my-4 ">
+  <div class="col-md-12 my-4 ">
     <div class="form-check form-check-inline">
       <input class="form-check-input" type="radio" wire:model="Proc"   id="OverRadio1" value="over_kst">
       <label class="form-check-label" for="OverRadio1">من الفائض</label>
@@ -9,9 +9,13 @@
       <input class="form-check-input" type="radio" wire:model="Proc"   id="OverRadio2" value="wrong_kst">
       <label class="form-check-label" for="OverRadio2">بالخطأ</label>
     </div>
+      <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" wire:model="Proc"   id="OverRadio3" value="over_kst_a">
+          <label class="form-check-label" for="OverRadio3">من الأرشيف</label>
+      </div>
   </div>
 
-  <div class="col-md-6 my-4 ">
+  <div class="col-md-12 my-4 ">
     <div class="form-check form-check-inline">
       <input class="form-check-input" type="radio" wire:model="ksm_type"  name="inlineRadioOptions1" id="inlineRadio1" value="1">
       <label class="form-check-label" for="inlineRadio1">نقدا</label>

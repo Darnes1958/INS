@@ -10,7 +10,7 @@
       @php
           $id = Auth::user()->id;
       @endphp
-      @role('info'))
+      @role('info')
         @livewire('admin.info-page')
       @else
           @if ($id!=1)

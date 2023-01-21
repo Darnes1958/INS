@@ -32,6 +32,7 @@
   </div>
   <div class="col-md-4">
       <label   class="form-label " style="color: #0a53be"> حافظة رقم : {{$hafitha}} </label>
+
     <div >
       <label for="no" class="form-label">تاريخ الحافظة</label>
       <input wire:model="hafitha_date"  class="form-control" type="text"  id="hafitha_date" readonly>
