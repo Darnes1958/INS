@@ -4,13 +4,22 @@
         <div class="col-md-12" >
             @livewire('sell.sell-select')
         </div>
+
+        <div class="col-md-12">
         <div class="row g-3 ">
             <div class="col-md-4">
                 <label  for="jehano" class="form-label-me">رقم الزبون</label>
                 <input wire:model="jeha_no"
                        class="form-control  "  name="jehano" type="text"  id="jehano" readonly>
             </div>
+            <div class="col-md-8">
+                <label   class="form-label-me">&nbsp;</label>
+                <input wire:model="jeha_name"
+                       class="form-control"   type="text"   readonly>
+            </div>
         </div>
+        </div>
+
 
         <div class="col-md-6">
             <label  for="order_no" class="form-label-me ">رقم الفاتورة</label>

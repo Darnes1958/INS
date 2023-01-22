@@ -22,6 +22,7 @@ class OrderSellHeadEdit extends Component
     public $order_no;
     public $order_date;
     public $jeha_no;
+
     public $jeha_type;
     public $stno=1;
 

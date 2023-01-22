@@ -23,17 +23,39 @@
             <label style="text-align: center">{{$res->sul_date}}</label>
         </div>
     </div>
-    <div class="float-container">
-        <div class="float-child" style="width: 12%; ">
+    <div style=" padding: 20px;border: 3px solid #fff;">
+        <div style="float: right;
+          padding: 2px;width: 14%;">
+            <label  >اســـم المصرف</label>
+        </div>
+        <div  style="float: right;
+          padding: 2px; width: 46%; border-bottom: 1px solid gray; ">
+            <label  >{{$res->bank_name}}</label>
+        </div>
+        <div  style="float: right;
+          padding: 2px; width: 10%;margin-right: 20px;">
+            <label  >رقم الحساب</label>
+        </div>
+        <div  style="float: right;
+          padding: 2px; width: 16%; border-bottom: 1px solid gray; text-align: center">
+            <label style="text-align: center">{{$res->acc}}</label>
+        </div>
+    </div>
+    <div  style=" padding: 20px;border: 3px solid #fff;">
+        <div  style="float: right;
+          padding: 2px;width: 12%; ">
             <label  >إجمالي الفاتورة</label>
         </div>
-        <div class="float-child" style=" width: 16%; border-bottom: 1px solid gray; text-align: center">
+        <div  style="float: right;
+          padding: 2px; width: 16%; border-bottom: 1px solid gray; text-align: center">
             <label style="text-align: center" >{{$res->sul_tot}}</label>
         </div>
-      <div class="float-child" style="width: 12%; margin-right: 20px;">
+      <div  style="float: right;
+          padding: 2px;width: 12%; margin-right: 20px;">
         <label  >اجمالي التقسيط</label>
       </div>
-      <div class="float-child" style=" width: 16%; border-bottom: 1px solid gray; text-align: center">
+      <div  style="float: right;
+          padding: 2px; width: 16%; border-bottom: 1px solid gray; text-align: center">
         <label style="text-align: center" >{{$res->sul}}</label>
       </div>
     </div>

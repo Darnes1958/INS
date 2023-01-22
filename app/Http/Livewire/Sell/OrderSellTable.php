@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Sell;
 
+use App\Models\sell\sells;
 use App\Models\stores\items;
 use App\Models\stores\store_exp;
 use App\Models\stores\stores;
@@ -30,6 +31,7 @@ class OrderSellTable extends Component
     public $HasRaseed=true;
     public $ToSal;
     public $ToSal_L;
+    public $OrderChanged=false;
 
     protected $listeners = [
         'putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable'
@@ -42,17 +44,15 @@ class OrderSellTable extends Component
         $conn=Auth()->user()->company;
         if (count($this->orderdetail)==1){
             session()->flash('message', 'لم يتم ادخال اصناف بعد');
-
         }
         else {
-
+            if (sells::on(auth()->user()->company)->where('order_no',$this->order_no)->exists())
+            {$this->order_no=sells::on(auth()->user()->company)->max('order_no')+1;
+               $this->OrderChanged=true;}
             $this->HasRaseed=true;
             DB::connection($conn)->beginTransaction();
-
             try {
-
               if ($this->ToSal) {
-
                 $per_no=store_exp::on(Auth()->user()->company)->max('per_no')+1;
                 for ($i = 0; $i < count($this->orderdetail); $i++) {
                   $item=$this->orderdetail[$i];
@@ -74,10 +74,6 @@ class OrderSellTable extends Component
                 $this->PlaceType='Salat';
                 $this->st_no=$this->ToSal_L;
               }
-
-
-              info('I am here');
-
 
                if ($this->PlaceType=='Makazen') $pt=1; else $pt=2;
                 DB::connection($conn)->table('sells')->insert([
@@ -101,7 +97,7 @@ class OrderSellTable extends Component
                     'available' => 0
                 ]);
               $i=0;
-              info('here i'.$i);
+
               for ($i = 0; $i < count($this->orderdetail); $i++) {
                     $item=$this->orderdetail[$i];
                     if ($item['item_no'] == 0) {
@@ -114,8 +110,6 @@ class OrderSellTable extends Component
                         ->where('st_no', '=', $this->st_no)
                         ->where('item_no','=',$item['item_no'])
                         ->pluck('raseed');
-
-
                       $st_quant=(int)$st_quant[0];
                       $quant=(int)$item['quant'];
 
@@ -161,20 +155,19 @@ class OrderSellTable extends Component
               if ($this->HasRaseed)
               {
                 DB::connection($conn)->commit();
+                if ($this->OrderChanged){
+                    $this->OrderChanged=false;
+                    $this->dispatchBrowserEvent('mmsg', 'تم تغيير رقم الفاتورة وتخرينها بالرقم : '.$this->order_no);
+                }
                 $this->emit('mounttable');
                 $this->emit('dismountdetail');
                 $this->emit('mounthead');
               } else {DB::connection($conn)->rollback();}
-
-
-
             } catch (\Exception $e) {
               //info($e);
                 DB::connection($conn)->rollback();
                 $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
             }
-
-
         }
     }
     public function HeadBtnClick($Wor,$wd,$wjh,$wplace,$wst,$price_type,$ToSal,$ToSal_L)

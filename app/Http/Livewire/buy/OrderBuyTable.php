@@ -27,6 +27,7 @@ class OrderBuyTable extends Component
     public $st_no;
     public $notes;
   public $TheDelete;
+    public $OrderChanged=false;
 
    protected $listeners = [
         'putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable','DoDelete'
@@ -47,10 +48,9 @@ class OrderBuyTable extends Component
           DB::connection(Auth()->user()->company)->beginTransaction();
 
           try {
-            $ord=buys::on(Auth()->user()->company)->where('order_no',$this->order_no)->first();
-            if ($ord!=null){
-                $this->order_no=buys::on(Auth()->user()->company)->max('order_no')+1;
-              }
+              if (buys::on(auth()->user()->company)->where('order_no',$this->order_no)->exists())
+              {$this->order_no=buys::on(auth()->user()->company)->max('order_no')+1;
+                  $this->OrderChanged=true;}
               DB::connection(Auth()->user()->company)->table('buys')->insert([
                   'order_no' => $this->order_no,
                   'order_no2' => 0,
@@ -108,7 +108,10 @@ class OrderBuyTable extends Component
               }
 
               DB::connection(Auth()->user()->company)->commit();
-
+              if ($this->OrderChanged){
+                  $this->OrderChanged=false;
+                  $this->dispatchBrowserEvent('mmsg', 'تم تغيير رقم الفاتورة وتخرينها بالرقم : '.$this->order_no);
+              }
               $this->emit('mounttable');
               $this->emit('dismountdetail');
               $this->emit('mounthead');

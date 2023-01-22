@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Haf;
 
 use App\Models\aksat\hafitha_tran;
 use App\Models\aksat\hafitha;
+use App\Models\aksat\main;
 use App\Models\bank\bank;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -117,6 +118,20 @@ class HafInputHeader extends Component
 
       }
       DB::connection(Auth()->user()->company)->table('hafitha')->where('hafitha_no',$this->hafitha)->update(['hafitha_state'=>1]);
+      $haflist=DB::connection(Auth()->user()->company)->table('hafitha_tran')
+          ->where('hafitha',$this->hafitha)->select('no');
+        DB::connection(Auth()->user()->company)->table('main')
+            ->where('bank',$this->bank)
+            ->whereIn('no',$haflist)
+            ->update(['main.sul_pay'=>
+                DB::connection(Auth()->user()->company)->
+                raw('(select sum(ksm) from kst_trans where main.no=kst_trans.no and ksm is not null)')]);
+        DB::connection(Auth()->user()->company)->table('main')
+            ->where('bank',$this->bank)
+            ->whereIn('no',$haflist)
+            ->update(['main.raseed'=>
+                DB::connection(Auth()->user()->company)->
+                raw('sul-sul_pay')]);
 
       DB::connection(Auth()->user()->company)->commit();
       $this->HafHeadDetail=null;
@@ -131,6 +146,7 @@ class HafInputHeader extends Component
       $this->dispatchBrowserEvent('mmsg', 'تم ترحيل الحافظة');
 
     } catch (\Exception $e) {
+        info($e);
       DB::connection(Auth()->user()->company)->rollback();
 
     }

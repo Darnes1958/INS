@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Aksat;
 use App\Models\aksat\kst_trans;
 use App\Models\aksat\main;
 use App\Models\aksat\main_items;
+use App\Models\aksat\MainArc;
 use App\Models\aksat\place;
 use App\Models\sell\rep_sell_tran;
 use App\Models\sell\sell_tran;
@@ -109,10 +110,8 @@ class InpMainHead extends Component
       else {$this->BankGet=true; $this->emit('goto','acc');$this->emit('TakeBankNo',$res->bank_no,$res->bank_name);};}
   }
   public function ChkAccAndGo(){
-
     if ($this->acc) {
       $res = main::on(Auth()->user()->company)->where('bank', $this->bankno)->where('acc', $this->acc)->first();
-
       if ($res && $this->jeha != $res->jeha) {
         session()->flash('message', 'انتبه .. هذا الحساب لنفس المصرف مخزون لزبون اخر .. ورقمه ( '.$res->jeha.')');
       }
@@ -120,7 +119,6 @@ class InpMainHead extends Component
     }
   }
   public function ChkNoAndGo(){
-
    if ($this->no){
     $res=main::on(Auth()->user()->company)->find($this->no);
     if ($res){$this->dispatchBrowserEvent('mmsg', 'هذا الرقم مخزون مسبقا');
@@ -142,7 +140,6 @@ class InpMainHead extends Component
      })->first();
    if ($res){
      $this->jeha=$res->jeha;
-
      $this->name=$res->jeha_name;
      $this->sul_tot=$res->tot;
      $this->dofa=$res->cash;
@@ -161,11 +158,20 @@ class InpMainHead extends Component
        $this->ChkBankAndGo();
        $this->ChkPlaceAndGo();
        $this->emit('goto',$this->no);
+     } else {
+         $res=MainArc::on(Auth()->user()->company)->where('jeha',$this->jeha)->first();
+         if ($res){
+             $this->acc=$res->acc;
+             $this->bankno=$res->bank;
+             $this->place=$res->place;
+             $this->ChkBankAndGo();
+             $this->ChkPlaceAndGo();
+             $this->emit('goto',$this->no);
+         }
      }
    } else {$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون أو سبق تقسيطه ');}
   }
   public function ChkPlaceAndGo(){
-
     if ($this->place){
       $res=place::on(Auth()->user()->company)->find($this->place);
       if (!$res){$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ');$this->emit('goto','place');}

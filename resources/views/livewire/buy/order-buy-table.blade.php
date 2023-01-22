@@ -109,6 +109,11 @@
                 }
             })
         });
+        window.addEventListener('mmsg',function(e){
+            MyMsg.fire({
+                confirmButtonText:  e.detail,
+            })
+        });
 
         Livewire.on('gotonext',postid=>  {
 
