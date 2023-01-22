@@ -123,13 +123,14 @@ class InpMainHead extends Component
 
    if ($this->no){
     $res=main::on(Auth()->user()->company)->find($this->no);
-    if ($res){$this->dispatchBrowserEvent('mmsg', 'هذا الرقم مخزون مسبقا');$this->emit('goto','no');}
+    if ($res){$this->dispatchBrowserEvent('mmsg', 'هذا الرقم مخزون مسبقا');
+      $this->emit('goto','no');}
     else {$this->emit('goto','sul_date');};}
   }
   public function ChkOrderAndGo(){
-
-
-   $res=sells_view::on(Auth()->user()->company)->where('order_no',$this->orderno)
+   $res=sells_view::on(Auth()->user()->company)
+     ->where('price_type',2)
+     ->where('order_no',$this->orderno)
      ->whereNotIn('order_no', function($q){
        $q->select('order_no')->from('main');
      })
@@ -151,8 +152,17 @@ class InpMainHead extends Component
      $this->order_no=$this->orderno;
      $this->emit('goto','no');
      $this->emit('TakeOrderNo',$res->order_no,$res->jeha_name);
-       $this->sul_date=date('Y-m-d');
-   } else {$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ');}
+     $this->sul_date=date('Y-m-d');
+     $res=main::on(Auth()->user()->company)->where('jeha',$this->jeha)->first();
+     if ($res){
+       $this->acc=$res->acc;
+       $this->bankno=$res->bank;
+       $this->place=$res->place;
+       $this->ChkBankAndGo();
+       $this->ChkPlaceAndGo();
+       $this->emit('goto',$this->no);
+     }
+   } else {$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون أو سبق تقسيطه ');}
   }
   public function ChkPlaceAndGo(){
 

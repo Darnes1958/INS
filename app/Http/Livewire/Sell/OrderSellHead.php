@@ -21,7 +21,7 @@ class OrderSellHead extends Component
 {
 
     public $ToSal_L;
-    public $ToSal=false;
+    public $ToSal=true;
 
 
     public $order_no;
@@ -56,10 +56,19 @@ class OrderSellHead extends Component
 
   }
 
+ public function ChkToSal_No(){
+   if ($this->ToSal_L!=null) {
+       $res=halls_names::on(Auth()->user()->company)->find($this->ToSal_L);
+       if ($res) {$this->emit('gotonext','head-btn');}
+       else {$this->dispatchBrowserEvent('mmsg','هذا الرقم غير مخزون');}
+     }
 
+ }
   public function PlaceKeyEnter(){
 
-    if ($this->ChkPlace()=='ok') { $this->emit('gotonext','head-btn');}
+    if ($this->ChkPlace()=='ok') {
+      if ($this->OredrSellRadio=='Makazen' && $this->ToSal) $this->emit('gotonext','ToSal_No');
+      else $this->emit('gotonext','head-btn');}
 }
 public function ChkPlace(){
     $this->storel='';
@@ -151,6 +160,7 @@ public function ChkPlace(){
     }
     public function jehaadded($wj){
         $this->jeha_no=$wj;
+        $this->JehaKeyDown();
     }
     public function OpenModal(){
       $this->emitTo('jeha.add-supp','WithJehaType',1);
@@ -207,7 +217,7 @@ public function ChkPlace(){
         $this->JehaKeyDown();
         if ($this->ChkPlace()=='empty') {$this->dispatchBrowserEvent('mmsg', 'يجب ادخال نقطة البيع ؟'); return(false);}
         if ($this->ToSal){
-          if ($this->ToSal_L==null || !(halls_names::on(auth()->user()->company)->where('hall_no',$this->ToSal_L)->first()->exists())){
+          if ($this->ToSal_L==null || !(halls_names::on(auth()->user()->company)->where('hall_no',$this->ToSal_L)->exists()) ){
             $this->dispatchBrowserEvent('mmsg', 'يجب ادخال رقم صالة صحيح');
             return false;
           }

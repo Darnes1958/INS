@@ -31,13 +31,28 @@ class AddSupp extends Component
   public $UpdateMod=false;
 
   protected $listeners = [
-    'refreshComponent' => '$refresh','WithJehaType'
+    'refreshComponent' => '$refresh','WithJehaType','TakeJehaSearch','TextIsUpdate','TakeTheJehaNo'
   ];
+  public function TextIsUpdate($jeha_name){
+    $this->jehaname=$jeha_name;
+
+  }
+  public function TakeTheJehaNo(){
+
+    $this->emit('gotonext','address');
+  }
+  public function TakeJehaSearch(){
+
+    $this->emit('gotonext','address');
+  }
   public function WithJehaType($jeha_type)
   {
     $this->jeha_type=$jeha_type;
   }
 
+  public function SendSearch(){
+    $this->emitTo('jeha.search-jeha','TakeSearch',$this->jehaname);
+  }
   protected function rules()
   {
     Config::set('database.connections.other.database', Auth::user()->company);
@@ -88,6 +103,7 @@ class AddSupp extends Component
     }
     $this->UpdateMod=false;
     $this->emit('jehaadded',$this->jeha_no);
+    $this->emitTo('jeha.search-jeha','TakeSearch','');
     $this->resetModal();
     $this->dispatchBrowserEvent('CloseModal');
 
@@ -105,7 +121,7 @@ class AddSupp extends Component
       $this->mdar=$res->mdar;
       $this->others=$res->others;
       $this->UpdateMod=true;
-      $this->emit('gotonext','jeha_name');}
+      $this->emitTo('jeha.search-jeha','TakeSearchToEdit',$this->jehaname);}
   }
   public function CloseDeleteDialog(){$this->dispatchBrowserEvent('CloseMyDelete');}
 

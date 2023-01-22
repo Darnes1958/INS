@@ -7,11 +7,13 @@
         <div class="card-header" style="background: #0e8cdb;color: white;font-size: 14pt;">ادخال {{$jeha_type_name}}</div>
         <div class="card-body">
             <div class="row mb-3">
-             <label for="jeha_name" class="col-sm-2 g-2">اسم الزبون</label>
-             <div class="col-sm-10 form-group">
-                <input wire:model="jehaname"  wire:keydown.enter="$emit('gotonext','address')"  id="jeha_name" class="form-control" type="text"   >
-                 @error('jehaname') <span class="error">{{ $message }}</span> @enderror
-             </div>
+             <label for="jeha_name" class="col-sm-6 g-2">اسم الزبون</label>
+
+
+                 @livewire('jeha.search-jeha',['sender'=>'jeha.add-supp','jeha_type'=>$jeha_type])
+
+
+
             </div>
             <div class="row mb-3">
                 <label for="address" class="col-sm-2 g-2">العنوان</label>
@@ -73,7 +75,7 @@
                <td>{{$item->jeha_name}}</td>
 
                <td  style="padding-top: 2px;padding-bottom: 2px; ">
-                 <i wire:click="selectItem({{ $item->jeha_no }},'update')"
+                 <i wire:click="selectItem({{ $item->jeha_no }},'update')" @click="$focus.focus(search_box)"
                     class="btn btn-outline-primary btn-sm fa fa-edit editable-input" style="margin-left: 2px;"></i>
                </td>
                <td  style="padding-top: 2px;padding-bottom: 2px; ">

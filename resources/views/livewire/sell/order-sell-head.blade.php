@@ -117,7 +117,7 @@
             <div class="col-md-2">
                 <input  wire:model="ToSal_L"
                         class="form-control  "
-                         type="text"  id="ToSal_No" >
+                         type="text"  id="ToSal_No" wire:keydown.enter="ChkToSal_No">
                 @error('ToSal_L') <span class="error">{{ $message }}</span> @enderror
             </div>
             <div class="col-md-4 mx-1">
@@ -200,6 +200,8 @@
             if (postid=='date') {  $("#date").focus();$("#date").select(); };
             if (postid=='jehano') {  $("#jehano").focus(); $("#jehano").select();};
             if (postid=='storeno') {  $("#storeno").focus(); $("#storeno").select();};
+            if (postid=='ToSal_No') {  $("#ToSal_No").focus(); $("#ToSal_No").select();};
+
             if (postid=='head-btn') {
                 setTimeout(function() { document.getElementById('head-btn').focus(); },100);};
         })

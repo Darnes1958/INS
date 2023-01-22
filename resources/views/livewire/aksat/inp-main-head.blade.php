@@ -117,7 +117,7 @@
                   class="form-control  "
                 name="place" type="number"  id="place" >
           </div>
-   @error('st_no') <span class="error">{{ $message }}</span> @enderror
+   @error('place') <span class="error">{{ $message }}</span> @enderror
       </div>
   </div>
   <div x-bind:disabled="!$wire.OrderGet"  class="col-md-7" >
