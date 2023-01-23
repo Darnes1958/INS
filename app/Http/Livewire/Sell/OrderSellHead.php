@@ -216,7 +216,7 @@ public function ChkPlace(){
         $this->validate();
         $this->JehaKeyDown();
         if ($this->ChkPlace()=='empty') {$this->dispatchBrowserEvent('mmsg', 'يجب ادخال نقطة البيع ؟'); return(false);}
-        if ($this->ToSal){
+        if ($this->OredrSellRadio=='Makazen' && $this->ToSal){
           if ($this->ToSal_L==null || !(halls_names::on(auth()->user()->company)->where('hall_no',$this->ToSal_L)->exists()) ){
             $this->dispatchBrowserEvent('mmsg', 'يجب ادخال رقم صالة صحيح');
             return false;

@@ -29,8 +29,17 @@ class OrderSellDetail extends Component
   public $OrderPlacetype='Makazen';
   public $OrderPlaceId=1;
 
+  public $ShowBring=false;
+
   public $TheItemListIsSelectd;
 
+  public function OpenBringModal(){
+    $this->emitTo('sell.bring-item','TakeParam',$this->OrderPlaceId,$this->item);
+    $this->dispatchBrowserEvent('OpenBringModal');
+  }
+  public function CloseBringModal(){
+    $this->dispatchBrowserEvent('CloseBringModal');
+  }
   public function updatedTheItemListIsSelectd(){
     $this->TheItemListIsSelectd=0;
     $this->ItemKeyDown();
@@ -88,6 +97,7 @@ class OrderSellDetail extends Component
         $this->item_name='';
         $this->quant=1;
         $this->price=number_format(0, 2, '.', '');
+        $this->ShowBring=false;
     }
     public function YesIsFound($q,$p){
         $this->quant=$q;
@@ -147,13 +157,15 @@ class OrderSellDetail extends Component
                          $this->emit('gotonext','quant');}
         if ($res=='not') { $this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ؟');}
         if ($res=='empty') { $this->dispatchBrowserEvent('mmsg', 'لا يجوز');}
-        if ($res=='zero') { $this->dispatchBrowserEvent('mmsg', 'رصيد الصنف صفر');}
+        if ($res=='zero') { $this->dispatchBrowserEvent('mmsg', 'رصيد الصنف صفر .. ويمكنك اضافة رصيد بالنقر علي الايقونة بجانب الاسم');
+                          $this->ShowBring=true;}
     }
     public function updatedItem()
     {
         $this->item_name='';
         $this->quant=1;
         $this->price=0;
+        $this->ShowBring=false;
     }
 
     protected function rules()
@@ -181,6 +193,7 @@ class OrderSellDetail extends Component
         $this->orderdetail=['item_no'=>$this->item,'item_name'=>$this->item_name,
             'quant'=>$this->quant,'price'=>$this->price,'subtot'=>$this->price,'rebh'=>$rebh];
         $this->emit('putdata',$this->orderdetail);
+        $this->ShowBring=false;
         return (true);
     }
 

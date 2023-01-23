@@ -34,7 +34,7 @@ class StoreSelect1 extends Component
 
     public function render()
     {
-      Config::set('database.connections.other.database', Auth::user()->company);
+
       if ($this->Table=='Makazen') {
         $this->PlaceList1=DB::connection(Auth()->user()->company)->table('stores_names')
          ->selectRaw('st_no as place_no,st_name as place_name')
