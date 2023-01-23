@@ -19,8 +19,11 @@ class SearchAcc extends Component
     public $accToEdit;
     public $BankGeted=false;
 
-    protected $listeners = ['TakeBank','TakeBankAndAcc'];
+    protected $listeners = ['TakeBank','TakeBankAndAcc','take_goto'];
 
+    public function take_goto($p){
+        $this->emit('gotobox','search_box');
+    }
     public function TakeBank($bank){
         $this->bank=$bank;
         $this->BankGeted=true;

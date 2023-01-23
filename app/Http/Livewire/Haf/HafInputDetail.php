@@ -184,6 +184,7 @@ class HafInputDetail extends Component
       $this->StoreRec($baky);
       $this->emit('RefreshHead');
       $this->Resetdetail();
+      $this->emitTo('haf.search-acc','take_goto','search_box');
     }
 
     function mount(){
@@ -200,7 +201,7 @@ class HafInputDetail extends Component
     $this->sul_tot='';
     $this->raseed='';
     $this->kst_count='';
-    $this->emit('kstdetail_goto','search_box');
+
    }
    public function StoreRec($baky){
 

@@ -4,7 +4,7 @@
 <div x-data class="row gy-1 my-1" style="border:1px solid lightgray;background: white;">
 
 
-    <div   class="d-flex justify-content-center " >
+    <div   class="d-flex  " >
         <label   class="form-label  mx-1 ri-search-2-line" style="color: blue">&nbsp;برقم الحساب أو الإسم &nbsp;</label>
         @livewire('haf.search-acc',['sender'=>'haf.haf-input-detail','bank'=>$bank])
     </div>
@@ -140,7 +140,7 @@
             if (postid=='ksm') {  $("#ksm").focus(); $("#ksm").select();}
             if (postid=='no') {  $("#no").focus(); $("#no").select();}
             if (postid=='acc') {  $("#acc").focus(); $("#acc").select();}
-            if (postid=='search_box') {  $("#search_box").focus(); $("#search_box").select();}
+
 
         })
 
