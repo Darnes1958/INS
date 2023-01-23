@@ -70,6 +70,7 @@ class StoreTable extends Component
 
     }
     else {
+
       Config::set('database.connections.other.database', Auth::user()->company);
       $this->HasRaseed=true;
       DB::connection(Auth()->user()->company)->beginTransaction();
@@ -118,7 +119,7 @@ class StoreTable extends Component
 
       } catch (\Exception $e) {
         DB::connection(Auth()->user()->company)->rollback();
-        info($e);
+
         $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
       }
 

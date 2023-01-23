@@ -17,7 +17,7 @@ class OrderSellDetail extends Component
     public $item_name;
     public $st_raseed;
     public $raseed;
-    public $quant;
+    public $Quant;
     public $price;
     public $price_Type;
     public $orderdetail=[];
@@ -34,11 +34,13 @@ class OrderSellDetail extends Component
   public $TheItemListIsSelectd;
 
   public function OpenBringModal(){
-    $this->emitTo('sell.bring-item','TakeParam',$this->OrderPlaceId,$this->item);
+    $this->emitTo('sell.bring-item','TakeParam',$this->OrderPlacetype,$this->OrderPlaceId,$this->item);
     $this->dispatchBrowserEvent('OpenBringModal');
   }
   public function CloseBringModal(){
     $this->dispatchBrowserEvent('CloseBringModal');
+    $this->ShowBring=false;
+      $this->ItemKeyDown();
   }
   public function updatedTheItemListIsSelectd(){
     $this->TheItemListIsSelectd=0;
@@ -46,15 +48,15 @@ class OrderSellDetail extends Component
   }
 
   public function ChkQuant(){
-    if ($this->quant>$this->st_raseed)
+    if ($this->Quant>$this->st_raseed)
     {$this->dispatchBrowserEvent('mmsg', 'الرصيد لا يسمح !'); return(false);}
-    if ($this->quant<=0) {return false;}
+    if ($this->Quant<=0) {return false;}
     $this->emit('gotonext','price');
   }
 
 
     protected $listeners = [
-        'itemchange','edititem','YesIsFound','ClearData','mountdetail','dismountdetail','TakeNewItem'
+        'itemchange','edititem','YesIsFound','ClearData','mountdetail','dismountdetail','TakeNewItem','CloseBringModal'
     ];
 
     public function mountdetail($wpt,$wpn,$wpname,$price_type){
@@ -95,20 +97,20 @@ class OrderSellDetail extends Component
         $this->st_raseed=0;
         $this->item=0;
         $this->item_name='';
-        $this->quant=1;
+        $this->Quant=1;
         $this->price=number_format(0, 2, '.', '');
         $this->ShowBring=false;
     }
     public function YesIsFound($q,$p){
-        $this->quant=$q;
+        $this->Quant=$q;
         $this->price=$p ;
-      $this->emit('gotonext','quant');
+      $this->emit('gotonext','Quant');
     }
     public function edititem($value)
     {
         $this->item=$value['item_no'];
         $this->item_name=$value['item_name'];
-        $this->quant=$value['quant'];
+        $this->Quant=$value['quant'];
         $this->price=$value['price'] ;
         $this->emit('gotonext', 'item_no');
     }
@@ -136,7 +138,7 @@ class OrderSellDetail extends Component
          }
          $this->price = number_format($this->price, 2, '.', '');
          $this->st_raseed = $this->RetPlaceRaseed($this->item, $this->OrderPlacetype, $this->OrderPlaceId);
-         if ($this->st_raseed == 0) {
+         if ($this->st_raseed <= 0) {
            return 'zero';
          }
          return ('ok');
@@ -150,11 +152,11 @@ class OrderSellDetail extends Component
    }
     public function ItemKeyDown(){
         $this->item_name='';
-        $this->quant=1;
+        $this->Quant=1;
         $this->price=0;
         $res=$this->ChkItem();
         if ($res=='ok') {$this->emit('ChkIfDataExist',$this->item);
-                         $this->emit('gotonext','quant');}
+                         $this->emit('gotonext','Quant');}
         if ($res=='not') { $this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ؟');}
         if ($res=='empty') { $this->dispatchBrowserEvent('mmsg', 'لا يجوز');}
         if ($res=='zero') { $this->dispatchBrowserEvent('mmsg', 'رصيد الصنف صفر .. ويمكنك اضافة رصيد بالنقر علي الايقونة بجانب الاسم');
@@ -163,7 +165,7 @@ class OrderSellDetail extends Component
     public function updatedItem()
     {
         $this->item_name='';
-        $this->quant=1;
+        $this->Quant=1;
         $this->price=0;
         $this->ShowBring=false;
     }
@@ -173,7 +175,7 @@ class OrderSellDetail extends Component
         Config::set('database.connections.other.database', Auth::user()->company);
         return [
             'item' => ['required','integer','gt:0', 'exists:other.items,item_no'],
-            'quant' =>   ['required','integer','gt:0'],
+            'Quant' =>   ['required','integer','gt:0'],
             'price' =>   ['required','numeric'  ,'gt:0'],
         ];
     }
@@ -185,13 +187,13 @@ class OrderSellDetail extends Component
     public function ChkRec()
     {
         $this->validate();
-      if ($this->quant>$this->st_raseed)
+      if ($this->Quant>$this->st_raseed)
          {$this->dispatchBrowserEvent('mmsg', 'الرصيد لا يسمح !'); return(false);}
-        $subtot=number_format($this->price * $this->quant, 2, '.', '');
-        $rebh=$subtot-number_format($this->price_buy * $this->quant, 2, '.', '');
+        $subtot=number_format($this->price * $this->Quant, 2, '.', '');
+        $rebh=$subtot-number_format($this->price_buy * $this->Quant, 2, '.', '');
 
         $this->orderdetail=['item_no'=>$this->item,'item_name'=>$this->item_name,
-            'quant'=>$this->quant,'price'=>$this->price,'subtot'=>$this->price,'rebh'=>$rebh];
+            'quant'=>$this->Quant,'price'=>$this->price,'subtot'=>$this->price,'rebh'=>$rebh];
         $this->emit('putdata',$this->orderdetail);
         $this->ShowBring=false;
         return (true);

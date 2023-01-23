@@ -1,6 +1,20 @@
-
+<div>
+    <div  class="modal fade" id="ModalBring" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button wire:click="CloseBringModal" type="button" class="btn-close" ></button>
+                </div>
+                <div class="modal-body">
+                    @livewire('sell.bring-item')
+                </div>
+            </div>
+        </div>
+    </div>
 <div x-data="{ $wire.OrderDetailOpen: true }" x-show="$wire.OrderDetailOpen"
+
      class="row g-3 " style="border:1px solid lightgray;background: white;">
+
 
     <div class="col-md-12" x-show="$wire.DetailOpen"  >
         <div class="row g-2 ">
@@ -43,24 +57,13 @@
 
         </div>
     </div>
-    <div  class="modal fade" id="ModalBring" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button wire:click="CloseBringModal" type="button" class="btn-close" ></button>
-                </div>
-                <div class="modal-body">
-                    @livewire('sell.bring-item')
-                </div>
-            </div>
-        </div>
-    </div>
+
     <div class="col-6 ">
         <label for="quant" class="form-label-me " >الكمية</label>
-        <input wire:model="quant" wire:keydown.enter="ChkQuant"  x-bind:disabled="!$wire.DetailOpen"
-               class="form-control " name="quant" type="text" value="1"
-               id="quant"  style="text-align: center" >
-        @error('quant') <span class="error">{{ $message }}</span> @enderror
+        <input wire:model="Quant" wire:keydown.enter="ChkQuant"  x-bind:disabled="!$wire.DetailOpen"
+               class="form-control "  type="text" value="1"
+               id="Quant"  style="text-align: center" >
+        @error('Quant') <span class="error">{{ $message }}</span> @enderror
     </div>
     <div class="col-6 ">
         <label for="raseed" class="form-label-me" >الرصيد الكلي</label>
@@ -81,6 +84,7 @@
                id="st_raseed"   >
     </div>
 </div>
+</div>
 
 
 @push('scripts')
@@ -92,7 +96,7 @@
 
         Livewire.on('gotonext',postid=>  {
 
-            if (postid=='quant') {  $("#quant").focus();  $("#quant").select();};
+            if (postid=='Quant') {  $("#Quant").focus();  $("#Quant").select();};
 
             if (postid=='item_no') {  $("#itemno").focus(); $("#itemno").select(); };
             if (postid=='price') {  $("#price").focus(); $("#price").select();};

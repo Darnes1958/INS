@@ -27,15 +27,12 @@
 
   </div>
 
-
-
-
   <div class="col-md-6 ">
-    <label for="quant" class="form-label-me " >الكمية</label>
-    <input wire:model="quant" wire:keydown.enter="ChkQuant"  x-bind:disabled="!$wire.Place1Geted"
-           class="form-control " name="quant" type="number" value="1"
-           id="quant"  style="text-align: center" >
-    @error('quant') <span class="error">{{ $message }}</span> @enderror
+    <label for="quantbring" class="form-label-me " >الكمية</label>
+    <input wire:model="quantbring" wire:keydown.enter="ChkQuant"  x-bind:disabled="!$wire.Place1Geted"
+           class="form-control "  type="number" value="1"
+           id="quantbring"  style="text-align: center" >
+    @error('quantbring') <span class="error">{{ $message }}</span> @enderror
   </div>
   <div class="col-md-6 ">
     <label for="raseed" class="form-label-me " >الرصيد</label>
@@ -45,8 +42,8 @@
 
 
   <div  class="my-4 align-center justify-content-center "  style="display: flex">
-    <input  type="button"  id="head-btn"   class=" btn btn-outline-success  waves-effect waves-light   "
-            x-bind:disabled="!$wire.QuantGeted || !$wire.HeadOpen" wire:click.prevent="BtnHeader"   value=" موافق " />
+    <input  type="button"  id="head-btnbring"   class=" btn btn-outline-success  waves-effect waves-light   "
+            x-bind:disabled="!$wire.QuantGeted " wire:click.prevent="Save"   value=" موافق " />
   </div>
 
 </div>
@@ -56,11 +53,13 @@
 
   <script type="text/javascript">
       Livewire.on('goto',postid=>  {
-          if (postid=='place_no1') {  $("#place_no1").focus();$("#place_no1").select(); }
-          if (postid=='quant') {  $("#quant").focus();$("#quant").select(); }
 
-          if (postid=='head-btn') {
-              setTimeout(function() { document.getElementById('head-btn').focus(); },100);};
+          if (postid=='place_no1') {  $("#place_no1").focus();$("#place_no1").select(); }
+          if (postid=='quantbring') {  $("#quantbring").focus();$("#quantbring").select(); }
+
+          if (postid=='head-btnbring') {
+
+              setTimeout(function() { document.getElementById('head-btnbring').focus(); },100);};
       })
       window.addEventListener('mmsg',function(e){
           MyMsg.fire({
