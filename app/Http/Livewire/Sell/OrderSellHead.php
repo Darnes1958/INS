@@ -49,17 +49,18 @@ class OrderSellHead extends Component
   ];
 
 
+
   public function updatedThePriceListIsSelected(){
     $this->ThePriceListIsSelected=0;
     $this->emitTo('sell.price-select','TakeTypeNo',$this->price_type);
-    $this->emit('gotonext','jehano');
+    $this->emit('gotohead','jehano');
 
   }
 
  public function ChkToSal_No(){
    if ($this->ToSal_L!=null) {
        $res=halls_names::on(Auth()->user()->company)->find($this->ToSal_L);
-       if ($res) {$this->emit('gotonext','head-btn');}
+       if ($res) {$this->emit('gotohead','head-btn');}
        else {$this->dispatchBrowserEvent('mmsg','هذا الرقم غير مخزون');}
      }
 
@@ -67,8 +68,8 @@ class OrderSellHead extends Component
   public function PlaceKeyEnter(){
 
     if ($this->ChkPlace()=='ok') {
-      if ($this->OredrSellRadio=='Makazen' && $this->ToSal) $this->emit('gotonext','ToSal_No');
-      else $this->emit('gotonext','head-btn');}
+      if ($this->OredrSellRadio=='Makazen' && $this->ToSal) $this->emit('gotohead','ToSal_No');
+      else $this->emit('gotohead','head-btn');}
 }
 public function ChkPlace(){
     $this->storel='';
@@ -112,7 +113,7 @@ public function ChkPlace(){
     }
     public function FillStno(){
         $this->stno=$this->storel;
-        $this->emit('gotonext', 'storeno');
+        $this->emit('gotohead', 'storeno');
 
     }
 
@@ -138,7 +139,7 @@ public function ChkPlace(){
   public function JehaKeyDown(){
       $res=$this->Chkjeha();
       if ($res =='ok')  {
-        $this->emit('gotonext','orderno');
+        $this->emit('gotohead','orderno');
       }
       if ($res =='amaa' ) {
           $this->dispatchBrowserEvent('mmsg', 'لا تجوز المبيعات العامة هنا ؟');
@@ -171,8 +172,8 @@ public function ChkPlace(){
     }
 
     public function mounthead(){
-
         $this->mount();
+        $this->emit('gotohead','jehano');
     }
 
 
@@ -201,13 +202,12 @@ public function ChkPlace(){
         $conn=Auth()->user()->company;
         $this->order_no=DB::connection($conn)->table('sells')->max('order_no')+1;
         $this->order_date=date('Y-m-d');
-        $this->stno;
-        $this->st_name;
-        $this->jeha_no;
-        $this->jeha_name;
+        $this->jeha_no='';
+        $this->jeha_name='';
         $this->jeha_type='1';
+      $this->HeadDataOpen=false;
         $this->HeadOpen=True;
-        $this->HeadDataOpen=false;
+
 
     }
 
@@ -227,6 +227,8 @@ public function ChkPlace(){
         $this->HeadDataOpen=true;
         $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha_no,$this->OredrSellRadio,$this->stno,$this->price_type,$this->ToSal,$this->ToSal_L);
         $this->emit('mountdetail',$this->OredrSellRadio,$this->stno,$this->st_name,$this->price_type);
+
+        $this->emitTo('stores.search-item','TakeItemType',$this->OredrSellRadio,$this->stno);
         return (true);
     }
 

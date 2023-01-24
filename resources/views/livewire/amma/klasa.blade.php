@@ -39,7 +39,7 @@
         </tr>
         </thead>
         <tbody id="addRow" class="addRow">
-
+          @php $sumtot1=0;$sumksm=0;$sumtot=0;$sumcash=0;$sumnot_cash=0; @endphp
           @foreach($BuyTable as $key=>$item)
             <tr class="font-size-12">
               <td >{{$item->place_name}}  </td>
@@ -49,9 +49,19 @@
               <td> {{number_format($item->tot, 2, '.', ',')}} </td>
               <td> {{number_format($item->cash, 2, '.', ',')}} </td>
               <td> {{number_format($item->not_cash, 2, '.', ',')}} </td>
-
             </tr>
+            @php $sumtot1+=$item->tot1;$sumksm+=$item->ksm;$sumtot+=$item->tot;
+                 $sumcash+=$item->cash;$sumnot_cash+=$item->not_cash; @endphp
           @endforeach
+          <tr class="font-size-12 " style="font-weight: bold">
+            <td >الإجمــــــــالي  </td>
+            <td>   </td>
+            <td> {{number_format($sumtot1, 2, '.', ',')}} </td>
+            <td> {{number_format($sumksm, 2, '.', ',')}} </td>
+            <td> {{number_format($sumtot, 2, '.', ',')}} </td>
+            <td> {{number_format($sumcash, 2, '.', ',')}} </td>
+            <td> {{number_format($sumnot_cash, 2, '.', ',')}} </td>
+          </tr>
 
         </tbody>
       </table>
@@ -69,15 +79,20 @@
         </tr>
         </thead>
         <tbody id="addRow" class="addRow">
-
+        @php $sumval=0 @endphp
         @foreach($TransTableImp as $key=>$item)
           <tr class="font-size-12">
             <td >{{$item->who_name}}  </td>
             <td> {{$item->type_name}}  </td>
             <td> {{number_format($item->val, 2, '.', ',')}} </td>
           </tr>
+           @php $sumval+=$item->val; @endphp
         @endforeach
-
+        <tr class="font-size-12 " style="font-weight: bold">
+          <td >الإجمــــــــالي  </td>
+          <td>   </td>
+          <td> {{number_format($sumval, 2, '.', ',')}} </td>
+        </tr>
         </tbody>
       </table>
     @endif
@@ -103,7 +118,7 @@
         </tr>
         </thead>
         <tbody id="addRow" class="addRow">
-
+        @php $sumtot1=0;$sumksm=0;$sumtot=0;$sumcash=0;$sumnot_cash=0; @endphp
         @foreach($SellTableMak as $key=>$item)
           <tr class="font-size-12">
             <td >{{$item->place_name}}  </td>
@@ -113,10 +128,20 @@
             <td> {{number_format($item->tot, 2, '.', ',')}} </td>
             <td> {{number_format($item->cash, 2, '.', ',')}} </td>
             <td> {{number_format($item->not_cash, 2, '.', ',')}} </td>
-
           </tr>
-        @endforeach
+          @php $sumtot1+=$item->tot1;$sumksm+=$item->ksm;$sumtot+=$item->tot;
+                 $sumcash+=$item->cash;$sumnot_cash+=$item->not_cash; @endphp
 
+        @endforeach
+        <tr class="font-size-12 " style="font-weight: bold">
+          <td >الإجمــــــــالي  </td>
+          <td>   </td>
+          <td> {{number_format($sumtot1, 2, '.', ',')}} </td>
+          <td> {{number_format($sumksm, 2, '.', ',')}} </td>
+          <td> {{number_format($sumtot, 2, '.', ',')}} </td>
+          <td> {{number_format($sumcash, 2, '.', ',')}} </td>
+          <td> {{number_format($sumnot_cash, 2, '.', ',')}} </td>
+        </tr>
         </tbody>
       </table>
       </div>
@@ -132,14 +157,20 @@
             </tr>
             </thead>
             <tbody id="addRow" class="addRow">
-
+            @php $sumval=0 @endphp
             @foreach($TransTableExp as $key=>$item)
               <tr class="font-size-12">
                 <td >{{$item->who_name}}  </td>
                 <td> {{$item->type_name}}  </td>
                 <td> {{number_format($item->val, 2, '.', ',')}} </td>
               </tr>
+              @php $sumval+=$item->val; @endphp
             @endforeach
+            <tr class="font-size-12 " style="font-weight: bold">
+              <td >الإجمــــــــالي  </td>
+              <td>   </td>
+              <td> {{number_format($sumval, 2, '.', ',')}} </td>
+            </tr>
 
             </tbody>
           </table>
@@ -164,7 +195,7 @@
         </tr>
         </thead>
         <tbody id="addRow" class="addRow">
-
+        @php $sumtot1=0;$sumksm=0;$sumtot=0;$sumcash=0;$sumnot_cash=0; @endphp
         @foreach($SellTableSalat as $key=>$item)
           <tr class="font-size-12">
             <td >{{$item->place_name}}  </td>
@@ -176,7 +207,19 @@
             <td> {{number_format($item->not_cash, 2, '.', ',')}} </td>
 
           </tr>
+          @php $sumtot1+=$item->tot1;$sumksm+=$item->ksm;$sumtot+=$item->tot;
+                 $sumcash+=$item->cash;$sumnot_cash+=$item->not_cash; @endphp
+
         @endforeach
+        <tr class="font-size-12 " style="font-weight: bold">
+          <td >الإجمــــــــالي  </td>
+          <td>   </td>
+          <td> {{number_format($sumtot1, 2, '.', ',')}} </td>
+          <td> {{number_format($sumksm, 2, '.', ',')}} </td>
+          <td> {{number_format($sumtot, 2, '.', ',')}} </td>
+          <td> {{number_format($sumcash, 2, '.', ',')}} </td>
+          <td> {{number_format($sumnot_cash, 2, '.', ',')}} </td>
+        </tr>
 
         </tbody>
       </table>

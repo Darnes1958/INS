@@ -24,7 +24,7 @@
       </tr>
       </thead>
       <tbody id="addRow" class="addRow">
-
+      @php $sumtot1=0;$sumksm=0;$sumtot=0;$sumcash=0;$sumnot_cash=0; @endphp
       @foreach($BuyTable as $key=>$item)
         <tr class="font-size-12">
           <td> {{number_format($item->not_cash, 2, '.', ',')}} </td>
@@ -40,7 +40,19 @@
           <label class="page"></label>
           <label> صفحة رقم </label>
         </div>
+        @php $sumtot1+=$item->tot1;$sumksm+=$item->ksm;$sumtot+=$item->tot;
+                 $sumcash+=$item->cash;$sumnot_cash+=$item->not_cash; @endphp
       @endforeach
+      <tr class="font-size-12 " style="font-weight: bold">
+        <td> {{number_format($sumnot_cash, 2, '.', ',')}} </td>
+        <td> {{number_format($sumcash, 2, '.', ',')}} </td>
+        <td> {{number_format($sumtot, 2, '.', ',')}} </td>
+        <td> {{number_format($sumksm, 2, '.', ',')}} </td>
+        <td> {{number_format($sumtot1, 2, '.', ',')}} </td>
+        <td>   </td>
+        <td style="font-weight:normal;">الإجمــــــــالي  </td>
+      </tr>
+
       <td style="border-bottom: none;border-left: none;border-right: none;"> </td>
       <td style="border-bottom: none;border-left: none;border-right: none;"> </td>
       <td style="border-bottom: none;border-left: none;border-right: none;"> </td>
@@ -66,7 +78,7 @@
       </tr>
       </thead>
       <tbody id="addRow" class="addRow">
-
+      @php $sumtot1=0;$sumksm=0;$sumtot=0;$sumcash=0;$sumnot_cash=0; @endphp
       @foreach($SellTableMak as $key=>$item)
         <tr class="font-size-12">
           <td> {{number_format($item->not_cash, 2, '.', ',')}} </td>
@@ -77,12 +89,23 @@
           <td> {{$item->type_name}}  </td>
           <td >{{$item->place_name}}  </td>
         </tr>
-        <div id="footer" style="height: 50px; width: 100%; margin-bottom: 0px; margin-top: 10px;
+        <div id="footer" style=" width: 100%; margin-bottom: 0px; margin-top: 10px;
                               display: flex;  justify-content: center;">
           <label class="page"></label>
           <label> صفحة رقم </label>
         </div>
+        @php $sumtot1+=$item->tot1;$sumksm+=$item->ksm;$sumtot+=$item->tot;
+                 $sumcash+=$item->cash;$sumnot_cash+=$item->not_cash; @endphp
       @endforeach
+      <tr class="font-size-12 " style="font-weight: bold">
+        <td> {{number_format($sumnot_cash, 2, '.', ',')}} </td>
+        <td> {{number_format($sumcash, 2, '.', ',')}} </td>
+        <td> {{number_format($sumtot, 2, '.', ',')}} </td>
+        <td> {{number_format($sumksm, 2, '.', ',')}} </td>
+        <td> {{number_format($sumtot1, 2, '.', ',')}} </td>
+        <td>   </td>
+        <td style="font-weight:normal;">الإجمــــــــالي  </td>
+      </tr>
       <td style="border-bottom: none;border-left: none;border-right: none;"> </td>
       <td style="border-bottom: none;border-left: none;border-right: none;"> </td>
       <td style="border-bottom: none;border-left: none;border-right: none;"> </td>
@@ -108,7 +131,7 @@
       </tr>
       </thead>
       <tbody id="addRow" class="addRow">
-
+      @php $sumtot1=0;$sumksm=0;$sumtot=0;$sumcash=0;$sumnot_cash=0; @endphp
       @foreach($SellTableSalat as $key=>$item)
         <tr class="font-size-12">
           <td> {{number_format($item->not_cash, 2, '.', ',')}} </td>
@@ -119,12 +142,19 @@
           <td> {{$item->type_name}}  </td>
           <td >{{$item->place_name}}  </td>
         </tr>
-        <div id="footer" style="height: 50px; width: 100%; margin-bottom: 0px; margin-top: 10px;
-                              display: flex;  justify-content: center;">
-          <label class="page"></label>
-          <label> صفحة رقم </label>
-        </div>
+
+        @php $sumtot1+=$item->tot1;$sumksm+=$item->ksm;$sumtot+=$item->tot;
+                 $sumcash+=$item->cash;$sumnot_cash+=$item->not_cash; @endphp
       @endforeach
+      <tr class="font-size-12 " style="font-weight: bold">
+        <td> {{number_format($sumnot_cash, 2, '.', ',')}} </td>
+        <td> {{number_format($sumcash, 2, '.', ',')}} </td>
+        <td> {{number_format($sumtot, 2, '.', ',')}} </td>
+        <td> {{number_format($sumksm, 2, '.', ',')}} </td>
+        <td> {{number_format($sumtot1, 2, '.', ',')}} </td>
+        <td>   </td>
+        <td style="font-weight:normal;">الإجمــــــــالي  </td>
+      </tr>
       <td style="border-bottom: none;border-left: none;border-right: none;"> </td>
       <td style="border-bottom: none;border-left: none;border-right: none;"> </td>
       <td style="border-bottom: none;border-left: none;border-right: none;"> </td>
@@ -132,6 +162,12 @@
       <td style="border-bottom: none;border-left: none;border-right: none;"> </td>
       <td style="border-bottom: none;border-left: none;border-right: none;"> </td>
 
+      <div id="footer" style=" width: 100%;  margin-bottom: 0px; margin-top: 10px;
+                              display: flex;  justify-content: center;">
+
+        <label class="page" ></label>
+        <label > صفحة رقم </label>
+      </div>
       </tbody>
     </table>
 
@@ -147,18 +183,25 @@
       </tr>
       </thead>
       <tbody >
+      @php $sumval=0 @endphp
       @foreach($TransTableImp as $key=>$item)
         <tr class="font-size-12">
           <td> {{number_format($item->val, 2, '.', ',')}} </td>
           <td> {{$item->type_name}}  </td>
           <td >{{$item->who_name}}  </td>
         </tr>
-        <div id="footer" style="height: 50px; width: 100%; margin-bottom: 0px; margin-top: 10px;
+        <div id="footer" style=" width: 100%; margin-bottom: 0px; margin-top: 10px;
                               display: flex;  justify-content: center;">
           <label class="page"></label>
           <label> صفحة رقم </label>
         </div>
+        @php $sumval+=$item->val; @endphp
       @endforeach
+      <tr class="font-size-12 " style="font-weight: bold">
+        <td> {{number_format($sumval, 2, '.', ',')}} </td>
+        <td>   </td>
+        <td style="font-weight:normal;">الإجمــــــــالي  </td>
+      </tr>
       <td style="border-bottom: none;border-left: none;border-right: none;"> </td>
       <td style="border-bottom: none;border-left: none;border-right: none;"> </td>
       <td style="border-bottom: none;border-left: none;border-right: none;"> </td>
@@ -174,24 +217,31 @@
       </tr>
       </thead>
       <tbody >
-
+      @php $sumval=0 @endphp
       @foreach($TransTableExp as $key=>$item)
         <tr class="font-size-12">
           <td> {{number_format($item->val, 2, '.', ',')}} </td>
           <td> {{$item->type_name}}  </td>
           <td >{{$item->who_name}}  </td>
         </tr>
-        <div id="footer" style="height: 50px; width: 100%; margin-bottom: 0px; margin-top: 10px;
+        <div id="footer" style=" width: 100%; margin-bottom: 0px; margin-top: 10px;
                               display: flex;  justify-content: center;">
           <label class="page"></label>
           <label> صفحة رقم </label>
         </div>
+        @php $sumval+=$item->val; @endphp
       @endforeach
+      <tr class="font-size-12 " style="font-weight: bold">
+        <td> {{number_format($sumval, 2, '.', ',')}} </td>
+        <td>   </td>
+        <td style="font-weight:normal;">الإجمــــــــالي  </td>
+      </tr>
       <td style="border-bottom: none;border-left: none;border-right: none;"> </td>
       <td style="border-bottom: none;border-left: none;border-right: none;"> </td>
       <td style="border-bottom: none;border-left: none;border-right: none;"> </td>
       </tbody>
     </table>
+
 
   </div>
 

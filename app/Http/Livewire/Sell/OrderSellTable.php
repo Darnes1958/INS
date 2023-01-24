@@ -52,7 +52,7 @@ class OrderSellTable extends Component
             $this->HasRaseed=true;
             DB::connection($conn)->beginTransaction();
             try {
-              if ($this->ToSal) {
+              if ($this->ToSal && $this->PlaceType=='Makazen') {
                 $per_no=store_exp::on(Auth()->user()->company)->max('per_no')+1;
                 for ($i = 0; $i < count($this->orderdetail); $i++) {
                   $item=$this->orderdetail[$i];
