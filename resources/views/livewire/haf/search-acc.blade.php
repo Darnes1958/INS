@@ -92,7 +92,7 @@
             </div>
             <div class="clear"></div>
         @endif
-   
+
     </div>
 </div>
 @push('scripts')
