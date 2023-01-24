@@ -42,27 +42,35 @@
 
 
       #footer {
-          height: 30px;
+          height: 50px;
+
           position: fixed;
-          margin: 5px;
+          margin: 10px;
           bottom: 0;
           text-align: center;
+
       }
+
       #footer .page:after {
+
           content: counter(page);
       }
       #footer .pageplus1:after {
+
           content:  counter(pageplus1);
       }
       @page {
           size: 21cm 29.7cm ;
           margin: 4px;
+
       }
       table {
           width: 96%;
           border-collapse: collapse;
 
           margin-right: 12px;
+          margin-bottom: 20px;
+
           font-size: 12px;
 
       }

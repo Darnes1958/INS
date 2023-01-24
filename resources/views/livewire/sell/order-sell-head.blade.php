@@ -1,5 +1,5 @@
 <div x-data  class="col-md-12 " style="margin-bottom: 20px;margin-top: 16px;" xmlns="http://www.w3.org/1999/html">
-    <div  x-show="$wire.HeadOpen" class="row g-3 " style="border:1px solid lightgray;background: white;">
+    <div x-cloak x-show="$wire.HeadOpen" x-trap="$wire.HeadOpen" class="row g-3 " style="border:1px solid lightgray;background: white;">
 
         <div class="row g-3 " >
             <div x-show="$wire.price_type!=2" class="col-md-12"   >
@@ -57,13 +57,13 @@
 
         <div class="col-md-6">
             <label  for="order_no" class="form-label-me ">رقم الفاتورة</label>
-            <input wire:model="order_no"  wire:keydown.enter="$emit('gotonext','date')" type="text" class=" form-control "
+            <input wire:model="order_no"  wire:keydown.enter="$emit('gotohead','date')" type="text" class=" form-control "
                    id="order_no" name="order_no"   >
             @error('order_no') <span class="error">{{ $message }}</span> @enderror
         </div>
         <div class="col-md-6">
             <label for="date" class="form-label-me">التاريخ</label>
-            <input wire:model="order_date" wire:keydown.enter="$emit('gotonext','storeno')"
+            <input wire:model="order_date" wire:keydown.enter="$emit('gotohead','storeno')"
                    class="form-control  "
                    name="date" type="date"  id="date" >
             @error('order_date') <span class="error">{{ $message }}</span> @enderror
@@ -195,7 +195,9 @@
         })
 
 
-        Livewire.on('gotonext',postid=>  {
+        Livewire.on('gotohead',postid=>  {
+
+
             if (postid=='orderno') {  $("#order_no").focus();$("#order_no").select(); };
             if (postid=='date') {  $("#date").focus();$("#date").select(); };
             if (postid=='jehano') {  $("#jehano").focus(); $("#jehano").select();};
@@ -241,7 +243,7 @@
             $('#Cust_L').select2({
                 closeOnSelect: true
             });
-            Livewire.emit('gotonext', 'jehano');
+            Livewire.emit('gotohead', 'jehano');
         });
         $(document).ready(function ()
         {

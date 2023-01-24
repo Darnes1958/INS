@@ -53,12 +53,14 @@ class OrderSellDetail extends Component
     if ($this->Quant<=0) {return false;}
     $this->emit('gotonext','price');
   }
-
-
-    protected $listeners = [
-        'itemchange','edititem','YesIsFound','ClearData','mountdetail','dismountdetail','TakeNewItem','CloseBringModal'
+   protected $listeners = [
+        'itemchange','edititem','YesIsFound','ClearData','mountdetail','dismountdetail','TakeNewItem','CloseBringModal',
+      'TakeTheItemNo',
     ];
-
+    public function TakeTheItemNo($item){
+      $this->item=$item;
+      $this->ItemKeyDown();
+     }
     public function mountdetail($wpt,$wpn,$wpname,$price_type){
         $this->OrderDetailOpen=true;
         $this->DetailOpen=true;
@@ -66,27 +68,20 @@ class OrderSellDetail extends Component
         $this->OrderPlaceId=$wpn;
         $this->price_Type=$price_type;
         $this->st_label='رصيد '.$wpname;
-
         $this->emit('B_RefreshSelectItem',$wpt,$wpn);
-
-
         $this->ClearData();
-
-        $this->emit('gotonext', 'item_no');
+        $this->emitTo('stores.search-item','take_goto', 'search_box');
     }
     public function dismountdetail(){
         $this->ClearData();
         $this->DetailOpen=False;
-
     }
 
     public function mount()
     {
-
         $this->ClearData();
         $this->DetailOpen=false;
         $this->OrderDetailOpen=true;
-
     }
     public function TakeNewItem(){
        $this->ClearData();

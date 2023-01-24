@@ -11,9 +11,21 @@
             </div>
         </div>
     </div>
-<div x-data="{ $wire.OrderDetailOpen: true }" x-show="$wire.OrderDetailOpen"
+<div  x-data="{ $wire.OrderDetailOpen: true }" x-show="$wire.OrderDetailOpen"
+      class="row g-2"
+      style="border:1px solid lightgray;background: white;">
 
-     class="row g-3 " style="border:1px solid lightgray;background: white;">
+    <div   class="col-md-12  " >
+        <div class="row">
+            <div class="col-md-3">
+                <label   class="form-label  mx-1 ri-search-2-line" style="color: blue" >&nbsp;رقم الصنف &nbsp;</label>
+            </div>
+            <div class="col-md-9">
+                @livewire('stores.search-item',['sender'=>'sell.order-sell-detail','PlaceSelectType' => $OrderPlacetype,'PlaceToselect' => $OrderPlaceId])
+            </div>
+        </div>
+    </div>
+
 
 
     <div class="col-md-12" x-show="$wire.DetailOpen"  >
@@ -23,7 +35,6 @@
             </div>
         </div>
     </div>
-
     <div class="col-md-4" >
         <label  for="itemno" class="form-label-me ">رقم الصنف</label>
         <input wire:model="item"  wire:keydown.enter="ItemKeyDown"  x-bind:disabled="!$wire.DetailOpen"
@@ -87,6 +98,7 @@
 </div>
 
 
+
 @push('scripts')
     <script type="text/javascript">
         Livewire.on('itemchange',postid=>{
@@ -100,6 +112,8 @@
 
             if (postid=='item_no') {  $("#itemno").focus(); $("#itemno").select(); };
             if (postid=='price') {  $("#price").focus(); $("#price").select();};
+            if (postid=='search_box') {  $("#search_box").focus(); $("#search_box").select();};
+
         });
 
 

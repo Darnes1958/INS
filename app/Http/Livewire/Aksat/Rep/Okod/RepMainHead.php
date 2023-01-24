@@ -43,6 +43,7 @@ class RepMainHead extends Component
     if ($this->no!=null) {
         $result = main::on(Auth()->user()->company)->where('no',$this->no)->first();
         if ($result) {
+            $this->CloseTable();
             $this->acc=$result->acc;
             $this->emit('GotoDetail',$result);
             $this->emit('GotoTrans',$this->no);

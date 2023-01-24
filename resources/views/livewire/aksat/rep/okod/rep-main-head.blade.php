@@ -4,15 +4,21 @@
         <div class="row">
 
           @role('info')
-            <div class="col-md-11">
-                <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "  class="form-control"   type="text"  >
+            <div class="col-md-7">
+                <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "  class="form-control"   type="text" id="search" autofocus>
+            </div>
+            <div class="col-md-4">
+                <input  wire:model="no" wire:keydown.enter="ChkNoAndGo" placeholder="او أدخل رقم العقد هنا"  class="form-control"   type="text" id="No" autofocus>
             </div>
            <div class="col-md-1">
               <button wire:click="$emit('CloseOkod')"  type="button" class="btn btn-outline-danger btn-sm far fa-window-close" ></button>
            </div>
            @else
-                <div class="col-md-12">
-                    <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "  class="form-control"   type="text"  >
+                <div class="col-md-8">
+                    <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "  class="form-control"   type="text" id="search" autofocus>
+                </div>
+                <div class="col-md-4">
+                    <input  wire:model="no" wire:keydown.enter="ChkNoAndGo" placeholder="او أدخل رقم العقد هنا"  class="form-control"   type="text" id="No" autofocus>
                 </div>
 
            @endrole

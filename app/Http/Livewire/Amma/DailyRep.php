@@ -46,7 +46,9 @@ class DailyRep extends Component
     $this->emitTo('amma.daily-rep-table','TakeDate',$this->DateVal);
   }
 
-
+ public function mount(){
+      $this->DateVal=date('Y-m-d');
+ }
 
     public function render()
     {
