@@ -8,6 +8,8 @@ use App\Models\aksat\ksm_type;
 use App\Models\aksat\kst_type;
 use App\Models\aksat\main;
 use App\Models\bank\bank;
+use App\Models\bank\BankTajmeehy;
+use App\Models\bank\Companies;
 use App\Models\bank\rep_banks;
 use App\Models\Customers;
 use ArPHP\I18N\Arabic;
@@ -29,6 +31,30 @@ class RepAksatController extends Controller
     return view('backend.aksat.rep.rep-okod',compact('rep'));
 
   }
+    function PdfStopOne(Request $request){
+
+        $RepDate=date('Y-m-d');
+        $cus=Customers::where('Company',Auth::user()->company)->first();
+
+        $TajNo=$request->bank_tajmeeh;
+        $taj=BankTajmeehy::on(Auth::user()->company)->where('TajNo',$TajNo)->first();
+        $company=Companies::on(Auth::user()->company)->where('CompNo',$taj->CompNo)->first();
+
+        $reportHtml = view('PrnView.aksat.pdf-stop-one',
+            ['cus'=>$cus,'bank_name'=>$taj->TajName,'name'=>$request->name,'acc'=>$request->acc,
+                'kst'=>$request->kst,'comp_name'=>$company->CompName,'TajAcc'=>$taj->TajAcc])->render();
+        $arabic = new Arabic();
+        $p = $arabic->arIdentify($reportHtml);
+
+        for ($i = count($p)-1; $i >= 0; $i-=2) {
+            $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+            $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+        }
+
+        $pdf = PDF::loadHTML($reportHtml);
+        return $pdf->download('report.pdf');
+
+    }
   function PdfKamla(Request $request){
 
     $RepDate=date('Y-m-d');

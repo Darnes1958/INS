@@ -81,7 +81,6 @@ class Stop extends Component
   }
     public function render()
     {
-
         return view('livewire.aksat.rep.okod.stop',[
           'RepTable'=>DB::connection(Auth()->user()->company)->table('stop_view')
             ->whereBetween('stop_date',[$this->stop_date1,$this->stop_date2])

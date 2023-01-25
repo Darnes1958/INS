@@ -90,7 +90,7 @@ Route::controller(RepAksatController::class)->group(function (){
   route::get('/pdfwrong/{bank_no?}/{wrong_date1?}/{wrong_date2?}/{bank_name?}', 'PdfWrong')->name('pdfwrong') ;
   route::get('/pdfkamla/{bank_no?}/{months?}/{bank_name?}', 'PdfKamla')->name('pdfkamla') ;
   route::get('/pdfstop/{bank_no?}/{stop_date1?}/{stop_date2?}/{bank_name?}', 'PdfStop')->name('pdfstop') ;
-
+  route::get('/pdfstopone/{name?}/{bank_tajmeeh?}/{acc?}/{kst?}', 'PdfStopOne')->name('pdfstopone') ;
 });
 Route::controller(RepAmaaController::class)->group(function (){
   route::get('/repamma/{rep}', 'RepAmma')->name('repamma')->middleware('auth');

@@ -35,7 +35,7 @@
       <th width="16%">رقم الحساب</th>
       <th>الاسم</th>
       <th width="10%">تاريخ الإيقاف</th>
-
+      <th width="10%"></th>
     </tr>
     </thead>
     <tbody id="addRow" class="addRow">
@@ -48,7 +48,11 @@
           <td> {{ $item->acc }} </td>
           <td> {{ $item->name }} </td>
           <td style="text-align: center;"> {{ $item->stop_date }} </td>
-
+            <td  style="padding-top: 2px;padding-bottom: 2px; ">
+                <a  href="{{route('pdfstopone',['name'=>$item->name,'bank_tajmeeh'=>$item->bank_tajmeeh ,
+                                              'acc'=>$item->acc,'kst'=>$item->kst])}}"
+                    class="btn btn-outline-primary btn-sm fa fa-print "></a>
+            </td>
         </tr>
       @endforeach
     @endif
