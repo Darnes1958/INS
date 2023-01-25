@@ -6,6 +6,17 @@
     <div class="container-fluid">
 
         @csrf
+      @if ($rep=='wrong')
+        <div class=" themed-grid-col px-1">
+          @livewire('aksat.rep.okod.wrong')
+        </div>
+      @endif
+      @if ($rep=='stop')
+        <div class=" themed-grid-col px-1">
+          @livewire('aksat.rep.okod.stop')
+        </div>
+      @endif
+
       @if ($rep=='mosdada')
         <div class=" themed-grid-col px-1">
           @livewire('aksat.rep.okod.mosdada-table')

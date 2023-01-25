@@ -41,7 +41,7 @@ class MosdadaTable extends Component
   }
   public function TakeBank($bank_no){
     $this->bank_no=$bank_no;
-      $this->bank_name=bank::on(Auth()->user()->company)->where('bank_no',$this->bank_no)->first()->bank_name;
+     $this->bank_name=bank::on(Auth()->user()->company)->where('bank_no',$this->bank_no)->first()->bank_name;
 
     $this->ShowTar=main::on(Auth()->user()->company)->where('bank',$bank_no)->where('raseed','<=',0)->count()>0;
 
