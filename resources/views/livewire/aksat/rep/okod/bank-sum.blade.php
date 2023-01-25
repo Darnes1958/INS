@@ -29,6 +29,7 @@
     </thead>
     <tbody id="addRow" class="addRow">
     @if ($RepTable )
+      @php $count=0;$sul=0;$pay=0;$raseed=0;$over=0;$tar=0;$wrong=0; @endphp
       @foreach($RepTable as $key=>$item)
         <tr class="font-size-12">
           <td> {{ $key+1}} </td>
@@ -42,13 +43,26 @@
           <td> {{ $item->tar_kst }} </td>
           <td> {{ $item->wrong_kst }} </td>
         </tr>
+        @php $count+=$item->WCOUNT;$sul+=$item->sumsul;$pay+=$item->sumpay;$raseed+=$item->sumraseed;
+            $over+=$item->over_kst;$tar+=$item->tar_kst;$wrong+=$item->wrong_kst; @endphp
       @endforeach
+      <tr style="background: #9dc1d3;">
+        <td colspan="3" style="text-align: center;"> الإجمــــــالي </td>
+        <td style="font-weight: bold"> {{ number_format($count,2, '.', ',') }} </td>
+        <td style="font-weight: bold"> {{ number_format($sul,2, '.', ',') }} </td>
+        <td style="font-weight: bold"> {{ number_format($pay,2, '.', ',') }} </td>
+        <td style="font-weight: bold"> {{ number_format($raseed,2, '.', ',') }} </td>
+        <td style="font-weight: bold"> {{ number_format($over,2, '.', ',') }} </td>
+        <td style="font-weight: bold"> {{ number_format($tar,2, '.', ',') }} </td>
+        <td style="font-weight: bold"> {{ number_format($wrong,2, '.', ',') }} </td>
+
+      </tr>
     @endif
     </tbody>
   </table>
 
   @if ($RepTable )
-    {{ $RepTable->links('custom-pagination-links-view') }}
+    {{ $RepTable->links() }}
   @endif
 </div>
 @push('scripts')

@@ -52,8 +52,22 @@
                             </div>
                         </div>
                     </div>
+                <div class="modal fade" id="ModalForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button wire:click="CloseModal" type="button" class="btn-close" ></button>
+                                <h1 class="modal-title fs-5 mx-6" id="exampleModalLabel">ادخال زبون جديد</h1>
+                            </div>
+                            <div class="modal-body">
+                                @livewire('jeha.add-supp')
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
 
         <div class="col-md-6">
             <label  for="order_no" class="form-label-me ">رقم الفاتورة</label>
@@ -158,19 +172,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="ModalForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button wire:click="CloseModal" type="button" class="btn-close" ></button>
-                    <h1 class="modal-title fs-5 mx-6" id="exampleModalLabel">ادخال زبون جديد</h1>
-                </div>
-                <div class="modal-body">
-                    @livewire('jeha.add-supp')
-                </div>
-            </div>
-        </div>
-    </div>
+
 
 </div>
 

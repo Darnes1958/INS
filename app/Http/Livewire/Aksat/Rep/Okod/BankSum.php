@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Aksat\Rep\Okod;
 
+use App\Models\aksat\main;
 use App\Models\bank\rep_banks;
+use App\Models\OverTar\over_kst;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +25,6 @@ class BankSum extends Component
 
   public function render()
   {
-
     return view('livewire.aksat.rep.okod.bank-sum',[
       'RepTable'=>rep_banks::on(Auth()->user()->company)->where('bank_name', 'like', '%'.$this->search.'%')->orderby('bank')->paginate(14)
     ]);

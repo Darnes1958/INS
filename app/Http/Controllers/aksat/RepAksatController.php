@@ -29,6 +29,96 @@ class RepAksatController extends Controller
     return view('backend.aksat.rep.rep-okod',compact('rep'));
 
   }
+  function PdfKamla(Request $request){
+
+    $RepDate=date('Y-m-d');
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+    $first=DB::connection(Auth()->user()->company)->table('main_trans_view2')
+      ->selectRaw('no,name,sul_date,sul,sul_pay,raseed,kst,bank_name,acc,order_no,max(ksm_date) as ksm_date')
+      ->where([
+        ['bank', '=', $request->bank_no],
+        ['sul_pay','!=',0],])
+      ->whereExists(function ($query) {
+        $query->select(DB::raw(1))
+          ->from('late')
+          ->whereColumn('main_trans_view2.no', 'late.no')
+          ->where('emp',Auth::user()->empno);
+      })
+      ->groupBy('no','name','sul_date','sul','sul_pay','raseed','kst','bank_name','acc','order_no');
+    $second=DB::connection(Auth()->user()->company)->table('main_view')
+      ->selectraw('no,name,sul_date,sul,sul_pay,raseed,kst,bank_name,acc,order_no,null as ksm_date')
+      ->where([
+        ['bank', '=', $request->bank_no],
+        ['sul_pay',0],])
+      ->whereExists(function ($query) {
+        $query->select(DB::raw(1))
+          ->from('late')
+          ->whereColumn('main_view.no', 'late.no')
+          ->where('emp',Auth::user()->empno);
+      })
+      ->union($first)
+      ->get();
+
+    $reportHtml = view('PrnView.aksat.pdf-kamla',
+      ['res'=>$second,'cus'=>$cus,'bank_name'=>$request->bank_name,'months'=>$request->months,'RepDate'=>$RepDate])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('report.pdf');
+
+  }
+  function PdfWrong(Request $request){
+
+    $RepDate=date('Y-m-d');
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+    $res=DB::connection(Auth()->user()->company)->table('wrong_view')
+      ->whereBetween('tar_date',[$request->wrong_date1,$request->wrong_date2])
+      ->where('bank', '=', $request->bank_no)
+      ->get();
+
+    $reportHtml = view('PrnView.aksat.pdf-wrong',
+      ['res'=>$res,'cus'=>$cus,'bank_name'=>$request->bank_name,'wrong_date1'=>$request->wrong_date1,'wrong_date2'=>$request->wrong_date2])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('report.pdf');
+
+  }
+  function PdfStop(Request $request){
+
+    $RepDate=date('Y-m-d');
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+    $res=DB::connection(Auth()->user()->company)->table('stop_view')
+      ->whereBetween('stop_date',[$request->stop_date1,$request->stop_date2])
+      ->where('bank', '=', $request->bank_no)
+      ->get();
+
+    $reportHtml = view('PrnView.aksat.pdf-stop',
+      ['res'=>$res,'cus'=>$cus,'bank_name'=>$request->bank_name,'stop_date1'=>$request->stop_date1,'stop_date2'=>$request->stop_date2])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('report.pdf');
+
+  }
   function PdfMain($no){
 
     $RepDate=date('Y-m-d');
@@ -55,6 +145,7 @@ class RepAksatController extends Controller
     return $pdf->download('report.pdf');
 
   }
+
     function PdfBankSum(){
 
         $RepDate=date('Y-m-d');

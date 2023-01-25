@@ -86,7 +86,10 @@ Route::controller(RepAksatController::class)->group(function (){
 
   route::get('/pdfmain/{no}', 'PdfMain')->name('pdfmain') ;
   route::get('/pdfbanksum', 'PdfBankSum')->name('pdfbanksum') ;
-    route::get('/pdfhafmini/{hafitha?}/{rep_type?}/{DisRadio?}}', 'PdfHafMini')->name('pdfhafmini') ;
+  route::get('/pdfhafmini/{hafitha?}/{rep_type?}/{DisRadio?}}', 'PdfHafMini')->name('pdfhafmini') ;
+  route::get('/pdfwrong/{bank_no?}/{wrong_date1?}/{wrong_date2?}/{bank_name?}', 'PdfWrong')->name('pdfwrong') ;
+  route::get('/pdfkamla/{bank_no?}/{months?}/{bank_name?}', 'PdfKamla')->name('pdfkamla') ;
+  route::get('/pdfstop/{bank_no?}/{stop_date1?}/{stop_date2?}/{bank_name?}', 'PdfStop')->name('pdfstop') ;
 
 });
 Route::controller(RepAmaaController::class)->group(function (){

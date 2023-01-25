@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Aksat\Rep\Okod;
 
 use App\Models\aksat\main;
+use App\Models\bank\bank;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,7 @@ class Kamla extends Component
   use WithPagination;
   protected $paginationTheme = 'bootstrap';
   public $bank_no=0;
+  public $bank_name;
   public $months=5;
   public $search;
   public $RepRadio='RepAll';
@@ -40,6 +42,7 @@ class Kamla extends Component
   public function TakeBank($bank_no){
 
     $this->bank_no=$bank_no;
+    $this->bank_name=bank::on(Auth::user()->company)->find($this->bank_no)->bank_name;
       $this->resetPage();
 
   }
