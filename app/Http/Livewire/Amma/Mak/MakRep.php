@@ -63,7 +63,7 @@ class MakRep extends Component
     }
     public function updatingPlacetype()
     {
-        info('here '.$this->place_type);
+
 
         $this->place_no=0;
 

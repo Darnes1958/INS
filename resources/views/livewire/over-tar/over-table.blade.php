@@ -83,7 +83,7 @@
             $("#ModalMyOverEdit").modal('show');
         })
         window.addEventListener('CloseMyEdit', event => {
-            alert('close in script');
+
             $("#ModalMyOverEdit").modal('hide');
         })
 

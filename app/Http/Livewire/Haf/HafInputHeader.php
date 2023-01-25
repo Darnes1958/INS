@@ -146,7 +146,7 @@ class HafInputHeader extends Component
       $this->dispatchBrowserEvent('mmsg', 'تم ترحيل الحافظة');
 
     } catch (\Exception $e) {
-        info($e);
+
       DB::connection(Auth()->user()->company)->rollback();
 
     }

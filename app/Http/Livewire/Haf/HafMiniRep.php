@@ -85,7 +85,7 @@ class HafMiniRep extends Component
 
            $this->resetPage();
         } catch (\Exception $e) {
-           info($e);
+
             DB::connection(Auth()->user()->company)->rollback();
             $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
         }

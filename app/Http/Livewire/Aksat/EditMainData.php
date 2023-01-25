@@ -102,7 +102,7 @@ class EditMainData extends Component
 
   public function updatedBankno(){
     $this->BankGet=false;
-    $this->acc='';
+
   }
   public function ChkPlaceAndGo(){
 

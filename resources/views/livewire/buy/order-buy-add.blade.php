@@ -153,12 +153,12 @@
         Livewire.on('gotonext',postid=>  {
 
           if (postid=='orderno') {  $("#date").focus()};
-          if (postid=='mohupdate') { alert('here'); $("#store_id").attr("size","3"); };
-          if (postid=='store_id') { alert('here'); $("#head-btn").active=true};
+          if (postid=='mohupdate') {  $("#store_id").attr("size","3"); };
+          if (postid=='store_id') { $("#head-btn").active=true};
     })
 
         Livewire.on('head-btn-click',postid=> {
-                alert('i am here');
+
             document.getElementById("data-div").style.pointerEvents = "";
             $('#store_id').prop('disabled', 'disabled');
                 let the_store = document.getElementById("store_id").value;

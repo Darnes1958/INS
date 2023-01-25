@@ -48,7 +48,7 @@
             </div>
             <div class="clear"></div>
         @endif
-   
+
     </div>
 </div>
 @push('scripts')
@@ -57,7 +57,7 @@
     <script type="text/javascript">
         Livewire.on('gotoitembox',postid=>  {
 
-alert('yes');
+
 
               $("#search_box").focus();
               $("#search_box").select();

@@ -10,6 +10,11 @@
      <input  wire:model="bank_name" type="text" class="form-control " id="bank_name" readonly style="width: 80%" >
 
    </div>
+     <div class="d-inline-flex align-items-center">
+         <label for="place_name" class="form-label align-right" style="width: 20% ">جهة العمل</label>
+         <input  wire:model="place_name" type="text" class="form-control " id="place_name" readonly style="width: 80%" >
+
+     </div>
     <div class="d-inline-flex align-items-center">
         <label for="no" class="form-label" style="width: 20%">الرقم الألي</label>
         <input  wire:model="no"

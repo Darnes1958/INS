@@ -27,7 +27,7 @@
       });
 
       window.addEventListener('CloseEditNameModal', event => {
-          alert('close');
+
           $("#EditNameModal").modal('hide');
       })
       window.addEventListener('OpenEditNameModal', event => {

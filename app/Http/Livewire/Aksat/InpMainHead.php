@@ -49,6 +49,7 @@ class InpMainHead extends Component
   public $OrderGet=false;
   public $BankGet=false;
   public $CountGet=false;
+  public $OrderChanged=false;
 
   public $TheBankNoListIsSelectd;
   public $TheOrderNoListIsSelectd;
@@ -90,7 +91,7 @@ class InpMainHead extends Component
     $this->OrderGet=false;
     $this->BankGet=false;
     $this->CountGet=false;
-    $this->order_no=$this->orderno;
+    if ($this->orderno) $this->order_no=$this->orderno;
   }
   public function updatedBankno(){
     $this->BankGet=false;
@@ -169,7 +170,26 @@ class InpMainHead extends Component
              $this->emit('goto',$this->no);
          }
      }
-   } else {$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون أو سبق تقسيطه ');}
+   } else
+   { $rec=sells::on(Auth()->user()->company)->where('order_no',$this->orderno)->first();
+      if ($rec==null) $this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون  ');
+      else
+       { if ($rec->price_type!=2){$this->dispatchBrowserEvent('mmsg', 'هذه الفاتورة ليست بسعر التقسيط  '); }
+         else {
+                if (main::on(Auth()->user()->company)->where('order_no',$this->orderno)->exists())
+                 {
+                     $this->dispatchBrowserEvent('mmsg', 'هذه الفاتورة سبق تقسيطها  ');
+                 }
+                else
+                 {
+                     if (MainArc::on(Auth()->user()->company)->where('order_no',$this->orderno)->exists())
+                     {
+                         $this->dispatchBrowserEvent('mmsg', 'هذه الفاتورة سبق تقسيطها وموجودة بالارشيف ');
+                     }
+                 }
+               }
+       }
+   }
   }
   public function ChkPlaceAndGo(){
     if ($this->place){
@@ -232,6 +252,9 @@ class InpMainHead extends Component
 
       DB::connection(Auth()->user()->company)->beginTransaction();
       try {
+          if (main::on(auth()->user()->company)->where('no',$this->no)->exists())
+          {$this->no=main::on(auth()->user()->company)->max('no')+1;
+          $this->OrderChanged=true;}
          DB::connection(Auth()->user()->company)->table('main')->insert([
            'no'=>$this->no,'name'=>$this->name,'bank'=>$this->bankno,'acc'=>$this->acc,'sul_date'=>$this->sul_date,'sul_type'=>1,'sul_tot'=>$this->sul_tot,
            'dofa'=>$this->dofa,'sul'=>$this->sul,'kst'=>$this->kst,'kst_count'=>$this->kstcount,'sul_pay'=>0,'raseed'=>$this->sul,'order_no'=>$this->orderno,
@@ -267,6 +290,10 @@ class InpMainHead extends Component
           }
 
         DB::connection(Auth()->user()->company)->commit();
+          if ($this->OrderChanged){
+              $this->OrderChanged=false;
+              $this->dispatchBrowserEvent('mmsg', 'تم تغيير رقم العقد وتخرينه بالرقم : '.$this->no);
+          }
         $this->no=''; $this->orderno='';$this->name='';$this->bankno='';$this->acc='';$this->place='';
         $this->sul='';$this->sul_tot='';$this->dofa='';$this->kst='';
         $this->kstcount='';$this->notes='';$this->ref_no='';$this->chk_in='';
