@@ -148,6 +148,7 @@ class HafInputHeader extends Component
     } catch (\Exception $e) {
 
       DB::connection(Auth()->user()->company)->rollback();
+      $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
 
     }
   }

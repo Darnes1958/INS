@@ -30,6 +30,7 @@ class GetNoAndAcc extends Component
   public $MainOrArc;
 
   public $ToWhome;
+
   public function OpenMany(){
     $this->dispatchBrowserEvent('OpenKstManyModal');
   }
@@ -49,10 +50,12 @@ class GetNoAndAcc extends Component
     $this->ChkNoAndGo();
   }
   protected $listeners = [
-    'Go','Take_ManyAcc_No'
+    'Go','Take_ManyAcc_No','gotoyou'
   ];
 
-
+public function gotoyou($goto){
+  $this->emit('goto',$goto);
+}
   public function Take_ManyAcc_No($The_no){
     $this->no=$The_no;
     $this->ChkNoAndGo();

@@ -89,6 +89,8 @@
                         <li><a href="{{route('main.edit',1)}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تعديل عقد</a></li>
                         <li><a href="{{route('main.edit',2)}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">الغاء عقد</a></li>
                         <li><a href="{{route('main.input',2)}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">ضم عقد</a></li>
+                        <li><a href="{{route('over.input','chk')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تسليم صكوك (من القائم)</a></li>
+                        <li><a href="{{route('over.input','chk_a')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تسليم صكوك (من الأرشيف)</a></li>
                     </ul>
                 </div>
             </li>

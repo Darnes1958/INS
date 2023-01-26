@@ -14,6 +14,14 @@
           @endif
 
           <div  class="col-md-6 themed-grid-col">
+            @if ($Proc=='chk')
+              @livewire('over-tar.get-no-and-acc',['towhome'=>'over-tar.inp-chk','mainorarc'=>'main'])
+              @livewire('over-tar.inp-chk',['MainOrArc'=>'main'])
+            @endif
+              @if ($Proc=='chk_a')
+                @livewire('over-tar.get-no-and-acc',['towhome'=>'over-tar.inp-chk','mainorarc'=>'mainarc'])
+                @livewire('over-tar.inp-chk',['MainOrArc'=>'MainArc'])
+              @endif
           @if ($Proc=='over')
             @livewire('over-tar.get-no-and-acc',['towhome'=>'over-tar.inp-over','mainorarc'=>'main'])
             @livewire('over-tar.inp-over',['proc'=>'over_kst'])

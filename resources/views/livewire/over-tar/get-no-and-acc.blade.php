@@ -61,6 +61,7 @@
   </script>
   <script type="text/javascript">
       Livewire.on('goto',postid=>  {
+
           if (postid=='bankno') {  $("#bank_no").focus();$("#bank_no").select(); }
           if (postid=='no') {  $("#no").focus();$("#no").select(); }
           if (postid=='acc') {  $("#acc").focus();$("#acc").select(); }

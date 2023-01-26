@@ -56,7 +56,7 @@ class DoBackup extends Component
                 die(var_export(sqlsrv_errors(), true));
             } else {
 
-info($strSQL);
+
             }
         }
     //  $this->DownloadTheFile();
