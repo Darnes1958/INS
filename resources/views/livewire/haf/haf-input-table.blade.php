@@ -36,7 +36,11 @@
               <td> {{ $item->name }} </td>
               <td> {{ $item->kst }} </td>
               <td> {{ $item->baky }} </td>
-              <td> {{ $item->kst_type_name }} </td>
+              @if($item->kst_type==5)
+                 <td> أرشيف </td>
+                 @else
+                     <td> {{ $item->kst_type_name }} </td>
+                 @endif
               <td style="padding-top: 2px;padding-bottom: 2px; ">
                 <i  class="btn btn-outline-primary btn-sm fa fa-edit editable-input" style="margin-left: 2px;"
                     wire:click="SelectItem({{ $item->no }},{{ $item->acc }},{{ $item->ser_in_hafitha }}, 'update')" ></i>

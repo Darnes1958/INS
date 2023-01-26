@@ -1,4 +1,4 @@
-<div  class="row gy-1 my-1" style="border:1px solid lightgray;background: white;" >
+<div  class="row gy-1 " style="border:1px solid lightgray;background: white;" >
 
     <div class="modal fade" id="ModalMini" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -31,34 +31,35 @@
     @livewire('bank.bank-haf-select')
   </div>
   <div class="col-md-4">
-      <label   class="form-label " style="color: #0a53be"> حافظة رقم : {{$hafitha}} </label>
+      <label   class="form-label-me " style="color: #0a53be"> حافظة رقم : {{$hafitha}} </label>
 
     <div >
-      <label for="no" class="form-label">تاريخ الحافظة</label>
+      <label for="no" class="form-label-me">تاريخ الحافظة</label>
       <input wire:model="hafitha_date"  class="form-control" type="text"  id="hafitha_date" readonly>
     </div>
     <div  >
-      <label  for="acc" class="form-label">المبلغ</label>
+      <label  for="acc" class="form-label-me">المبلغ</label>
       <input  wire:model="hafitha_tot"  class="form-control"  type="text"  id="hafitha_tot" readonly>
     </div>
     <div  >
-      <label  for="acc" class="form-label">تم ادخاله</label>
+      <label  for="acc" class="form-label-me">تم ادخاله</label>
       <input  wire:model="hafitha_enter"  class="form-control"  type="text"  id="hafitha_enter" readonly>
     </div>
     <div  >
-      <label  for="acc" class="form-label">المتبقي</label>
+      <label  for="acc" class="form-label-me">المتبقي</label>
       <input  wire:model="hafitha_differ"  class="form-control"  type="text"  id="hafitha_differ" readonly>
     </div>
     <br>
   </div>
 
   <div   class="col-md-8" >
-   <table class="table-sm table-bordered " width="100%"  id="hafheadertable" >
+   <table class="table-sm table-bordered " width="100%"  id="hafheadertable" style="font-size: 10pt;">
       <thead>
       <tr>
-        <th width="40%">البيان</th>
-        <th width="30%">العدد</th>
+        <th >البيان</th>
+        <th width="15%">العدد</th>
         <th width="30%">الاجمالي</th>
+        <th width="5%"></th>
       </tr>
       </thead>
       <tbody id="addRow" class="addRow">
@@ -77,10 +78,10 @@
       @endif
       </tbody>
 
-    </table><br>
+    </table>
       <div x-data="{isUploading:  @entangle('HafUpload'), progress: @entangle('HafProgress'),count: @entangle('HafCount'),
           ShowNew : @entangle('ShowHafNew'),ShowUpd : @entangle('ShowHafUpd'),ShowDel : @entangle('ShowHafDel'),ShowTarheel : @entangle('ShowHafTarheel')}">
-        <div  class="my-3 py-3 align-center justify-content-center  "  style="display: flex;border: solid lightgray 1px;">
+        <div  class="my-2 py-2 align-center justify-content-center  "  style="display: flex;border: solid lightgray 1px;">
           <i  @click="ShowNew = true" id="add-btn"  class=" mx-2 btn btn-outline-success    fa fa-plus "
                    >&nbsp;&nbsp; حافظة جديدة</i>
           <i  x-show="ShowDel" wire:click="DeleteHafitha" id="del-btn"  class=" mx-2 btn btn-outline-danger    fas fa-times "
