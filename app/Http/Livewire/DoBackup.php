@@ -27,7 +27,7 @@ class DoBackup extends Component
 
         $path=storage_path().'\app';
         $serverName = ".";
-        $connectionInfo = array( "Database"=>"master","TrustServerCertificate"=>"True","UID"=>"sa",
+        $connectionInfo = array( "Database"=>"master","TrustServerCertificate"=>"True","UID"=>"hameed",
             "PWD"=>"Medo_2003", "CharacterSet" => "UTF-8");
         $conn = sqlsrv_connect( $serverName, $connectionInfo);
         $this->comp=Auth()->user()->company;
@@ -46,7 +46,9 @@ class DoBackup extends Component
     BACKUP DATABASE '.$this->comp.' TO DISK=@fileName');
 
 
+
         $strSQL = Storage::get('file.sql');
+
         //   $strSQL = file_get_contents("c:\backup\arch.sql");
         if (!empty($strSQL)) {
             $query = sqlsrv_query($conn, $strSQL);
@@ -54,7 +56,7 @@ class DoBackup extends Component
                 die(var_export(sqlsrv_errors(), true));
             } else {
 
-
+info($strSQL);
             }
         }
     //  $this->DownloadTheFile();
@@ -62,6 +64,9 @@ class DoBackup extends Component
         // $this->DoDownload($filename);
         //   Storage::download($filename);
         return Storage::download($this->filename);
+    }
+    public function DoDownLoad(){
+      return Storage::download($this->filename);
     }
     public function render()
     {
