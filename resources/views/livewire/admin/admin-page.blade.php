@@ -34,6 +34,9 @@
        <button  wire:click="ToHafitha" class="col-md-1 mx-1 btn btn-danger fas fa fa-table">
          Excell To Hafitha
        </button>
+       <button  wire:click="FromExcel2" class="col-md-1 mx-1 btn btn-danger fas fa fa-file-excel">
+         From Excell2
+       </button>
 
 
      </div>
@@ -45,7 +48,9 @@
      @livewire('admin.rep-old-roles')
      @livewire('admin.rep-roles')
      @livewire('admin.from-excel')
-      @livewire('admin.to-hafitha')
+
+     @livewire('admin.to-hafitha')
+      @livewire('admin.from-excel2')
     </div>
 
     @push('scripts')
