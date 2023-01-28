@@ -6,11 +6,11 @@
         <div class="container-fluid">
             <div class="row mb-3 ">
                 @csrf
-                <div  class="col-md-6 themed-grid-col">
+                <div  class="col-md-7 themed-grid-col">
                     @livewire('aksat.rep.okod.rep-main-head')
                     @livewire('aksat.rep.okod.rep-main-data')
                 </div>
-                <div class="col-md-6 themed-grid-col px-1">
+                <div class="col-md-5 themed-grid-col px-1">
                     @livewire('aksat.rep.okod.rep-main-trans')
                 </div>
 

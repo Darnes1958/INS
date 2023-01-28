@@ -78,7 +78,9 @@
       </tr>
       </thead>
       <tbody id="addRow" class="addRow">
-      @php $sumtot1=0;$sumksm=0;$sumtot=0;$sumcash=0;$sumnot_cash=0; @endphp
+      @php $sumtot1=0;$sumksm=0;$sumtot=0;$sumcash=0;$sumnot_cash=0;
+           $sumtot1_all=0;$sumksm_all=0;$sumtot_all=0;$sumcash_all=0;$sumnot_cash_all=0;
+      @endphp
       @foreach($SellTableMak as $key=>$item)
         <tr class="font-size-12">
           <td> {{number_format($item->not_cash, 2, '.', ',')}} </td>
@@ -97,6 +99,10 @@
         @php $sumtot1+=$item->tot1;$sumksm+=$item->ksm;$sumtot+=$item->tot;
                  $sumcash+=$item->cash;$sumnot_cash+=$item->not_cash; @endphp
       @endforeach
+      @php
+          $sumtot1_all+=$sumtot1;$sumksm_all+=$sumksm;$sumtot_all+=$sumtot;
+                 $sumcash_all+=$sumcash;$sumnot_cash_all+=$sumnot_cash;
+      @endphp
       <tr class="font-size-12 " style="font-weight: bold">
         <td> {{number_format($sumnot_cash, 2, '.', ',')}} </td>
         <td> {{number_format($sumcash, 2, '.', ',')}} </td>
@@ -127,7 +133,7 @@
         <th style="width: 12%;">الخصم</th>
         <th style="width: 12%;">الإجمالي</th>
         <th style="width: 12%;">طريقة الدفع</th>
-        <th >المخزن</th>
+        <th >الصالة</th>
       </tr>
       </thead>
       <tbody id="addRow" class="addRow">
@@ -146,6 +152,10 @@
         @php $sumtot1+=$item->tot1;$sumksm+=$item->ksm;$sumtot+=$item->tot;
                  $sumcash+=$item->cash;$sumnot_cash+=$item->not_cash; @endphp
       @endforeach
+      @php
+          $sumtot1_all+=$sumtot1;$sumksm_all+=$sumksm;$sumtot_all+=$sumtot;
+                 $sumcash_all+=$sumcash;$sumnot_cash_all+=$sumnot_cash;
+      @endphp
       <tr class="font-size-12 " style="font-weight: bold">
         <td> {{number_format($sumnot_cash, 2, '.', ',')}} </td>
         <td> {{number_format($sumcash, 2, '.', ',')}} </td>
@@ -169,6 +179,23 @@
         <label > صفحة رقم </label>
       </div>
       </tbody>
+    <tbody id="addRow" class="addRow">
+    <tr ><td style="border: none"></td><td style="border: none"></td><td style="border: none"></td>
+        <td style="border: none"></td><td style="border: none"></td><td style="border: none"></td><td style="border: none"></td>
+    <tr ><td style="border: none"></td><td style="border: none"></td><td style="border: none"></td>
+        <td style="border: none"></td><td style="border: none"></td><td style="border: none"></td><td style="border: none"></td>
+    </tr>
+    <tr  style="font-weight: bold;background: lightgray;font-size: 10pt;">
+        <td> {{number_format($sumnot_cash_all, 2, '.', ',')}} </td>
+        <td> {{number_format($sumcash_all, 2, '.', ',')}} </td>
+        <td> {{number_format($sumtot_all, 2, '.', ',')}} </td>
+        <td> {{number_format($sumksm_all, 2, '.', ',')}} </td>
+        <td> {{number_format($sumtot1_all, 2, '.', ',')}} </td>
+        <td>   </td>
+        <td style="font-family: DejaVu Sans, sans-serif">اجمالي المبيعات   </td>
+    </tr>
+    </tbody>
+
     </table>
 
     <div class="page-break"></div>

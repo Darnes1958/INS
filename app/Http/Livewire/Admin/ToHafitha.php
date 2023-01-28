@@ -16,21 +16,28 @@ class ToHafitha extends Component
 {
   public $Show=false;
   public $FromExcel;
-  public $BankList;
-  public $BankList2;
-  public $bankl=0;
-  public $theone;
+  public $TajNo;
+
+
+
   protected $listeners = ['show'];
 
   public function show($show){
     $this->Show=$show;
   }
   protected function FillNoBankMainArc($FromExcel){
+      $this->TajNo=$FromExcel[0]->hafitha_tajmeehy;
       foreach ($FromExcel as $item) {
           $acc=$item->acc;
-          $bankcode=Str::substr($acc, 0, 4);
-          if (bank::on(Auth()->user()->company)->where('bank_code',$bankcode)->exists())
-              $bank_no=bank::on(Auth()->user()->company)->where('bank_code',$bankcode)->first()->bank_no;
+          $bankcode=Str::substr($acc, 0, 3);
+          if ( bank::on(Auth()->user()->company)
+               ->where('bank_tajmeeh',$this->TajNo)
+               ->where('bank_code',$bankcode)
+               ->exists() )
+              $bank_no=bank::on(Auth()->user()->company)
+                  ->where('bank_tajmeeh',$this->TajNo)
+                  ->where('bank_code',$bankcode)
+                  ->first()->bank_no;
           else  {
               $this->dispatchBrowserEvent('mmsg', 'كود المصرف '.$bankcode.' غير موجود ');
               return false;
@@ -67,101 +74,65 @@ class ToHafitha extends Component
       return true;
 
   }
-    protected function FillWrongData($BankANdAcc){
-        $AccList=FromExcelModel::on(Auth()->user()->company)
-            ->where('bank',$BankANdAcc->bank)
-            ->where('acc',$BankANdAcc->acc)
-            ->get();
-        foreach ($AccList as $List){
-           FromExcelModel::on(Auth()->user()->company)->find($List->id)->update([
-              'kst'=>$List->ksm,'kst_type'=>4,'baky'=>0,]) ; }
-    }
-  protected function FillNoData($NoAndType){
-
-    if ($NoAndType->MainArcWrong==1){
-        $raseed=main::on(Auth()->user()->company)->find($NoAndType->no)->raseed;
-        $NoList=FromExcelModel::on(Auth()->user()->company)->where('no',$NoAndType->no)->get();
-        $sumkst=0;
-        foreach ($NoList as $List){
-          $sumkst+=$List->ksm;
-          if ($raseed>=$sumkst){
-              FromExcelModel::on(Auth()->user()->company)->find($List->id)->update([
-               'kst'=>$List->ksm,'kst_type'=>1,'baky'=>0,]) ; }
-          else {
-              if (($sumkst-$raseed)<$List->ksm){
-                  FromExcelModel::on(Auth()->user()->company)->find($List->id)->update([
-                      'kst'=>$raseed,'kst_type'=>3,'baky'=>$sumkst-$raseed,]) ;
-              } else FromExcelModel::on(Auth()->user()->company)->find($List->id)->update([
-                'kst'=>$List->ksm,'kst_type'=>2,'baky'=>0,]) ;
-          }
-        }
-
-    }
-    if ($NoAndType->MainArcWrong==2){
-        $NoList=FromExcelModel::on(Auth()->user()->company)->where('no',$NoAndType->no)->get();
-        foreach ($NoList as $List){
-        FromExcelModel::on(Auth()->user()->company)->find($List->id)->update([
-            'kst'=>$List->ksm,'kst_type'=>5,'baky'=>0,]) ;}
-    }
-}
-  protected function FillKstHaf($bank){
 
 
-    $NoList=FromExcelModel::on(Auth()->user()->company)->select('no','MainArcWrong')
-        ->where('bank',$bank)
-        ->where('no','!=',0)
-        ->distinct()->get();
-
-
-       foreach ($NoList as $NoAndType) {$this->FillNoData($NoAndType);}
-
-
-  }
-    protected function Fillwrong($bank){
-        $AccList=FromExcelModel::on(Auth()->user()->company)->select('bank','acc')
-            ->where('no','=',0)
-            ->where('bank',$bank)
-            ->distinct()->get();
-
-        foreach ($AccList as $BankAndAcc){$this->FillWrongData($BankAndAcc);  }
-    }
   public function Do(){
     $this->FromExcel=FromExcelModel::on(Auth()->user()->company)->get();
     if (!$this->FillNoBankMainArc($this->FromExcel)) return false;
-
+    $this->Do2();
 
   }
     public function Do2(){
+        $Data=FromExcelModel::on(Auth()->user()->company)
+            ->join('main','FromExcel.no','=','main.no')
+            ->select('id','FromExcel.no','FromExcel.ksm','raseed')
+            ->where('MainArcWrong','=',1)
+            ->orderBy('no')
+            ->get();
+        $PrevNo=0;
+        for ($i=0;$i<count($Data);$i++) {
+            $id = $Data[$i]->id;
+            $MainArc = $Data[$i]->MainArcWrong;
+            $no = $Data[$i]->no;
+            $ksm = $Data[$i]->ksm;
+            $raseed = $Data[$i]->raseed;
 
-
-            $this->FillKstHaf(1);
-        $this->FillKstHaf(2);
-
-    }
-    public function Do21(){
-        $this->BankList=FromExcelModel::on(Auth()->user()->company)
-            ->where('bank','>',2)
-            ->select('bank')->distinct()->get();
-        foreach ($this->BankList as $bank){
-            $this->FillKstHaf($bank->bank);
+            if ($PrevNo != $no) {$sumkst = 0;$PrevNo = $no;}
+            $sumkst += $ksm;
+            if ($raseed >= $sumkst) {
+                    FromExcelModel::on(Auth()->user()->company)->find($id)->update([
+                        'kst' => $ksm, 'kst_type' => 1, 'baky' => 0,]);
+                }
+            else {
+                if (($sumkst - $raseed) < $ksm) {
+                    FromExcelModel::on(Auth()->user()->company)->find($id)->update([
+                        'kst' => $ksm-($sumkst - $raseed), 'kst_type' => 3, 'baky' => $sumkst - $raseed,]);
+                 }
+                else {
+                    FromExcelModel::on(Auth()->user()->company)->find($id)->update([
+                        'kst' => $ksm, 'kst_type' => 2, 'baky' => 0,]);
+                }
+            }
         }
-    }
-    public function fillOne(){
-      $this->theone=$this->bankl;
-    }
-    public function DoOne(){
+        $Data2=FromExcelModel::on(Auth()->user()->company)
+            ->where('MainArcWrong','=',2)
+            ->get();
+        for ($i=0;$i<count($Data2);$i++) {
+           FromExcelModel::on(Auth()->user()->company)->find($Data2[$i]->id)->update([
+              'kst'=>$Data2[$i]->ksm,'kst_type'=>5,'baky'=>0,]) ;}
 
-            $this->FillKstHaf($this->theone);
+        $Data3=FromExcelModel::on(Auth()->user()->company)
+            ->where('MainArcWrong','=',0)
+            ->get();
+        for ($i=0;$i<count($Data3);$i++) {
+                FromExcelModel::on(Auth()->user()->company)->find($Data3[$i]->id)->update([
+                    'kst'=>$Data3[$i]->ksm,'kst_type'=>4,'baky'=>0,]) ;}
 
     }
-    public function DoWrong(){
-        $this->BankList2=FromExcelModel::on(Auth()->user()->company)
-        ->where('no',0)
-        ->select('bank')->distinct()->get();
-        foreach ($this->BankList2 as $bank){
-            $this->Fillwrong($bank->bank);
-        }
-    }
+
+
+
+
   public function Tarheel(){
       $BankList=FromExcelModel::on(Auth()->user()->company)->select('bank','h_no')->distinct()->get();
       DB::connection(Auth()->user()->company)->beginTransaction();

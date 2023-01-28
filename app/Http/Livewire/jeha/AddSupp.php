@@ -2,10 +2,17 @@
 
 namespace App\Http\Livewire\Jeha;
 
+use App\Models\aksat\main;
+use App\Models\aksat\MainArc;
 use App\Models\buy\buy_tran;
 use App\Models\buy\buys;
 use App\Models\jeha\jeha;
 use App\Models\jeha\jeha_type;
+use App\Models\OverTar\over_kst;
+use App\Models\OverTar\over_kst_a;
+use App\Models\OverTar\stop_kst;
+use App\Models\OverTar\tar_kst;
+use App\Models\OverTar\tar_kst_before;
 use App\Models\sell\sells;
 use App\Models\trans\trans;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +36,11 @@ class AddSupp extends Component
   public $jeha_type_name;
 
   public $UpdateMod=false;
+    public $search;
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
 
   protected $listeners = [
     'refreshComponent' => '$refresh','WithJehaType','TakeJehaSearch','TextIsUpdate','TakeTheJehaNo'
@@ -77,15 +89,44 @@ class AddSupp extends Component
 
 
 
-    if ($this->UpdateMod)
-    DB::connection(Auth()->user()->company)->table('jeha')->where('jeha_no',$this->jeha_no)->update([
+    if ($this->UpdateMod) {
+     DB::connection(Auth()->user()->company)->table('jeha')->where('jeha_no',$this->jeha_no)->update([
       'jeha_name' => $this->jehaname,
       'address' => $this->address,
       'libyana' => $this->libyana,
       'mdar' => $this->mdar,
       'others' => $this->others,
-      'emp'=>auth::user()->empno,
-    ]);
+      'emp'=>auth::user()->empno,]);
+     main::on(Auth()->user()->company)->where('jeha',$this->jeha_no)->update([
+        'name'=>$this->jehaname,]);
+     MainArc::on(Auth()->user()->company)->where('jeha',$this->jeha_no)->update([
+            'name'=>$this->jehaname,]);
+     over_kst::on(Auth()->user()->company)->whereIn('no', function($q){
+         $q->select('no')->from('main')->where('jeha',$this->jeha_no);})->update([
+         'name'=>$this->jehaname,]);
+     over_kst_a::on(Auth()->user()->company)->whereIn('no', function($q){
+         $q->select('no')->from('MainArc')->where('jeha',$this->jeha_no);})->update([
+         'name'=>$this->jehaname,]);
+     stop_kst::on(Auth()->user()->company)->whereIn('no', function($q){
+            $q->select('no')->from('main')->where('jeha',$this->jeha_no);})->update([
+            'name'=>$this->jehaname,]);
+     stop_kst::on(Auth()->user()->company)->whereIn('no', function($q){
+            $q->select('no')->from('MainArc')->where('jeha',$this->jeha_no);})->update([
+            'name'=>$this->jehaname,]);
+     tar_kst::on(Auth()->user()->company)->whereIn('no', function($q){
+        $q->select('no')->from('main')->where('jeha',$this->jeha_no);})->update([
+        'name'=>$this->jehaname,]);
+     tar_kst::on(Auth()->user()->company)->whereIn('no', function($q){
+        $q->select('no')->from('MainArc')->where('jeha',$this->jeha_no);})->update([
+        'name'=>$this->jehaname,]);
+     tar_kst_before::on(Auth()->user()->company)->whereIn('no', function($q){
+        $q->select('no')->from('main')->where('jeha',$this->jeha_no);})->update([
+        'name'=>$this->jehaname,]);
+     tar_kst_before::on(Auth()->user()->company)->whereIn('no', function($q){
+        $q->select('no')->from('MainArc')->where('jeha',$this->jeha_no);})->update([
+        'name'=>$this->jehaname,]);
+
+    }
     else {
       $this->jeha_no = jeha::max('jeha_no') + 1;
       DB::connection(Auth()->user()->company)->table('jeha')->insert([
@@ -149,7 +190,9 @@ class AddSupp extends Component
     public function render()
     {
         return view('livewire.jeha.add-Supp',[
-          'JehaTable'=>jeha::on(Auth()->user()->company)->where('jeha_type',$this->jeha_type)
+          'JehaTable'=>jeha::on(Auth()->user()->company)
+              ->where('jeha_type',$this->jeha_type)
+              ->where('jeha_name', 'like', '%'.$this->search.'%')
             ->orderBy('jeha_no','desc')
             ->paginate(15),
         ]);

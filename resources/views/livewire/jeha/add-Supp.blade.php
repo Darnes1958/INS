@@ -58,11 +58,15 @@
     </dev> <!-- end col -->
    <div class="col-md-7">
      <div class="card">
+         <div class="card-header align-content-center">
+             <input wire:model="search"  type="search"   placeholder="ابحث هنا .......">
+         </div>
        <div class="card-body">
+
          <table class="table table-sm table-bordered table-striped table-light " width="100%"   >
            <thead class="font-size-12">
            <tr>
-             <th width="10%">رقم الزبون</th>
+             <th width="20%">رقم الزبون</th>
              <th >اسم الزبون</th>
              <th width="5%"></th>
              <th width="5%"></th>

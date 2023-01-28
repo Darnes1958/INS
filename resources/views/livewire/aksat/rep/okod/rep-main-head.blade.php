@@ -4,21 +4,28 @@
         <div class="row">
 
           @role('info')
-            <div class="col-md-7">
+            <div class="col-md-4">
                 <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "  class="form-control"   type="text" id="search" autofocus>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <input  wire:model="no" wire:keydown.enter="ChkNoAndGo" placeholder="او أدخل رقم العقد هنا"  class="form-control"   type="text" id="No" autofocus>
+            </div>
+            <div   class="col-md-4" >
+
+                @livewire('bank.bank-select')
             </div>
            <div class="col-md-1">
               <button wire:click="$emit('CloseOkod')"  type="button" class="btn btn-outline-danger btn-sm far fa-window-close" ></button>
            </div>
            @else
-                <div class="col-md-8">
+                <div class="col-md-4">
                     <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "  class="form-control"   type="text" id="search" autofocus>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <input  wire:model="no" wire:keydown.enter="ChkNoAndGo" placeholder="او أدخل رقم العقد هنا"  class="form-control"   type="text" id="No" autofocus>
+                </div>
+                <div   class="col-md-5" >
+                   @livewire('bank.bank-select')
                 </div>
 
            @endrole
@@ -56,6 +63,22 @@
 
 @push('scripts')
     <script>
+        $(document).ready(function ()
+        {
+            $('#Bank_L').select2({
+                closeOnSelect: true
+            });
+            $('#Bank_L').on('change', function (e) {
+                var data = $('#Bank_L').select2("val");
+            @this.set('bankno', data);
+            @this.set('TheBankListIsSelectd', 1);
+            });
+        });
+        window.livewire.on('bank-change-event',()=>{
+            $('#Bank_L').select2({
+                closeOnSelect: true
+            });
+        });
         window.addEventListener('CloseKstManyModal', event => {
             $("#ModalKstMany").modal('hide');
         })

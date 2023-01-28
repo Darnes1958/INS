@@ -18,22 +18,23 @@ class FromExcel2Import implements ToModel, WithHeadingRow
     public function model(array $row)
     {
 
-      if (!isset($row['bankcode']) || !isset($row['exname']) || !isset($row['oldacc'])
+      if ( !isset($row['exname']) || !isset($row['oldacc'])
            || !isset($row['newacc']) || !isset($row['exkst'])) {
             return null;}
         $rec= FromExcel2Model::on(auth()->user()->company)->create(
           [
-            'bankcode' => $row['bankcode'],
+
             'EXname' => $row['exname'],
             'OldAcc' => $row['oldacc'],
             'NewAcc' => $row['newacc'],
             'EXkst' => $row['exkst'],
           ]
         );
+      info($rec);
         return  $rec;
     }
   public function headingRow(): int
   {
-    return 4;
+    return 18;
   }
 }

@@ -4,8 +4,7 @@
 
 <div id="page-content" class="page-content" >
   <div class="container-fluid">
-
-    @csrf
+   @csrf
       @if ($rep=='RepMas')
           <div class=" themed-grid-col px-1">
               @livewire('masr.rep-mas')

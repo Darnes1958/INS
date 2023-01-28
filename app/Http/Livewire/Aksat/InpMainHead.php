@@ -7,6 +7,11 @@ use App\Models\aksat\main;
 use App\Models\aksat\main_items;
 use App\Models\aksat\MainArc;
 use App\Models\aksat\place;
+use App\Models\OverTar\over_kst;
+use App\Models\OverTar\over_kst_a;
+use App\Models\OverTar\stop_kst;
+use App\Models\OverTar\tar_kst;
+use App\Models\OverTar\tar_kst_before;
 use App\Models\sell\rep_sell_tran;
 use App\Models\sell\sell_tran;
 use App\Models\sell\sells;
@@ -78,6 +83,32 @@ class InpMainHead extends Component
     DB::connection(Auth()->user()->company)->table('jeha')
       ->where('jeha_no',$this->jeha)
       ->update(['jeha_name'=>$this->NameToEdit]);
+        MainArc::on(Auth()->user()->company)->where('jeha',$this->jeha)->update([
+            'name'=>$this->NameToEdit,]);
+        over_kst::on(Auth()->user()->company)->whereIn('no', function($q){
+            $q->select('no')->from('main')->where('jeha',$this->jeha);})->update([
+            'name'=>$this->NameToEdit,]);
+        over_kst_a::on(Auth()->user()->company)->whereIn('no', function($q){
+            $q->select('no')->from('MainArc')->where('jeha',$this->jeha);})->update([
+            'name'=>$this->NameToEdit,]);
+        stop_kst::on(Auth()->user()->company)->whereIn('no', function($q){
+            $q->select('no')->from('main')->where('jeha',$this->jeha);})->update([
+            'name'=>$this->NameToEdit,]);
+        stop_kst::on(Auth()->user()->company)->whereIn('no', function($q){
+            $q->select('no')->from('MainArc')->where('jeha',$this->jeha);})->update([
+            'name'=>$this->NameToEdit,]);
+        tar_kst::on(Auth()->user()->company)->whereIn('no', function($q){
+            $q->select('no')->from('main')->where('jeha',$this->jeha);})->update([
+            'name'=>$this->NameToEdit,]);
+        tar_kst::on(Auth()->user()->company)->whereIn('no', function($q){
+            $q->select('no')->from('MainArc')->where('jeha',$this->jeha);})->update([
+            'name'=>$this->NameToEdit,]);
+        tar_kst_before::on(Auth()->user()->company)->whereIn('no', function($q){
+            $q->select('no')->from('main')->where('jeha',$this->jeha);})->update([
+            'name'=>$this->NameToEdit,]);
+        tar_kst_before::on(Auth()->user()->company)->whereIn('no', function($q){
+            $q->select('no')->from('MainArc')->where('jeha',$this->jeha);})->update([
+            'name'=>$this->NameToEdit,]);
     $this->name=$this->NameToEdit;
     $this->ShowEditName=false;}
   }

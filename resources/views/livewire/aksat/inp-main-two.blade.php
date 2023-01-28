@@ -20,7 +20,7 @@
         <label  class="form-label-me">رقم العقد السابق</label>
         <input   wire:model="no_old"  class="form-control" readonly>
     </div>
-    <div class="col-md-3 mb-2 " >
+    <div class="col-md-4 mb-3 " >
         <label   class="form-label-me">رقم الحساب</label>
       <div class="d-flex">
         <input  wire:model="acc"  class="form-control"  readonly >
@@ -28,18 +28,18 @@
                 type="button" class="btn btn-outline-primary btn-sm fa fa-edit border-0" ></button>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-5">
       <label  class="form-label-me ">المصرف</label>
       <input  wire:model="bank_name"  class=" form-control "  readonly >
     </div>
 
-  <div class="col-md-3"  x-show:="open" >
+  <div class="col-md-2"  x-show:="open" >
   </div>
-  <div class="col-md-3 mb-2"  x-show:="open" @click.outside="open = false">
+  <div class="col-md-5 mb-2"  x-show:="open" @click.outside="open = false">
 
     <input  wire:model="accToEdit" wire:keydown.enter="SaveAcc" class="form-control"  id="accToEdit" >
   </div>
-  <div class="col-md-6"  x-show:="open" >
+  <div class="col-md-5"  x-show:="open" >
   </div>
 
   <div class="col-md-4 mb-2" >

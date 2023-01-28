@@ -33,7 +33,7 @@ class FromExcelImport implements ToModel, WithHeadingRow
     }//
     public function headingRow(): int
         {
-          return 10;
+          return 18;
         }
 
 }
