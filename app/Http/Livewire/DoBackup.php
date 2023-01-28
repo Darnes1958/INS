@@ -66,7 +66,10 @@ class DoBackup extends Component
         return Storage::download($this->filename);
     }
     public function DoDownLoad(){
-      return Storage::download($this->filename);
+        info('here');
+        $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
+        info($fname);
+      return Storage::download($fname);
     }
     public function render()
     {

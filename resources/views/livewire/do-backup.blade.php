@@ -14,7 +14,7 @@
 
             </div>
           <div class="col-md-12">
-            <p>الخظوة الأولي : إضغط علي "تنزيل" </p>
+            <p>الخظوة الثانية : إضغط علي "تنزيل" </p>
           </div>
           <div class="col-md-4">
             <input type="button"  id="downbtn"

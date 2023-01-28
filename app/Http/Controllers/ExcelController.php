@@ -20,7 +20,7 @@ class ExcelController extends Controller
   {
       $filename=$request->filename;
       $TajNo=$request->TajNo;
-      info($request->BankRadio);
+
     if ($request->BankRadio=='wahda')
      Excel::import(new FromExcelImport, $filename);
     else
