@@ -6,11 +6,21 @@
           <div class="col-md-4">
               @livewire('admin.taj-select')
           </div>
+          <div class="col-md-3">
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" wire:model="BankRadio"  name="inlineRadioOptions" id="inlineRadio1" value="wahda">
+                  <label class="form-check-label" for="inlineRadio1">الوجدة</label>
+              </div>
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" wire:model="BankRadio" name="inlineRadioOptions" id="inlineRadio2" value="tejary">
+                  <label class="form-check-label" for="inlineRadio2">التجاري</label>
+              </div>
+          </div>
        <div class="col-md-2">
          <button  wire:click="Take" class="btn btn-outline-success border-0  ">Prepere</button>
        </div>
         <div x-show="$wire.ShowDo" class="col-md-2">
-          <a   href="{{route('impfromsheet',['filename'=>$filename,'TajNo'=>$TajNo])}}"
+          <a   href="{{route('impfromsheet',['filename'=>$filename,'TajNo'=>$TajNo,'BankRadio'=>$BankRadio])}}"
                class="btn btn-outline-success border-0   ">Do</a>
 
         </div>

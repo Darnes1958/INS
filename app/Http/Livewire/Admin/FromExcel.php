@@ -20,6 +20,7 @@ class FromExcel extends Component
   public $Show=false;
   public $ShowDo=false;
   public $TajNo=0;
+  public $BankRadio='wahda';
 
 
   protected $listeners = ['show'];

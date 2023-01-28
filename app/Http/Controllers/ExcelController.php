@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Imports\FromExcelImport;
+use App\Imports\FromExcelImportT;
 use App\Imports\FromExcel2Import;
 use App\Models\excel\FromExcelModel;
 use App\Models\excel\FromExcel2Model;
@@ -19,8 +20,11 @@ class ExcelController extends Controller
   {
       $filename=$request->filename;
       $TajNo=$request->TajNo;
-
-    Excel::import(new FromExcelImport, $filename);
+      info($request->BankRadio);
+    if ($request->BankRadio=='wahda')
+     Excel::import(new FromExcelImport, $filename);
+    else
+     Excel::import(new FromExcelImportT, $filename);
     FromExcelModel::on(Auth()->user()->company)->update([
         'hafitha_tajmeehy'=>$TajNo,
     ]);
