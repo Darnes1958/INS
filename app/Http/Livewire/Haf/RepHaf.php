@@ -11,7 +11,9 @@ use Livewire\WithPagination;
 class RepHaf extends Component
 {
     public $Haf_no=0;
+
     public $bank_name;
+    public $haf_date='';
 
 
     use WithPagination;
@@ -69,11 +71,15 @@ class RepHaf extends Component
         $this->haf_date1 = $this->date1;
         $this->haf_date2 = $this->date2;
     }
-    public function selectItem($haf,$bank){
+    public function selectItem($haf,$bank,$date)
+    {
 
-       $this->Haf_no=$haf;
-       $this->bank_name=$bank;
-        }
+        $this->Haf_no = $haf;
+        $this->bank_name = $bank;
+        $this->haf_date=$date;
+
+
+    }
 
   public function mount(){
     $this->date1=Carbon::now()->startOfMonth()->toDateString();

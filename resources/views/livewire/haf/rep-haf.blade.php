@@ -1,13 +1,13 @@
-<div>
+<div  x-data>
     <div class="row  my-1" style="border:1px solid lightgray;background: white; " >
-        <div class="col-md-5 my-2 ">
+        <div class="col-md-5 my-1 ">
             <div class="row">
-                <div class="col-md-6 my-2 d-inline-flex ">
+                <div class="col-md-6  d-inline-flex ">
                     <label  class="form-label mx-0 text-left " style="width: 30%; ">من تاريخ</label>
                     <input wire:model="date1"   class="form-control mr-0 text-center" type="date"  id="date1" style="width: 70%; ">
                     @error('date1') <span class="error">{{ $message }}</span> @enderror
                 </div>
-                <div class="col-md-6 my-2 d-inline-flex ">
+                <div class="col-md-6  d-inline-flex ">
                     <label  class="form-label  text-right " style="width: 30%; ">إلي تاريخ</label>
                     <input wire:model="date2" wire:keydown.enter="Date2Chk" class="form-control mr-0 text-center" type="date"  id="date2" style="width: 70%; ">
                     @error('date2') <span class="error">{{ $message }}</span> @enderror
@@ -25,7 +25,7 @@
                 <label class="form-check-label" >غير مرحلة</label>
             </div>
         </div>
-        <div class="col-md-5 my-2 ">
+        <div class="col-md-5 my-1 ">
          <div class="row">
              <div class="col-md-6  ">
                  <input wire:model="search"  type="search"   placeholder="بحث عن الحوافظ ....">
@@ -38,8 +38,8 @@
         </div>
 
     </div>
- <div x-data class="row">
-     <div class="col-md-5 m-0 p-0">
+ <div  class="row">
+     <div class="col-md-5 m-0 " style="padding-right:  4px;">
 
           <table class="table table-sm table-bordered table-striped table-light " width="100%"   >
               <thead class="font-size-12">
@@ -54,10 +54,10 @@
 
                   @foreach($HafTable as $item)
                       <tr class="font-size-12">
-                          <td ><a wire:click="selectItem({{ $item->hafitha_no }},'{{ $item->bank_name }}')" href="#">{{ $item->bank_name }}</a>   </td>
-                          <td ><a wire:click="selectItem({{ $item->hafitha_no }},'{{ $item->bank_name }}')" href="#">{{ $item->hafitha_no }}</a>   </td>
-                          <td> <a wire:click="selectItem({{ $item->hafitha_no }},'{{ $item->bank_name }}')" href="#">{{ $item->hafitha_date }}</a> </td>
-                          <td> <a wire:click="selectItem({{ $item->hafitha_no }},'{{ $item->bank_name }}')" href="#">{{ number_format($item->hafitha_tot,2, '.', ',') }}</a> </td>
+                          <td ><a wire:click="selectItem({{ $item->hafitha_no }},'{{ $item->bank_name }}','{{ $item->hafitha_date }}')" href="#">{{ $item->bank_name }}</a>   </td>
+                          <td ><a wire:click="selectItem({{ $item->hafitha_no }},'{{ $item->bank_name }}','{{ $item->hafitha_date }}')" href="#">{{ $item->hafitha_no }}</a>   </td>
+                          <td> <a wire:click="selectItem({{ $item->hafitha_no }},'{{ $item->bank_name }}','{{ $item->hafitha_date }}')" href="#">{{ $item->hafitha_date }}</a> </td>
+                          <td> <a wire:click="selectItem({{ $item->hafitha_no }},'{{ $item->bank_name }}','{{ $item->hafitha_date }}')" href="#">{{ number_format($item->hafitha_tot,2, '.', ',') }}</a> </td>
                        </tr>
                   @endforeach
 
@@ -68,9 +68,18 @@
 
 
      </div>
-     <div class="col-md-7 m-0 p-0">
-         <h3>{{$bank_name}}</h3>
-         <h2>حافظة رقم {{$Haf_no}}</h2>
+     <div  class="col-md-7 m-0 p-0">
+         <div x-show="$wire.Haf_no!=0">
+             <div  class="d-inline-flex">
+                 <h5 class="mx-4" style="color:#c0a16b;">{{$bank_name}}</h5>
+                 <h6 >حافظة رقم </h6>
+                 <h6 class="mx-2" style="color: blue">{{$Haf_no}}</h6>
+                 <h6 style="margin-right: 8px;">بتاريخ </h6>
+                 <h6 class="mx-2" style="color: blue">{{$haf_date}}</h6>
+             </div>
+         </div>
+
+
          <table class="table table-sm table-bordered table-striped table-light " width="100%"   >
              <thead class="font-size-12">
              <tr>
