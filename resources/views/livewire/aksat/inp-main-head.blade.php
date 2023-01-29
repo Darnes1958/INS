@@ -1,5 +1,20 @@
 <div class="row " x-data="{open:  @entangle('ShowEditName')}">
 
+  <div class="modal fade" id="PlaceModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" wire:click.prevent="ClosePlace" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h3 class="modal-title fs-5" id="exampleModalToggleLabel2">ادخال مكان العمل الجديد ثم اضغط ENTER</h3>
+        </div>
+        <div class="modal-body">
+          @livewire('aksat.add-place')
+        </div>
+
+      </div>
+    </div>
+  </div>
+
  <div  class="col-md-6 ">
 
 
@@ -112,12 +127,16 @@
           <div class="col-md-4  gx-3">
               <label  for="place" class="form-label-me">جهة العمل</label>
           </div>
-          <div class="col-md-8  gx-3">
+          <div class="col-md-7  gx-1">
              <input x-bind:disabled="!$wire.OrderGet" wire:model="place" wire:keydown.enter="ChkPlaceAndGo"
                   class="form-control  "
                 name="place" type="number"  id="place" >
           </div>
-   @error('place') <span class="error">{{ $message }}</span> @enderror
+
+         @error('place') <span class="error">{{ $message }}</span> @enderror
+        <div class="col-md-1 gx-3" >
+          <button wire:click="OpenPlace" type="button" class=" btn btn-outline-primary btn-sm fa fa-plus" data-bs-toggle="modal"></button>
+        </div>
       </div>
   </div>
   <div x-bind:disabled="!$wire.OrderGet"  class="col-md-7" >

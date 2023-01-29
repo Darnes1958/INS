@@ -59,6 +59,15 @@ class InpMainHead extends Component
   public $TheBankNoListIsSelectd;
   public $TheOrderNoListIsSelectd;
   public $ThePlaceNoListIsSelectd;
+
+  public function OpenPlace(){
+
+    $this->dispatchBrowserEvent('OpenPlace');
+  }
+  public function ClosePlace(){
+    $this->dispatchBrowserEvent('CloseClose');
+  }
+
   public function updatedTheBankNoListIsSelectd(){
     $this->TheBankNoListIsSelectd=0;
     $this->ChkBankAndGo();

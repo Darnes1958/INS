@@ -172,29 +172,45 @@ class RepAksatController extends Controller
 
   }
 
-    function PdfBankSum(){
+    function PdfBankSum(Request $request){
 
         $RepDate=date('Y-m-d');
         $cus=Customers::where('Company',Auth::user()->company)->first();
 
-        $res=rep_banks::on(Auth()->user()->company)
-            ->orderby('bank')->get();
-        $sul=main::on(Auth()->user()->company)->sum('sul');
-        $pay=main::on(Auth()->user()->company)->sum('sul_pay');
-        $raseed=main::on(Auth()->user()->company)->sum('raseed');
-        $count=main::on(Auth()->user()->company)->count();
+       if ($request->RepChk) {
+         $res = DB::connection(Auth()->user()->company)->table('main_view')
+           ->selectRaw('bank, bank_name, COUNT(*) AS WCOUNT, SUM(sul) AS sumsul, SUM(sul_pay) AS sumpay,
+                            SUM(raseed) AS sumraseed, SUM(dofa) AS sumdofa, SUM(sul_tot) AS sumsul_tot')
+           ->groupBy('bank', 'bank_name')
+           ->whereBetween('sul_date', [$request->date1, $request->date2])
+           ->orderby('bank')->get();
+         $sul = main::on(Auth()->user()->company)->whereBetween('sul_date', [$request->date1, $request->date2])->sum('sul');
+         $pay = main::on(Auth()->user()->company)->whereBetween('sul_date', [$request->date1, $request->date2])->sum('sul_pay');
+         $raseed = main::on(Auth()->user()->company)->whereBetween('sul_date', [$request->date1, $request->date2])->sum('raseed');
+         $count = main::on(Auth()->user()->company)->whereBetween('sul_date', [$request->date1, $request->date2])->count();
+         $reportHtml = view('PrnView.aksat.pdf-bank-sum2',
+           ['RepTable'=>$res,'date1'=>$request->date1,'date2'=>$request->date2,'cus'=>$cus
+             ,'sul'=>$sul,'pay'=>$pay,'raseed'=>$raseed,'count'=>$count])->render();
+       } else
+       {
+         $res=rep_banks::on(Auth()->user()->company)
+           ->orderby('bank')->get();
+         $sul=main::on(Auth()->user()->company)->sum('sul');
+         $pay=main::on(Auth()->user()->company)->sum('sul_pay');
+         $raseed=main::on(Auth()->user()->company)->sum('raseed');
+         $count=main::on(Auth()->user()->company)->count();
+         $reportHtml = view('PrnView.aksat.pdf-bank-sum',
+           ['RepTable'=>$res,'RepDate'=>$RepDate,'cus'=>$cus
+             ,'sul'=>$sul,'pay'=>$pay,'raseed'=>$raseed,'count'=>$count])->render();
+       }
 
-        $reportHtml = view('PrnView.aksat.pdf-bank-sum',
-            ['RepTable'=>$res,'RepDate'=>$RepDate,'cus'=>$cus
-                ,'sul'=>$sul,'pay'=>$pay,'raseed'=>$raseed,'count'=>$count])->render();
+
         $arabic = new Arabic();
         $p = $arabic->arIdentify($reportHtml);
-
         for ($i = count($p)-1; $i >= 0; $i-=2) {
             $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
             $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
         }
-
         $pdf = PDF::loadHTML($reportHtml);
         return $pdf->download('report.pdf');
 

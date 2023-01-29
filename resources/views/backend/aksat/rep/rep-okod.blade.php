@@ -6,6 +6,11 @@
     <div class="container-fluid">
 
         @csrf
+      @if ($rep=='haf')
+        <div class=" themed-grid-col px-1">
+          @livewire('haf.rep-haf')
+        </div>
+      @endif
       @if ($rep=='wrong')
         <div class=" themed-grid-col px-1">
           @livewire('aksat.rep.okod.wrong')

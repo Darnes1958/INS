@@ -35,7 +35,7 @@
                 <td style="font-weight: bold"> {{ number_format($raseed,2, '.', ',') }} </td>
                 <td style="font-weight: bold"> {{ number_format($pay,2, '.', ',') }} </td>
                 <td style="font-weight: bold"> {{ number_format($sul,2, '.', ',') }} </td>
-                <td style="font-weight: bold"> {{ number_format($count,2, '.', ',') }} </td>
+                <td style="font-weight: bold"> {{ number_format($count,0, '.', ',') }} </td>
                 <td colspan="2" style="text-align: center;"> الإجمــــــالي </td>
 
             </tr>
