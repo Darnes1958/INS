@@ -13,6 +13,15 @@
                        wire:click.prevent="DoBackup"   value="تنفيذ" />
 
             </div>
+            <div class="col-md-12">
+                <p>الخظوة الثانية : إضغط علي "نسخ" </p>
+            </div>
+            <div class="col-md-4">
+                <input type="button"  id="downbtn"
+                       class="w-100 btn btn-outline-success  waves-effect waves-light   "
+                       wire:click.prevent="DoCopy"   value="نسخ" />
+
+            </div>
           <div class="col-md-12">
             <p>الخظوة الثانية : إضغط علي "تنزيل" </p>
           </div>

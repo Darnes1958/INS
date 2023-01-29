@@ -16,8 +16,10 @@ class DoBackup extends Component
      //   $this->DeleteTheFile();
     }
     public function DeleteTheFile(){
+        $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
+        Storage::delete($fname);
+        Storage::delete('backup/'.$fname);
 
-        Storage::delete($this->filename);
         //return response()->download(storage_path('app\\'.$this->filename));
       //  return Storage::download($this->filename);
       return redirect()->to('/home');
@@ -70,8 +72,14 @@ class DoBackup extends Component
     public function DoDownLoad(){
 
         $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
+
+      return Storage::download('backup/'.$fname);
+    }
+    public function DoCopy(){
+
+        $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
         storage::copy($fname, 'backup/'.$fname);
-      //return Storage::download($fname);
+        //return Storage::download($fname);
     }
     public function render()
     {
