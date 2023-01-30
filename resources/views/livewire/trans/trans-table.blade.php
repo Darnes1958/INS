@@ -32,7 +32,7 @@
         </tbody>
     </table>
     {{ $TableList->links() }}
-    <div class="modal fade" id="ModalMyDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="ModalTransDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -72,11 +72,11 @@
 @push('scripts')
     <script>
 
-        window.addEventListener('OpenMyDelete', event => {
-            $("#ModalMyDelete").modal('show');
+        window.addEventListener('OpenTransDelete', event => {
+            $("#ModalTransDelete").modal('show');
         })
-        window.addEventListener('CloseMyDelete', event => {
-            $("#ModalMyDelete").modal('hide');
+        window.addEventListener('CloseTransDelete', event => {
+            $("#ModalTransDelete").modal('hide');
         })
         window.addEventListener('OpenMyEdit', event => {
             $("#ModalMyEdit").modal('show');

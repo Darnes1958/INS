@@ -36,15 +36,15 @@ class TransTable extends Component
     }
     public function selectItem($tran_no,$action){
       $this->tran_no=$tran_no;
-      if ($action=='delete') {$this->dispatchBrowserEvent('OpenMyDelete');}
+      if ($action=='delete') {$this->dispatchBrowserEvent('OpenTransDelete');}
       if ($action=='update') {$this->emit('ToEditTran',$tran_no);$this->dispatchBrowserEvent('OpenMyEdit');}
     }
-    public function CloseDeleteDialog(){$this->dispatchBrowserEvent('CloseMyDelete');}
+    public function CloseDeleteDialog(){$this->dispatchBrowserEvent('CloseTransDelete');}
     public function CloseEditDialog(){$this->dispatchBrowserEvent('CloseMyEdit');}
 
     public function delete(){
       $this->CloseDeleteDialog();
-      trans::on(Auth()->user()->company)->where('tran_no',$this->edittran_no)->delete();
+      trans::on(Auth()->user()->company)->where('tran_no',$this->tran_no)->delete();
       $this->render();
     }
 
