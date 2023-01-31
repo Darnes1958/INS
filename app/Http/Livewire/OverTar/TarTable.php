@@ -2,13 +2,7 @@
 
 namespace App\Http\Livewire\OverTar;
 
-use App\Models\OverTar\over_kst;
-use App\Models\OverTar\tar_kst;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;

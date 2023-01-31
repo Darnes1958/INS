@@ -2,16 +2,13 @@
 
 namespace App\Http\Livewire\OverTar;
 
-use App\Models\aksat\kst_trans;
-use App\Models\aksat\MainArc;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
-
-use App\Models\bank\bank;
 use App\Models\aksat\main;
+use App\Models\aksat\MainArc;
+use App\Models\bank\bank;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class GetNoAndAcc extends Component

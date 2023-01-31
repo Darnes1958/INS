@@ -2,15 +2,7 @@
 
 namespace App\Http\Livewire\OverTar;
 
-use App\Models\aksat\kst_trans;
-use App\Models\aksat\main;
 use App\Models\bank\bank;
-use App\Models\OverTar\over_kst;
-use App\Models\OverTar\tar_kst;
-use Illuminate\Queue\Listener;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class InpTar extends Component

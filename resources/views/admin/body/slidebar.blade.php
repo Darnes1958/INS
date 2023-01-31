@@ -137,6 +137,7 @@
 
                             <li><a href="{{route('banksinput','bank')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">مصارف</a></li>
                             <li><a href="{{route('banksinput','taj')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">مصارف تجميعية</a></li>
+                            <li><a href="{{route('banksinput','bankratio')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">احتساب عمولة مصرف</a></li>
                             <li><a href="{{route('inpcust',1)}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">زبائن</a></li>
                             <li><a href="{{route('inpcust',2)}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">موردين</a></li>
 

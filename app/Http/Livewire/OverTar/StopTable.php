@@ -3,12 +3,8 @@
 namespace App\Http\Livewire\OverTar;
 
 use App\Models\aksat\main;
-use App\Models\OverTar\over_kst;
-use App\Models\OverTar\over_kst_a;
 use App\Models\OverTar\stop_kst;
-use App\Models\trans\trans;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;

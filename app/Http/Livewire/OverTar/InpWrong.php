@@ -5,7 +5,6 @@ namespace App\Http\Livewire\OverTar;
 use App\Models\bank\bank;
 use App\Models\OverTar\wrong_Kst;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Livewire\Component;
 
 class InpWrong extends Component

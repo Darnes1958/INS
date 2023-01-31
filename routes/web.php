@@ -93,6 +93,7 @@ Route::controller(RepAksatController::class)->group(function (){
   route::get('/pdfstop/{bank_no?}/{stop_date1?}/{stop_date2?}/{bank_name?}', 'PdfStop')->name('pdfstop') ;
   route::get('/pdfstopone/{name?}/{bank_tajmeeh?}/{acc?}/{kst?}', 'PdfStopOne')->name('pdfstopone') ;
   route::get('/pdfbefore/{bank_no?}/{month?}/{bank_name?}/{Not_pay?}', 'PdfBefore')->name('pdfbefore') ;
+  route::get('/pdfchk/{bank_name?}/{name?}/{acc?}/{chk_count?}/{wdate?}', 'PdfChk')->name('pdfchk') ;
 });
 Route::controller(RepAmaaController::class)->group(function (){
   route::get('/repamma/{rep}', 'RepAmma')->name('repamma')->middleware('auth');

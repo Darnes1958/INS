@@ -12,12 +12,14 @@
                @livewire('over-tar.tar2-detail')
               </div>
           @endif
-
+        @if ($Proc=='chk')
+          <div  class="col-md-8 themed-grid-col">
+          @livewire('over-tar.get-no-and-acc',['towhome'=>'over-tar.inp-chk','mainorarc'=>'main'])
+          @livewire('over-tar.inp-chk',['MainOrArc'=>'main'])
+          </div>
+        @endif
           <div  class="col-md-6 themed-grid-col">
-            @if ($Proc=='chk')
-              @livewire('over-tar.get-no-and-acc',['towhome'=>'over-tar.inp-chk','mainorarc'=>'main'])
-              @livewire('over-tar.inp-chk',['MainOrArc'=>'main'])
-            @endif
+
               @if ($Proc=='chk_a')
                 @livewire('over-tar.get-no-and-acc',['towhome'=>'over-tar.inp-chk','mainorarc'=>'mainarc'])
                 @livewire('over-tar.inp-chk',['MainOrArc'=>'MainArc'])

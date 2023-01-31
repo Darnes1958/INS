@@ -3,16 +3,11 @@
 namespace App\Http\Livewire\OverTar;
 
 use App\Models\aksat\chk_tasleem;
-use App\Models\aksat\main;
-use App\Models\aksat\MainArc;
-use App\Models\OverTar\over_kst;
-use App\Models\OverTar\over_kst_a;
+use App\Models\bank\bank;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
-use const http\Client\Curl\AUTH_ANY;
 
 class InpChk extends Component
 {
@@ -22,6 +17,7 @@ class InpChk extends Component
    public $Proc;
    public $OpenDetail=false;
    public $bankno;
+   public $bank_name;
    public $acc;
    public $no;
    public $name;
@@ -65,6 +61,7 @@ class InpChk extends Component
   }
    public function TakeData($bankno,$acc,$no,$name){
      $this->bankno=$bankno;
+     $this->bank_name=bank::on(auth()->user()->company)->find($bankno)->bank_name;
      $this->acc=$acc;
      $this->no=$no;
      $this->name=$name;

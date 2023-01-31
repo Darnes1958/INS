@@ -3,9 +3,6 @@
 namespace App\Http\Livewire\OverTar;
 
 use App\Models\OverTar\wrong_Kst;
-use Illuminate\Queue\Listener;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;

@@ -5,6 +5,8 @@
   <div class="row">
     @if($who=='taj')  @livewire('bank.inp-taj') @endif
     @if($who=='bank')  @livewire('bank.inp-bank') @endif
+    @if($who=='bankratio')  @livewire('bank.inp-bank-ratio') @endif
+
   </div>
 
   @stack('scripts')

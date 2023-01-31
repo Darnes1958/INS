@@ -3,9 +3,6 @@
 namespace App\Http\Livewire\OverTar;
 
 use App\Models\OverTar\wrong_Kst;
-use App\Models\trans\trans;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Livewire\Component;
 
 class EditWrong extends Component

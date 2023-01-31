@@ -2,18 +2,14 @@
 
 namespace App\Http\Livewire\OverTar;
 
-use App\Models\aksat\ksm_type;
 use App\Models\aksat\kst_trans;
 use App\Models\aksat\main;
 use App\Models\OverTar\tar_kst;
-use App\Models\OverTar\wrong_Kst;
-use Illuminate\Queue\Listener;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Carbon\Carbon;
 
 class Tar2Detail extends Component
 {
