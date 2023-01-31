@@ -16,8 +16,10 @@ class DoBackup extends Component
      //   $this->DeleteTheFile();
     }
     public function DeleteTheFile(){
+        $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
+        Storage::delete($fname);
+        Storage::delete('backup/'.$fname);
 
-        Storage::delete($this->filename);
         //return response()->download(storage_path('app\\'.$this->filename));
       //  return Storage::download($this->filename);
       return redirect()->to('/home');
@@ -26,6 +28,7 @@ class DoBackup extends Component
         sqlsrv_configure('WarningsReturnAsErrors',0);
 
         $path=storage_path().'\app';
+
         $serverName = ".";
         $connectionInfo = array( "Database"=>"master","TrustServerCertificate"=>"True","UID"=>"hameed",
             "PWD"=>"Medo_2003", "CharacterSet" => "UTF-8");
@@ -63,13 +66,20 @@ class DoBackup extends Component
 
         // $this->DoDownload($filename);
         //   Storage::download($filename);
+
         return Storage::download($this->filename);
     }
     public function DoDownLoad(){
-        info('here');
+
         $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
-        info($fname);
-      return Storage::download($fname);
+
+      return Storage::download('backup/'.$fname);
+    }
+    public function DoCopy(){
+
+        $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
+        storage::copy($fname, 'backup/'.$fname);
+        //return Storage::download($fname);
     }
     public function render()
     {
