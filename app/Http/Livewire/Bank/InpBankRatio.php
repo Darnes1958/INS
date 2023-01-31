@@ -59,11 +59,15 @@ class InpBankRatio extends Component
      ->join('sells','main.order_no','=','sells.order_no')
      ->join('kst_trans','main.no','=','kst_trans.no')
      ->when($this->R=='R',function ($q) {
-       return $q->selectRaw('bank,1 as place_type,place_no,sum(kst_trans.ksm) as tot_kst,sum(kst_trans.ksm) * ? /100 as tot_ratio',[$this->V]) ;     })
+       return $q->selectRaw('bank,1 as place_type,place_no
+       ,count(*) as kst_count
+       ,sum(kst_trans.ksm) as tot_kst
+       ,sum(kst_trans.ksm) * ? /100 as tot_ratio',[$this->V]) ;     })
      ->when($this->R=='V',function ($q) {
-       return $q->selectRaw('bank,1 as place_type,place_no,sum(kst_trans.ksm) as tot_kst,count(*) * ? as tot_ratio',[$this->V]) ;     })
-
-
+       return $q->selectRaw('bank,1 as place_type,place_no
+       ,count(*) as kst_count
+       ,sum(kst_trans.ksm) as tot_kst
+       ,count(*) * ? as tot_ratio',[$this->V]) ;     })
      ->groupBy('bank','place_no')
      ->where('bank',$this->bank_no)
      ->where('sells.sell_type','=',1)
@@ -75,9 +79,15 @@ class InpBankRatio extends Component
       ->join('sells','main.order_no','=','sells.order_no')
       ->join('kst_trans','main.no','=','kst_trans.no')
       ->when($this->R=='R',function ($q) {
-        return $q->selectRaw('bank,1 as place_type,place_no,sum(kst_trans.ksm) as tot_kst,sum(kst_trans.ksm) * ? /100 as tot_ratio',[$this->V]) ;     })
+        return $q->selectRaw('bank,1 as place_type,place_no
+        ,count(*) as kst_count
+        ,sum(kst_trans.ksm) as tot_kst
+        ,sum(kst_trans.ksm) * ? /100 as tot_ratio',[$this->V]) ;     })
       ->when($this->R=='V',function ($q) {
-        return $q->selectRaw('bank,1 as place_type,place_no,sum(kst_trans.ksm) as tot_kst,count(*) * ? as tot_ratio',[$this->V]) ;     })
+        return $q->selectRaw('bank,1 as place_type,place_no
+        ,count(*) as kst_count
+        ,sum(kst_trans.ksm) as tot_kst
+        ,count(*) * ? as tot_ratio',[$this->V]) ;     })
 
       ->groupBy('bank','place_no')
       ->where('bank',$this->bank_no)
@@ -104,6 +114,7 @@ class InpBankRatio extends Component
           'M'=>$this->month,
           'R'=>$this->R,
           'V'=>$this->V,
+          'kst_count'=>$second[$i]->kst_count,
           'tot_kst'=>$second[$i]->tot_kst,
           'tot_ratio'=>$second[$i]->tot_ratio,
         ]);
