@@ -172,6 +172,7 @@
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                        <li><a href="{{route('rep.okod','banksum')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">اجمالي المصارف</a></li>
                        <li><a href="{{route('rep.okod','bankone')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">كشف تقصيلي بالمصرف</a></li>
+                       <li><a href="{{route('banksinput','repbankratio')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0"> عمولات المصارف</a></li>
                     </ul>
                 </div>
             </li>

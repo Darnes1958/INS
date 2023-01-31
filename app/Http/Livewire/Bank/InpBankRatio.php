@@ -30,6 +30,7 @@ class InpBankRatio extends Component
     $this->bank_name=$res->bank_name;
     $this->TajNo=$res->bank_tajmeeh;
     if (BankTajmeehy::on(Auth()->user()->company)->find($this->TajNo)->ratio_type==null){
+        $this->bank_no=null;
       $this->dispatchBrowserEvent('mmsg','لم يتم ادخال الاعدادات للمصرف التجميعي');
       return false;
     }
@@ -79,12 +80,12 @@ class InpBankRatio extends Component
       ->join('sells','main.order_no','=','sells.order_no')
       ->join('kst_trans','main.no','=','kst_trans.no')
       ->when($this->R=='R',function ($q) {
-        return $q->selectRaw('bank,1 as place_type,place_no
+        return $q->selectRaw('bank,2 as place_type,place_no
         ,count(*) as kst_count
         ,sum(kst_trans.ksm) as tot_kst
         ,sum(kst_trans.ksm) * ? /100 as tot_ratio',[$this->V]) ;     })
       ->when($this->R=='V',function ($q) {
-        return $q->selectRaw('bank,1 as place_type,place_no
+        return $q->selectRaw('bank,2 as place_type,place_no
         ,count(*) as kst_count
         ,sum(kst_trans.ksm) as tot_kst
         ,count(*) * ? as tot_ratio',[$this->V]) ;     })
@@ -123,7 +124,7 @@ class InpBankRatio extends Component
         $this->dispatchBrowserEvent('mmsg', 'تمت عملية الاحتساب');
 
       } catch (\Exception $e) {
-        info($e);
+        //  info($e);
         DB::connection(Auth()->user()->company)->rollback();
         $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
       }
