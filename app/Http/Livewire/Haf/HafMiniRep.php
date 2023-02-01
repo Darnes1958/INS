@@ -32,6 +32,9 @@ class HafMiniRep extends Component
     public $rep_type;
 
     public function TakeTheNo($no,$acc,$accToEdit,$jeha){
+        info($acc);
+        info($no);
+        info($accToEdit);
       DB::connection(Auth()->user()->company)->beginTransaction();
        try {
         DB::connection(Auth()->user()->company)->table('main')->where('no', $no)->update(['acc' => $accToEdit,]);

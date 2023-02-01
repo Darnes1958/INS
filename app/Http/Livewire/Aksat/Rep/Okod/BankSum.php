@@ -35,6 +35,10 @@ class BankSum extends Component
   {
 
     return view('livewire.aksat.rep.okod.bank-sum',[
+      'ssul'=>main::on(Auth()->user()->company)->sum('sul'),
+      'ppay'=>main::on(Auth()->user()->company)->sum('sul_pay'),
+      'rraseed'=>main::on(Auth()->user()->company)->sum('raseed'),
+      'ccount'=>main::on(Auth()->user()->company)->count(),
       'RepTable'=>DB::connection(Auth()->user()->company)->table('main_view')
       ->selectRaw('bank, bank_name, COUNT(*) AS WCOUNT, SUM(sul) AS sumsul, SUM(sul_pay) AS sumpay,
                             SUM(raseed) AS sumraseed, SUM(dofa) AS sumdofa, SUM(sul_tot) AS sumsul_tot,
@@ -67,7 +71,11 @@ class BankSum extends Component
         ->groupBy('bank','bank_name')
         ->whereBetween('sul_date',[$this->date1,$this->date2])
         ->orderby('bank')
-        ->paginate(14)
+        ->paginate(14),
+        'Rssul'=>main::on(Auth()->user()->company)->whereBetween('sul_date',[$this->date1,$this->date2])->sum('sul'),
+        'Rppay'=>main::on(Auth()->user()->company)->whereBetween('sul_date',[$this->date1,$this->date2])->sum('sul_pay'),
+        'Rrraseed'=>main::on(Auth()->user()->company)->whereBetween('sul_date',[$this->date1,$this->date2])->sum('raseed'),
+        'Rccount'=>main::on(Auth()->user()->company)->whereBetween('sul_date',[$this->date1,$this->date2])->count(),
     ]);
   }
 }

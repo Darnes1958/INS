@@ -233,7 +233,7 @@ class RepAksatController extends Controller
         $RepDate=date('Y-m-d');
         $cus=Customers::where('Company',Auth::user()->company)->first();
 
-       if ($request->RepChk) {
+       if ($request->RepChk==1) {
          $res = DB::connection(Auth()->user()->company)->table('main_view')
            ->selectRaw('bank, bank_name, COUNT(*) AS WCOUNT, SUM(sul) AS sumsul, SUM(sul_pay) AS sumpay,
                             SUM(raseed) AS sumraseed, SUM(dofa) AS sumdofa, SUM(sul_tot) AS sumsul_tot')

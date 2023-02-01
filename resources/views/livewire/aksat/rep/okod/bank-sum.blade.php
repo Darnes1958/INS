@@ -6,7 +6,7 @@
       <input wire:model="search"  type="search"   placeholder="ابحث هنا .......">
     </div>
 
-    <div class="col-md-4 my-2 d-inline-flex ">
+    <div class="col-md-6 my-2 d-inline-flex ">
       <div class="mx-3  d-inline-flex ">
         <input class="form-check-input "  name="repchk" type="checkbox" wire:model="RepChk"  >
         <label class="form-check-label mx-1"  style="color: blue" for="repchk">بالتاريخ</label>
@@ -20,8 +20,13 @@
       @error('date2') <span class="error">{{ $message }}</span> @enderror
     </div>
       <div  class="col-md-2 ">
-          <a  href="{{route('pdfbanksum',['RepChk'=>$RepChk,'date1'=>$date1,'date2'=>$date2])}}"
+          @if ($RepChk)
+           <a  href="{{route('pdfbanksum',['RepChk'=>1,'date1'=>$date1,'date2'=>$date2])}}"
               class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
+          @else
+              <a  href="{{route('pdfbanksum',['RepChk'=>0,'date1'=>$date1,'date2'=>$date2])}}"
+                  class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
+          @endif
       </div>
 
   </div>
@@ -82,7 +87,7 @@
 
       @endif
       <tr style="background: #9dc1d3;">
-        <td colspan="3" style="text-align: center;"> الإجمــــــالي </td>
+        <td colspan="3" style="text-align: center;"> إجمالي الصفحة </td>
         <td style="font-weight: bold"> {{ number_format($count,0, '.', ',') }} </td>
         <td style="font-weight: bold"> {{ number_format($sul,2, '.', ',') }} </td>
         <td style="font-weight: bold"> {{ number_format($pay,2, '.', ',') }} </td>
@@ -94,6 +99,35 @@
       </tr>
     @endif
     </tbody>
+      @if (! $RepChk)
+      <tbody>
+      <tr style="background: #9dc1d3;">
+          <td colspan="3" style="text-align: center;"> الإجمــالي الكلي </td>
+          <td style="font-weight: bold"> {{ number_format($ccount,0, '.', ',') }} </td>
+          <td style="font-weight: bold"> {{ number_format($ssul,2, '.', ',') }} </td>
+          <td style="font-weight: bold"> {{ number_format($ppay,2, '.', ',') }} </td>
+          <td style="font-weight: bold"> {{ number_format($rraseed,2, '.', ',') }} </td>
+          <td > </td>
+          <td style="font-weight: bold">  </td>
+          <td style="font-weight: bold">  </td>
+
+      </tr>
+      </tbody>
+      @else
+          <tbody>
+          <tr style="background: #9dc1d3;">
+              <td colspan="3" style="text-align: center;"> الإجمــالي الكلي </td>
+              <td style="font-weight: bold"> {{ number_format($Rccount,0, '.', ',') }} </td>
+              <td style="font-weight: bold"> {{ number_format($Rssul,2, '.', ',') }} </td>
+              <td style="font-weight: bold"> {{ number_format($Rppay,2, '.', ',') }} </td>
+              <td style="font-weight: bold"> {{ number_format($Rrraseed,2, '.', ',') }} </td>
+              <td > </td>
+              <td style="font-weight: bold">  </td>
+              <td style="font-weight: bold">  </td>
+
+          </tr>
+          </tbody>
+      @endif
   </table>
 
   @if ($RepTable )

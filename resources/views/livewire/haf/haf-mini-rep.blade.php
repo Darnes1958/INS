@@ -43,7 +43,7 @@
                 <td> {{ $item->acc }} </td>
                 @if ($rep_type==4)
                     <td ><i @click="openacc = true" class="btn btn-primary btn-sm fa fa-check-circle"
-                        wire:click="$emitTo('haf.search-acc','TakeBankAndAcc',{{$bank}},{{$item->acc}})"></i></td>
+                        wire:click="$emitTo('haf.search-acc','TakeBankAndAcc',{{$bank}},'{{$item->acc}}')"></i></td>
                 @endif
                 <td> {{ $item->name }} </td>
                 <td> {{ $item->kst }} </td>
