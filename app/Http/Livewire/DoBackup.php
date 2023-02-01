@@ -17,16 +17,31 @@ class DoBackup extends Component
      //   $this->DeleteTheFile();
     }
     public function DeleteTheFile(){
-        $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
+        $zip_file = Auth()->user()->company.'_'.date('Ymd').'.zip'; // Name of our archive to download
+
+// Initializing PHP class
+        $zip = new \ZipArchive();
+        $zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+
+        $invoice_file = Auth()->user()->company.'_'.date('Ymd').'.bak';
+
+// Adding file: second parameter is what will the path inside of the archive
+// So it will create another folder called "storage/" inside ZIP, and put the file there.
+        $zip->addFile(storage_path(). "/app/".$invoice_file, $invoice_file);
+        $zip->close();
+
+        return response()->download($zip_file);
+
+     //   $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
      //   Storage::delete($fname);
        // Storage::delete('backup/'.$fname);
 
-        $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
-        $file= storage_path(). "/app/backup/".$fname;
-        $headers = [
-            'Content-Type' => 'application/bak',
-        ];
-        return  Response::download($file, $fname, $headers);
+   //     $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
+  //      $file= storage_path(). "/app/backup/".$fname;
+  //      $headers = [
+        //    'Content-Type' => 'application/bak',
+      //  ];
+     //   return  Response::download($file, $fname, $headers);
     //  return redirect()->to('/home');
     }
     public function DoBackup(){
