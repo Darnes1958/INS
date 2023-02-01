@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+use Illuminate\Support\Facades\Response;
 
 class DoBackup extends Component
 {
@@ -17,12 +18,16 @@ class DoBackup extends Component
     }
     public function DeleteTheFile(){
         $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
-        Storage::delete($fname);
-        Storage::delete('backup/'.$fname);
+     //   Storage::delete($fname);
+       // Storage::delete('backup/'.$fname);
 
-        //return response()->download(storage_path('app\\'.$this->filename));
-      //  return Storage::download($this->filename);
-      return redirect()->to('/home');
+        $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
+        $file= storage_path(). "/app/backup/".$fname;
+        $headers = [
+            'Content-Type' => 'application/bak',
+        ];
+        return  Response::download($file, $fname, $headers);
+    //  return redirect()->to('/home');
     }
     public function DoBackup(){
         sqlsrv_configure('WarningsReturnAsErrors',0);
@@ -72,8 +77,12 @@ class DoBackup extends Component
     public function DoDownLoad(){
 
         $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
-
-      return Storage::download('backup/'.$fname);
+        $file= storage_path(). "/app/".$fname;
+        $headers = [
+            'Content-Type' => 'application/bak',
+        ];
+        return  Response::download($file, $fname, $headers);
+     // return Storage::download('backup/'.$fname);
     }
     public function DoCopy(){
 
