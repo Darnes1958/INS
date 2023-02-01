@@ -21,15 +21,21 @@ class FromExcelImport implements ToModel, WithHeadingRow
         || !isset($row['ksm_date'])) {
         return null;
       }
-      return new FromExcelModel([
-        'ksm' => $row['ksm'],
-        'name' => $row['name'],
-        'acc' => $row['acc'],
-        'ksm_date' => Date::excelToDateTimeObject($row['ksm_date']),
-        'bank' => 0,
-        'hafitha_tajmeehy' => 0,
-        'h_no' => 1,
-      ]);
+
+      $rec= FromExcelModel::on(auth()->user()->company)->create(
+        [
+          'name' => $row['name'],
+          'acc' => $row['acc'],
+          'ksm' => $row['ksm'],
+          'ksm_date' => Date::excelToDateTimeObject($row['ksm_date']),
+          'bank' => 0,
+          'hafitha_tajmeehy' => 0,
+          'h_no' => 1,
+
+        ]
+      );
+
+      return  $rec;
     }//
     public function headingRow(): int
         {

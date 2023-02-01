@@ -30,7 +30,7 @@ class FromExcel2Import implements ToModel, WithHeadingRow
             'EXkst' => $row['exkst'],
           ]
         );
-      info($rec);
+
         return  $rec;
     }
   public function headingRow(): int

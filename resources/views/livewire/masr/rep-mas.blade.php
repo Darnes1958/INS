@@ -40,8 +40,8 @@
 
                   @foreach($DetailTable as $key=>$item)
                       <tr class="font-size-12">
-                          <td ><a wire:click="selectItem({{ $item->MasType }})" href="#">{{ $item->MasTypeName }}</a>   </td>
-                          <td> <a wire:click="selectItem({{ $item->MasType }})" href="#">{{ $item->Val }}</a> </td>
+                          <td ><a wire:click="selectItem({{ $item->MasType }})" href="#">{{$item->MasTypeName  }}</a>   </td>
+                          <td> <a wire:click="selectItem({{ $item->MasType }})" href="#">{{number_format($item->Val, 2, '.', ',') }}</a> </td>
                        </tr>
                   @endforeach
 
@@ -64,7 +64,7 @@
                  @foreach($CenterTable as $key=>$item)
                      <tr class="font-size-12">
                          <td ><a wire:click="selectItem2({{ $item->MasCenter }})" href="#">{{ $item->CenterName }}</a>   </td>
-                         <td> <a wire:click="selectItem2({{ $item->MasCenter }})" href="#">{{ $item->Val }}</a> </td>
+                         <td> <a wire:click="selectItem2({{ $item->MasCenter }})" href="#">{{ number_format($item->Val, 2, '.', ',') }}</a> </td>
                      </tr>
                  @endforeach
 
@@ -95,7 +95,7 @@
                          <td> {{ $item->CenterName }} </td>
                          <td> {{ $item->DetailName }} </td>
                          <td> {{ $item->MasDate }} </td>
-                         <td> {{ $item->Val }} </td>
+                         <td> {{  number_format($item->Val, 2, '.', ',') }} </td>
                          <td> {{ $item->Notes }} </td>
                      </tr>
                  @endforeach

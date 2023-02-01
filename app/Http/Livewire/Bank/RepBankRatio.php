@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Bank;
 use App\Models\bank\bank;
 use App\Models\bank\BankRatio;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -12,22 +13,25 @@ class RepBankRatio extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    public $bank_no=0;
+    public $bank_no;
     public $bank_name;
-    public $year=2022;
+    public $year;
     public $month;
-    public $search;
+
     public $place;
     public $place_type;
+    public $place_name;
+
 
 
 
     protected $listeners = [
         'TakeBank',
     ];
-    public function selectItem($place,$place_type){
+    public function selectItem($place_type,$place,$place_name){
       $this->place=$place;
       $this->place_type=$place_type;
+      $this->place_name=$place_name;
         $this->resetPage();
     }
     public function TakeBank($bank_no){
@@ -36,9 +40,16 @@ class RepBankRatio extends Component
         $this->bank_name=bank::on(Auth::user()->company)->find($this->bank_no)->bank_name;
         $this->resetPage();
     }
+
     public function render()
     {
+
         return view('livewire.bank.rep-bank-ratio',[
+          'years'=>DB::connection(Auth()->user()->company)->table('BankRatio')
+            ->selectRaw('distinct Y as year')
+
+            ->get(),
+
             'PlaceTable'=>BankRatio::on(Auth()->user()->company)
                 ->join('place_view', function ($join) {
                     $join->on('BankRatio.place', '=', 'place_view.place_no')
@@ -56,6 +67,7 @@ class RepBankRatio extends Component
             ->where('Y',$this->year)
             ->where('place_type',$this->place_type)
             ->where('place',$this->place)->paginate(15),
+
         ]);
     }
 }
