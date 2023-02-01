@@ -6,7 +6,7 @@
      <input  wire:model="name" type="text" class="form-control " id="name" readonly style="width: 60%;margin-right: 4px;" >
    </div>
    <div class="d-inline-flex align-items-center">
-        <label for="no" class="form-label" style="width: 20%">الرقم الألي</label>
+        <label for="no" class="form-label" style="width: 20%">رقم العقد</label>
         <input  wire:model="no"
                 class="form-control"   type="text" style="width: 30%" id="no" readonly>
         <label for="acc" class="form-label" style="width: 20% " >&nbsp;رقم الحساب</label>

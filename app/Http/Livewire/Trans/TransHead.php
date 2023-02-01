@@ -158,11 +158,13 @@ class TransHead extends Component
   public function CloseModal(){
     $this->dispatchBrowserEvent('CloseModal');
   }
-
+public function mount(){
+    $this->tran_date=date('Y-m-d');
+}
   public function render()
    {
 
-      $this->tran_date=date('Y-m-d');
+
       $this->TranNo=trans::on(Auth()->user()->company)->max('tran_no')+1;
       return view('livewire.trans.trans-head');
    }
