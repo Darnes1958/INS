@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\DownModel;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Illuminate\Support\Facades\Response;
@@ -16,33 +17,21 @@ class DoBackup extends Component
         $this->DoBackup();
      //   $this->DeleteTheFile();
     }
+    public function DoDel(){
+        DownModel::all()->each->delete();
+    }
     public function DeleteTheFile(){
         $zip_file = Auth()->user()->company.'_'.date('Ymd').'.zip'; // Name of our archive to download
-
-// Initializing PHP class
         $zip = new \ZipArchive();
         $zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
-
         $invoice_file = Auth()->user()->company.'_'.date('Ymd').'.bak';
-
-// Adding file: second parameter is what will the path inside of the archive
-// So it will create another folder called "storage/" inside ZIP, and put the file there.
         $zip->addFile(storage_path(). "/app/".$invoice_file, $invoice_file);
         $zip->close();
 
+
         return response()->download($zip_file);
 
-     //   $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
-     //   Storage::delete($fname);
-       // Storage::delete('backup/'.$fname);
 
-   //     $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
-  //      $file= storage_path(). "/app/backup/".$fname;
-  //      $headers = [
-        //    'Content-Type' => 'application/bak',
-      //  ];
-     //   return  Response::download($file, $fname, $headers);
-    //  return redirect()->to('/home');
     }
     public function DoBackup(){
         sqlsrv_configure('WarningsReturnAsErrors',0);
@@ -83,11 +72,19 @@ class DoBackup extends Component
             }
         }
     //  $this->DownloadTheFile();
-
+        Storage::download($this->filename);
         // $this->DoDownload($filename);
         //   Storage::download($filename);
+        $zip_file = Auth()->user()->company.'_'.date('Ymd').'.zip'; // Name of our archive to download
+        $zip = new \ZipArchive();
+        $zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+        $invoice_file = Auth()->user()->company.'_'.date('Ymd').'.bak';
+        $zip->addFile(storage_path(). "/app/".$invoice_file, $invoice_file);
+        $zip->close();
 
-        return Storage::download($this->filename);
+        return response()->download($zip_file);
+
+      //  return Storage::download($this->filename);
     }
     public function DoDownLoad(){
 
@@ -100,9 +97,14 @@ class DoBackup extends Component
      // return Storage::download('backup/'.$fname);
     }
     public function DoCopy(){
-
-        $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
-        storage::copy($fname, 'backup/'.$fname);
+        $path=storage_path().'\app\\'.Auth()->user()->company.'_'.date('Ymd').'.bak';
+        info($path);
+        $down= DownModel::create()
+            ->addMedia($path)
+            ->toMediaCollection();
+        return $down;
+      //  $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
+        //storage::copy($fname, 'backup/'.$fname);
         //return Storage::download($fname);
     }
     public function render()
