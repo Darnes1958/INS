@@ -6,6 +6,8 @@ use App\Models\DownModel;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Illuminate\Support\Facades\Response;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\MediaLibrary\Support\MediaStream;
 
 class DoBackup extends Component
 {
@@ -97,12 +99,14 @@ class DoBackup extends Component
      // return Storage::download('backup/'.$fname);
     }
     public function DoCopy(){
+       Media::truncate();
+
         $path=storage_path().'\app\\'.Auth()->user()->company.'_'.date('Ymd').'.bak';
-        info($path);
-        $down= DownModel::create()
+
+         DownModel::create()
             ->addMedia($path)
             ->toMediaCollection();
-        return $down;
+        return MediaStream::create('MyZip.zip')->addMedia(Media::all());
       //  $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
         //storage::copy($fname, 'backup/'.$fname);
         //return Storage::download($fname);
