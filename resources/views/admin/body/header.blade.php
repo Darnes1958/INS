@@ -33,7 +33,15 @@
                $admindata = App\Models\User::find($id);
          @endphp
      @endauth
-  <div class="col-md-4  align-right justify-content-end mt-0 pt-0"  style="display: flex; height: 40px;">
+         <div class="d-flex col-md-1 mt-0 py-1" style="height: 40px;color: white">
+             @auth
+             @if ($id==1)
+                 <label style="font-size: 14px;">{{$admindata->company}}</label>
+             @endif
+             @endauth
+         </div>
+
+         <div class="col-md-3  align-right justify-content-end mt-0 pt-0"  style="display: flex; height: 40px;">
             <div class="dropdown d-inline-block user-dropdown  mt-0 pt-0" style="height: 40px;">
                 <button type="button" class="btn header-item waves-effect mb-5 p-0" id="page-header-user-dropdown"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px;">

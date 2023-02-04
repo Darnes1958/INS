@@ -44,6 +44,12 @@ class OrderSellHead extends Component
     public $HeadDataOpen;
     public $ThePriceListIsSelected;
 
+
+    public $search, $isEmpty = '',$ShowSearch=false;
+
+
+
+
   protected $listeners = [
     'mounthead','jehaadded','Take_Search_JehaNo',
   ];
@@ -135,6 +141,25 @@ public function ChkPlace(){
               return ('not');
           }
       } else {return ('empty');}
+  }
+  public function fetchEmployeeDetail($key){
+      $this->search='';
+      $this->jeha_no=$key;
+      $this->emit('gotohead', 'jehano');
+      $this->JehaKeyDown();
+  }
+  public function SearchEnter(){
+      if ($this->search && is_numeric($this->search)  ){
+
+          if (jeha::on(Auth::user()->company)->where('jeha_no',$this->search)->exists()){
+              $this->jeha_no=$this->search;
+              $this->search='';
+              $this->ShowSearch=false;
+              $this->emit('gotohead', 'jehano');
+              $this->JehaKeyDown();
+
+          } else $this->ShowSearch=true;
+      }
   }
   public function JehaKeyDown(){
       $res=$this->Chkjeha();
@@ -232,14 +257,28 @@ public function ChkPlace(){
         return (true);
     }
 
+
+
     public function render()
     {
+        if (!is_null($this->search)) {
+
+            $records = jeha::search($this->search,1)
+                ->take(5)
+                ->get();
+            $this->isEmpty = '';
+
+        } else {
+            $records = [];
+            $this->isEmpty = __('Nothings Found.');
+        }
         $conn=Auth()->user()->company;
         $this->stores_names=DB::connection($conn)->table('stores_names')->get();
         $this->halls_names=DB::connection($conn)->table('halls_names')->get();
         return view('livewire.sell.order-sell-head',[
             'stores_names'=>$this->stores_names,
             'halls_names'=>$this->halls_names,
+            'records'=>$records,
         ]);
     }
 }

@@ -8,6 +8,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Response;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\Support\MediaStream;
+use ZipStream\Option\Archive;
 
 class DoBackup extends Component
 {
@@ -22,19 +23,7 @@ class DoBackup extends Component
     public function DoDel(){
         DownModel::all()->each->delete();
     }
-    public function DeleteTheFile(){
-        $zip_file = Auth()->user()->company.'_'.date('Ymd').'.zip'; // Name of our archive to download
-        $zip = new \ZipArchive();
-        $zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
-        $invoice_file = Auth()->user()->company.'_'.date('Ymd').'.bak';
-        $zip->addFile(storage_path(). "/app/".$invoice_file, $invoice_file);
-        $zip->close();
 
-
-        return response()->download($zip_file);
-
-
-    }
     public function DoBackup(){
         sqlsrv_configure('WarningsReturnAsErrors',0);
 
@@ -106,10 +95,26 @@ class DoBackup extends Component
          DownModel::create()
             ->addMedia($path)
             ->toMediaCollection();
-        return MediaStream::create('MyZip.zip')->addMedia(Media::all());
+
+        $d=DownModel::last();
+
+         $this->download($d);
       //  $fname=Auth()->user()->company.'_'.date('Ymd').'.bak';
         //storage::copy($fname, 'backup/'.$fname);
         //return Storage::download($fname);
+    }
+    public function download(DownModel $yourModel)
+    {
+        // Let's get some media.
+        $downloads = $yourModel->getMedia('default');
+        $zipOptions=new Archive();
+        // Download the files associated with the media in a streamed way.
+        // No prob if your files are very large.
+        return MediaStream::create('my-files.zip')
+            ->useZipOptions(function(Archive $zipOptions) {
+                $zipOptions->setZeroHeader(true);
+            })
+            ->addMedia($downloads);
     }
     public function render()
     {

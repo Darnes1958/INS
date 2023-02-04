@@ -1,7 +1,66 @@
-<div x-data  class="col-md-12 " style="margin-bottom: 20px;margin-top: 16px;" xmlns="http://www.w3.org/1999/html">
-    <div x-cloak x-show="$wire.HeadOpen" x-trap="$wire.HeadOpen" class="row g-3 " style="border:1px solid lightgray;background: white;">
+<div x-data  class="col-md-12 " style="margin-bottom: 20px;margin-top: 16px;" >
+    <div x-cloak x-show="$wire.HeadOpen" x-trap="$wire.HeadOpen" class="row  " style="border:1px solid lightgray;background: white;">
 
-        <div class="row g-3 " >
+        <div x-data="{isTyped: @entangle('ShowSearch')}" x-trap.noscroll="isTyped" >
+            <div class="row my-1">
+                <div class="col-md-6">
+                    <input type="text" autofocus
+                           placeholder="{{__('بحث ...')}}"
+                           x-on:input.debounce.200ms="isTyped = ($event.target.value != '')"
+                           autocomplete="off"
+                           wire:model.debounce.300ms="search"
+                           @keydown.enter="isTyped =false"
+                           wire:keydown.enter="SearchEnter"
+                           @keydown.down="$focus.focus(div1)"
+                           aria-label="Search input" />
+                </div>
+                {{-- search box --}}
+                <div x-show="isTyped" x-cloak class="col-md-12">
+                    @if(count($records)>0)
+                        <div class="position-relative" >
+                            <div  class=" w-100 border" >
+                                @if(count($records)>0)
+                                    <div id="div1" @keydown.down="$focus.focus(div2)" @keydown.up="$focus.focus(div5)" style="background: lightgray"
+                                         wire:click="fetchEmployeeDetail({{ $records[0]->jeha_no }})"
+                                         wire:keydown.enter="fetchEmployeeDetail({{ $records[0]->jeha_no }})" @keydown.enter="isTyped =false">
+                                        {{ $records[0]->jeha_no}} | {{ $records[0]->jeha_name}}
+                                    </div>
+                                @endif
+                                @if(count($records)>1)
+                                    <div id="div2" @keydown.down="$focus.focus(div3)" @keydown.up="$focus.focus(div1)"
+                                         wire:click="fetchEmployeeDetail({{ $records[1]->jeha_no }})"
+                                         wire:keydown.enter="fetchEmployeeDetail({{ $records[1]->jeha_no }})" @keydown.enter="isTyped =false">
+                                        {{ $records[1]->jeha_no}} | {{ $records[1]->jeha_name}}
+
+                                    </div>
+                                @endif
+                                @if(count($records)>2)
+                                    <div id="div3" @keydown.down="$focus.focus(div4)" @keydown.up="$focus.focus(div2)" style="background: lightgray"
+                                         wire:click="fetchEmployeeDetail({{ $records[2]->jeha_no }})"
+                                         wire:keydown.enter="fetchEmployeeDetail({{ $records[2]->jeha_no }})" @keydown.enter="isTyped =false"> {{ $records[2]->jeha_no}} | {{ $records[2]->jeha_name}}</div>
+                                @endif
+                                @if(count($records)>3)
+                                    <div id="div4" @keydown.down="$focus.focus(div5)" @keydown.up="$focus.focus(div3)"
+                                         wire:click="fetchEmployeeDetail({{ $records[3]->jeha_no }})"
+                                         wire:keydown.enter="fetchEmployeeDetail({{ $records[3]->jeha_no }})" @keydown.enter="isTyped =false"> {{ $records[3]->jeha_no}} | {{ $records[3]->jeha_name}}</div>
+                                @endif
+                                @if(count($records)>4)
+                                    <div id="div5" @keydown.down="$focus.focus(div1)" @keydown.up="$focus.focus(div4)" style="background: lightgray"
+                                         wire:click="fetchEmployeeDetail({{ $records[4]->jeha_no }})"
+                                         wire:keydown.enter="fetchEmployeeDetail({{ $records[4]->jeha_no }})" @keydown.enter="isTyped =false"> {{ $records[4]->jeha_no}} | {{ $records[4]->jeha_name}}</div>
+                                @endif
+                            </div>
+                        </div>
+
+
+                    @endif
+
+
+                </div>
+            </div>
+
+        </div>
+        <div class="row  " >
             <div x-show="$wire.price_type!=2" class="col-md-12"   >
                 <div class="row ">
                     <div class="col-md-12" >
@@ -14,7 +73,7 @@
                 <label  for="jehano" class="form-label-me">رقم الزبون</label>
                 <input wire:model="jeha_no" wire:keydown.enter="JehaKeyDown"
                        class="form-control  "
-                       name="jehano" type="text"  id="jehano" autofocus>
+                       name="jehano" type="text"  id="jehano" >
                 @error('jeha_no') <span class="error">{{ $message }}</span> @enderror
 
             </div>
@@ -67,6 +126,12 @@
                 </div>
             </div>
         </div>
+
+
+
+
+
+
 
 
         <div class="col-md-6">

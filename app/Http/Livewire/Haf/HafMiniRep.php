@@ -25,19 +25,55 @@ class HafMiniRep extends Component
     ];
     public $hafitha=0;
     public $bank;
+    public $acc;
 
 
     public $search;
     public $DisRadio='DisAll';
     public $rep_type;
+    public $NoToEdit;
+    public $OldAcc;
+    public $name;
+    public $jeha;
+    public $showbtn=false;
 
+    public function selectItem($acc){
+      $this->acc=$acc;
+    }
+
+    public function ChkNoToEdit(){
+        if ($this->NoToEdit){
+            $res=main::on(Auth()->user()->company)->where('no',$this->NoToEdit)->first();
+            if ($res){
+                $this->OldAcc=$res->acc;
+                $this->name=$res->name;
+                $this->jeha=$res->jeha;
+            } else
+            {
+                $res=MainArc::on(Auth()->user()->company)->where('no',$this->NoToEdit)->first();
+                if ($res){
+                    $this->OldAcc=$res->acc;
+                    $this->name=$res->name;
+                    $this->jeha=$res->jeha;
+                } else {
+                    $this->dispatchBrowserEvent('mmsg','هذا الرقم غير مخزون');
+                    return false;
+                }
+            }
+           $this->showbtn=true;
+           $this->emitSelf('hafmini_goto','SaveAccBtn');
+        }
+    }
+
+    public function SaveNewAcc(){
+        $this->TakeTheNo($this->NoToEdit,$this->OldAcc,$this->acc,$this->jeha);
+        $this->showbtn=false;
+    }
     public function TakeTheNo($no,$acc,$accToEdit,$jeha){
-        info($acc);
-        info($no);
-        info($accToEdit);
+
       DB::connection(Auth()->user()->company)->beginTransaction();
        try {
-        DB::connection(Auth()->user()->company)->table('main')->where('no', $no)->update(['acc' => $accToEdit,]);
+
         over_kst::on(Auth()->user()->company)->where('bank', $this->bank)->where('acc',$acc)->update(['acc' => $accToEdit,]);
         over_kst_a::on(Auth()->user()->company)->where('bank', $this->bank)->where('acc',$acc)->update(['acc' => $accToEdit,]);
         tar_kst::on(Auth()->user()->company)->where('bank', )->where('acc',$acc)->update(['acc' => $accToEdit,]);

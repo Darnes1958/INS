@@ -20,6 +20,7 @@ public $ThedatabaseListIsSelectd;
     User::find(auth()->user()->id)->update(['company'=>$this->database]);
 
     $this->emitTo('admin.empno-select','comp',$this->database);
+    $this->redirect('/home');
   }
   protected function FalseAll(){
       $this->emitTo('admin.manage-roles','show',False);

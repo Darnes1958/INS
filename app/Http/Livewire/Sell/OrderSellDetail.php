@@ -33,6 +33,8 @@ class OrderSellDetail extends Component
 
   public $TheItemListIsSelectd;
 
+    public $search, $isEmpty = '',$ShowSearch=false;
+
   public function OpenBringModal(){
     $this->emitTo('sell.bring-item','TakeParam',$this->OrderPlacetype,$this->OrderPlaceId,$this->item);
     $this->dispatchBrowserEvent('OpenBringModal');
@@ -85,7 +87,7 @@ class OrderSellDetail extends Component
     }
     public function TakeNewItem(){
        $this->ClearData();
-       $this->emit('gotonext','item_no');
+       $this->emit('gotonext','search');
       }
     public function ClearData () {
         $this->raseed=0;
@@ -145,6 +147,26 @@ class OrderSellDetail extends Component
        return ('empty');
       }
    }
+
+    public function fetchEmployeeDetail($key){
+        $this->search='';
+        $this->item=$key;
+        $this->emit('gotonext', 'itemno');
+        $this->ItemKeyDown();
+    }
+    public function SearchEnter(){
+        if ($this->search && is_numeric($this->search)  ){
+
+            if (items::on(Auth::user()->company)->where('item_no',$this->search)->exists()){
+                $this->item=$this->search;
+                $this->search='';
+                $this->ShowSearch=false;
+                $this->emit('gotonext', 'itemno');
+                $this->ItemKeyDown();
+
+            } else $this->ShowSearch=true;
+        }
+    }
     public function ItemKeyDown(){
         $this->item_name='';
         $this->Quant=1;
@@ -196,7 +218,21 @@ class OrderSellDetail extends Component
 
     public function render()
     {
-        return view('livewire.sell.order-sell-detail');
+        if (!is_null($this->search)) {
+
+            $records = items::search($this->search,$this->OrderPlacetype,$this->OrderPlaceId)
+                ->take(5)
+                ->get();
+            $this->isEmpty = '';
+
+        } else {
+            $records = [];
+            $this->isEmpty = __('Nothings Found.');
+        }
+        return view('livewire.sell.order-sell-detail',[
+
+            'records'=>$records,
+        ]);
     }
 }
 

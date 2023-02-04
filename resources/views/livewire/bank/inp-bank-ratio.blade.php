@@ -12,6 +12,7 @@
       <select x-bind:disabled="$wire.bank_no==null" wire:model="year"  name="year_id" id="year_id" class="form-control  form-select mx-1 text-center"
                style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"
       >
+          <option value=""> اختيار </option>
         @foreach($years as $key=>$s)
           <option value="{{ $s->year }}">{{ $s->year }}</option>
         @endforeach
@@ -26,6 +27,7 @@
               wire:model="month"  name="month_id" id="month_id" class="form-control  form-select mx-1 text-center"
                style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"
       >
+          <option value=""> اختيار </option>
         @foreach($months as $key=>$s)
           <option value="{{ $s->month }}">{{ $s->month }}</option>
         @endforeach

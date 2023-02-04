@@ -16,9 +16,32 @@
         <a  href="{{route('pdfhafmini',['hafitha'=>$hafitha,'rep_type'=>$rep_type,'DisRadio'=>$DisRadio])}}"
             class="btn btn-outline-primary btn-sm fas fa-print"></a>
     </div>
-    <div  x-show="openacc"  >
-        <label   class="form-label  mx-1 ri-search-2-line" style="color: blue">&nbsp;برقم الحساب أو الإسم &nbsp;</label>
-        @livewire('haf.search-acc',['sender'=>'haf.haf-mini-rep','bank'=>$bank])
+    <div  x-show="openacc"  class="my-2" style="border: solid 1px;">
+        <div class="row px-2">
+          <div class="col-md-6">
+              <label   class="form-label   " style="color: blue">&nbsp;ادخل رقم العقد &nbsp;</label>
+              <input wire:model="NoToEdit"  wire:keydown.Enter="ChkNoToEdit" type="number" class=" form-control "
+                     id="bank_no"   autofocus >
+          </div>
+            <div class="col-md-6 ">
+                <label   class="form-label   " style="color: blue">&nbsp;رقم الحساب &nbsp;</label>
+                <input wire:model="OldAcc"   class=" form-control " readonly >
+            </div>
+            <div class="col-md-6 my-2">
+                <label   class="form-label  " style="color: blue">&nbsp;الاسم &nbsp;</label>
+                <input wire:model="name"   class=" form-control " readonly >
+            </div>
+            <div x-show="$wire.showbtn" class="col-md-6 my-2 py-3" >
+
+              <input type="button"  id="SaveAccBtn"
+
+                     class=" btn btn-outline-success  waves-effect waves-light "
+                     wire:click.prevent="SaveNewAcc" @click="openacc = false" value="تعديل رقم الحساب" />
+            </div>
+        </div>
+
+
+
     </div>
 
     <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
@@ -43,7 +66,7 @@
                 <td> {{ $item->acc }} </td>
                 @if ($rep_type==4)
                     <td ><i @click="openacc = true" class="btn btn-primary btn-sm fa fa-check-circle"
-                        wire:click="$emitTo('haf.search-acc','TakeBankAndAcc',{{$bank}},'{{$item->acc}}')"></i></td>
+                        wire:click="selectItem('{{$item->acc}}')"></i></td>
                 @endif
                 <td> {{ $item->name }} </td>
                 <td> {{ $item->kst }} </td>
@@ -53,20 +76,20 @@
         @endforeach
         </tbody>
     </table>
-
-
-
     {{ $HafithaTable->links() }}
-
-
-
-
-
 </div>
 
 @push('scripts')
-
-
-
+    <script type="text/javascript">
+        window.addEventListener('mmsg',function(e){
+            MyMsg.fire({
+                confirmButtonText:  e.detail,
+            })
+        });
+        Livewire.on('hafmini_goto',postid=>  {
+            if (postid=='SaveAccBtn') {
+                setTimeout(function() { document.getElementById('SaveAccBtn').focus(); },100);}
+        })
+    </script>
 @endpush
 
