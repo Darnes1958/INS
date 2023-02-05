@@ -25,8 +25,8 @@
          <button  wire:click="RepRole" class="col-md-1 mx-1 btn btn-primary">
              Rep Roles
          </button>
-         <button  wire:click="Clickme" class="col-md-1 mx-1 btn btn-primary">
-             {{$text}}
+         <button  wire:click="LogUser" class="col-md-1 mx-1 btn btn-primary">
+             Connected Users
          </button>
        <button  wire:click="FromExcel" class="col-md-1 mx-1 btn btn-danger fas fa fa-file-excel">
          From Excell
@@ -40,44 +40,7 @@
 
 
      </div>
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Users</div>
-                    <div class="card-body">
-                        @php $users = DB::table('users')->get(); @endphp
-                        <div class="container">
-                            <table class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Status</th>
-                                    <th>Last Seen</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($users as $user)
-                                    <tr>
-                                        <td>{{$user->name}}</td>
-                                        <td>{{$user->email}}</td>
-                                        <td>
-                                            @if(Cache::has('user-is-online-' . $user->id))
-                                                <span class="text-success">Online</span>
-                                            @else
-                                                <span class="text-secondary">Offline</span>
-                                            @endif
-                                        </td>
-                                        <td>{{ \Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @livewire('admin.rep-log-user')
      @livewire('admin.inp-user')
      @livewire('admin.inp-company')
      @livewire('admin.rep-company')
@@ -88,7 +51,7 @@
      @livewire('admin.from-excel')
 
      @livewire('admin.to-hafitha')
-      @livewire('admin.from-excel2')
+     @livewire('admin.from-excel2')
     </div>
 
     @push('scripts')

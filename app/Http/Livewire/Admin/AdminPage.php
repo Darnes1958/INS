@@ -32,7 +32,8 @@ public $ThedatabaseListIsSelectd;
       $this->emitTo('admin.rep-roles','show',false);
       $this->emitTo('admin.from-excel','show',false);
       $this->emitTo('admin.to-hafitha','show',false);
-    $this->emitTo('admin.from-excel2','show',false);
+      $this->emitTo('admin.from-excel2','show',false);
+      $this->emitTo('admin.rep-log-user','show',False);
   }
   public function InpUser(){
 
@@ -76,6 +77,11 @@ public $ThedatabaseListIsSelectd;
 
     $this->emitTo('admin.from-excel2','show',True);
   }
+    public function LogUser(){
+        $this->FalseAll();
+
+        $this->emitTo('admin.rep-log-user','show',True);
+    }
 
 
 

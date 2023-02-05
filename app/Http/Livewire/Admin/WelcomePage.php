@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin;
 
 use App\Models\Customers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class WelcomePage extends Component
@@ -22,6 +23,11 @@ class WelcomePage extends Component
    }
     public function render()
     {
-        return view('livewire.admin.welcome-page');
+        return view('livewire.admin.welcome-page',[
+
+            'users'=>  DB::table('users')
+                ->where('company',Auth()->user()->company)
+                ->paginate(8)
+        ]);
     }
 }
