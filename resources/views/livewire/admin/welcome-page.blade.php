@@ -18,8 +18,9 @@
                               <tr >
                                   <th>الاسم</th>
                                   <th>الحالة</th>
-                                  <th>بواسطة</th>
+
                                   <th>منذ</th>
+                                  <th>بواسطة</th>
                               </tr>
                               </thead>
                               <tbody>
@@ -33,12 +34,14 @@
                                               <span class="text-secondary">غير متصل</span>
                                           @endif
                                       </td>
-                                      <td>{{$user->DevType}}</td>
+
                                       <td>{{ \Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</td>
+                                      <td>{{$user->DevType}}</td>
                                   </tr>
                               @endforeach
                               </tbody>
                           </table>
+                          {{ $users->links() }}
                       </div>
                   </div>
               </div>
