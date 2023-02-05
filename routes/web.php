@@ -18,6 +18,7 @@ use App\Http\Livewire\Buy\RepOrderBuy;
 use App\Http\Controllers\Masr\MasrController;
 use App\Http\Controllers\bank\BankController;
 use App\Http\Controllers\ExcelController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,7 +27,7 @@ Route::get('/', function () {
 Auth::routes();
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+Route::get('status', [UserController::class, 'userOnlineStatus']);
 
 Route::get('/home',function () {    return view('admin.index');});
 

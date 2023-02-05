@@ -6,5 +6,6 @@
     <br>
     <h1 style="color: #7a5a21">{{$CompanyName}}</h1>
     <h3>{{$CompanyNameSuffix}}</h3>
+
   </div>
 </div>

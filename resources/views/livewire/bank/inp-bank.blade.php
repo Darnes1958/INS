@@ -20,9 +20,9 @@
           </div>
 
           <div class="row mb-3">
-            <label   class="col-md-4 col-form-label text-md-end">رقم الحساب </label>
+            <label   class="col-md-4 col-form-label text-md-end">كود المصرف </label>
             <div class="col-md-6">
-              <input wire:model="bank_acc" wire:keydown.enter="$emit('gotome','bank_name')" id="bank_acc" type="number" class="form-control "  >
+              <input wire:model="bank_code" wire:keydown.enter="$emit('gotome','bank_name')" id="bank_code" type="number" class="form-control "  >
 
             </div>
           </div>
@@ -54,7 +54,7 @@
             <thead class="font-size-12">
             <tr>
               <th width="10%">الرقم الألي</th>
-              <th width="12%">رقم الحساب</th>
+              <th width="12%">كود المصرف</th>
               <th >اسم المصرف</th>
               <th width="26%">اسم المصرف التجميعي</th>
               <th width="5%"></th>
@@ -65,7 +65,7 @@
             @foreach($BankTable as  $item)
               <tr class="font-size-12">
                 <td>{{$item->bank_no}}</td>
-                <td>{{$item->bank_acc}}</td>
+                <td>{{$item->bank_code}}</td>
                 <td>{{$item->bank_name}}</td>
                 <td>{{$item->TajName}}</td>
 
@@ -111,7 +111,7 @@
 
   <script>
       Livewire.on('gotome',postid=>  {
-          if (postid=='bank_acc') {  $("#bank_acc").focus();$("#bank_acc").select(); }
+          if (postid=='bank_code') {  $("#bank_code").focus();$("#bank_code").select(); }
           if (postid=='bank_name') {  $("#bank_name").focus();$("#bank_name").select(); }
 
 

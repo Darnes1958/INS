@@ -15,13 +15,13 @@ class InpBank extends Component
   public $bank_tajmeeh;
   public $bank_no;
   public $bank_name;
-  public $bank_acc;
+  public $bank_code;
 
   public $UpdateMod=false;
 
   public function updated($field){
     if ($field=='bank_tajmeeh')
-     $this->emit('gotome','bank_acc');
+     $this->emit('gotome','bank_code');
   }
   protected function rules()
   {
@@ -30,6 +30,7 @@ class InpBank extends Component
       'bank_tajmeeh' => ['required'],
 
       'bank_name' =>   ['required'],
+      'bank_code' =>   ['required'],
     ];
   }
   protected $messages = [
@@ -43,9 +44,9 @@ class InpBank extends Component
       $res=bank::on(Auth()->user()->company)->where('bank_no',$this->bank_no)->first();
       $this->bank_tajmeeh=$res->bank_tajmeeh;
       $this->bank_name=$res->bank_name;
-      $this->bank_acc=$res->bank_acc;
+      $this->bank_code=$res->bank_code;
       $this->UpdateMod=true;
-      $this->emit('gotome','bank_acc');}
+      $this->emit('gotome','bank_code');}
   }
   public function CloseDeleteDialog(){$this->dispatchBrowserEvent('CloseMyDelete');}
   public function CloseEditDialog(){$this->dispatchBrowserEvent('CloseMyEdit');}
@@ -65,7 +66,7 @@ class InpBank extends Component
       $tajacc=BankTajmeehy::on(Auth()->user()->company)->where('TajNo',$this->bank_tajmeeh)->first()->TajAcc;
       bank::on(Auth()->user()->company)->where('bank_no',$this->bank_no)->update([
         'bank_name'=>$this->bank_name,
-        'bank_acc'=>$this->bank_acc,
+        'bank_code'=>$this->bank_code,
         'bank_tajmeeh'=>$this->bank_tajmeeh,
         'acc_tajmeeh'=>$tajacc,
       ]);}
@@ -75,14 +76,15 @@ class InpBank extends Component
       bank::on(Auth()->user()->company)->insert([
         'bank_no'=>$this->bank_no,
         'bank_name'=>$this->bank_name,
-        'bank_acc'=>$this->bank_acc,
+        'bank_code'=>$this->bank_code,
+        'bank_acc'=>0,
         'bank_tajmeeh'=>$this->bank_tajmeeh,
         'acc_tajmeeh'=>$tajacc,
       ]);}
     $this->UpdateMod=false;
     $this->bank_no='';
     $this->bank_name='';
-    $this->bank_acc='';
+    $this->bank_code='';
   }
     public function render()
     {
@@ -90,7 +92,7 @@ class InpBank extends Component
           'TajTable'=>BankTajmeehy::on(Auth()->user()->company)->get(),
           'BankTable'=>bank::on(Auth()->user()->company)
           ->join('BankTajmeehy','bank.bank_tajmeeh','=','BankTajmeehy.TajNo')
-          ->select('bank_no','bank_name','bank_acc','TajName')
+          ->select('bank_no','bank_name','bank_code','TajName')
           ->paginate(15)]);
     }
 }
