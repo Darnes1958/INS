@@ -8,6 +8,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Response;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\Support\MediaStream;
+use ZipStream\File;
 use ZipStream\Option\Archive;
 
 class DoBackup extends Component
@@ -29,15 +30,25 @@ class DoBackup extends Component
       $zip = new \ZipArchive();
       $zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
       $invoice_file = Auth()->user()->company.'_'.date('Ymd').'.bak';
-      $res=$zip->addFile(storage_path(). "/app/".$invoice_file, $invoice_file);
-
-      if ($res) info('yes');else info('no');
+      $zip->addFile(storage_path(). "/app/".$invoice_file, $invoice_file);
 
       $zip->close();
-      return response()->download($zip_file);
+      Storage::delete($invoice_file);
+
+      return response()->download($zip_file)->deleteFileAfterSend(true);
 
     }
     public function DoBackup(){
+
+      if(\File::exists(public_path(Auth()->user()->company.'_'.date('Ymd').'.zip'))){
+        \File::delete(public_path(Auth()->user()->company.'_'.date('Ymd').'.zip'));
+      }
+
+      $this->comp=Auth()->user()->company;
+      $this->filename=$this->comp.'_'.date('Ymd').'.bak';
+
+      Storage::delete($this->filename);
+
       sqlsrv_configure('WarningsReturnAsErrors',0);
 
       $path=storage_path().'\app';
@@ -46,8 +57,6 @@ class DoBackup extends Component
       $connectionInfo = array( "Database"=>"master","TrustServerCertificate"=>"True","UID"=>"hameed",
         "PWD"=>"Medo_2003", "CharacterSet" => "UTF-8");
       $conn = sqlsrv_connect( $serverName, $connectionInfo);
-      $this->comp=Auth()->user()->company;
-      $this->filename=$this->comp.'_'.date('Ymd').'.bak';
 
       // $comp=Auth()->user()->company;
       // $this->filename=$comp.'_'.date('Ymd').'.bak';
