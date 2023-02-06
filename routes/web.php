@@ -27,6 +27,19 @@ Route::get('/', function () {
 Auth::routes();
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('send-mail', function () {
+
+    $details = [
+        'title' => 'Mail from ItSolutionStuff.com',
+        'body' => 'This is for testing email using smtp'
+    ];
+
+    \Mail::to('abdel_ati_m@yahoo.com')->send(new \App\Mail\MyTestMail($details));
+
+    dd("Email is Sent.");
+})->name('sendmail');
+
 Route::get('status', [UserController::class, 'userOnlineStatus']);
 
 Route::get('/home',function () {    return view('admin.index');});
