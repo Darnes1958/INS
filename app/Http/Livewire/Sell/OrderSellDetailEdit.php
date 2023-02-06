@@ -135,7 +135,7 @@ class OrderSellDetailEdit extends Component
              if ($this->price==0) $this->price=$result->price_sell;
              $this->price=number_format($this->price, 2, '.', '')  ;
              $this->st_raseed=$this->RetPlaceRaseed($this->item,$this->OrderPlacetype,$this->stno);
-             if ($this->st_raseed==0) {return 'zero';}
+
              return ('ok');
            } { return('not');}
        } else { return('empty');}
@@ -151,7 +151,7 @@ class OrderSellDetailEdit extends Component
                          $this->emit('gotonext','quant');}
         if ($res=='not') { $this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ؟');}
         if ($res=='empty') { $this->dispatchBrowserEvent('mmsg', 'لا يجوز');}
-        if ($res=='zero') { $this->dispatchBrowserEvent('mmsg', 'رصيد الصنف صفر');}
+       
     }
     public function updatedItem()
     {   $this->ItemGeted=false;

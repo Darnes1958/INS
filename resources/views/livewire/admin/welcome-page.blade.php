@@ -3,7 +3,7 @@
     $id = Auth::user()->id;
     $admindata = App\Models\User::find($id);
   @endphp
- 
+
   <div class="row my-4 mx-4">
     <div class="col-md-8">
       <h1 style="color: #0a53be">مرحبا بكم</h1>
