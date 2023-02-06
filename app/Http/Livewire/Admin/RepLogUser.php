@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -24,7 +25,8 @@ class RepLogUser extends Component
 
         return view('livewire.admin.rep-log-user',[
 
-            'users'=>  DB::table('users')->paginate(8)
+            'users'=>  DB::table('users')->paginate(8),
+
         ]);
     }
 }

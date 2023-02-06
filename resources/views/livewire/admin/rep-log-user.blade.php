@@ -1,16 +1,14 @@
 <div x-data x-show="$wire.Show" class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header">Users</div>
-            <div class="card-body">
-                <div class="container">
-                    <table class="table table-bordered">
+    <div class="col-md-6">
+
+                    <table class="table table-sm table-bordered table-striped  w-100" >
                         <thead>
-                        <tr>
+                        <tr style="background: #1c6ca1;color: white;text-align: center">
                             <th>الاسم</th>
                             <th>الحالة</th>
                             <th>بواسطة</th>
-                            <th>منذ</th>
+                            <th>اخر ظهور</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -26,13 +24,17 @@
                                 </td>
                                 <td>{{$user->DevType}}</td>
                                 <td>{{ \Carbon\Carbon::parse($user->last_seen)->diffForHumans() }}</td>
+                                <td><img class="rounded-circle header-profile-user mt-0 pt-0" src="{{
+                                      (!empty($user->profile_image))? url('upload/admin_images/'.$user->profile_image):
+                                      url('upload/no_image.jpg')}}" ></td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
-                    {{ $users->links() }}
-                </div>
-            </div>
-        </div>
+
+
+                {{ $users->links() }}
+
     </div>
+
 </div>
