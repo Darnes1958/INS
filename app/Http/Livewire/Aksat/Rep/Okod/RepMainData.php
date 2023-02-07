@@ -59,9 +59,12 @@ class RepMainData extends Component
     ];
 
     public function Archive(){
+      
+      if ($this->no==0) { $this->dispatchBrowserEvent('mmsg','يجب اختيار العقد ');return;}
       $this->dispatchBrowserEvent('arch');
     }
     public function DoArch(){
+
       DB::connection(Auth()->user()->company)->beginTransaction();
       try {
         $select = main::on(Auth()->user()->company)->where('no',$this->no)->select('no','name','bank','acc','sul_date','sul_type','sul_tot','dofa','sul',

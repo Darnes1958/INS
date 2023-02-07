@@ -31,30 +31,6 @@ class RepAksatController extends Controller
     return view('backend.aksat.rep.rep-okod',compact('rep'));
 
   }
-    function PdfStopOne(Request $request){
-
-        $RepDate=date('Y-m-d');
-        $cus=Customers::where('Company',Auth::user()->company)->first();
-
-        $TajNo=$request->bank_tajmeeh;
-        $taj=BankTajmeehy::on(Auth::user()->company)->where('TajNo',$TajNo)->first();
-        $company=Companies::on(Auth::user()->company)->where('CompNo',$taj->CompNo)->first();
-
-        $reportHtml = view('PrnView.aksat.pdf-stop-one',
-            ['cus'=>$cus,'bank_name'=>$taj->TajName,'name'=>$request->name,'acc'=>$request->acc,
-                'kst'=>$request->kst,'comp_name'=>$company->CompName,'TajAcc'=>$taj->TajAcc])->render();
-        $arabic = new Arabic();
-        $p = $arabic->arIdentify($reportHtml);
-
-        for ($i = count($p)-1; $i >= 0; $i-=2) {
-            $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
-            $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
-        }
-
-        $pdf = PDF::loadHTML($reportHtml);
-        return $pdf->download('report.pdf');
-
-    }
   function PdfChk(Request $request){
 
     $RepDate=date('Y-m-d');
@@ -189,6 +165,58 @@ class RepAksatController extends Controller
 
     $reportHtml = view('PrnView.aksat.pdf-stop',
       ['res'=>$res,'cus'=>$cus,'bank_name'=>$request->bank_name,'stop_date1'=>$request->stop_date1,'stop_date2'=>$request->stop_date2])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('report.pdf');
+
+  }
+  function PdfStopOne(Request $request){
+
+    $RepDate=date('Y-m-d');
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+
+    $TajNo=$request->bank_tajmeeh;
+    $taj=BankTajmeehy::on(Auth::user()->company)->where('TajNo',$TajNo)->first();
+    $company=Companies::on(Auth::user()->company)->where('CompNo',$taj->CompNo)->first();
+
+    $reportHtml = view('PrnView.aksat.pdf-stop-one',
+      ['cus'=>$cus,'bank_name'=>$taj->TajName,'name'=>$request->name,'acc'=>$request->acc,
+        'kst'=>$request->kst,'comp_name'=>$company->CompName,'TajAcc'=>$taj->TajAcc])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('report.pdf');
+
+  }
+
+  function PdfStopOneAll(Request $request){
+
+    $RepDate=date('Y-m-d');
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+    $res=DB::connection(Auth()->user()->company)->table('stop_view')
+      ->whereBetween('stop_date',[$request->stop_date1,$request->stop_date2])
+      ->where('bank', '=', $request->bank_no)
+      ->get();
+
+    $TajNo=bank::on(Auth()->user()->company)->where('bank_no',$request->bank_no)->first()->bank_tajmeeh;
+    $taj=BankTajmeehy::on(Auth::user()->company)->where('TajNo',$TajNo)->first();
+    $company=Companies::on(Auth::user()->company)->where('CompNo',$taj->CompNo)->first();
+
+    $reportHtml = view('PrnView.aksat.pdf-stop-one-all',
+      ['res'=>$res,'cus'=>$cus,'bank_name'=>$taj->TajName,'comp_name'=>$company->CompName,'TajAcc'=>$taj->TajAcc])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 

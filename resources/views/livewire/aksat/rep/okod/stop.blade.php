@@ -20,9 +20,13 @@
       <input wire:model="search" class="form-control mx-0 text-center" type="search"   placeholder="ابحث هنا .......">
     </div>
 
-    <div  class="col-md-2 my-2 ">
+    <div  class="col-md-1 my-2 ">
     <a  href="{{route('pdfstop',['bank_no'=>$bank_no,'stop_date1'=>$stop_date1,'stop_date2'=>$stop_date2,'bank_name'=>$bank_name])}}"
-          class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
+          class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;قائمة&nbsp;&nbsp;</i></a>
+    </div>
+    <div  class="col-md-1 my-2 ">
+      <a  href="{{route('pdfstoponeall',['bank_no'=>$bank_no,'stop_date1'=>$stop_date1,'stop_date2'=>$stop_date2,'bank_name'=>$bank_name])}}"
+          class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;فردي&nbsp;&nbsp;</i></a>
     </div>
   </div>
 

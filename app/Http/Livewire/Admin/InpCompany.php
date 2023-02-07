@@ -10,6 +10,7 @@ class InpCompany extends Component
   public $database;
   public $CompanyName;
   public $CompanyNameSuffix;
+  public $CompCode;
 
   public $Show=false;
 
@@ -26,9 +27,11 @@ class InpCompany extends Component
       'CompanyName' => $this->CompanyName,
       'CompanyNameSuffix' => $this->CompanyNameSuffix,
       'Company' => $this->database,
+      'CompCode'=> $this->CompCode,
     ]);
     $this->CompanyName='';
     $this->CompanyNameSuffix='';
+    $this->CompCode='';
   }
 
     public function render()

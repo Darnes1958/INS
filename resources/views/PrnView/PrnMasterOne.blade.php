@@ -9,6 +9,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet" />
     <style>
+
         #content {
             align-items: center;
             display: inline-flex;

@@ -20,6 +20,12 @@
           <input wire:model="CompanyNameSuffix" id="CompanyNameSuffix" type="text" class="form-control"  autofocus>
         </div>
       </div>
+      <div class="row mb-3">
+        <label for="CompCode" class="col-md-4 col-form-label text-md-end">Company Code</label>
+        <div class="col-md-6">
+          <input wire:model="CompCode" id="CompCode" type="text" class="form-control"  autofocus>
+        </div>
+      </div>
 
       <div class="row mb-0">
         <div class="col-md-6 offset-md-4">
