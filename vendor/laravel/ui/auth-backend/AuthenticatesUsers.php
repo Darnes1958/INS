@@ -2,12 +2,14 @@
 
 namespace Illuminate\Foundation\Auth;
 
+use App\Models\Customers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use App\Http\Traits\GlobalTrait;
 use Illuminate\Support\Facades\Session;
+use function PHPUnit\Framework\at;
 
 trait AuthenticatesUsers
 {
@@ -46,6 +48,13 @@ trait AuthenticatesUsers
         }
 
         if ($this->attemptLogin($request)) {
+
+          $CompCode=Customers::where('Company',Auth()->user()->company)->first()->CompCode;
+          if ($CompCode<>$request->CompCode) {
+            $this->logout($request);
+
+            return back();
+          }
 
 
             if ($request->hasSession()) {
