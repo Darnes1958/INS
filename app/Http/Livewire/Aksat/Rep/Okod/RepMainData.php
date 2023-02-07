@@ -59,7 +59,7 @@ class RepMainData extends Component
     ];
 
     public function Archive(){
-      
+
       if ($this->no==0) { $this->dispatchBrowserEvent('mmsg','يجب اختيار العقد ');return;}
       $this->dispatchBrowserEvent('arch');
     }
