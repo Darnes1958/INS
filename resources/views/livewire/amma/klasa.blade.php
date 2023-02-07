@@ -14,6 +14,7 @@
     <div class="col-md-4"> </div>
 
     <div  class="col-md-2 my-2 ">
+
       <a  href="{{route('pdfklasa',['date1'=>$date1,'date2'=>$date2])}}"
           class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
     </div>
