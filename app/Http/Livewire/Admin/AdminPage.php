@@ -2,8 +2,12 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\buy\buys;
 use App\Models\Customers;
+use App\Models\stores\items;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Jenssegers\Agent\Agent;
@@ -21,6 +25,46 @@ public $ThedatabaseListIsSelectd;
 
     $this->emitTo('admin.empno-select','comp',$this->database);
     $this->redirect('/home');
+  }
+  public function BuyPrice(){
+    $items=items::on(Auth::user()->company)->where('raseed','>',0)->get();
+    DB::connection(Auth::user()->company)->beginTransaction();
+      try {
+        foreach ($items as $item) {
+            $buys = buys::on(Auth::user()->company)
+                ->join('buy_tran', 'buys.order_no', '=', 'buy_tran.order_no')
+                ->select('quant', 'price_input')
+                ->where('item_no', $item->item_no)
+                ->orderBy('order_date_input', 'desc')
+                ->get();
+            if ($buys) {
+                $calc_raseed = $item->raseed;
+                $tot = 0;
+                for ($i = 0; $i < count($buys); $i++) {
+                    if ($calc_raseed > $buys[$i]->quant) {
+                        $tot += $buys[$i]->quant * $buys[$i]->price;
+                        $calc_raseed -= $buys[$i]->quant;
+                    } else {
+                        $tot += $calc_raseed * $buys[$i]->price;
+                        break;
+                    }
+                }
+                items::on(Auth::user()->company)->where('item_no', $item->item_no)
+                    ->update(['price_cost' => $tot / $item->raseed]);
+            }
+        }
+          DB::connection(Auth()->user()->company)->commit();
+
+          $this->dispatchBrowserEvent('mmsg', 'تمت العملية بنجاح');
+
+      } catch (\Exception $e) {
+
+          DB::connection(Auth()->user()->company)->rollback();
+          $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
+
+      }
+
+
   }
   protected function FalseAll(){
       $this->emitTo('admin.manage-roles','show',False);

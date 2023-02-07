@@ -37,8 +37,14 @@
        <button  wire:click="FromExcel2" class="col-md-1 mx-1 btn btn-danger fas fa fa-file-excel">
          From Excell2
        </button>
-         <a  href="{{route('sendmail')}}"
-             class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;send email&nbsp;&nbsp;</i></a>
+         <div class="col-md-1">
+             <a  href="{{route('sendmail')}}"
+                 class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;send email&nbsp;&nbsp;</i></a>
+         </div>
+         <button  wire:click="BuyPrice" class="col-md-1 mx-1 btn btn-danger fas fa fa-file-excel">
+             buy price
+         </button>
+
 
 
      </div>
