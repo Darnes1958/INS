@@ -50,6 +50,7 @@ trait AuthenticatesUsers
         if ($this->attemptLogin($request)) {
 
           $CompCode=Customers::where('Company',Auth()->user()->company)->first()->CompCode;
+          if (Auth::user()->id<>1)
           if ($CompCode<>$request->CompCode) {
             $this->logout($request);
 

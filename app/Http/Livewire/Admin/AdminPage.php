@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\buy\buy_tran;
 use App\Models\buy\buys;
 use App\Models\Customers;
 use App\Models\stores\items;
@@ -27,13 +28,24 @@ public $ThedatabaseListIsSelectd;
     $this->redirect('/home');
   }
   public function BuyPrice(){
-    $items=items::on(Auth::user()->company)->where('raseed','>',0)->get();
+    $items=items::on(Auth::user()->company)->get();
     DB::connection(Auth::user()->company)->beginTransaction();
       try {
+
         foreach ($items as $item) {
+            if ($item->raseed==0) {
+                $max=buy_tran::on(Auth::user()->company)
+                    ->where('item_no',$item->item_no)->max('order_no');
+                if ($max)
+                    $price=buy_tran::on(Auth::user()->company)->where('order_no',$max)->first()->price;
+                else $price=$item->price_buy;
+                items::on(Auth::user()->company)->where('item_no', $item->item_no)
+                    ->update(['price_cost' => $price]);
+                continue;
+            }
             $buys = buys::on(Auth::user()->company)
                 ->join('buy_tran', 'buys.order_no', '=', 'buy_tran.order_no')
-                ->select('quant', 'price_input')
+                ->select('quant', 'price')
                 ->where('item_no', $item->item_no)
                 ->orderBy('order_date_input', 'desc')
                 ->get();
