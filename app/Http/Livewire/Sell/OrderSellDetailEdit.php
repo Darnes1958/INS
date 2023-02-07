@@ -151,7 +151,7 @@ class OrderSellDetailEdit extends Component
                          $this->emit('gotonext','quant');}
         if ($res=='not') { $this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ؟');}
         if ($res=='empty') { $this->dispatchBrowserEvent('mmsg', 'لا يجوز');}
-       
+
     }
     public function updatedItem()
     {   $this->ItemGeted=false;
