@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
 trait MyLib {
+    public $BuyTotCharge;
     public $OldItemQuant=0;
     public $PlaceItemQuant;
     public $ItemExistsInOrder=false;

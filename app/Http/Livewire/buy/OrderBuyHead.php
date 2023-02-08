@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Buy;
 
+
 use App\Models\buy\buys;
 use App\Models\jeha\jeha;
 use App\Models\stores\items;
@@ -13,6 +14,7 @@ use Livewire\Component;
 
 class OrderBuyHead extends Component
 {
+
     public $order_no;
     public $order_date;
     public $jeha;
@@ -21,6 +23,7 @@ class OrderBuyHead extends Component
     public $st_nol;
     public $st_name;
     public $jeha_name;
+    public $Charge_Tot=0;
 
 
   public $TheJehaIsSelected;
@@ -28,9 +31,12 @@ class OrderBuyHead extends Component
   public $HeadDataOpen;
 
     protected $listeners = [
-        'mounthead','jehaadded',
+        'mounthead','jehaadded','TakeCharge'
     ];
 
+    public function TakeCharge($charge){
+      $this->Charge_Tot=$charge;
+    }
     public function updated($field)
     {
         if ($field=='st_nol') {
@@ -68,7 +74,14 @@ class OrderBuyHead extends Component
     public function CloseModal(){
         $this->dispatchBrowserEvent('CloseModal');
     }
+  public function OpenModalCharge(){
 
+    $this->dispatchBrowserEvent('OpenModalCharge');
+  }
+  public function CloseModalCharge(){
+
+    $this->dispatchBrowserEvent('CloseModalCharge');
+  }
     public function mounthead(){
 
         $this->mount();

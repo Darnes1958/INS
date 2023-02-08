@@ -82,7 +82,11 @@ class HafMiniRep extends Component
         main::on(Auth()->user()->company)->where('jeha', $jeha)->update(['acc' => $accToEdit,]);
         MainArc::on(Auth()->user()->company)->where('jeha', $jeha)->update(['acc' => $accToEdit,]);
 
-           $raseed=main::on(Auth()->user()->company)->find($no)->raseed;
+           if (main::on(Auth()->user()->company)->where('no',$no)->exists())
+            $raseed=main::on(Auth()->user()->company)->find($no)->raseed;
+           else
+             $raseed=MainArc::on(Auth()->user()->company)->find($no)->raseed;
+
            $NoList=hafitha_tran::on(Auth()->user()->company)
                ->where('hafitha', $this->hafitha)
                ->where('acc','=',str($accToEdit))->get();
@@ -91,20 +95,21 @@ class HafMiniRep extends Component
            $sumkst=0;
            foreach ($NoList as $List) {
 
-               $sumkst += $List->ksm;
+               $sumkst += $List->kst;
+
                if ($raseed >= $sumkst) {
                    hafitha_tran::on(Auth()->user()->company)->
                    where('hafitha', $this->hafitha)
                    ->where('ser_in_hafitha',$List->ser_in_hafitha)->update([
                            'name'=>$List->name,'no'=>$no,'kst_type' => 1, 'baky' => 0,]);
                } else {
-                   if (($sumkst - $raseed) < $List->ksm) {
+                   if (($sumkst - $raseed) < $List->kst) {
                        hafitha_tran::on(Auth()->user()->company)->where('hafitha', $this->hafitha)
                            ->where('ser_in_hafitha',$List->ser_in_hafitha)->update([
-                           'name'=>$List->name,'no'=>$no, 'kst' => $raseed, 'kst_type' => 3, 'baky' => $sumkst - $raseed,]);
+                           'name'=>$List->name,'no'=>$no, 'kst' => $List->kst-($sumkst - $raseed), 'kst_type' => 3, 'baky' => $sumkst - $raseed,]);
                    } else hafitha_tran::on(Auth()->user()->company)->where('hafitha', $this->hafitha)
                        ->where('ser_in_hafitha',$List->ser_in_hafitha)->update([
-                           'name'=>$List->name,'no'=>$no,'kst' => $List->ksm, 'kst_type' => 2, 'baky' => 0,]);
+                           'name'=>$List->name,'no'=>$no,'kst' => $List->kst, 'kst_type' => 2, 'baky' => 0,]);
                }
            }
            $summorahel=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',1)->sum('kst');

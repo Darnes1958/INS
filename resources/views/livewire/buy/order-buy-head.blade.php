@@ -57,13 +57,27 @@
           </select>
       </div>
 
-      <div class="my-3 align-center justify-content-center "  style="display: flex">
+      <div class="col-md-4 my-3 align-center justify-content-center "  style="display: flex">
 
-      <input type="button"  id="head-btn"
+        <input type="button"  id="head-btn"
               class=" btn btn-outline-success  waves-effect waves-light   "
               wire:click.prevent="BtnHeader"  wire:keydown.enter="BtnHeader" value="موافق" />
 
-    </div>
+      </div>
+      <div class="col-md-4 my-3 align-center justify-content-center "  style="display: flex">
+
+        <input type="button"  id="charge-btn"
+               class=" btn btn-outline-primary  waves-effect waves-light   "
+               wire:click.prevent="OpenModalCharge"   value="تكاليف إضافية" />
+
+      </div>
+      <div class="col-md-4 my-3 align-center justify-content-center "  style="display: flex">
+
+        <input type="text"  id="charge-tot"
+               class="form-control " wire:model="Charge_Tot" readonly  />
+
+      </div>
+
     </div>
 
     <div  x-show="!$wire.HeadOpen" class="row g-3 " style="border:1px solid lightgray;background: white;">
@@ -100,7 +114,19 @@
               </div>
           </div>
     </div>
-
+   <div class="modal fade" id="ModalCharge" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-dialog-centered modal-lg">
+       <div class="modal-content">
+         <div class="modal-header">
+           <button wire:click="CloseModalCharge" type="button" class="btn-close" ></button>
+           <h1 class="modal-title fs-5 mx-6" id="exampleModalLabel">ادخال تكاليف اضافية</h1>
+         </div>
+         <div class="modal-body">
+           @livewire('buy.charge-buy')
+         </div>
+       </div>
+     </div>
+   </div>
  </div>
 
 @push('scripts')
@@ -125,8 +151,6 @@
                 setTimeout(function() { document.getElementById('head-btn').focus(); },100);};
         })
 
-    </script>
-  <script>
         window.addEventListener('CloseModal', event => {
             $("#ModalForm").modal('hide');
         })
@@ -134,10 +158,12 @@
             $("#ModalForm").modal('show');
         })
 
-
-    </script>
-  <script>
-
+        window.addEventListener('CloseModalCharge', event => {
+            $("#ModalCharge").modal('hide');
+        })
+        window.addEventListener('OpenModalCharge', event => {
+            $("#ModalCharge").modal('show');
+        })
 
       $(document).ready(function ()
       {
