@@ -16,6 +16,7 @@ use Livewire\Component;
 
 class OrderBuyTable extends Component
 {
+    public $showtable=true;
    public $ksm;
    public $madfooh;
    public $tot1;
@@ -30,8 +31,11 @@ class OrderBuyTable extends Component
     public $OrderChanged=false;
 
    protected $listeners = [
-        'putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable','DoDelete'
+        'open','putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable','DoDelete'
     ];
+    public function open($open){
+        $this->showtable=$open;
+    }
    public function mounttable(){
        $this->mount();
    }

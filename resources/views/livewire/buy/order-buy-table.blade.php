@@ -1,4 +1,5 @@
-<div class=" col-md-12" style="border:1px solid lightgray;background: white;padding: 4px;">
+<div x-data x-show="$wire.showtable" class=" col-md-12"
+     style="border:1px solid lightgray;background: white;padding: 4px;">
     <table class="table-sm table-bordered " width="100%"  id="orderlist" >
         <thead>
         <tr>

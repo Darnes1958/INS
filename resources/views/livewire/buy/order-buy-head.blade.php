@@ -68,7 +68,7 @@
 
         <input type="button"  id="charge-btn"
                class=" btn btn-outline-primary  waves-effect waves-light   "
-               wire:click.prevent="OpenModalCharge"   value="تكاليف إضافية" />
+               wire:click.prevent="OpenCharge"   value="تكاليف إضافية" />
 
       </div>
       <div class="col-md-4 my-3 align-center justify-content-center "  style="display: flex">
@@ -99,6 +99,11 @@
           <input wire:model="st_name"   class="form-control  " type="text"   readonly>
           <br>
       </div>
+        <div   class="col-md-12" >
+            <label  class="form-label-me">تكاليف اضافية</label>
+            <input wire:model="Charge_Tot"   class="form-control  " type="text"   readonly>
+            <br>
+        </div>
     </div>
 
     <div class="modal fade" id="ModalForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

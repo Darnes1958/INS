@@ -74,9 +74,10 @@ class OrderBuyHead extends Component
     public function CloseModal(){
         $this->dispatchBrowserEvent('CloseModal');
     }
-  public function OpenModalCharge(){
+  public function OpenCharge(){
 
-    $this->dispatchBrowserEvent('OpenModalCharge');
+    $this->emitTo('buy.charge-buy','open',true);
+    $this->emitTo('buy.order-buy-table','open',false);
   }
   public function CloseModalCharge(){
 
@@ -126,9 +127,12 @@ class OrderBuyHead extends Component
             ->where('st_no',$this->st_no)->first()->st_name;
         $this->HeadOpen=false;
         $this->HeadDataOpen=true;
+        $this->emitTo('buy.charge-buy','open',false);
+        $this->emitTo('buy.order-buy-table','open',true);
         $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha,$this->st_no);
         $this->emitTo('buy.order-buy-detail','TakeParam',$this->order_no,$this->st_no);
         $this->emit('mountdetail');
+
     }
 
 

@@ -11,10 +11,19 @@ use Livewire\Component;
 
 class ChargeBuy extends Component
 {
-
+  public $showcharge=false;
   public $ChargeDetail=[];
   public $charge_by,$charge_type,$val;
   public $TotCharge=0;
+
+
+    public function open($open){
+        $this->showcharge=$open;
+    }
+
+    protected $listeners = [
+        'open',
+    ];
   public function mount(){
     $this->ChargeDetail=[
       ['no'=>'0','name'=>'',
