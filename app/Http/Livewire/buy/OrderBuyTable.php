@@ -4,7 +4,9 @@ namespace App\Http\Livewire\Buy;
 
 use App\Models\buy\buy_tran;
 use App\Models\buy\buys;
+use App\Models\buy\charges_buy;
 use App\Models\jeha\jeha;
+use App\Models\stores\items;
 use App\Models\trans\trans;
 use Illuminate\Console\View\Components\Alert;
 use Illuminate\Support\Facades\Auth;
@@ -27,12 +29,20 @@ class OrderBuyTable extends Component
     public $jeha_no;
     public $st_no;
     public $notes;
-  public $TheDelete;
+    public $TheDelete;
     public $OrderChanged=false;
+    public $ChargeDetail=[];
+    public $ChargeTot;
 
    protected $listeners = [
-        'open','putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable','DoDelete'
+        'open','putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable','DoDelete','TakeCharge','TakeChargeTot'
     ];
+   public function TakeChargeTot($chargetot){
+     $this->ChargeTot=$chargetot;
+   }
+   public function TakeCharge($chargedetail){
+     $this->ChargeDetail=$chargedetail;
+   }
     public function open($open){
         $this->showtable=$open;
     }
@@ -66,7 +76,7 @@ class OrderBuyTable extends Component
                   'tot1' => $this->tot1,
                   'ksm' => $this->ksm,
                   'tot' => $this->tot,
-                  'tot_charges' => 0,
+                  'tot_charges' => $this->ChargeTot,
                   'cash' => $this->madfooh,
                   'not_cash' => $this->tot - $this->madfooh,
                   'place_no' => $this->st_no,
@@ -111,17 +121,69 @@ class OrderBuyTable extends Component
                   ]);
               }
 
+              if ($this->ChargeTot!=0){
+                foreach ($this->ChargeDetail as $item) {
+                  if ($item['type_no'] == 0 || $item['type_name']='') {
+                    continue;
+                  }
+
+                  charges_buy::on(Auth()->user()->company)->insert([
+                    'order_no'=>$this->order_no,
+                    'charge_type'=>$item['type_no'],
+                    'charge_by' => $item['no'],
+                    'val' => $item['val'],
+                  ]);
+                }
+                $tot1=buy_tran::on(Auth::user()->company)->where('order_no',$this->order_no)->sum(DB::raw('quant * price_input'));
+                $sum_val=charges_buy::on(Auth::user()->company)->where('order_no',$this->order_no)->sum('val');
+                $items=buy_tran::on(Auth::user()->company)->where('order_no',$this->order_no)->get();
+                foreach ($items as $item){
+                  $item_no=$item->item_no;
+                  $sub_tot=$item->quant*$item->price_input;
+                  $ratio=$sub_tot/$tot1*100;
+                  $val=(($ratio/100*$sum_val)/$item->quant)+$item->price;
+                  buy_tran::on(Auth::user()->company)->where('order_no',$this->order_no)->where('item_no',$item->item_no)->update([
+                    'price'=>$val, ]);
+                }
+              }
+              $itemss=items::on(Auth::user()->company)->whereIn('item_no', function($q){
+                $q->select('item_no')->from('buy_tran')->where('order_no',$this->order_no);})->get();
+               foreach ($itemss as $item) {
+                 $buys = buys::on(Auth::user()->company)
+                   ->join('buy_tran', 'buys.order_no', '=', 'buy_tran.order_no')
+                   ->select('quant', 'price')
+                   ->where('item_no', $item->item_no)
+                   ->orderBy('order_date_input', 'desc')
+                   ->get();
+                 $calc_raseed = $item->raseed;
+                 $tot = 0;
+                 for ($i = 0; $i < count($buys); $i++) {
+                   if ($calc_raseed > $buys[$i]->quant) {
+                     $tot += $buys[$i]->quant * $buys[$i]->price;
+                     $calc_raseed -= $buys[$i]->quant;
+                   } else {
+                     $tot += $calc_raseed * $buys[$i]->price;
+                     break;
+                   }
+                 }
+                 items::on(Auth::user()->company)->where('item_no', $item->item_no)
+                   ->update(['price_cost' => $tot / $item->raseed]);
+               }
+
               DB::connection(Auth()->user()->company)->commit();
               if ($this->OrderChanged){
                   $this->OrderChanged=false;
                   $this->dispatchBrowserEvent('mmsg', 'تم تغيير رقم الفاتورة وتخرينها بالرقم : '.$this->order_no);
               }
+
               $this->emit('mounttable');
               $this->emit('dismountdetail');
               $this->emit('mounthead');
 
 
           } catch (\Exception $e) {
+
+            $this->dispatchBrowserEvent('mmsg','حدث خطأ');
               DB::connection(Auth()->user()->company)->rollback();
           }
 

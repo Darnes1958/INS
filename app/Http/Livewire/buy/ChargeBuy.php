@@ -24,10 +24,15 @@ class ChargeBuy extends Component
     protected $listeners = [
         'open',
     ];
+  public function Close(){
+    $this->showcharge=false;
+    $this->emitTo('buy.order-buy-table','TakeCharge',$this->ChargeDetail);
+    $this->emitTo('buy.order-buy-table','open',true);
+  }
   public function mount(){
     $this->ChargeDetail=[
       ['no'=>'0','name'=>'',
-        'type_no'=>'0','type_name','val'=>'0', ]
+        'type_no'=>'0','type_name'=>'','val'=>'0', ]
     ];
   }
   protected function rules()
@@ -43,6 +48,18 @@ class ChargeBuy extends Component
     'required' => 'لا يجوز ترك فراغ',
     'exists' => 'هذا الرقم غير مخزون مسبقا',
   ];
+
+  public function removeitem($value)    {
+    unset($this->ChargeDetail[$value]);
+    array_values($this->ChargeDetail);
+  }
+  public function edititem($value)
+  {
+    $this->charge_by=$this->ChargeDetail[$value]['no'] ;
+    $this->charge_type=$this->ChargeDetail[$value]['type_no'] ;
+    $this->val=$this->ChargeDetail[$value]['val'] ;
+  }
+
   public function Do(){
    $this->validate();
     $One= array_column($this->ChargeDetail, 'type_no');

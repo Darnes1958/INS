@@ -6,7 +6,8 @@
 <div class="d-inline-flex  w-100  " style="background: #1c6ca1;color: white; padding-top: 4px;">
     <h6 style="color: white ;width: 50%">ادخال تكاليف اضافية</h6>
     <h6 style="width: 30%">&nbsp;</h6>
-    <a class="  fas fa-arrow-right " style="color: yellow;width: 20%" @click="xcharge_open=false" href="#">&nbsp;&nbsp;رجوع&nbsp;&nbsp;</a>
+    <a class="  fas fa-arrow-right " style="color: yellow;width: 20%"
+       @click="$wire.Close" href="#">&nbsp;&nbsp;رجوع&nbsp;&nbsp;</a>
 </div>
   <div class="row">
 

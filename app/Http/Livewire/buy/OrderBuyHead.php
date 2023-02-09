@@ -118,6 +118,7 @@ class OrderBuyHead extends Component
         $this->jeha_type='2';
         $this->HeadOpen=True;
         $this->HeadDataOpen=false;
+        $this->Charge_Tot=0;
     }
 
     public function BtnHeader()
@@ -127,6 +128,7 @@ class OrderBuyHead extends Component
             ->where('st_no',$this->st_no)->first()->st_name;
         $this->HeadOpen=false;
         $this->HeadDataOpen=true;
+        $this->emitTo('buy.order-buy-table','TakeChargeTot',$this->Charge_Tot);
         $this->emitTo('buy.charge-buy','open',false);
         $this->emitTo('buy.order-buy-table','open',true);
         $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha,$this->st_no);

@@ -6,6 +6,7 @@ use App\Models\buy\rep_buy_tran;
 use App\Models\buy\buy_tran;
 use App\Models\buy\buys;
 use App\Models\jeha\jeha;
+use App\Models\stores\items;
 use App\Models\trans\trans;
 use Illuminate\Console\View\Components\Alert;
 use Illuminate\Support\Facades\Auth;
@@ -134,6 +135,31 @@ class OrderBuyTableEdit extends Component
                       'order_no' => $this->order_no
 
                   ]);
+              }
+              if ($this->HasRaseed) {
+                $itemss=items::on(Auth::user()->company)->whereIn('item_no', function($q){
+                  $q->select('item_no')->from('buy_tran')->where('order_no',$this->order_no);})->get();
+                foreach ($itemss as $item) {
+                  $buys = buys::on(Auth::user()->company)
+                    ->join('buy_tran', 'buys.order_no', '=', 'buy_tran.order_no')
+                    ->select('quant', 'price')
+                    ->where('item_no', $item->item_no)
+                    ->orderBy('order_date_input', 'desc')
+                    ->get();
+                  $calc_raseed = $item->raseed;
+                  $tot = 0;
+                  for ($i = 0; $i < count($buys); $i++) {
+                    if ($calc_raseed > $buys[$i]->quant) {
+                      $tot += $buys[$i]->quant * $buys[$i]->price;
+                      $calc_raseed -= $buys[$i]->quant;
+                    } else {
+                      $tot += $calc_raseed * $buys[$i]->price;
+                      break;
+                    }
+                  }
+                  items::on(Auth::user()->company)->where('item_no', $item->item_no)
+                    ->update(['price_cost' => $tot / $item->raseed]);
+                }
               }
 
               if ($this->HasRaseed) {

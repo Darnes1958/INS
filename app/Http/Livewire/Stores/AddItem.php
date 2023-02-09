@@ -93,6 +93,7 @@ class AddItem extends Component
                 'item_type' => $this->itemtype,
                 'price_buy' => $this->price_buy,
                 'price_sell' => $this->price_sell,
+                'price_cost' => $this->price_buy,
                 'raseed' => 0,
                 'available' => 1
 
