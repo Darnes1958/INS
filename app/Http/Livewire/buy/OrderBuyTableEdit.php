@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Buy;
 
+use App\Models\buy\charges_buy;
 use App\Models\buy\rep_buy_tran;
 use App\Models\buy\buy_tran;
 use App\Models\buy\buys;
@@ -18,7 +19,7 @@ use App\Http\Livewire\Traits\MyLib;
 
 class OrderBuyTableEdit extends Component
 {
-
+   public $showtable=true;
    public $ksm;
    public $madfooh;
    public $tot1;
@@ -31,13 +32,25 @@ class OrderBuyTableEdit extends Component
    public $notes;
    public $HasRaseed=true;
    public $TheDelete;
+   public $ChargeDetail=[];
+   public $ChargeTot;
+
    use MyLib;
+
    protected $listeners = [
-        'putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable','GetOrderData','DoDelete'
+        'putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable','GetOrderData','DoDelete','open','TakeChargeEdit',
     ];
    public function mounttable(){
        $this->mount();
    }
+
+  public function open($open){
+    $this->showtable=$open;
+  }
+  public function TakeChargeEdit($charge,$tot){
+     $this->ChargeDetail=$charge;
+     $this->ChargeTot=$tot;
+  }
 
    public function GetOrderData($order_no,$ksm,$madfooh,$tot1,$tot,$jeha,$stno,$notes){
      $this->order_no=$order_no;
@@ -81,7 +94,7 @@ class OrderBuyTableEdit extends Component
                   'tot1' => $this->tot1,
                   'ksm' => $this->ksm,
                   'tot' => $this->tot,
-                  'tot_charges' => 0,
+                  'tot_charges' => $this->ChargeTot,
                   'cash' => $this->madfooh,
                   'not_cash' => $this->tot - $this->madfooh,
                   'place_no' => $this->st_no,
@@ -137,6 +150,32 @@ class OrderBuyTableEdit extends Component
                   ]);
               }
               if ($this->HasRaseed) {
+                if ($this->ChargeTot!=0) {
+                  foreach ($this->ChargeDetail as $item) {
+                    if ($item['type_no'] == 0 || $item['type_name']='') {
+                      continue;
+                    }
+
+                    charges_buy::on(Auth()->user()->company)->insert([
+                      'order_no'=>$this->order_no,
+                      'charge_type'=>$item['type_no'],
+                      'charge_by' => $item['no'],
+                      'val' => $item['val'],
+                    ]);
+                  }
+                  $tot1=buy_tran::on(Auth::user()->company)->where('order_no',$this->order_no)->sum(DB::raw('quant * price_input'));
+                  $sum_val=charges_buy::on(Auth::user()->company)->where('order_no',$this->order_no)->sum('val');
+                  $items=buy_tran::on(Auth::user()->company)->where('order_no',$this->order_no)->get();
+                  foreach ($items as $item){
+                    $item_no=$item->item_no;
+                    $sub_tot=$item->quant*$item->price_input;
+                    $ratio=$sub_tot/$tot1*100;
+                    $val=(($ratio/100*$sum_val)/$item->quant)+$item->price;
+                    buy_tran::on(Auth::user()->company)->where('order_no',$this->order_no)->where('item_no',$item->item_no)->update([
+                      'price'=>$val, ]);
+                  }
+                }
+
                 $itemss=items::on(Auth::user()->company)->whereIn('item_no', function($q){
                   $q->select('item_no')->from('buy_tran')->where('order_no',$this->order_no);})->get();
                 foreach ($itemss as $item) {
@@ -160,6 +199,7 @@ class OrderBuyTableEdit extends Component
                   items::on(Auth::user()->company)->where('item_no', $item->item_no)
                     ->update(['price_cost' => $tot / $item->raseed]);
                 }
+
               }
 
               if ($this->HasRaseed) {

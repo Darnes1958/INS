@@ -38,7 +38,21 @@
                x-bind:hidden="!$wire.OrderNoFound" class= "mx-4 btn btn-outline-danger  waves-effect waves-light   "
                wire:click.prevent="BtnHeaderDel"  value="الغاء الفاتورة" />
 
-    </div>
+      </div>
+      <div class="col-md-4 my-3 align-center justify-content-center "  style="display: flex">
+
+        <input x-bind:hidden="!$wire.OrderNoFound" type="button"  id="charge-btn"
+               class=" btn btn-outline-primary  waves-effect waves-light   "
+               wire:click.prevent="OpenCharge"   value="تكاليف إضافية" />
+
+      </div>
+      <div class="col-md-4 my-3 align-center justify-content-center "  style="display: flex">
+
+        <input x-bind:hidden="!$wire.OrderNoFound" type="text"  id="charge-tot"
+               class="form-control " wire:model="Charge_Tot" readonly  />
+
+      </div>
+
     </div>
 
 

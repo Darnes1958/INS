@@ -15,6 +15,8 @@ class ChargeBuy extends Component
   public $ChargeDetail=[];
   public $charge_by,$charge_type,$val;
   public $TotCharge=0;
+  public $ToHead='buy.order-buy-head';
+  public $ToTable='buy.order-buy-table';
 
 
     public function open($open){
@@ -22,14 +24,19 @@ class ChargeBuy extends Component
     }
 
     protected $listeners = [
-        'open',
+        'open','TakeChargeEdit'
     ];
+  public function TakeChargeEdit($chargedet){
+    $this->ChargeDetail=$chargedet;
+  }
   public function Close(){
     $this->showcharge=false;
-    $this->emitTo('buy.order-buy-table','TakeCharge',$this->ChargeDetail);
-    $this->emitTo('buy.order-buy-table','open',true);
+    $this->emitTo($this->ToTable,'TakeCharge',$this->ChargeDetail);
+    $this->emitTo($this->ToTable,'open',true);
   }
-  public function mount(){
+  public function mount($head,$table){
+    $this->ToHead=$head;
+    $this->ToTable=$table;
     $this->ChargeDetail=[
       ['no'=>'0','name'=>'',
         'type_no'=>'0','type_name'=>'','val'=>'0', ]
@@ -52,6 +59,9 @@ class ChargeBuy extends Component
   public function removeitem($value)    {
     unset($this->ChargeDetail[$value]);
     array_values($this->ChargeDetail);
+    $this->TotCharge = number_format(array_sum(array_column($this->ChargeDetail, 'val')),
+      2, '.', '');
+    $this->emitTo($this->ToHead,'TakeCharge',$this->TotCharge);
   }
   public function edititem($value)
   {
@@ -73,7 +83,7 @@ class ChargeBuy extends Component
     }
     else {
       $this->ChargeDetail[] =
-        ['no' => $this->ChargeDetail[$index]['no']=$this->charge_by,
+        ['no' => $this->charge_by,
          'name' => charge_by::on(Auth::user()->company)->find($this->charge_by)->name,
          'type_no'=>$this->charge_type,
          'type_name'=>charge_type::on(Auth::user()->company)->find($this->charge_type)->type_name,
@@ -82,7 +92,7 @@ class ChargeBuy extends Component
     }
     $this->TotCharge = number_format(array_sum(array_column($this->ChargeDetail, 'val')),
       2, '.', '');
-    $this->emit('TakeCharge',$this->TotCharge);
+    $this->emitTo($this->ToHead,'TakeCharge',$this->TotCharge);
 
     $this->charge_type='';
     $this->charge_by='';

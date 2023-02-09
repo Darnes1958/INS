@@ -13,7 +13,7 @@
                 </div>
                 <div class="col-md-8 themed-grid-col px-1">
                        @livewire('buy.order-buy-table')
-                       @livewire('buy.charge-buy')
+                       @livewire('buy.charge-buy',['head'=>'buy.order-buy-head','table'=>'buy.order-buy-table'])
                 </div>
         </div>
     </div>
