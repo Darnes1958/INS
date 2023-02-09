@@ -143,8 +143,8 @@ class InpMainTwo extends Component
     else {$this->emit('goto','sul_date');};}
   }
   public function ChkOrderAndGo(){
-
-    Config::set('database.connections.other.database', Auth::user()->company);
+   if (!$this->order_no) return;
+   Config::set('database.connections.other.database', Auth::user()->company);
    $res=sells_view::on(Auth()->user()->company)->where('order_no',$this->orderno)
      ->where('price_type',2)
      ->whereNotIn('order_no', function($q){
@@ -194,7 +194,26 @@ class InpMainTwo extends Component
        $this->emit('GetWhereEquelValue2',$this->order_no_old);
        $this->emit('GetWhereEquelValue',$this->order_no);
 
-   } else {$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ');}
+   } else {
+       if (!sells_view::on(Auth()->user()->company)->where('order_no', $this->orderno)->exists())
+           $this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ');
+       else {
+           if (sells_view::on(Auth()->user()->company)->where('order_no', $this->orderno)
+               ->first()->price_type<>2)
+               $this->dispatchBrowserEvent('mmsg', 'هذه الفاتورة ليسن بسعر التقسيط ');
+           else
+           {
+               $res=main::on(Auth()->user()->company)->where('order_no', $this->orderno)->first();
+               if ($res)
+                   $this->dispatchBrowserEvent('mmsg', 'هذه الفاتورة سبق تقسيطها بالعقد رقم  '.$res->no);
+               {
+                   $res=MainArc::on(Auth()->user()->company)->where('order_no', $this->orderno)->first();
+                   if ($res)
+                       $this->dispatchBrowserEvent('mmsg', 'هذه الفاتورة سبق تقسيطها بغقد بالارشيف رقم  '.$res->no);
+               }
+           }
+       }
+   }
   }
 
   public function ChkKstCountAndGo(){
@@ -353,7 +372,7 @@ class InpMainTwo extends Component
 
       $res=DB::connection(Auth()->user()->company)->table('settings')->where('no',3)->first();
       $this->DAY_OF_KSM=$res->s1;
-
+if (!$this->order_no) $this->order_no=0;
         return view('livewire.aksat.inp-main-two',[
             'RepTableOld'=>rep_sell_tran::on(Auth()->user()->company)
             ->where('order_no',$this->order_no_old)->paginate(10),
