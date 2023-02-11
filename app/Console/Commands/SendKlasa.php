@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Mail;
+use Illuminate\Http\Request;
 
 class SendKlasa extends Command
 {
@@ -29,14 +30,15 @@ class SendKlasa extends Command
     public function handle()
     {
         $data["email"] = "abdel_ati_m@yahoo.com";
-        $data["title"] = "From Alwaseetlibya.ly";
-        $data["body"] = "تقرير الخلاصة";
+        $data["title"] = "منظومة المبيعات";
+        $data["body"] = " تقرير الخلاصة اليومية بتاريخ ".date('Y-m-d');
 
         $files = [
 
             storage_path('app/public/upload/invoice.pdf'),
         ];
-
+        $request = Request::create(route('pdfklasamail','Daibany'), 'GET');
+        $response = app()->handle($request);
         Mail::send('emails.myTestMail', $data, function($message)use($data, $files) {
             $message->to($data["email"], $data["email"])
                 ->subject($data["title"]);
