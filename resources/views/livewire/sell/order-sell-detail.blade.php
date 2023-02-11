@@ -36,31 +36,34 @@
                                 <div id="div11" @keydown.down="$focus.focus(div12)" @keydown.up="$focus.focus(div15)" style="background: lightgray"
                                      wire:click="fetchEmployeeDetail({{ $records[0]->item_no }})"
                                      wire:keydown.enter="fetchEmployeeDetail({{ $records[0]->item_no }})" @keydown.enter="isTyped =false">
-                                    {{ $records[0]->item_no}} | {{ $records[0]->item_name}}
+                                    {{ $records[0]->item_no}} | {{ $records[0]->item_name}} | {{ $records[0]->price_sell}} | {{ $records[0]->raseed}}
                                 </div>
                             @endif
                             @if(count($records)>1)
                                 <div id="div12" @keydown.down="$focus.focus(div13)" @keydown.up="$focus.focus(div11)"
                                      wire:click="fetchEmployeeDetail({{ $records[1]->item_no }})"
                                      wire:keydown.enter="fetchEmployeeDetail({{ $records[1]->item_no }})" @keydown.enter="isTyped =false">
-                                    {{ $records[1]->item_no}} | {{ $records[1]->item_name}}
+                                    {{ $records[1]->item_no}} | {{ $records[1]->item_name}} | {{ $records[0]->price_sell}} | {{ $records[0]->raseed}}
 
                                 </div>
                             @endif
                             @if(count($records)>2)
                                 <div id="div13" @keydown.down="$focus.focus(div14)" @keydown.up="$focus.focus(div12)" style="background: lightgray"
                                      wire:click="fetchEmployeeDetail({{ $records[2]->item_no }})"
-                                     wire:keydown.enter="fetchEmployeeDetail({{ $records[2]->item_no }})" @keydown.enter="isTyped =false"> {{ $records[2]->item_no}} | {{ $records[2]->item_name}}</div>
+                                     wire:keydown.enter="fetchEmployeeDetail({{ $records[2]->item_no }})" @keydown.enter="isTyped =false">
+                                    {{ $records[2]->item_no}} | {{ $records[2]->item_name}} | {{ $records[0]->price_sell}} | {{ $records[0]->raseed}}</div>
                             @endif
                             @if(count($records)>3)
                                 <div id="div14" @keydown.down="$focus.focus(div15)" @keydown.up="$focus.focus(div13)"
                                      wire:click="fetchEmployeeDetail({{ $records[3]->item_no }})"
-                                     wire:keydown.enter="fetchEmployeeDetail({{ $records[3]->item_no }})" @keydown.enter="isTyped =false"> {{ $records[3]->item_no}} | {{ $records[3]->item_name}}</div>
+                                     wire:keydown.enter="fetchEmployeeDetail({{ $records[3]->item_no }})" @keydown.enter="isTyped =false">
+                                    {{ $records[3]->item_no}} | {{ $records[3]->item_name}} | {{ $records[0]->price_sell}} | {{ $records[0]->raseed}}</div>
                             @endif
                             @if(count($records)>4)
                                 <div id="div15" @keydown.down="$focus.focus(div11)" @keydown.up="$focus.focus(div14)" style="background: lightgray"
                                      wire:click="fetchEmployeeDetail({{ $records[4]->item_no }})"
-                                     wire:keydown.enter="fetchEmployeeDetail({{ $records[4]->item_no }})" @keydown.enter="isTyped =false"> {{ $records[4]->item_no}} | {{ $records[4]->item_name}}</div>
+                                     wire:keydown.enter="fetchEmployeeDetail({{ $records[4]->item_no }})" @keydown.enter="isTyped =false">
+                                    {{ $records[4]->item_no}} | {{ $records[4]->item_name}} | {{ $records[0]->price_sell}} | {{ $records[0]->raseed}}</div>
                             @endif
                         </div>
                     </div>

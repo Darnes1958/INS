@@ -18,20 +18,42 @@ class ChargeBuy extends Component
   public $ToHead='buy.order-buy-head';
   public $ToTable='buy.order-buy-table';
 
+    public function OpenByAdd(){
 
+        $this->dispatchBrowserEvent('OpenByAdd');
+    }
+    public function CloseByAdd(){
+
+        $this->dispatchBrowserEvent('CloseByAdd');
+    }
+    public function OpenTypeAdd(){
+
+        $this->dispatchBrowserEvent('OpenTypeAdd');
+    }
+    public function CloseTypeAdd(){
+
+        $this->dispatchBrowserEvent('CloseTypeAdd');
+    }
     public function open($open){
         $this->showcharge=$open;
     }
 
     protected $listeners = [
-        'open','TakeChargeEdit'
+        'open','TakeChargeEdit','chargetypeadded','chargebyadded'
     ];
+    public function chargetypeadded($no){
+      $this->charge_type=$no;
+    }
+    public function chargebyadded($no){
+        $this->charge_by=$no;
+    }
   public function TakeChargeEdit($chargedet){
     $this->ChargeDetail=$chargedet;
   }
   public function Close(){
     $this->showcharge=false;
-    $this->emitTo($this->ToTable,'TakeCharge',$this->ChargeDetail);
+
+
     $this->emitTo($this->ToTable,'open',true);
   }
   public function mount($head,$table){
@@ -61,7 +83,8 @@ class ChargeBuy extends Component
     array_values($this->ChargeDetail);
     $this->TotCharge = number_format(array_sum(array_column($this->ChargeDetail, 'val')),
       2, '.', '');
-    $this->emitTo($this->ToHead,'TakeCharge',$this->TotCharge);
+    $this->emitTo($this->ToHead,'TakeCharge',$this->ChargeDetail,$this->TotCharge);
+
   }
   public function edititem($value)
   {
@@ -90,9 +113,10 @@ class ChargeBuy extends Component
          'val'=>$this->val,
           ];
     }
-    $this->TotCharge = number_format(array_sum(array_column($this->ChargeDetail, 'val')),
+      $this->TotCharge = number_format(array_sum(array_column($this->ChargeDetail, 'val')),
       2, '.', '');
-    $this->emitTo($this->ToHead,'TakeCharge',$this->TotCharge);
+      $this->emitTo($this->ToHead,'TakeCharge',$this->ChargeDetail,$this->TotCharge);
+
 
     $this->charge_type='';
     $this->charge_by='';

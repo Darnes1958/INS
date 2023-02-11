@@ -13,6 +13,7 @@ class ItemPrices extends Component
     public $item_no;
     public $price_nakdy;
     public $price_tak;
+
     public $ItemGeted=false;
     public $TheItemIsSelected;
 
@@ -23,6 +24,7 @@ class ItemPrices extends Component
     public function ChkItemAndGo(){
         $this->price_nakdy='';
         $this->price_tak='';
+
         $this->ItemGeted=false;
 
         if ($this->item_no!=null) {
@@ -31,6 +33,7 @@ class ItemPrices extends Component
             if ($result) {
 
                 $this->price_nakdy=number_format($result->price_sell, 2, '.', '')  ;
+
                 $res=item_price_sell::on(Auth()->user()->company)
                     ->where('item_no',$this->item_no)
                     ->where('price_type',2)->first();

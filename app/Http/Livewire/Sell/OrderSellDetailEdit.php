@@ -23,7 +23,7 @@ class OrderSellDetailEdit extends Component
     public $price;
     public $orderdetail=[];
     public $st_label;
-    public $price_buy;
+    public $price_cost;
     public $DetailOpen;
     public $OrderDetailOpen;
     public $ItemGeted=false;
@@ -130,7 +130,7 @@ class OrderSellDetailEdit extends Component
            if ($result) {
              $this->item_name=$result->item_name;
              $this->raseed= $result->raseed;
-             $this->price_buy=$result->price_buy;
+             $this->price_cost=$result->price_cost;
              $this->price=$this->RetItemPrice($this->item,2);
              if ($this->price==0) $this->price=$result->price_sell;
              $this->price=number_format($this->price, 2, '.', '')  ;
@@ -189,7 +189,7 @@ class OrderSellDetailEdit extends Component
         }
 
         $subtot=number_format($this->price * $this->quant, 2, '.', '');
-        $rebh=$subtot-number_format($this->price_buy * $this->quant, 2, '.', '');
+        $rebh=$subtot-number_format($this->price_cost * $this->quant, 2, '.', '');
 
         $this->orderdetail=['item_no'=>$this->item,'item_name'=>$this->item_name,
             'quant'=>$this->quant,'price'=>$this->price,'subtot'=>$this->price,'rebh'=>$rebh];

@@ -35,13 +35,14 @@ class OrderBuyTable extends Component
     public $ChargeTot;
 
    protected $listeners = [
-        'open','putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable','DoDelete','TakeCharge','TakeChargeTot'
+        'open','putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable',
+       'DoDelete','TakeChargeAll'
     ];
-   public function TakeChargeTot($chargetot){
-     $this->ChargeTot=$chargetot;
-   }
-   public function TakeCharge($chargedetail){
+
+   public function TakeChargeAll($chargedetail,$tot){
      $this->ChargeDetail=$chargedetail;
+       $this->ChargeTot=$tot;
+       info($this->ChargeDetail);
    }
     public function open($open){
         $this->showtable=$open;
@@ -122,6 +123,7 @@ class OrderBuyTable extends Component
               }
 
               if ($this->ChargeTot!=0){
+
                 foreach ($this->ChargeDetail as $item) {
                   if ($item['type_no'] == 0 || $item['type_name']='') {
                     continue;

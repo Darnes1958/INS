@@ -1,6 +1,6 @@
 <div x-data class="row" id="printableArea" dir="rtl">
 
-<div x-data class="col-md-5 my-2"  >
+<div  class="col-md-5 my-2"  >
 
   <div   class="row g-2 " style="border:1px solid lightgray;background: white;">
     <div class="col-md-12" >
@@ -124,6 +124,16 @@
         </div>
       </div>
     </div>
+      <div x-show="$wire.TotCharge>0" class="col-md-6 mb-2">
+          <div class="row">
+              <div class="col-md-4">
+                  <label  class="form-label-me ">تكاليف اصافية</label>
+              </div>
+              <div class="col-md-8">
+                  <input wire:model="TotCharge"   type="text" class=" form-control "  readonly >
+              </div>
+          </div>
+      </div>
 
       <a  href="{{route('reporderbuypdf',
          ['order_no'=>$orderno,'jeha_name'=>$jeha_name,'place_name'=>$place_name])}}"
@@ -149,37 +159,64 @@
 </div>
 
 
-<div class=" col-md-7" style="border:1px solid lightgray;background: white;">
-    <table class="table-sm table-bordered " width="100%"  id="orderlist" >
-      <thead>
-      <tr style="background: #9dc1d3">
-        <th width="15%">رقم الصنف</th>
-        <th>اسم الصنف </th>
-        <th width="10%">الكمية</th>
-        <th width="15%">السعر </th>
-        <th width="18%">المجموع</th>
+<div class=" col-md-7" >
+  <div class="row">
+      <div class=" col-md-12" style="border:1px solid lightgray;background: white;">
+          <table class="table-sm table-bordered " width="100%"  id="orderlist" >
+              <thead>
+              <tr style="background: #9dc1d3">
+                  <th width="15%">رقم الصنف</th>
+                  <th>اسم الصنف </th>
+                  <th width="10%">الكمية</th>
+                  <th width="15%">السعر </th>
+                  <th width="18%">المجموع</th>
 
-      </tr>
-      </thead>
-      <tbody id="addRow" class="addRow">
-      @foreach($orderdetail as $key => $item)
+              </tr>
+              </thead>
+              <tbody id="addRow" class="addRow">
+              @foreach($orderdetail as $key => $item)
 
-        <tr class="font-size-12">
-          <td style="color: #0c63e4; text-align: center"> {{ $item['item_no'] }} </td>
-          <td > {{ $item['item_name'] }} </td>
-          <td style=" text-align: center"> {{ $item['quant'] }} </td>
-          <td> {{ $item['price'] }} </td>
-          <td> {{ $item['sub_tot'] }}</td>
-        </tr>
-      @endforeach
-      </tbody>
-      <tbody>
-    </table><br>
-  {{ $orderdetail->links() }}
-
-
-
+                  <tr class="font-size-12">
+                      <td style="color: #0c63e4; text-align: center"> {{ $item['item_no'] }} </td>
+                      <td > {{ $item['item_name'] }} </td>
+                      <td style=" text-align: center"> {{ $item['quant'] }} </td>
+                      <td> {{ $item['price'] }} </td>
+                      <td> {{ $item['sub_tot'] }}</td>
+                  </tr>
+              @endforeach
+              </tbody>
+              <tbody>
+          </table><br>
+          {{ $orderdetail->links() }}
+      </div>
+      <div x-show="$wire.TotCharge>0" class="pt-3 col-md-12 " >
+          <table class="table-sm w-75 table-bordered table-striped"   id="chargelist" >
+              <caption class="caption-top w-25 mx-auto py-0 text-info">تكاليف اضافية</caption>
+              <thead>
+              <tr style="background: #9dc1d3;font-size: 9pt;">
+                  <th width="35%">البيان</th>
+                  <th width="35%">المنفذ</th>
+                  <th width="20%">المبلغ</th>
+              </tr>
+              </thead>
+              <tbody id="addRow" class="addRow">
+              @foreach($chargedetail as $key => $item)
+                  <tr class="font-size-12">
+                      <td style="color: #0c63e4; "> {{ $item->type_name }} </td>
+                      <td > {{ $item->name }} </td>
+                      <td> {{ $item->val }} </td>
+                  </tr>
+              @endforeach
+              </tbody>
+              <tbody>
+          </table><br>
+          {{ $chargedetail->links() }}
+      </div>
   </div>
+
+
+
+</div>
 </div>
 
 @push('scripts')

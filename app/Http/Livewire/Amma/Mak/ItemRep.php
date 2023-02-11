@@ -14,6 +14,8 @@ class ItemRep extends Component
     public $itemno=0;
     public $item_name;
     public $type_name;
+    public $price_buy;
+    public $price_cost;
     public $price;
     public $raseed;
     public $ItemGeted=false;
@@ -38,7 +40,9 @@ class ItemRep extends Component
                 $this->type_name=item_type::on(Auth()->user()->company)->
                  where('type_no',$result->item_type)->first()->type_name;
                 $this->item_name=$result->item_name;
-                $this->price=number_format($result->price_buy, 2, '.', '')  ;
+
+                $this->price_buy=number_format($result->price_buy, 2, '.', '')  ;
+                $this->price_cost=number_format($result->price_cost, 2, '.', '')  ;
                 $this->raseed= $result->raseed;
                 $this->ItemGeted=true;
             }}

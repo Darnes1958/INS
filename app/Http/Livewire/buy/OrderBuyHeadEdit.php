@@ -47,9 +47,11 @@ class OrderBuyHeadEdit extends Component
     protected $listeners = [
         'mounthead','jehaadded','DoDelete','TakeCharge',
     ];
-  public function TakeCharge($charge){
-    $this->Charge_Tot=$charge;
-  }
+    public function TakeCharge($charge,$tot){
+        $this->ChargeDetail=$charge;
+        $this->Charge_Tot=$tot;
+        info($this->ChargeDetail);
+    }
   public function OpenCharge(){
     $this->emitTo('buy.charge-buy','open',true);
     $this->emitTo('buy.order-buy-table-edit','open',false);
@@ -131,7 +133,7 @@ class OrderBuyHeadEdit extends Component
         $this->HeadDataOpen=true;
         $this->emitTo('buy.charge-buy','open',false);
         $this->emitTo('buy.order-buy-table-edit','open',true);
-        $this->emitTo('buy.order-buy-table-edit','TakeChargeEdit',$this->ChargeDetail,$this->Charge_Tot);
+        $this->emitTo('buy.order-buy-table-edit','TakeChargeAll',$this->ChargeDetail,$this->Charge_Tot);
         $this->emit('HeadBtnClick',$this->orderno,$this->order_date,$this->jeha,$this->stno);
         $this->emitTo('buy.order-buy-detail-edit','TakeParam',$this->orderno,$this->stno);
         $this->emitTo('buy.order-buy-detail-edit','mountdetail');

@@ -38,7 +38,8 @@ class OrderBuyTableEdit extends Component
    use MyLib;
 
    protected $listeners = [
-        'putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable','GetOrderData','DoDelete','open','TakeChargeEdit',
+        'putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable',
+       'GetOrderData','DoDelete','open','TakeChargeAll',
     ];
    public function mounttable(){
        $this->mount();
@@ -47,10 +48,10 @@ class OrderBuyTableEdit extends Component
   public function open($open){
     $this->showtable=$open;
   }
-  public function TakeChargeEdit($charge,$tot){
-     $this->ChargeDetail=$charge;
-     $this->ChargeTot=$tot;
-  }
+    public function TakeChargeAll($chargedetail,$tot){
+        $this->ChargeDetail=$chargedetail;
+        $this->ChargeTot=$tot;
+    }
 
    public function GetOrderData($order_no,$ksm,$madfooh,$tot1,$tot,$jeha,$stno,$notes){
      $this->order_no=$order_no;

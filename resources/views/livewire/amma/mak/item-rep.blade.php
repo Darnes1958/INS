@@ -25,15 +25,29 @@
                   style="color: #0b5ed7; "
                   readonly id="item_name" ></textarea>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-3">
         <label   class="form-label-me ">نوع الصنف</label>
         <textarea wire:model="type_name"  class="form-control"
                   style="color: #0b5ed7; "  readonly ></textarea>
     </div>
-    <div class="col-4 ">
-        <label  class="form-label-me" >الرصيد الكلي</label>
-        <input wire:model="raseed" class="form-control " type="text" style="text-align: center;height: 39px;" readonly>
-    </div>
+          <div class="col-3 ">
+              <label  class="form-label-me" >الرصيد الكلي</label>
+              <input wire:model="raseed" class="form-control " type="text" style="text-align: center;height: 39px;" readonly>
+          </div>
+          @can('سعر الشراء')
+          <div class="col-md-3">
+              <label   class="form-label-me ">سعر الشراء</label>
+              <textarea wire:model="price_buy"  class="form-control"
+                        style="color: #0b5ed7; "  readonly ></textarea>
+          </div>
+          <div class="col-3 ">
+              <label  class="form-label-me" >سعر التكلفة</label>
+              <input wire:model="price_cost" class="form-control " type="text" style="text-align: center;height: 39px;" readonly>
+          </div>
+          @else
+              <div class="col-6 "></div>
+          @endcan
+
 
       <div class="my-3 col-md-6 " >
           <label  class="form-label-me" >أسعار البيع</label>

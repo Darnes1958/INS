@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use ArPHP\I18N\Arabic;
+use Illuminate\Support\Facades\Storage;
 
 class RepAmaaController extends Controller
 {
@@ -70,6 +71,7 @@ class RepAmaaController extends Controller
       $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
     }
     $pdf = PDF::loadHTML($reportHtml);
+    Storage::put('public/upload/invoice.pdf', $pdf->output());
     return $pdf->download('report.pdf');
   }
 }

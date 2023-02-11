@@ -24,7 +24,7 @@ class OrderBuyHead extends Component
     public $st_name;
     public $jeha_name;
     public $Charge_Tot=0;
-
+    public $ChargeDetail=[];
 
   public $TheJehaIsSelected;
   public $HeadOpen;
@@ -34,8 +34,10 @@ class OrderBuyHead extends Component
         'mounthead','jehaadded','TakeCharge'
     ];
 
-    public function TakeCharge($charge){
-      $this->Charge_Tot=$charge;
+    public function TakeCharge($charge,$tot){
+      $this->ChargeDetail=$charge;
+      $this->Charge_Tot=$tot;
+
     }
     public function updated($field)
     {
@@ -79,10 +81,7 @@ class OrderBuyHead extends Component
     $this->emitTo('buy.charge-buy','open',true);
     $this->emitTo('buy.order-buy-table','open',false);
   }
-  public function CloseModalCharge(){
 
-    $this->dispatchBrowserEvent('CloseModalCharge');
-  }
     public function mounthead(){
 
         $this->mount();
@@ -128,7 +127,7 @@ class OrderBuyHead extends Component
             ->where('st_no',$this->st_no)->first()->st_name;
         $this->HeadOpen=false;
         $this->HeadDataOpen=true;
-        $this->emitTo('buy.order-buy-table','TakeChargeTot',$this->Charge_Tot);
+        $this->emitTo('buy.order-buy-table','TakeChargeAll',$this->ChargeDetail,$this->Charge_Tot);
         $this->emitTo('buy.charge-buy','open',false);
         $this->emitTo('buy.order-buy-table','open',true);
         $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha,$this->st_no);

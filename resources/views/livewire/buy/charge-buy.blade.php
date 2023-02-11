@@ -9,6 +9,39 @@
     <a class="  fas fa-arrow-right " style="color: yellow;width: 20%"
        @click="$wire.Close" href="#">&nbsp;&nbsp;رجوع&nbsp;&nbsp;</a>
 </div>
+
+    <div class="modal fade" id="ModalByAdd" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h3 class="modal-title fs-5" id="exampleModalToggleLabel2">ادخال البيان ثم اضغط ENTER</h3>
+                </div>
+                <div class="modal-body">
+                    @livewire('buy.add-by')
+                </div>
+                <div class="modal-footer">
+                    <button wire:click.prevent="CloseByAdd" class="btn btn-primary" >رجوع</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="ModalTypeAdd" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h3 class="modal-title fs-5" id="exampleModalToggleLabel2">ادخال البيان ثم اضغط ENTER</h3>
+                </div>
+                <div class="modal-body">
+                    @livewire('buy.add-type')
+                </div>
+                <div class="modal-footer">
+                    <button wire:click.prevent="CloseTypeAdd" class="btn btn-primary" >رجوع</button>
+                </div>
+            </div>
+        </div>
+    </div>
   <div class="row">
 
     <div  class="col-md-8  d-inline-flex my-2 " >
@@ -21,6 +54,9 @@
           <option value="{{ $s->no }}">{{ $s->name }}</option>
         @endforeach
       </select>
+
+      <button wire:click="OpenByAdd" type="button" class="btn btn-outline-primary btn-sm fa fa-plus" data-bs-toggle="modal"></button>
+
     </div>
     <div  class="col-md-4  d-inline-flex my-2 " >
       <input wire:model="charge_by" class="form-control mx-1 text-center" type="number"
@@ -39,6 +75,7 @@
           <option value="{{ $s->type_no }}">{{ $s->type_name }}</option>
         @endforeach
       </select>
+        <button wire:click="OpenTypeAdd" type="button" class="btn btn-outline-primary btn-sm fa fa-plus" data-bs-toggle="modal"></button>
     </div>
       <div  class="col-md-4  d-inline-flex my-2 " >
 
@@ -102,6 +139,19 @@
 
 @push('scripts')
   <script type="text/javascript">
+
+      window.addEventListener('CloseByAdd', event => {
+          $("#ModalByAdd").modal('hide');
+      })
+      window.addEventListener('OpenByAdd', event => {
+          $("#ModalByAdd").modal('show');
+      })
+      window.addEventListener('CloseTypeAdd', event => {
+          $("#ModalTypeAdd").modal('hide');
+      })
+      window.addEventListener('OpenTypeAdd', event => {
+          $("#ModalTypeAdd").modal('show');
+      })
 
       window.addEventListener('mmsg',function(e){
           MyMsg.fire({

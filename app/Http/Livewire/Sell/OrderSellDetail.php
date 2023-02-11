@@ -22,7 +22,7 @@ class OrderSellDetail extends Component
     public $price_Type;
     public $orderdetail=[];
     public $st_label;
-    public $price_buy;
+    public $price_cost;
     public $DetailOpen;
     public $OrderDetailOpen;
 
@@ -128,7 +128,7 @@ class OrderSellDetail extends Component
        if ($result) {
          $this->item_name = $result->item_name;
          $this->raseed = $result->raseed;
-         $this->price_buy = $result->price_buy;
+         $this->price_cost = $result->price_cost;
          $this->price = $this->RetItemPrice($this->item, $this->price_Type);
          if ($this->price == 0) {
            $this->price = $result->price_sell;
@@ -207,7 +207,7 @@ class OrderSellDetail extends Component
       if ($this->Quant>$this->st_raseed)
          {$this->dispatchBrowserEvent('mmsg', 'الرصيد لا يسمح !'); return(false);}
         $subtot=number_format($this->price * $this->Quant, 2, '.', '');
-        $rebh=$subtot-number_format($this->price_buy * $this->Quant, 2, '.', '');
+        $rebh=$subtot-number_format($this->price_cost * $this->Quant, 2, '.', '');
 
         $this->orderdetail=['item_no'=>$this->item,'item_name'=>$this->item_name,
             'quant'=>$this->Quant,'price'=>$this->price,'subtot'=>$this->price,'rebh'=>$rebh];

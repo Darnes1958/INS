@@ -119,19 +119,7 @@
               </div>
           </div>
     </div>
-   <div class="modal fade" id="ModalCharge" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-     <div class="modal-dialog modal-dialog-centered modal-lg">
-       <div class="modal-content">
-         <div class="modal-header">
-           <button wire:click="CloseModalCharge" type="button" class="btn-close" ></button>
-           <h1 class="modal-title fs-5 mx-6" id="exampleModalLabel">ادخال تكاليف اضافية</h1>
-         </div>
-         <div class="modal-body">
-           @livewire('buy.charge-buy')
-         </div>
-       </div>
-     </div>
-   </div>
+
  </div>
 
 @push('scripts')
@@ -163,12 +151,7 @@
             $("#ModalForm").modal('show');
         })
 
-        window.addEventListener('CloseModalCharge', event => {
-            $("#ModalCharge").modal('hide');
-        })
-        window.addEventListener('OpenModalCharge', event => {
-            $("#ModalCharge").modal('show');
-        })
+
 
       $(document).ready(function ()
       {

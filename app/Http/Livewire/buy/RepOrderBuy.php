@@ -8,6 +8,7 @@ use App\Models\jeha\jeha;
 use App\Models\stores\stores_names;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -38,6 +39,7 @@ class RepOrderBuy extends Component
   public $cash;
   public $not_cash;
   public $notes;
+  public $TotCharge=0;
 
   public $TheOrderListSelected;
   public $OrderGeted=false;
@@ -96,6 +98,7 @@ class RepOrderBuy extends Component
           $this->cash=$res->cash;
           $this->not_cash=$res->not_cash;
           $this->notes=$res->notes;
+          $this->TotCharge=$res->tot_charges;
 
           $this->jeha_name=jeha::on(Auth()->user()->company)->find($this->jeha_no)->jeha_name;
           $this->place_name=stores_names::on(Auth()->user()->company)->find($this->place_no)->st_name;
@@ -108,7 +111,10 @@ class RepOrderBuy extends Component
     {
 
       return view('livewire.buy.rep-order-buy',[
-        'orderdetail'=>rep_buy_tran::on(Auth()->user()->company)->where('order_no',$this->orderno)->paginate(15)
+        'orderdetail'=>rep_buy_tran::on(Auth()->user()->company)
+            ->where('order_no',$this->orderno)->paginate(10),
+        'chargedetail'=>DB::connection(Auth()->user()->company)->table('charges_buy_view')
+              ->where('order_no',$this->orderno)->paginate(5)
       ]);
     }
 }
