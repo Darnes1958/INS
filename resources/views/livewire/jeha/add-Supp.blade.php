@@ -68,6 +68,8 @@
            <tr>
              <th width="20%">رقم الزبون</th>
              <th >اسم الزبون</th>
+             <th width="5%">ظهور</th>
+             <th width="5%">VIP</th>
              <th width="5%"></th>
              <th width="5%"></th>
            </tr>
@@ -77,7 +79,30 @@
              <tr class="font-size-12">
                <td>{{$item->jeha_no}}</td>
                <td>{{$item->jeha_name}}</td>
-
+                 @if($item->available==1)
+                     <td  style="padding-top: 2px;padding-bottom: 2px; ">
+                         <i wire:click="selectItem({{ $item->jeha_no }},'notshow')"
+                            class="btn btn-outline-success btn-sm  fas fa-user-check editable-input" style="margin-left: 2px;"></i>
+                     </td>
+                 @else
+                     <td  style="padding-top: 2px;padding-bottom: 2px; ">
+                         <i wire:click="selectItem({{ $item->jeha_no }},'show')"
+                            class="btn btn-outline-warning btn-sm  fas fa-user-alt-slash editable-input" style="margin-left: 2px;"></i>
+                     </td>
+                 @endif
+               @can('عميل خاص')
+                @if($item->acc_no==1)
+                         <td  style="padding-top: 2px;padding-bottom: 2px; ">
+                 <i wire:click="selectItem({{ $item->jeha_no }},'notspecial')"
+                        class="btn btn-outline-dark btn-sm  fas fa-user-secret editable-input" style="margin-left: 2px;"></i>
+                         </td>
+                @else
+                         <td  style="padding-top: 2px;padding-bottom: 2px; ">
+                 <i wire:click="selectItem({{ $item->jeha_no }},'special')"
+                            class="btn btn-outline-secondary btn-sm   editable-input" style="margin-left: 2px;"></i>
+                         </td>
+                @endif
+               @endcan
                <td  style="padding-top: 2px;padding-bottom: 2px; ">
                  <i wire:click="selectItem({{ $item->jeha_no }},'update')" @click="$focus.focus(search_box)"
                     class="btn btn-outline-primary btn-sm fa fa-edit editable-input" style="margin-left: 2px;"></i>

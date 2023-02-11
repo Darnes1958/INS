@@ -16,6 +16,7 @@
     <tr  style="background: #9dc1d3;" >
 
       <th style="width: 14%">التاريخ</th>
+      <th style="width: 14%">القسط</th>
       <th >الاسم</th>
       <th style="width: 20%">رقم الحساب</th>
       <th style="width: 14%">رقم العقد</th>
@@ -29,6 +30,7 @@
       <tr >
 
         <td style="text-align: center;"> {{ $item->stop_date }} </td>
+          <td> {{ $item->kst }} </td>
         <td> {{ $item->name }} </td>
         <td > {{ $item->acc }} </td>
         <td> {{ $item->no }} </td>

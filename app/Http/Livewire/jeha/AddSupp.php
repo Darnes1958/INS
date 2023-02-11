@@ -137,6 +137,7 @@ class AddSupp extends Component
         'mdar' => $this->mdar,
         'others' => $this->others,
         'charge_by' => 0,
+        'acc_no'=>0,
         'emp' => auth::user()->empno,
         'available' => 1,
         'jeha_type' => $this->jeha_type,
@@ -163,6 +164,26 @@ class AddSupp extends Component
       $this->others=$res->others;
       $this->UpdateMod=true;
       $this->emitTo('jeha.search-jeha','TakeSearchToEdit',$this->jehaname);}
+    if ($action=='special'){
+       jeha::on(Auth::user()->company)
+           ->where('jeha_no',$jeha_no)
+           ->update(['acc_no'=>1]);
+    }
+      if ($action=='notspecial'){
+          jeha::on(Auth::user()->company)
+              ->where('jeha_no',$jeha_no)
+              ->update(['acc_no'=>0]);
+      }
+      if ($action=='show'){
+          jeha::on(Auth::user()->company)
+              ->where('jeha_no',$jeha_no)
+              ->update(['show'=>1]);
+      }
+      if ($action=='notshow'){
+          jeha::on(Auth::user()->company)
+              ->where('jeha_no',$jeha_no)
+              ->update(['available'=>0]);
+      }
   }
   public function CloseDeleteDialog(){$this->dispatchBrowserEvent('CloseMyDelete');}
 
@@ -193,6 +214,9 @@ class AddSupp extends Component
           'JehaTable'=>jeha::on(Auth()->user()->company)
               ->where('jeha_type',$this->jeha_type)
               ->where('jeha_name', 'like', '%'.$this->search.'%')
+              ->when(!Auth::user()->can('عميل خاص'),function($q){
+                  $q->where('acc_no','!=',1);
+              })
             ->orderBy('jeha_no','desc')
             ->paginate(15),
         ]);

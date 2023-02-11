@@ -34,7 +34,12 @@ class CustSelect extends Component
   public function render()
   {
     $this->CustList = DB::connection(Auth()->user()->company)->table('jeha')
-      ->select('jeha_no','jeha_name')->where('jeha_type',1)->where('available',1)->get();
+      ->select('jeha_no','jeha_name')->where('jeha_type',1)
+        ->where('available',1)
+        ->when(!Auth::user()->can('عميل خاص'),function($q){
+            $q->where('acc_no','!=',1);
+        })
+        ->get();
 
 
     return view('livewire.jeha.cust-select',$this->CustList);

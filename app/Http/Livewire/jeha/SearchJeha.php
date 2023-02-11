@@ -63,6 +63,9 @@ class SearchJeha extends Component
                   ['jeha_type',$this->jeha_type],
                   ['jeha_name','like','%'.$this->search.'%']
               ])
+              ->when(!Auth::user()->can('عميل خاص'),function($q){
+                  $q->where('acc_no','!=',1);
+              })
               ->limit(5)
               ->get();
            $this->showdiv = true;
@@ -76,6 +79,9 @@ class SearchJeha extends Component
     public function fetchEmployeeDetail($id = 0){
         $record =jeha::on(Auth()->user()->company)->select('*')
             ->where('jeha_no',$id)
+            ->when(!Auth::user()->can('عميل خاص'),function($q){
+                $q->where('acc_no','!=',1);
+            })
             ->first();
         $this->search = $record->acc;
         $this->emitTo($this->sender,'TakeTheJehaNo',$id,$record->jeha_name);

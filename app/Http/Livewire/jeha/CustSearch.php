@@ -47,6 +47,9 @@ class CustSearch extends Component
         ->select('jeha_no', 'jeha_name')
         ->where('jeha_type',$this->jeha_type)
         ->where('jeha_name', 'like', '%'.$this->search.'%')
+        ->when(!Auth::user()->can('عميل خاص'),function($q){
+            $q->where('acc_no','!=',1);
+        })
         ->orderBy('jeha_no','desc')
         ->paginate($this->PagNo)
     ]);
@@ -56,6 +59,9 @@ class CustSearch extends Component
                   ->select('jeha_no', 'jeha_name')
                   ->where('jeha_type','!=',2)
                   ->where('jeha_name', 'like', '%'.$this->search.'%')
+                  ->when(!Auth::user()->can('عميل خاص'),function($q){
+                      $q->where('acc_no','!=',1);
+                  })
                   ->orderBy('jeha_no','desc')
                   ->paginate($this->PagNo)
           ]);
@@ -65,6 +71,9 @@ class CustSearch extends Component
           ->select('jeha_no', 'jeha_name')
           ->whereNotIn('jeha_type',[1,2])
           ->where('jeha_name', 'like', '%'.$this->search.'%')
+          ->when(!Auth::user()->can('عميل خاص'),function($q){
+                $q->where('acc_no','!=',1);
+            })
             ->orderBy('jeha_no','desc')
             ->paginate($this->PagNo)
       ]);

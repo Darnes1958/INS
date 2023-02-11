@@ -38,6 +38,7 @@
       <th width="10%">رقم العقد</th>
       <th width="16%">رقم الحساب</th>
       <th>الاسم</th>
+      <th width="10%">القسط</th>
       <th width="10%">تاريخ الإيقاف</th>
       <th width="10%"></th>
     </tr>
@@ -51,6 +52,7 @@
           <td > {{ $item->no }} </td>
           <td> {{ $item->acc }} </td>
           <td> {{ $item->name }} </td>
+          <td> {{ $item->kst }} </td>
           <td style="text-align: center;"> {{ $item->stop_date }} </td>
             <td  style="padding-top: 2px;padding-bottom: 2px; ">
                 <a  href="{{route('pdfstopone',['name'=>$item->name,'bank_tajmeeh'=>$item->bank_tajmeeh ,

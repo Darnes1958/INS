@@ -50,10 +50,12 @@ class RepJehaTran extends Component
 
             $res = jeha::on(Auth()->user()->company)->find($this->jeha_no);
             if ($res) {
+                if ($res->acc_no==1 && !Auth::user()->can('عميل خاص')) {return('special');}
                 $this->jeha_name = $res->jeha_name;
                 $this->jeha_type = $res->jeha_type;
                 if ($res->jeha_no==1) {return('amaa');}
                 if ($res->jeha_type==2) {return('supp');}
+
 
                 return ('ok');
             } else {
@@ -69,6 +71,11 @@ class RepJehaTran extends Component
             if ( $this->jeha_type==2 && ! Auth()->user()->can('تقرير الموردين')) {
               $this->dispatchBrowserEvent('mmsg', 'هذا العميل من الموردين');
               return(false);
+
+            }
+            if ( $res ='special') {
+                $this->dispatchBrowserEvent('mmsg', 'هذا العميل خاص');
+                return(false);
 
             }
             $this->jehano=$this->jeha_no;

@@ -36,7 +36,12 @@ class SuppSelect extends Component
     {
 
 
-      $this->SuppList=jeha::on(Auth()->user()->company)->where('jeha_type',2)->where('available',1)->get();
+      $this->SuppList=jeha::on(Auth()->user()->company)
+          ->where('jeha_type',2)
+          ->where('available',1)
+          ->when(!Auth::user()->can('عميل خاص'),function($q){
+              $q->where('acc_no','!=',1);
+          })->get();
       return view('livewire.jeha.supp-select',$this->SuppList);
     }
 }
