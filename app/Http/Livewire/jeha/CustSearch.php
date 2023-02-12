@@ -15,6 +15,7 @@ class CustSearch extends Component
   public $PagNo = 10;
   protected $paginationTheme = 'bootstrap';
   public $SearchJehaNo;
+  public $Favorite=0;
 
   public $search;
   protected $listeners = [
@@ -24,7 +25,9 @@ class CustSearch extends Component
   {
     $this->jeha_type=$jeha_type;
   }
-
+ public function selectFav($i){
+    $this->Favorite=$i;
+ }
   public function updatingSearch()
   {
     $this->resetPage();
@@ -46,6 +49,10 @@ class CustSearch extends Component
       'TableList' => DB::connection(Auth()->user()->company)->table('jeha')
         ->select('jeha_no', 'jeha_name')
         ->where('jeha_type',$this->jeha_type)
+        ->where('available',1)
+        ->when($this->Favorite==1,function ($q){
+          $q->where('Favorite',1);
+        })
         ->where('jeha_name', 'like', '%'.$this->search.'%')
         ->when(!Auth::user()->can('عميل خاص'),function($q){
             $q->where('acc_no','!=',1);
@@ -58,6 +65,11 @@ class CustSearch extends Component
               'TableList' => DB::connection(Auth()->user()->company)->table('jeha')
                   ->select('jeha_no', 'jeha_name')
                   ->where('jeha_type','!=',2)
+                ->where('available',1)
+                ->when($this->Favorite==1,function ($q){
+                  $q->where('Favorite',1);
+                })
+
                   ->where('jeha_name', 'like', '%'.$this->search.'%')
                   ->when(!Auth::user()->can('عميل خاص'),function($q){
                       $q->where('acc_no','!=',1);
@@ -70,6 +82,11 @@ class CustSearch extends Component
         'TableList' => DB::connection(Auth()->user()->company)->table('jeha')
           ->select('jeha_no', 'jeha_name')
           ->whereNotIn('jeha_type',[1,2])
+          ->where('available',1)
+          ->when($this->Favorite==1,function ($q){
+            $q->where('Favorite',1);
+          })
+
           ->where('jeha_name', 'like', '%'.$this->search.'%')
           ->when(!Auth::user()->can('عميل خاص'),function($q){
                 $q->where('acc_no','!=',1);

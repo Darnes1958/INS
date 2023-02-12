@@ -66,12 +66,13 @@
          <table class="table table-sm table-bordered table-striped table-light " width="100%"   >
            <thead class="font-size-12">
            <tr>
-             <th width="20%">رقم الزبون</th>
+             <th width="20%" >رقم الزبون</th>
              <th >اسم الزبون</th>
-             <th width="5%">ظهور</th>
-             <th width="5%">VIP</th>
-             <th width="5%"></th>
-             <th width="5%"></th>
+             <th width="5%">المفضلة</th>
+             <th width="5%" style="text-align: center">ظهور</th>
+             <th width="5%" style="text-align: center">VIP</th>
+             <th width="5%" style="text-align: center"></th>
+             <th width="5%" style="text-align: center"></th>
            </tr>
            </thead>
            <tbody id="addRow" class="addRow">
@@ -79,6 +80,18 @@
              <tr class="font-size-12">
                <td>{{$item->jeha_no}}</td>
                <td>{{$item->jeha_name}}</td>
+               @if($item->Favorite==1)
+                 <td  style="padding-top: 2px;padding-bottom: 2px; ">
+                   <i wire:click="selectItem({{ $item->jeha_no }},'notfavorite')"
+                      class="btn btn-outline-success btn-sm  fas fa-star editable-input" style="margin-left: 2px;"></i>
+                 </td>
+               @else
+                 <td  style="padding-top: 2px;padding-bottom: 2px; ">
+                   <i wire:click="selectItem({{ $item->jeha_no }},'favorite')"
+                      class="btn btn-outline-warning btn-sm  far fa-star editable-input" style="margin-left: 2px;"></i>
+                 </td>
+               @endif
+
                  @if($item->available==1)
                      <td  style="padding-top: 2px;padding-bottom: 2px; ">
                          <i wire:click="selectItem({{ $item->jeha_no }},'notshow')"
@@ -90,6 +103,7 @@
                             class="btn btn-outline-warning btn-sm  fas fa-user-alt-slash editable-input" style="margin-left: 2px;"></i>
                      </td>
                  @endif
+
                @can('عميل خاص')
                 @if($item->acc_no==1)
                          <td  style="padding-top: 2px;padding-bottom: 2px; ">
@@ -99,7 +113,7 @@
                 @else
                          <td  style="padding-top: 2px;padding-bottom: 2px; ">
                  <i wire:click="selectItem({{ $item->jeha_no }},'special')"
-                            class="btn btn-outline-secondary btn-sm   editable-input" style="margin-left: 2px;"></i>
+                            class="btn btn-outline-secondary btn-sm  far fa-user-secret editable-input" style="margin-left: 2px;"></i>
                          </td>
                 @endif
                @endcan

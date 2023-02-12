@@ -177,13 +177,23 @@ class AddSupp extends Component
       if ($action=='show'){
           jeha::on(Auth::user()->company)
               ->where('jeha_no',$jeha_no)
-              ->update(['show'=>1]);
+              ->update(['available'=>1]);
       }
       if ($action=='notshow'){
           jeha::on(Auth::user()->company)
               ->where('jeha_no',$jeha_no)
               ->update(['available'=>0]);
       }
+    if ($action=='favorite'){
+      jeha::on(Auth::user()->company)
+        ->where('jeha_no',$jeha_no)
+        ->update(['Favorite'=>1]);
+    }
+    if ($action=='notfavorite'){
+      jeha::on(Auth::user()->company)
+        ->where('jeha_no',$jeha_no)
+        ->update(['Favorite'=>0]);
+    }
   }
   public function CloseDeleteDialog(){$this->dispatchBrowserEvent('CloseMyDelete');}
 
