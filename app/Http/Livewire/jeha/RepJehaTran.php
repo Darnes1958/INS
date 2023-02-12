@@ -73,7 +73,7 @@ class RepJehaTran extends Component
               return(false);
 
             }
-            if ( $res ='special') {
+            if ( $res =='special') {
                 $this->dispatchBrowserEvent('mmsg', 'هذا العميل خاص');
                 return(false);
 

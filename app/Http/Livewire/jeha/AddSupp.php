@@ -142,6 +142,8 @@ class AddSupp extends Component
         'available' => 1,
         'jeha_type' => $this->jeha_type,
       ]);
+        $this->dispatchBrowserEvent('alert',
+            ['type' => 'success',  'message' => 'تم تخزين البيانات بنجاح']);
     }
     $this->UpdateMod=false;
     $this->emit('jehaadded',$this->jeha_no);

@@ -2,7 +2,8 @@
  <div class="row">
 
 
-    <dev class="col-md-4" >
+
+    <dev class="col-md-4 my-5" >
       <div class="card">
         <div class="card-header" style="background: #0e8cdb;color: white;font-size: 14pt;">ادخال {{$jeha_type_name}}</div>
         <div class="card-body">
@@ -180,6 +181,8 @@
                 confirmButtonText:  e.detail,
             })
         });
+
+
 
     </script>
 @endpush
