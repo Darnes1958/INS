@@ -47,6 +47,7 @@ Route::controller(ExcelController::class)->group(function (){
 
 Route::controller(pdfController::class)->group(function (){
     route::get('/reporderbuypdf/{order_no?}/{jeha_name?}/{place_name?}', 'RepOrderPdf')->name('reporderbuypdf') ;
+    route::get('/repordersellpdf/{order_no?}/{jeha_name?}/{place_name?}', 'RepOrderSellPdf')->name('repordersellpdf') ;
     route::get('/pdfmosdada/{bank_no?}/{baky?}/{bank_name?}', 'PdfMosdada')->name('pdfmosdada') ;
     route::get('/dobackup', 'DoBackup')->name('dobackup') ;
     route::get('/dodownload', 'DoDownload')->name('dodownload') ;

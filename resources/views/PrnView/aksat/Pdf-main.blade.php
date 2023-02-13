@@ -4,89 +4,63 @@
 
     <div style="position: fixed; text-align: center;  width: 100%;  margin: 10px;
                               display: flex;  justify-content: center;">
-      <label >{{$res->no}}</label>
-      <label  style="width: 20%">رقم العقد</label>
+      <label style="font-size: 14pt;">{{$res->no}}</label>
+      <label  style="width: 20%;font-size: 14pt;">رقم العقد</label>
     </div>
     <br>
+    <br>
+    <table style=" border: none;margin-bottom: 5px; padding-right: 5%">
+        <tbody >
+            <tr style="border: none; line-height: 18px;">
+                <td style="border: none;width: 15%; ">  </td>
+                <td class="order-td" style="width: 15%; text-align: center"> {{$res->sul_date}} </td>
+                <td style="border: none;width: 12%;font-size: 12pt; "> تاريخ العقد </td>
+                <td style="border: none;width: 2%; ">  </td>
+                <td class="order-td" style="width: 35%;"> {{$res->name}} </td>
+                <td style="border: none;width: 12%;font-size: 14pt; "> اسم الزبون </td>
+            </tr>
+            <tr style="border: none; line-height: 18px;">
+                <td style="border: none;width: 15%; ">  </td>
+                <td class="order-td" style="width: 15%; text-align: center"> {{$res->acc}} </td>
+                <td style="border: none;width: 12%;font-size: 12pt; "> رقم الحساب </td>
+                <td style="border: none;width: 2%; ">  </td>
+                <td class="order-td" style="width: 35%;"> {{$res->bank_name}} </td>
+                <td style="border: none;width: 12%;font-size: 12pt; "> اسم المصرف </td>
+            </tr>
+        </tbody>
+    </table>
+    <table style=" border: none;margin-bottom: 10px;padding-right: 5%">
+        <tbody >
+        <tr style="border: none; line-height: 18px;">
+            <td style="border: none;width: 30%; ">  </td>
+            <td class="order-td" style="width: 15%; text-align: center"> {{$res->sul_tot}} </td>
+            <td style="border: none;width: 12%;font-size: 12pt; "> اجمالي الفاتورة </td>
+            <td style="border: none;width: 2%; ">  </td>
+            <td class="order-td" style="width: 15%;"> {{$res->sul}} </td>
+            <td style="border: none;width: 12%;font-size: 12pt; "> اجمالي التقسيط </td>
+        </tr>
+        <tr style="border: none; line-height: 18px;">
+            <td style="border: none;width: 30%; ">  </td>
+            <td class="order-td" style="width: 15%; text-align: center"> {{$res->sul_pay}} </td>
+            <td style="border: none;width: 12%;font-size: 12pt; "> المسدد </td>
+            <td style="border: none;width: 2%; ">  </td>
+            <td class="order-td" style="width: 15%;"> {{$res->raseed}} </td>
+            <td style="border: none;width: 12%;font-size: 12pt; "> المطلوب </td>
+        </tr>
+        <tr style="border: none; line-height: 18px;">
+            <td style="border: none;width: 30%; ">  </td>
+            <td class="order-td" style="width: 15%; text-align: center"> {{$res->kst_count}} </td>
+            <td style="border: none;width: 12%;font-size: 12pt; "> عدد الأقساط </td>
+            <td style="border: none;width: 2%; ">  </td>
+            <td class="order-td" style="width: 15%;"> {{$res->kst}} </td>
+            <td style="border: none;width: 12%;font-size: 12pt; "> القسط </td>
+        </tr>
+        </tbody>
 
-    <div class="float-container">
-      <div class="float-child" style="width: 10%;">
-        <label  >اســــــم الزبون</label>
-      </div>
-      <div class="float-child" style=" width: 50%; border-bottom: 1px solid gray; ">
-        <label  >{{$res->name}}</label>
-      </div>
-        <div class="float-child" style="width: 10%;margin-right: 20px;">
-            <label  >تاريخ العقد</label>
-        </div>
-        <div class="float-child" style=" width: 16%; border-bottom: 1px solid gray; text-align: center">
-            <label style="text-align: center">{{$res->sul_date}}</label>
-        </div>
-    </div>
-    <div style=" padding: 20px;border: 3px solid #fff;">
-        <div style="float: right;
-          padding: 2px;width: 14%;">
-            <label  >اســـم المصرف</label>
-        </div>
-        <div  style="float: right;
-          padding: 2px; width: 46%; border-bottom: 1px solid gray; ">
-            <label  >{{$res->bank_name}}</label>
-        </div>
-        <div  style="float: right;
-          padding: 2px; width: 10%;margin-right: 20px;">
-            <label  >رقم الحساب</label>
-        </div>
-        <div  style="float: right;
-          padding: 2px; width: 16%; border-bottom: 1px solid gray; text-align: center">
-            <label style="text-align: center">{{$res->acc}}</label>
-        </div>
-    </div>
-    <div  style=" padding: 20px;border: 3px solid #fff;">
-        <div  style="float: right;
-          padding: 2px;width: 12%; ">
-            <label  >إجمالي الفاتورة</label>
-        </div>
-        <div  style="float: right;
-          padding: 2px; width: 16%; border-bottom: 1px solid gray; text-align: center">
-            <label style="text-align: center" >{{$res->sul_tot}}</label>
-        </div>
-      <div  style="float: right;
-          padding: 2px;width: 12%; margin-right: 20px;">
-        <label  >اجمالي التقسيط</label>
-      </div>
-      <div  style="float: right;
-          padding: 2px; width: 16%; border-bottom: 1px solid gray; text-align: center">
-        <label style="text-align: center" >{{$res->sul}}</label>
-      </div>
-    </div>
-    <div class="float-container">
-        <div class="float-child" style="width: 12%; ">
-            <label  >المسدد</label>
-        </div>
-        <div class="float-child" style=" width: 16%; border-bottom: 1px solid gray; text-align: center">
-            <label style="text-align: center" >{{$res->sul_pay}}</label>
-        </div>
-        <div class="float-child" style="width: 12%; margin-right: 20px;">
-            <label  >المطلوب</label>
-        </div>
-        <div class="float-child" style=" width: 16%; border-bottom: 1px solid gray; text-align: center">
-            <label style="text-align: center" >{{$res->raseed}}</label>
-        </div>
-    </div>
-    <div class="float-container">
-        <div class="float-child" style="width: 12%; ">
-            <label  >عدد الأقساط</label>
-        </div>
-        <div class="float-child" style=" width: 16%; border-bottom: 1px solid gray; text-align: center">
-            <label style="text-align: center" >{{$res->kst_count}}</label>
-        </div>
-        <div class="float-child" style="width: 12%; margin-right: 20px;">
-            <label  >القسط</label>
-        </div>
-        <div class="float-child" style=" width: 16%; border-bottom: 1px solid gray; text-align: center">
-            <label style="text-align: center" >{{$res->kst}}</label>
-        </div>
-    </div>
+    </table>
+
+
+
 <br>
 
     <table style="width:  80%; margin-left: 10%;margin-right: 10%;">

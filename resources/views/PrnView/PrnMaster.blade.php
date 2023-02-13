@@ -8,6 +8,13 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet" />
   <style>
+      .order-td {
+          border-left: none;
+          border-top: none;
+          border-right: none;
+          font-size: 12pt;
+          text-align: right;
+      }
       #content {
           align-items: center;
           display: inline-flex;

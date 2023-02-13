@@ -133,6 +133,9 @@
         </div>
       </div>
     </div>
+    <a  href="{{route('repordersellpdf',
+         ['order_no'=>$order_no,'jeha_name'=>$jeha_name,'place_name'=>$place_name])}}"
+        class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
   </div>
 </div>
 

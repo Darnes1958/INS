@@ -7,6 +7,8 @@ use App\Models\buy\buys;
 use App\Models\buy\rep_buy_tran;
 use App\Models\Customers;
 use App\Models\jeha\jeha;
+use App\Models\sell\rep_sell_tran;
+use App\Models\sell\sells;
 use App\Models\stores\stores_names;
 use Illuminate\Http\Request;
 
@@ -103,6 +105,37 @@ $comp=Auth()->user()->company;
 
       $pdf = PDF::loadHTML($reportHtml);
       return $pdf->download('invoice.pdf');
+
+  }
+  function RepOrderSellPdf(Request $request){
+    $order_no=$request->order_no;
+    $res=sells::on(Auth()->user()->company)->where('order_no',$order_no)->first();
+    if ($order_no==null || $order_no==0 || !$res) return(false);
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+    $jeha_name=$request->jeha_name;
+    $place_name=$request->place_name;
+    $orderdetail=rep_sell_tran::on(Auth()->user()->company)->where('order_no',$order_no)->get();
+    $res=sells::on(Auth()->user()->company)->where('order_no',$order_no)->first();
+
+
+    //  return view('PrnView.buy.rep-order-buy',compact('orderdetail','res'));
+    //   $pdf = Pdf::loadView('PrnView.buy.rep-order-buy',
+    //     ['orderdetail'=>$orderdetail,'res'=>$res,'cus'=>$cus,'jeha_name'=>$jeha_name,'place_name'=>$place_name]);
+
+    // return $pdf->download('invoice.pdf');
+
+    $reportHtml = view('PrnView.sell.rep-order-sell',
+      ['orderdetail'=>$orderdetail,'res'=>$res,'cus'=>$cus,'jeha_name'=>$jeha_name,'place_name'=>$place_name])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('invoice.pdf');
 
   }
     public function PdfMosdada(Request $request){

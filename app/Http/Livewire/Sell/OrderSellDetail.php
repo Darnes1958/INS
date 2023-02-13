@@ -221,7 +221,7 @@ class OrderSellDetail extends Component
         if (!is_null($this->search)) {
 
             $records = items::search($this->search,$this->OrderPlacetype,$this->OrderPlaceId)
-                ->take(5)
+                ->take(7)
                 ->get();
             $this->isEmpty = '';
 
