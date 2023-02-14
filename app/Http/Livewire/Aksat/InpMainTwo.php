@@ -320,7 +320,7 @@ class InpMainTwo extends Component
                   'emp'=>auth::user()->empno,]);
 
           } else
-          {  $max=(kst_trans::on(Auth()->user()->company)->where('no',$this->D_no)->max('ser'))+1;
+          {  $max=(kst_trans::on(Auth()->user()->company)->where('no',$this->no_old)->max('ser'))+1;
              DB::connection(Auth()->user()->company)->table('kst_trans')->insert([
                   'ser'=>$max,'no'=>$this->no_old,'kst_date'=>$this->sul_date,'ksm_type'=>2,'chk_no'=>0,
                   'kst'=>$this->kst_old,'ksm_date'=>$this->sul_date,'ksm'=>$this->raseed_old,
@@ -345,7 +345,8 @@ class InpMainTwo extends Component
           $insertQuery = 'INSERT into transarc (ser,no,kst_date,ksm_type,chk_no,kst,ksm_date,ksm,h_no,emp,kst_notes,inp_date) '. $select->toSql();
           DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
 
-          $select = over_kst::on(Auth()->user()->company)->where('no',$this->no_old)->select('no','name','bank','acc','kst','tar_type','tar_date','letters','emp','h_no','inp_date');
+          $select = over_kst::on(Auth()->user()->company)->where('no',$this->no_old)
+            ->select('no','name','bank','acc','kst','tar_type','tar_date','letters','emp','h_no','inp_date');
           $bindings = $select->getBindings();
           $insertQuery = 'INSERT into over_kst_a (no,name,bank,acc,kst,tar_type,tar_date,letters,emp,h_no,inp_date) '. $select->toSql();
           DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
