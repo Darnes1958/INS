@@ -26,6 +26,25 @@ class MakRep extends Component
   public $PlaceGeted=false;
   public $ThePlaceListIsSelected;
 
+  public $orderColumn = "item_no";
+  public $sortOrder = "asc";
+  public $sortLink = '<i class="sorticon fas fa-angle-up"></i>';
+
+  public function sortOrder($columnName=""){
+    $caretOrder = "up";
+    if($this->sortOrder == 'asc'){
+      $this->sortOrder = 'desc';
+      $caretOrder = "down";
+    }else{
+      $this->sortOrder = 'asc';
+      $caretOrder = "up";
+    }
+    $this->sortLink = '<i class="sorticon fas fa-angle-'.$caretOrder.'"></i>';
+
+    $this->orderColumn = $columnName;
+
+  }
+
   public function updatedThePlaceListIsSelected(){
     $this->ThePlaceListIsSelected=0;
     $this->ChkPlaceAndGo();
@@ -89,7 +108,8 @@ class MakRep extends Component
                    })
 
                    ->orderBy('item_type','asc')
-                   ->orderBy('item_no','asc')->paginate(15)
+                   ->orderby($this->orderColumn,$this->sortOrder)
+                   ->paginate(15)
            ]);
        } else
        return view('livewire.amma.mak.mak-rep',[
@@ -98,7 +118,8 @@ class MakRep extends Component
             ->orwhere('item_no', 'like', '%'.$this->search.'%')
             ->orwhere('type_name', 'like', '%'.$this->search.'%')
             ->orderBy('item_type','asc')
-            ->orderBy('item_no','asc')->paginate(15)
+            ->orderby($this->orderColumn,$this->sortOrder)
+            ->paginate(15)
         ]);}
       else {
         return view('livewire.amma.mak.mak-rep',[
@@ -117,7 +138,8 @@ class MakRep extends Component
               ['type_name', 'like', '%'.$this->search.'%'],
             ])
             ->orderBy('item_type','asc')
-            ->orderBy('item_no','asc')->paginate(15)
+            ->orderby($this->orderColumn,$this->sortOrder)
+            ->paginate(15)
         ]);
       }
     }

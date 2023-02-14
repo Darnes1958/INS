@@ -11,7 +11,7 @@
                 class="form-control"   type="text" style="width: 30%" id="no" readonly>
         <label for="acc" class="form-label" style="width: 20% " >&nbsp;رقم الحساب</label>
         <input  wire:model="acc"
-                type="text" class="form-control" id="acc" style="width: 30%" readonly >
+                type="text" class="form-control p-1" id="acc" style="width: 30%" readonly >
     </div>
 
     <div class="d-inline-flex align-items-center">

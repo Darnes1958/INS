@@ -47,8 +47,9 @@
     <tr>
 
       <th style="width: 14%" >التصنيف</th>
-      <th style="width: 8%">رقم الصنف</th>
-      <th >اسم الصنف</th>
+      <th style="width: 8%" class="sort text-primary" wire:click="sortOrder('item_no')" > رقم الصنف {!! $sortLink !!}</th>
+      <th  class="sort  text-primary" wire:click="sortOrder('item_name')"> اسم الصنف {!! $sortLink !!}</th>
+
       @can('سعر الشراء')
       <th style="width: 9%">سعر التكلفة</th>
       @endcan

@@ -90,6 +90,7 @@ class InpBankRatio extends Component
        ,count(*) * ? as tot_ratio',[$this->V]) ;     })
      ->groupBy('bank','place_no','sell_type')
      ->where('bank',$this->bank_no)
+     ->where('kst_trans.ksm_type',2)
 
      ->whereYear('kst_trans.ksm_date',$this->year)
      ->whereMonth('kst_trans.ksm_date',$this->month)
@@ -131,7 +132,10 @@ class InpBankRatio extends Component
 
           ->whereYear('transarc.ksm_date',$this->year)
           ->whereMonth('transarc.ksm_date',$this->month)
+          ->where('transarc.ksm_type',2)
           ->where('transarc.ksm','>',0)
+          ->where(\DB::raw('substring(transarc.kst_notes,1,12)'), '=' , 'مبلغ تم دمجه')
+
           ->get();
         if ($second) {
 

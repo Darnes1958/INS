@@ -5,7 +5,7 @@
 
           @role('info')
             <div class="col-md-4">
-                <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "  class="form-control"   type="text" id="search" autofocus>
+                <input  wire:model="search" wire:click="OpenTable" placeholder="عقد , حساب , زبون , فاتورة ... "  class="form-control"   type="text" id="search" autofocus>
             </div>
             <div class="col-md-3">
                 <input  wire:model="no" wire:keydown.enter="ChkNoAndGo" placeholder="او أدخل رقم العقد هنا"  class="form-control"   type="text" id="No" autofocus>
@@ -19,7 +19,7 @@
            </div>
            @else
                 <div class="col-md-4">
-                    <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "  class="form-control"   type="text" id="search" autofocus>
+                    <input  wire:model="search" wire:click="OpenTable" placeholder="عقد , حساب , زبون , فاتورة ..."  class="form-control"   type="text" id="search" autofocus>
                 </div>
                 <div class="col-md-3">
                     <input  wire:model="no" wire:keydown.enter="ChkNoAndGo" placeholder="او أدخل رقم العقد هنا"  class="form-control"   type="text" id="No" autofocus>

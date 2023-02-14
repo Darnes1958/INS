@@ -69,14 +69,16 @@ class RepMainHead extends Component
                     return $q->where('name', 'like', '%'.$this->search.'%')
                             ->orwhere('acc', 'like', '%'.$this->search.'%')
                             ->orwhere('no', 'like', '%'.$this->search.'%')
-                            ->orwhere('sul', 'like', '%'.$this->search.'%') ;     })
+                            ->orwhere('jeha', 'like', '%'.$this->search.'%')
+                            ->orwhere('order_no', 'like', '%'.$this->search.'%') ;     })
                 ->when($this->bankno!=0,function ($q) {
                     return $q->where('bank',$this->bankno)
                         ->Where(function($query) {
                             $query->where('name', 'like', '%'.$this->search.'%')
                                 ->orwhere('acc', 'like', '%'.$this->search.'%')
                                 ->orwhere('no', 'like', '%'.$this->search.'%')
-                                ->orwhere('sul', 'like', '%'.$this->search.'%');}) ;
+                                ->orwhere('jeha', 'like', '%'.$this->search.'%')
+                                ->orwhere('order_no', 'like', '%'.$this->search.'%');}) ;
                            })
 
                 ->paginate(5)

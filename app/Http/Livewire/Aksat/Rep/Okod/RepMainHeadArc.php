@@ -59,7 +59,8 @@ class RepMainHeadArc extends Component
                 ->where('name', 'like', '%'.$this->search.'%')
                 ->orwhere('acc', 'like', '%'.$this->search.'%')
                 ->orwhere('no', 'like', '%'.$this->search.'%')
-                ->orwhere('sul', 'like', '%'.$this->search.'%')
+                ->orwhere('jeha', 'like', '%'.$this->search.'%')
+                ->orwhere('order_no', 'like', '%'.$this->search.'%')
                 ->paginate(5)
     ]);
     }

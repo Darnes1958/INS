@@ -47,14 +47,14 @@
 
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
       <div class="card">
         <div class="card-body">
           <table class="table table-sm table-bordered table-striped table-light " width="100%"   >
             <thead class="font-size-12">
             <tr>
-              <th width="20%">الرقم الألي</th>
-              <th width="20%">رقم الحساب</th>
+              <th width="12%">الرقم الألي</th>
+              <th width="25%">رقم الحساب</th>
               <th >اسم المصرف التجميعي</th>
               <th width="5%"></th>
               <th width="5%"></th>

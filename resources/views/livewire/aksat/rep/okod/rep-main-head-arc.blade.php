@@ -4,14 +4,14 @@
         <div class="row">
             @role('info')
             <div class="col-md-11">
-                <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "  class="form-control"   type="text"  >
+                <input  wire:model="search" wire:click="OpenTable" placeholder="عقد , حساب , زبون , فاتورة ... "  class="form-control"   type="text"  >
             </div>
             <div class="col-md-1">
                 <button wire:click="$emit('CloseOkodArc')"  type="button" class="btn btn-outline-danger btn-sm far fa-window-close" ></button>
             </div>
             @else
                 <div class="col-md-12">
-                    <input  wire:model="search" wire:click="OpenTable" placeholder="ابحث هنا .... "  class="form-control"   type="text"  >
+                    <input  wire:model="search" wire:click="OpenTable" placeholder="عقد , حساب , زبون , فاتورة ... "  class="form-control"   type="text"  >
                 </div>
 
                 @endrole

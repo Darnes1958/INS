@@ -75,9 +75,9 @@ class RepAmaaController extends Controller
     return $pdf->download('report.pdf');
   }
     function PdfKlasaMail($company){
-        $date1=date('Y-m-d');
-        $date2=date('Y-m-d');
-        $RepDate=date('Y-m-d');
+        $date1=date('Y-m-d',strtotime("-1 days"));
+        $date2=date('Y-m-d',strtotime("-1 days"));
+        $RepDate=date('Y-m-d',strtotime("-1 days"));
         $cus=Customers::where('Company',$company)->first();
         $BuyTable=DB::connection($company)->table('buys')
             ->join('price_type','buys.price_type','=','price_type.type_no')
