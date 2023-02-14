@@ -224,7 +224,11 @@ class AddSupp extends Component
     {
         return view('livewire.jeha.add-Supp',[
           'JehaTable'=>jeha::where('jeha_type',$this->jeha_type)
-              ->where('jeha_name', 'like', '%'.$this->search.'%')
+             ->where(function ($q){
+               $q->where('jeha_name', 'like', '%'.$this->search.'%')
+                 ->orwhere('jeha_no', 'like', '%'.$this->search.'%');
+             })
+
               ->when(!Auth::user()->can('عميل خاص'),function($q){
                   $q->where('acc_no','!=',1);
               })

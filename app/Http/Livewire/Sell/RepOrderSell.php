@@ -17,7 +17,8 @@ class RepOrderSell extends Component
 {
   use WithPagination;
   protected $paginationTheme = 'bootstrap';
-  public $order_no=0;
+  public $orderno2=0;
+  public $order_no;
   public $order_date;
   public $jeha_no;
   public $jeha_type;
@@ -64,6 +65,8 @@ class RepOrderSell extends Component
       $res=sells::on(Auth()->user()->company)->find($this->order_no);
 
     if ($res) {
+      $this->orderno2=$this->order_no;
+
       $this->order_date=$res->order_date;
       $this->jeha_no=$res->jeha;
       $this->place_no=$res->place_no;
@@ -80,14 +83,14 @@ class RepOrderSell extends Component
       if ($this->place_type==1){ $this->place_name=stores_names::on(Auth()->user()->company)->find($this->place_no)->st_name;}
       if ($this->place_type==2){ $this->place_name=halls_names::on(Auth()->user()->company)->find($this->place_no)->hall_name;}
       $this->type_name=price_type::on(Auth()->user()->company)->find($this->price_type)->type_name;
-    } else {$this->dispatchBrowserEvent('mmsg','هذا الرقم غير مخزون');$this->clearData();}
+    } else {$this->order_no2=0; $this->dispatchBrowserEvent('mmsg','هذا الرقم غير مخزون');$this->clearData();}
   }}
 
   public function render()
     {
 
       return view('livewire.sell.rep-order-sell',[
-        'orderdetail'=>rep_sell_tran::on(Auth()->user()->company)->where('order_no',$this->order_no)->paginate(15)
+        'orderdetail'=>rep_sell_tran::on(Auth()->user()->company)->where('order_no',$this->orderno2)->paginate(15)
       ]);
     }
 }
