@@ -1,6 +1,6 @@
 <header>
 
- <div x-data="{open : false}" id="header" class="row ">
+ <div  id="header" class="row ">
 
  @role('info')
      <div class="d-flex col-md-8 mt-0 pt-0" style="height: 40px"></div>
@@ -12,10 +12,10 @@
     </button>
   </div>
   <div class="d-flex col-md-2 mt-0 py-1" style="height: 40px">
-      <a x-show="!open" @click="open=!open"
-         class="btn btn-outline-primary border-0 fa fa-expand waves-effect " onclick="openFullscreen(); "></a>
-      <a x-show="open" @click="open=!open"
-         class="btn btn-outline-primary border-0 fas fa fa-expand waves-effect " onclick="closeFullscreen();"></a>
+      <a x-show="!openScr" @click="openScr=!openScr"
+         class="btn btn-outline-primary border-0 fa fa-expand waves-effect " onclick="openFullscreen();"></a>
+      <a x-show="openScr" @click="openScr=!openScr"
+         class="btn btn-outline-danger border-0 fas fa fa-expand waves-effect " onclick="closeFullscreen();"></a>
   </div>
   <div class="d-flex col-md-2 mt-0 py-1" style="height: 40px;">
     <a href="{{ url('/home') }}"

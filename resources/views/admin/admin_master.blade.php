@@ -60,7 +60,7 @@
 <!-- <body data-layout="horizontal" data-topbar="dark"> -->
 
 <!-- Begin page -->
- <div id="layout-wrapper" >
+ <div x-data="{openScr : false}" id="layout-wrapper" >
 
 
     @include('admin.body.header')
@@ -216,13 +216,15 @@
 <script>
     var elem = document.documentElement;
     function openFullscreen() {
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { /* Safari */
-            elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* IE11 */
-            elem.msRequestFullscreen();
-        }
+
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE11 */
+                elem.msRequestFullscreen();
+            }
+       
     }
 
     function closeFullscreen() {
