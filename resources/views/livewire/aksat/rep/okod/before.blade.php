@@ -27,10 +27,11 @@
   <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
     <thead class="font-size-12">
     <tr>
-      <th width="8%">رقم العقد</th>
-      <th width="12%">رقم الحساب</th>
-      <th width="18%">الاسم</th>
-      <th width="8%">تاريخ العقد</th>
+      <th width="8%" class="sort text-primary" wire:click="sortOrder('no')" > رقم العقد {!! $sortLink !!}</th>
+      <th width="12%" class="sort  text-primary" wire:click="sortOrder('acc')"> رقم الحساب {!! $sortLink !!}</th>
+      <th  class="sort  text-primary" wire:click="sortOrder('name')"> الاسم {!! $sortLink !!}</th>
+      <th width="8%" class="sort  text-primary" wire:click="sortOrder('sul_date')"> تاريخ العقد {!! $sortLink !!}</th>
+
       <th width="8%">اجمالي التقسيط</th>
 
       <th width="8%">المسدد</th>

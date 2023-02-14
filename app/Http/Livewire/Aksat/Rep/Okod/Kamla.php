@@ -23,7 +23,24 @@ class Kamla extends Component
   public $search;
   public $RepRadio='RepAll';
 
+  public $orderColumn = "no";
+  public $sortOrder = "asc";
+  public $sortLink = '<i class="sorticon fas fa-angle-up"></i>';
 
+  public function sortOrder($columnName=""){
+    $caretOrder = "up";
+    if($this->sortOrder == 'asc'){
+      $this->sortOrder = 'desc';
+      $caretOrder = "down";
+    }else{
+      $this->sortOrder = 'asc';
+      $caretOrder = "up";
+    }
+    $this->sortLink = '<i class="sorticon fas fa-angle-'.$caretOrder.'"></i>';
+
+    $this->orderColumn = $columnName;
+
+  }
 
   public function updatingSearch()
   {
@@ -95,6 +112,7 @@ class Kamla extends Component
             ->where('emp',Auth::user()->empno);
         })
         ->union($first)
+        ->orderby($this->orderColumn,$this->sortOrder)
         ->get();
        $data = $this->paginate($second);
       return view('livewire.aksat.rep.okod.kamla',[
@@ -114,6 +132,7 @@ class Kamla extends Component
                 ->whereColumn('main_view.no', 'late.no')
                 ->where('emp',Auth::user()->empno);
                })
+            ->orderby($this->orderColumn,$this->sortOrder)
             ->paginate()
         ]);
       }

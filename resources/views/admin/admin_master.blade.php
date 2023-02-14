@@ -2,6 +2,18 @@
 <html lang="ar">
 
 <head>
+    <style>
+        .sorticon{
+            visibility: hidden;
+            color: darkgray;
+        }
+        .sort:hover .sorticon{
+            visibility: visible;
+        }
+        .sort:hover{
+            cursor: pointer;
+        }
+    </style>
     @livewireStyles
     <meta charset="utf-8" />
     <title>Dashboard | Upcube - Admin & Dashboard Template</title>

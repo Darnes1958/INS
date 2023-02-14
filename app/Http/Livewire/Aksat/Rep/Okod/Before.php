@@ -26,7 +26,24 @@ class Before extends Component
   public $search;
   public $RepRadio='RepAll';
 
+  public $orderColumn = "no";
+  public $sortOrder = "asc";
+  public $sortLink = '<i class="sorticon fas fa-angle-up"></i>';
 
+  public function sortOrder($columnName=""){
+    $caretOrder = "up";
+    if($this->sortOrder == 'asc'){
+      $this->sortOrder = 'desc';
+      $caretOrder = "down";
+    }else{
+      $this->sortOrder = 'asc';
+      $caretOrder = "up";
+    }
+    $this->sortLink = '<i class="sorticon fas fa-angle-'.$caretOrder.'"></i>';
+
+    $this->orderColumn = $columnName;
+
+  }
 
   public function updatingSearch()
   {
@@ -90,6 +107,7 @@ class Before extends Component
               ['late', '>', 0],
               ['kst','!=',0],
               ['name', 'like', '%'.$this->search.'%'],]);})
+          ->orderby($this->orderColumn,$this->sortOrder)
           ->paginate(15)
         ]
       );

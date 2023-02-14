@@ -26,6 +26,27 @@ class MosdadaTable extends Component
   public $ShowTar=false;
   public $CheckAll=false;
   public $UncheckAll=false;
+
+  public $orderColumn = "no";
+  public $sortOrder = "asc";
+  public $sortLink = '<i class="sorticon fas fa-angle-up"></i>';
+
+  public function sortOrder($columnName=""){
+    $caretOrder = "up";
+    if($this->sortOrder == 'asc'){
+      $this->sortOrder = 'desc';
+      $caretOrder = "down";
+    }else{
+      $this->sortOrder = 'asc';
+      $caretOrder = "up";
+    }
+    $this->sortLink = '<i class="sorticon fas fa-angle-'.$caretOrder.'"></i>';
+
+    $this->orderColumn = $columnName;
+
+  }
+
+
   public function updatingSearch()
   {
     $this->resetPage();
@@ -109,6 +130,7 @@ class MosdadaTable extends Component
                 ['bank', '=', $this->bank_no],
                 ['raseed','<=',$this->baky],
                 ['acc', 'like', '%'.$this->search.'%'],])
+            ->orderby($this->orderColumn,$this->sortOrder)
             ->paginate(15)
         ]);
     }

@@ -17,6 +17,25 @@ class BankOne extends Component
   public $bank_no=0;
   public $search;
 
+  public $orderColumn = "no";
+  public $sortOrder = "asc";
+  public $sortLink = '<i class="sorticon fas fa-angle-up"></i>';
+
+  public function sortOrder($columnName=""){
+    $caretOrder = "up";
+    if($this->sortOrder == 'asc'){
+      $this->sortOrder = 'desc';
+      $caretOrder = "down";
+    }else{
+      $this->sortOrder = 'asc';
+      $caretOrder = "up";
+    }
+    $this->sortLink = '<i class="sorticon fas fa-angle-'.$caretOrder.'"></i>';
+
+    $this->orderColumn = $columnName;
+
+  }
+
   public function updatingSearch()
   {
     $this->resetPage();
@@ -40,6 +59,7 @@ class BankOne extends Component
             ['bank', '=', $this->bank_no],
 
             ['acc', 'like', '%'.$this->search.'%'],])
+          ->orderby($this->orderColumn,$this->sortOrder)
           ->paginate(15)
       ]);
 

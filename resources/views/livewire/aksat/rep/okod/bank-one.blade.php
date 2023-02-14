@@ -15,10 +15,10 @@
     <thead class="font-size-12">
     <tr>
       <th width="4%">ت</th>
-      <th width="7%">رقم العقد</th>
-      <th width="12%">رقم الحساب</th>
-      <th width="18%">الاسم</th>
-      <th width="7%">تاريخ العقد</th>
+      <th width="7%" class="sort text-primary" wire:click="sortOrder('no')" > رقم العقد {!! $sortLink !!}</th>
+      <th width="12%" class="sort  text-primary" wire:click="sortOrder('acc')"> رقم الحساب {!! $sortLink !!}</th>
+      <th  class="sort  text-primary" wire:click="sortOrder('name')"> الاسم {!! $sortLink !!}</th>
+      <th width="7%" class="sort  text-primary" wire:click="sortOrder('sul_date')"> تاريخ العقد {!! $sortLink !!}</th>
       <th width="7%">اجمالي الفاتورة</th>
       <th width="7%">دفعة مقدما</th>
       <th width="7%">اجمالي التقسيط</th>
