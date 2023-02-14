@@ -1,6 +1,6 @@
 <header>
 
- <div id="header" class="row ">
+ <div x-data="{open : false}" id="header" class="row ">
 
  @role('info')
      <div class="d-flex col-md-8 mt-0 pt-0" style="height: 40px"></div>
@@ -11,10 +11,11 @@
         <span class="sr-only">Toggle Menu</span>
     </button>
   </div>
-  <div class="d-flex col-md-2 mt-0 pt-0" style="height: 40px">
-      <button type="button" class="btn btn-outline-success border-0 not-icon waves-effect"  data-toggle="fullscreen">
-          <i class="ri-fullscreen-line"></i>
-      </button>
+  <div class="d-flex col-md-2 mt-0 py-1" style="height: 40px">
+      <a x-show="!open" @click="open=!open"
+         class="btn btn-outline-primary border-0 fa fa-expand waves-effect " onclick="openFullscreen(); "></a>
+      <a x-show="open" @click="open=!open"
+         class="btn btn-outline-primary border-0 fas fa fa-expand waves-effect " onclick="closeFullscreen();"></a>
   </div>
   <div class="d-flex col-md-2 mt-0 py-1" style="height: 40px;">
     <a href="{{ url('/home') }}"
