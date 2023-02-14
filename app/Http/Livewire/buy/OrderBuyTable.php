@@ -42,7 +42,7 @@ class OrderBuyTable extends Component
    public function TakeChargeAll($chargedetail,$tot){
      $this->ChargeDetail=$chargedetail;
        $this->ChargeTot=$tot;
-       info($this->ChargeDetail);
+
    }
     public function open($open){
         $this->showtable=$open;

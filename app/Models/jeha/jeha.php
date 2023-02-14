@@ -18,7 +18,16 @@ class jeha extends Model
     public $incrementing = false;
     public $timestamps = false;
 
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
 
+        if (Auth::check()) {
+
+            $this->connection=Auth::user()->company;
+
+        }
+    }
 
 
     public function jehatype()
