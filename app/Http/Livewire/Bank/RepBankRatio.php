@@ -67,7 +67,8 @@ class RepBankRatio extends Component
             ->where('bank',$this->bank_no)
             ->where('Y',$this->year)
             ->where('place_type',$this->place_type)
-            ->where('place',$this->place)->paginate(15),
+            ->where('place',$this->place)
+            ->orderBy('M')->paginate(15),
 
         ]);
     }
