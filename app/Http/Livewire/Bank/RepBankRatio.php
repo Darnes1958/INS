@@ -47,9 +47,7 @@ class RepBankRatio extends Component
         return view('livewire.bank.rep-bank-ratio',[
           'years'=>DB::connection(Auth()->user()->company)->table('BankRatio')
             ->selectRaw('distinct Y as year')
-
             ->get(),
-
             'PlaceTable'=>BankRatio::on(Auth()->user()->company)
                 ->join('place_view', function ($join) {
                     $join->on('BankRatio.place', '=', 'place_view.place_no')

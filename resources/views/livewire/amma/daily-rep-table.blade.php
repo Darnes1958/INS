@@ -4,11 +4,12 @@
         <thead class="font-size-12">
         <tr>
           <th width="16%">رقم الفاتورة</th>
-          <th width="18%">العميل</th>
+          <th >العميل</th>
           <th width="26%">التاريخ</th>
           <th width="10%">الاجمالي</th>
           <th width="10%">المدفوع</th>
           <th width="8%">الأجل</th>
+          <th width="10%">بواسطة</th>
         </tr>
         </thead>
         <tbody id="addRow" class="addRow">
@@ -20,6 +21,7 @@
             <td> {{ $item->tot }} </td>
             <td> {{ $item->cash }} </td>
             <td> {{ $item->not_cash }} </td>
+            <td> {{ $item->emp_name }} </td>
           </tr>
         @endforeach
         </tbody>
@@ -30,11 +32,12 @@
                 <thead class="font-size-12">
                 <tr>
                     <th width="16%">رقم الإيصال</th>
-                    <th width="26%">العميل</th>
+                    <th >العميل</th>
                     <th width="16%">صادرة / واردة</th>
                     <th width="16%">طريقة الدفع</th>
                     <th width="10%">نوع الإيصال</th>
                     <th width="8%">المبلغ</th>
+                  <th width="10%">بواسطة</th>
                 </tr>
                 </thead>
                 <tbody id="addRow" class="addRow">
@@ -46,6 +49,7 @@
                         <td> {{ $item->type_name }} </td>
                         <td> {{ $item->who_name }} </td>
                         <td> {{ $item->val }} </td>
+                      <td> {{ $item->emp_name }} </td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -57,13 +61,14 @@
           <thead class="font-size-12">
           <tr>
             <th width="8%">رقم العقد</th>
-            <th width="26%">الإسم</th>
-            <th width="20%">المصرف</th>
+            <th >الإسم</th>
+            <th width="18%">المصرف</th>
             <th width="12%">رقم الحساب</th>
             <th width="9%">تاريخ الخصم</th>
             <th width="9%">القسط المخصوم</th>
-            <th width="8%">طؤيقة الدفع</th>
+            <th width="8%">طريقة الدفع</th>
 
+            <th width="10%">بواسطة</th>
           </tr>
           </thead>
           <tbody id="addRow" class="addRow">
@@ -76,6 +81,7 @@
               <td> {{ $item->ksm_date }} </td>
               <td> {{ $item->ksm }} </td>
               <td> {{ $item->ksm_type_name }} </td>
+              <td> {{ $item->emp_name }} </td>
 
             </tr>
           @endforeach
@@ -88,11 +94,12 @@
           <thead class="font-size-12">
           <tr>
             <th width="8%">رقم العقد</th>
-            <th width="26%">الإسم</th>
+            <th >الإسم</th>
             <th width="20%">المصرف</th>
             <th width="12%">رقم الحساب</th>
             <th width="9%">التاريخ</th>
             <th width="9%">المبلغ</th>
+            <th width="10%">بواسطة</th>
           </tr>
           </thead>
           <tbody id="addRow" class="addRow">
@@ -104,6 +111,7 @@
               <td> {{ $item->acc }} </td>
               <td> {{ $item->tar_date }} </td>
               <td> {{ $item->kst }} </td>
+              <td> {{ $item->emp_name }} </td>
             </tr>
           @endforeach
           </tbody>
@@ -114,12 +122,13 @@
           <thead class="font-size-12">
           <tr>
             <th width="8%">رقم العقد</th>
-            <th width="26%">الإسم</th>
+            <th >الإسم</th>
             <th width="20%">المصرف</th>
             <th width="12%">رقم الحساب</th>
             <th width="9%">التاريخ</th>
             <th width="9%">المبلغ</th>
             <th width="14%">طريقة الدفع</th>
+            <th width="10%">بواسطة</th>
           </tr>
           </thead>
           <tbody id="addRow" class="addRow">
@@ -132,6 +141,7 @@
               <td> {{ $item->tar_date }} </td>
               <td> {{ $item->kst }} </td>
               <td> {{ $item->ksm_type_name }} </td>
+              <td> {{ $item->emp_name }} </td>
             </tr>
           @endforeach
           </tbody>
@@ -142,11 +152,12 @@
           <thead class="font-size-12">
           <tr>
             <th width="8%">الرقم الألي</th>
-            <th width="26%">الإسم</th>
+            <th >الإسم</th>
             <th width="20%">المصرف</th>
             <th width="12%">رقم الحساب</th>
             <th width="9%">التاريخ</th>
             <th width="9%">المبلغ</th>
+            <th width="10%">بواسطة</th>
           </tr>
           </thead>
           <tbody id="addRow" class="addRow">
@@ -158,6 +169,7 @@
               <td> {{ $item->acc }} </td>
               <td> {{ $item->tar_date }} </td>
               <td> {{ $item->kst }} </td>
+              <td> {{ $item->emp_name }} </td>
             </tr>
           @endforeach
           </tbody>
@@ -168,13 +180,14 @@
                 <thead class="font-size-12">
                 <tr>
                     <th width="8%">رقم العقد</th>
-                    <th width="26%">الإسم</th>
+                    <th >الإسم</th>
                     <th width="20%">المصرف</th>
                     <th width="12%">رقم الحساب</th>
                     <th width="9%">تاريخ العقد</th>
                     <th width="9%">إجمالي التقسيط</th>
                     <th width="8%">القسط</th>
                     <th width="8%">عدد الأقساط</th>
+                    <th width="8%">بواسطة</th>
                 </tr>
                 </thead>
                 <tbody id="addRow" class="addRow">
@@ -188,6 +201,7 @@
                         <td> {{ $item->sul }} </td>
                         <td> {{ $item->kst }} </td>
                         <td> {{ $item->kst_count }} </td>
+                        <td> {{ $item->emp_name }} </td>
                     </tr>
                 @endforeach
                 </tbody>

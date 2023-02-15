@@ -14,6 +14,11 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
     use HasRoles;
 
+  public static  function emp_name($id)
+  {
+      return self::where('empno',$id)
+        ->first()->name;
+     }
     /**
      * The attributes that are mass assignable.
      *

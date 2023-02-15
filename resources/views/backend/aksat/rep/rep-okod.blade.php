@@ -6,11 +6,18 @@
     <div class="container-fluid">
 
         @csrf
+      @if ($rep=='kstgeted')
+        <div class=" themed-grid-col px-1">
+          @livewire('aksat.rep.okod.kst-geted')
+        </div>
+      @endif
+
       @if ($rep=='before')
         <div class=" themed-grid-col px-1">
           @livewire('aksat.rep.okod.before')
         </div>
       @endif
+
       @if ($rep=='haf')
         <div class=" themed-grid-col px-1">
           @livewire('haf.rep-haf')
