@@ -28,10 +28,13 @@ class RepBankRatio extends Component
     protected $listeners = [
         'TakeBank',
     ];
-    public function selectItem($place_type,$place,$place_name){
+    public function selectItem($place_type,$place){
       $this->place=$place;
       $this->place_type=$place_type;
-      $this->place_name=$place_name;
+
+      $this->place_name=DB::connection(Auth::user()->company)->table('place_view')
+          ->where('place_type',$place_type)
+          ->where('place_no',$place)->first()->place_name;
         $this->resetPage();
     }
     public function TakeBank($bank_no){

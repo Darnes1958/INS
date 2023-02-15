@@ -10,6 +10,7 @@
         <select x-bind:disabled="$wire.bank_no==null" wire:model="year"  name="year_id" id="year_id" class="form-control  form-select mx-1 text-center"
                 style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"
         >
+            <option value="">اختيار</option>
           @foreach($years as $key=>$s)
             <option value="{{ $s->year }}">{{ $s->year }}</option>
           @endforeach
@@ -39,10 +40,10 @@
           @php $sumkst_count=0;$sumtot_kst=0;$sumtot_ratio=0; @endphp
             @foreach($PlaceTable as $key=>$item)
                 <tr class="font-size-12">
-                    <td ><a wire:click="selectItem({{ $item->place_type }},{{ $item->place }},'{{ $item->place_name }}')" href="#">{{ $item->place_name }}</a>   </td>
-                    <td><a wire:click="selectItem({{ $item->place_type }},{{ $item->place }},'{{ $item->place_name }}')" href="#">{{ $item->kst_count }}</a>  </td>
-                    <td><a wire:click="selectItem({{ $item->place_type }},{{ $item->place }}),'{{ $item->place_name }}'" href="#">{{number_format($item->tot_kst,2, '.', ',')  }}</a>  </td>
-                    <td> <a wire:click="selectItem({{ $item->place_type }},{{ $item->place }},'{{ $item->place_name }}')" href="#">{{ number_format($item->tot_ratio,2, '.', ',') }}</a> </td>
+                    <td ><a wire:click="selectItem({{ $item->place_type }},{{ $item->place }})" href="#">{{ $item->place_name }}</a>   </td>
+                    <td><a wire:click="selectItem({{ $item->place_type }},{{ $item->place }})" href="#">{{ $item->kst_count }}</a>  </td>
+                    <td><a wire:click="selectItem({{ $item->place_type }},{{ $item->place }})" href="#">{{number_format($item->tot_kst,2, '.', ',')  }}</a>  </td>
+                    <td> <a wire:click="selectItem({{ $item->place_type }},{{ $item->place }})" href="#">{{ number_format($item->tot_ratio,2, '.', ',') }}</a> </td>
                 </tr>
                 @php $sumkst_count+=$item->kst_count;$sumtot_kst+=$item->tot_kst;$sumtot_ratio+=$item->tot_ratio; @endphp
             @endforeach

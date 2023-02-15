@@ -224,7 +224,7 @@
             } else if (elem.msRequestFullscreen) { /* IE11 */
                 elem.msRequestFullscreen();
             }
-       
+
     }
 
     function closeFullscreen() {
