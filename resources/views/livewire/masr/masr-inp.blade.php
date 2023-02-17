@@ -60,7 +60,7 @@
             <label  class="form-label-me">المبلغ </label>
             <input wire:model="Val" wire:keydown.enter="$emit('gotonext','MasDate')"
                    class="form-control  "   type="number"  id="Val" autofocus>
-            @error('MasDate') <span class="error">{{ $message }}</span> @enderror
+            @error('Val') <span class="error">{{ $message }}</span> @enderror
         </div>
     </div>
     <div   class="row  " >

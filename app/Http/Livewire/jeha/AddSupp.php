@@ -25,6 +25,7 @@ class AddSupp extends Component
 {
   use WithPagination;
   protected $paginationTheme = 'bootstrap';
+
   public $jeha_no;
   public $jehaname;
   public $address;

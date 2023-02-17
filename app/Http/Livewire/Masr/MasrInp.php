@@ -47,7 +47,7 @@ class MasrInp extends Component
 
     public function TakeMasNo($masno){
         $this->Modify_Mod=true;
-        $res=Masrofat::on(Auth()->user()->company)->find($masno);
+        $res=Masrofat::find($masno);
         $this->MasNo=$masno;
         $this->MasTypeNo=$res->MasType;
         $this->DetailNo=$res->MasTypeDetail;
@@ -80,7 +80,7 @@ class MasrInp extends Component
 
     public function ChkMasType(){
         if ($this->MasTypeNo){
-            if (MasTypes::on(Auth()->user()->company)->find($this->MasTypeNo)){
+            if (MasTypes::find($this->MasTypeNo)){
                 $this->emitTo('masr.masr-type-select','TakeMasTypeNo',$this->MasTypeNo);
                 $this->emitTo('masr.masr-detail-select','TakeMasType',$this->MasTypeNo);
                 $this->emit('gotonext','DetailNo');
@@ -90,7 +90,7 @@ class MasrInp extends Component
      }
     public function ChkCenter(){
         if ($this->CenterNo){
-            if (MasCenters::on(Auth()->user()->company)->find($this->CenterNo)){
+            if (MasCenters::find($this->CenterNo)){
                 $this->emitTo('masr.masr-center-select','TakeCenterNo',$this->CenterNo);
 
                 $this->emit('gotonext','Val');
@@ -101,8 +101,7 @@ class MasrInp extends Component
     }
     public function ChkDetail(){
         if ($this->DetailNo){
-            if (MasTypeDetails::on(Auth()->user()->company)
-                ->where('MasType',$this->MasTypeNo)->find($this->DetailNo)){
+            if (MasTypeDetails::where('MasType',$this->MasTypeNo)->find($this->DetailNo)){
 
                 $this->emitTo('masr.masr-detail-select','TakeDetailNo',$this->DetailNo);
 
@@ -124,7 +123,7 @@ class MasrInp extends Component
                 Rule::exists('other.MasTypeDetails')->where(function ($query) {
                 $query->where('MasType', $this->MasTypeNo);
             }),],
-            'MasTypeNo' => ['required','integer','gt:0','exists:other.MasCenters,CenterNo'],
+            'CenterNo' => ['required','integer','gt:0','exists:other.MasCenters,CenterNo'],
             'Val' => ['required','numeric','gt:0',],
             'MasDate' =>['required','date'],
 
@@ -140,7 +139,7 @@ class MasrInp extends Component
     public function Save(){
         $this->validate();
         if (!$this->Modify_Mod)
-            Masrofat::on(Auth()->user()->company)->insert([
+            Masrofat::insert([
                     'MasType'=>$this->MasTypeNo,
                     'MasTypeDetail'=>$this->DetailNo,
                     'MasCenter'=>$this->CenterNo,
@@ -150,7 +149,7 @@ class MasrInp extends Component
                     'emp'=>Auth()->user()->empno,
             ]);
         else
-            Masrofat::on(Auth()->user()->company)->where('MasNo',$this->MasNo)->update([
+            Masrofat::where('MasNo',$this->MasNo)->update([
                 'MasType'=>$this->MasTypeNo,
                 'MasTypeDetail'=>$this->DetailNo,
                 'MasCenter'=>$this->CenterNo,

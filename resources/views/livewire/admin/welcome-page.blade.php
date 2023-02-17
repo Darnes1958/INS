@@ -13,9 +13,14 @@
       <h3>{{$CompanyNameSuffix}}</h3>
     </div>
     <div class="col-md-4 ">
-      <img class="img-thumbnail "  width="174" height="96" src="{{
-                                      (!empty($admindata->profile_image))? url('upload/admin_images/'.$admindata->profile_image):
-                                      url('upload/no_image.jpg')}}" >
+
+
+            <img id="showimage" class="rounded-circle avatar-xl mt-0 pt-0" src="{{
+                      (!empty($admindata->profile_image))? url('upload/admin_images/'.$admindata->profile_image):
+                      url('upload/no_image.jpg')}}" alt="Card image cap">
+
+
+
     </div>
       @role('admin')
 

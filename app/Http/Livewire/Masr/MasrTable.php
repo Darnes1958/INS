@@ -39,15 +39,14 @@ class MasrTable extends Component
 
     public function delete(){
         $this->CloseDeleteDialog();
-        Masrofat::on(Auth()->user()->company)->where('MasNo',$this->MasNo)->delete();
+        Masrofat::where('MasNo',$this->MasNo)->delete();
 
         $this->render();
     }
     public function render()
     {
         return view('livewire.masr.masr-table',[
-            'TableList'=>MasView::on(Auth::user()->company)
-                ->where('MasDate',$this->dailydate)->paginate(15)
+            'TableList'=>MasView::where('MasDate',$this->dailydate)->paginate(15)
         ]);
     }
 }

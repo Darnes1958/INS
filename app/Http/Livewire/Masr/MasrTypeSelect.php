@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Masr;
 
+use App\Models\masr\MasTypes;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +33,7 @@ class MasrTypeSelect extends Component
   }
     public function render()
     {
-      $this->TableList=DB::connection(Auth::user()->company)->table('MasTypes')->get();
+      $this->TableList=MasTypes::get();
         return view('livewire.masr.masr-type-select',$this->TableList);
     }
 }

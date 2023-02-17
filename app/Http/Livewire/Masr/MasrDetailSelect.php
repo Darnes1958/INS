@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Masr;
 
+use App\Models\masr\MasTypeDetails;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -35,8 +36,7 @@ class MasrDetailSelect extends Component
   }
     public function render()
     {
-      $this->TableList=DB::connection(Auth::user()->company)->table('MasTypeDetails')
-        ->where('MasType',$this->MasType)->get();
+      $this->TableList=MasTypeDetails::where('MasType',$this->MasType)->get();
         return view('livewire.masr.masr-detail-select',$this->TableList);
     }
 }

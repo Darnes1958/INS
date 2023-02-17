@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Masr;
 
+use App\Models\masr\MasCenters;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -31,7 +32,7 @@ class MasrCenterSelect extends Component
   }
     public function render()
     {
-      $this->TableList=DB::connection(Auth::user()->company)->table('MasCenters')->get();
+      $this->TableList=MasCenters::get();
         return view('livewire.masr.masr-center-select',$this->TableList);
     }
 }

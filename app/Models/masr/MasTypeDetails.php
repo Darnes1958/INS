@@ -4,6 +4,7 @@ namespace App\Models\masr;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class MasTypeDetails extends Model
 {
@@ -15,4 +16,14 @@ class MasTypeDetails extends Model
     protected $primaryKey ='DetailNo';
     public $incrementing = false;
     public $timestamps = false;
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        if (Auth::check()) {
+
+            $this->connection=Auth::user()->company;
+
+        }
+    }
 }
