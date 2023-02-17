@@ -25,15 +25,27 @@ class InpBankRatio extends Component
   public $year;
   public $month;
 
+  public $BankGeted=false;
+  public $Isvalid=false;
+
   protected $listeners = [
     'TakeBank',
   ];
+  public function OpenTajModal(){
+      $this->emitTo('bank.edit-ratio','TakeTaj',$this->TajNo);
+          $this->dispatchBrowserEvent('OpenTajEdit');
+  }
+    public function CloseTajModal(){
+        $this->dispatchBrowserEvent('CloseTajEdit');
+    }
+
   public function TakeBank($bank_no){
-
-
     $res=bank::on(Auth::user()->company)->find($bank_no);
+
     $this->bank_name=$res->bank_name;
     $this->TajNo=$res->bank_tajmeeh;
+
+    $this->BankGeted=true;
     if (BankTajmeehy::on(Auth()->user()->company)->find($this->TajNo)->ratio_type==null){
         $this->bank_no=null;
       $this->dispatchBrowserEvent('mmsg','لم يتم ادخال الاعدادات للمصرف التجميعي');
@@ -48,6 +60,7 @@ class InpBankRatio extends Component
       'bank_no' => ['required','integer','gt:0', 'exists:other.bank,bank_no'],
       'year' =>['required','integer','gt:0', ],
       'month' =>['required','integer','gt:0', ],
+
     ];
   }
   protected $messages = [

@@ -1,10 +1,35 @@
 <div x-data>
+
+        <div  class="modal fade" id="TajEditModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" wire:click.prevent="CloseTajModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h3 class="modal-title fs-5" id="exampleModalToggleLabel2">ادخال مكان العمل الجديد ثم اضغط ENTER</h3>
+                    </div>
+                    <div class="modal-body">
+
+                        @livewire('bank.edit-ratio')
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
   <div class="col-md-8">
   <div class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
-    <div class="col-md-12">
+    <div class="col-md-11 ">
       @livewire('aksat.rep.bank-comp',
       ['sender' => 'bank.inp-bank-ratio',])
+
+
       @error('bank_no') <span class="error">{{ $message }}</span> @enderror
+    </div>
+    <div x-show="$wire.BankGeted" class="col-md-1 my-3">
+          <button wire:click="OpenTajModal"
+                  type="button" class="btn btn-outline-primary btn-sm fa fa-edit border-0" ></button>
     </div>
 
     <div  class="col-md-6  d-inline-flex my-2 " >
@@ -59,6 +84,13 @@
               confirmButtonText:  e.detail,
           })
       });
+      window.addEventListener('CloseTajEdit', event => {
+          $("#TajEditModal").modal('hide');
+      })
+      window.addEventListener('OpenTajEdit', event => {
+          $("#TajEditModal").modal('show');
+      })
+
   </script>
 @endpush
 
