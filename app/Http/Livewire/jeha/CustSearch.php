@@ -44,7 +44,23 @@ class CustSearch extends Component
   public function render()
   {
 
-    if ($this->jeha_type!=3 && $this->jeha_type!=13)
+      if ($this->jeha_type==123)
+          return view('livewire.jeha.cust-search', [
+              'TableList' => DB::connection(Auth()->user()->company)->table('jeha')
+                  ->select('jeha_no', 'jeha_name')
+
+                  ->where('available',1)
+                  ->when($this->Favorite==1,function ($q){
+                      $q->where('Favorite',1);
+                  })
+                  ->where('jeha_name', 'like', '%'.$this->search.'%')
+                  ->when(!Auth::user()->can('عميل خاص'),function($q){
+                      $q->where('acc_no','!=',1);
+                  })
+                  ->orderBy('jeha_no','desc')
+                  ->paginate($this->PagNo)
+          ]);
+    if ($this->jeha_type!=3 && $this->jeha_type!=13 && $this->jeha_type!=123)
      return view('livewire.jeha.cust-search', [
       'TableList' => DB::connection(Auth()->user()->company)->table('jeha')
         ->select('jeha_no', 'jeha_name')

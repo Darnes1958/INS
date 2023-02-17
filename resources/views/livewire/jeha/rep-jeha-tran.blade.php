@@ -42,7 +42,11 @@
                     <button wire:click="CloseJehaSerachModal" type="button" class="btn-close" ></button>
                 </div>
                 <div class="modal-body">
-                    @livewire('jeha.cust-search',['jeha_type'=>13])
+                    @can('تقارير الموردين')
+                     @livewire('jeha.cust-search',['jeha_type'=>123])
+                    @else
+                     @livewire('jeha.cust-search',['jeha_type'=>13])
+                    @endcan
                 </div>
             </div>
         </div>
