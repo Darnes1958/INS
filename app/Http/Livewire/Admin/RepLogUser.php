@@ -25,7 +25,9 @@ class RepLogUser extends Component
 
         return view('livewire.admin.rep-log-user',[
 
-            'users'=>  DB::table('users')->paginate(8),
+            'users'=>  DB::table('users')
+                ->orderBy('last_seen','desc')
+                ->paginate(8),
 
         ]);
     }
