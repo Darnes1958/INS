@@ -49,6 +49,11 @@
           @livewire('aksat.rep.okod.bank-sum')
         </div>
       @endif
+        @if ($rep=='placesum')
+            <div class=" themed-grid-col px-1">
+                @livewire('aksat.rep.okod.place-sum')
+            </div>
+        @endif
       @if ($rep=='bankone')
         <div class=" themed-grid-col px-1">
           @livewire('aksat.rep.okod.bank-one')

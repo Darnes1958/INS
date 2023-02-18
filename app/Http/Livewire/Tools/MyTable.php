@@ -15,9 +15,13 @@ class MyTable extends Component
   protected $paginationTheme = 'bootstrap';
 
   protected $listeners = [
-    'GetWhereEquelValue','refreshComponent' => '$refresh'
+    'GetWhereEquelValue','refreshComponent' => '$refresh','TakeTable',
   ];
 
+    public function TakeTable($post){
+        $this->TableName=$post;
+
+    }
   public function GetWhereEquelValue($ID){
     $this->WhereEquelValue=$ID;
 

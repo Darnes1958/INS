@@ -37,7 +37,7 @@ class SendKlasa extends Command
 
             storage_path('app/public/upload/invoice.pdf'),
         ];
-        $request = Request::create(route('pdfklasamail','Daibany'), 'GET');
+        $request = Request::create(route('pdfklasamail','BokreahAli'), 'GET');
         $response = app()->handle($request);
         Mail::send('emails.myTestMail', $data, function($message)use($data, $files) {
             $message->to($data["email"], $data["email"])

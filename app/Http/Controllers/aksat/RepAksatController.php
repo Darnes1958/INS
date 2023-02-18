@@ -26,6 +26,9 @@ class RepAksatController extends Controller
   function RepMainArc (){
     return view('backend.aksat.rep.rep-main-arc');
   }
+    function RepMainAll (){
+        return view('backend.aksat.rep.rep-main-all');
+    }
   function RepOkod ($rep){
 
     return view('backend.aksat.rep.rep-okod',compact('rep'));

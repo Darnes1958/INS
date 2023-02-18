@@ -44,10 +44,8 @@ class RepJehaTran extends Component
 
     public function Chkjeha(){
         if ($this->jeha_no !=null ) {
-
             $this->jeha_name = '';
             $this->jeha_type = 0;
-
             $res = jeha::on(Auth()->user()->company)->find($this->jeha_no);
             if ($res) {
                 if ($res->acc_no==1 && !Auth::user()->can('عميل خاص')) {return('special');}
@@ -55,8 +53,6 @@ class RepJehaTran extends Component
                 $this->jeha_type = $res->jeha_type;
                 if ($res->jeha_no==1) {return('amaa');}
                 if ($res->jeha_type==2) {return('supp');}
-
-
                 return ('ok');
             } else {
                 $this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ؟');

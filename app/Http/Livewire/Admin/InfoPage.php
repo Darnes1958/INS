@@ -14,12 +14,16 @@ class InfoPage extends Component
     public $CompanyName;
     public $showokod=false;
     public $showokodarc=false;
+    public $showokodall=false;
     public $showitemrep=false;
 
-    protected $listeners = ['CloseOkod','CloseOkodArc','CloseItemRep'];
+    protected $listeners = ['CloseOkod','CloseOkodArc','CloseItemRep','CloseOkodAll',];
 
     public function CloseOkod(){
         $this->showokod=false;
+    }
+    public function CloseOkodAll(){
+        $this->showokodall=false;
     }
     public function CloseOkodArc(){
         $this->showokodarc=false;
@@ -37,19 +41,29 @@ class InfoPage extends Component
     public function Okod(){
        $this->showokod=true;
        $this->showokodarc=false;
+       $this->showokodall=false;
        $this->showitemrep=false;
 
     }
     public function OkodArc(){
         $this->showokodarc=true;
         $this->showokod=false;
+        $this->showokodall=false;
         $this->showitemrep=false;
 
     }
     public function RepItem(){
         $this->showitemrep=true;
         $this->showokod=false;
+        $this->showokodall=false;
         $this->showokodarc=false;
+
+    }
+    public function OkodAll(){
+        $this->showokodarc=false;
+        $this->showokod=false;
+        $this->showokodall=true;
+        $this->showitemrep=false;
 
     }
     public function render()

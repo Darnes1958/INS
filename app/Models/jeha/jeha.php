@@ -48,7 +48,8 @@ class jeha extends Model
              ->where('jeha_name', 'LIKE', '%' . $searchKey . '%')
              ->when(!Auth::user()->can('عميل خاص'),function($q){
                  $q->where('acc_no','!=',1);
-             });
+             })
+             ->orderBy('jeha_name');
         if ($jeha_type==3)
             return self::on(Auth()->user()->company)
                 ->where('jeha_type','>',2)
@@ -56,7 +57,8 @@ class jeha extends Model
                 ->where('jeha_name', 'LIKE', '%' . $searchKey . '%')
                 ->when(!Auth::user()->can('عميل خاص'),function($q){
                     $q->where('acc_no','!=',1);
-                });
+                })
+                ->orderBy('jeha_name');
         if ($jeha_type==1 || $jeha_type==2)
             return self::on(Auth()->user()->company)
                 ->where('jeha_type','=',$jeha_type)
@@ -64,7 +66,8 @@ class jeha extends Model
                 ->where('jeha_name', 'LIKE', '%' . $searchKey . '%')
                 ->when(!Auth::user()->can('عميل خاص'),function($q){
                     $q->where('acc_no','!=',1);
-                });
+                })
+                ->orderBy('jeha_name');
     }
 
 }

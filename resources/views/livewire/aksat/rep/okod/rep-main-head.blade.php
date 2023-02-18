@@ -12,7 +12,7 @@
             </div>
             <div   class="col-md-4" >
 
-                @livewire('bank.bank-select')
+            @livewire('bank.bank-select')
             </div>
            <div class="col-md-1">
               <button wire:click="$emit('CloseOkod')"  type="button" class="btn btn-outline-danger btn-sm far fa-window-close" ></button>

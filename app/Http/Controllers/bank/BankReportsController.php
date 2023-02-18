@@ -63,6 +63,13 @@ class BankReportsController extends Controller
 
 
     }
+    function Rep_places (){
+
+
+        return view('backend.bank.rep_places');
+
+
+    }
 
 
 
