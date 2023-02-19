@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Aksat;
 
+use App\Models\aksat\ksm_type;
 use App\Models\aksat\kst_trans;
+use App\Models\aksat\kst_type;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\Rule;
@@ -26,13 +28,17 @@ class InpKstDetail extends Component
   public $notes;
   public $ksm_date;
   public $ksm;
+  public $Ksm_type=2;
 
 
   public $OpenKstDetail;
 
   protected $listeners = [
-    'nofound','NoAtUpdate','bankfound','GoResetKstDetail',
+    'nofound','NoAtUpdate','bankfound','GoResetKstDetail','TakeKsmType'
   ];
+  public function TakeKsmType($ksm_type){
+    $this->Ksm_type=$ksm_type;
+  }
   public function GoResetKstDetail(){
     $this->ResetKstDetail();
 
@@ -41,11 +47,13 @@ class InpKstDetail extends Component
   public function SaveSuccess(){
     $this->ResetKstDetail();
   }
-  public function nofound($res){
+  public function nofound($res,$ksm_type){
+    $this->Ksm_type=$ksm_type;
    $this->FillKstDetail($res);
    $this->OpenKstDetail=true;
   }
   public function NoAtUpdate($res){
+
     $this->FillKstDetail($res);
   }
   public function FillKstDetail($res){
@@ -111,7 +119,7 @@ function ResetKstDetail (){
               DB::connection(Auth()->user()->company)->table('kst_trans')->where('no',$this->D_no)->where('ser',$ser)->update([
                 'ksm'=>$ksm,
                 'ksm_date'=>$this->ksm_date,
-                'ksm_type'=>2,
+                'ksm_type'=>$this->Ksm_type,
                 'inp_date'=>date('Y-m-d'),
                 'kst_notes'=>$this->notes,
                 'emp'=>auth::user()->empno,
@@ -125,7 +133,7 @@ function ResetKstDetail (){
                 'ser'=>$max,
                 'no'=>$this->D_no,
                 'kst_date'=>$this->ksm_date,
-                'ksm_type'=>2,
+                'ksm_type'=>$this->Ksm_type,
                 'chk_no'=>0,
                 'kst'=>$this->kst,
                 'ksm_date'=>$this->ksm_date,

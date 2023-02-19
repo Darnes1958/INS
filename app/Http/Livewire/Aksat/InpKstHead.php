@@ -19,6 +19,7 @@ class InpKstHead extends Component
   public $bankname;
   public $no;
   public $acc;
+  public $Ksm_type=2;
 
   public $name;
   public $BankGet;
@@ -27,6 +28,10 @@ class InpKstHead extends Component
   public $TheNoListIsSelectd;
 
   public $The_ser;
+
+  public function ChangeKsm(){
+    $this->emitTo('aksat.inp-kst-detail','TakeKsmType',$this->Ksm_type);
+  }
 
   public function OpenMany(){
     $this->dispatchBrowserEvent('OpenKstManyModal');
@@ -144,7 +149,7 @@ public function Go(){
         $this->name=$result->name;
         $this->acc=$result->acc;
         $orderno=$result->order_no;
-        $this->emit('nofound',$result);
+        $this->emit('nofound',$result,$this->Ksm_type);
 
         $this->emit('GetTheMainNo',$this->no);
         $this->emit('GotoKstDetail',$this->no,$orderno);

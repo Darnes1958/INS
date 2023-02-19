@@ -30,6 +30,29 @@
       <input  x-bind:disabled="!$wire.BankGet" wire:model="acc" wire:keydown.enter="ChkAccAndGo"
              class="form-control"  name="acc" type="text"  id="acc" >
     </div>
+    <div class="col-md-7 mb-2">
+      <div>
+        <label   class="form-label-me">&nbsp;</label>
+      </div>
+
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" wire:model="Ksm_type" wire:click="ChangeKsm" name="inlineRadioOptions" id="inlineRadio2" value="2">
+        <label class="form-check-label" for="inlineRadio2">مصرفي</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" wire:model="Ksm_type" wire:click="ChangeKsm" name="inlineRadioOptions" id="inlineRadio1" value="1">
+        <label class="form-check-label" for="inlineRadio1">نقدا</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" wire:model="Ksm_type" wire:click="ChangeKsm" name="inlineRadioOptions" id="inlineRadio2" value="3">
+        <label class="form-check-label" for="inlineRadio2">صك</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" wire:model="Ksm_type" wire:click="ChangeKsm" name="inlineRadioOptions" id="inlineRadio2" value="4">
+        <label class="form-check-label" for="inlineRadio2">الكتروني</label>
+      </div>
+
+    </div>
      <div   class="col-md-7" >
       <label   class="form-label-me">.</label>
        <div>

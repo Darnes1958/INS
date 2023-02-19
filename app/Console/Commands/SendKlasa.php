@@ -29,7 +29,7 @@ class SendKlasa extends Command
      */
     public function handle()
     {
-        $data["email"] = "abdel_ati_m@yahoo.com";
+        $data["email"] = "ali871977@gmail.com";
         $data["title"] = "منظومة المبيعات";
         $data["body"] = " تقرير الخلاصة اليومية بتاريخ ".date('Y-m-d');
 

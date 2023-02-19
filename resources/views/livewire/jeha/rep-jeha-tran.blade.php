@@ -4,7 +4,7 @@
         <div class="col-md-1">
             <label  for="jehano" class="form-label-me">رقم الزبون</label>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
             <input wire:model="jeha_no" wire:keydown.enter="JehaKeyDown"
                    class="form-control"  type="number"  id="jehano" autofocus>
             @error('jeha_no') <span class="error">{{ $message }}</span> @enderror
@@ -12,7 +12,7 @@
         <div class="col-md-1" >
             <button wire:click="OpenJehaSerachModal" type="button" class="btn btn-outline-primary btn-sm fa fa-arrow-alt-circle-down" data-bs-toggle="modal"></button>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
            <input wire:model="jeha_name"  class="form-control  "   type="text"  id="jehaname" readonly>
         </div>
         <div class="col-md-3 " >
@@ -66,8 +66,8 @@
         <tr class="font-size-12" style="font-weight: bold">
             <td>  </td>
             <td>  رصيد سابق</td>
-            <td style="color: blue"> {{ number_format($MdenBefore,2, '.', ',') }} </td>
-            <td style="color: red"> {{ number_format($DaenBefore,2, '.', ',') }} </td>
+            <td style="color: red"> {{ number_format($MdenBefore,2, '.', ',') }} </td>
+            <td style="color: blue"> {{ number_format($DaenBefore,2, '.', ',') }} </td>
             <td>  </td>
             <td>  </td>
         </tr>
@@ -85,8 +85,8 @@
         <tr class="font-size-12" style="font-weight: bold">
             <td>  </td>
             <td>  الإجمالي</td>
-            <td style="color: blue"> {{ number_format($Mden,2, '.', ',') }} </td>
-            <td style="color: red"> {{ number_format($Daen,2, '.', ',') }} </td>
+            <td style="color: red"> {{ number_format($Mden,2, '.', ',') }} </td>
+            <td style="color: blue"> {{ number_format($Daen,2, '.', ',') }} </td>
             <td> {{ number_format($Mden-$Daen,2, '.', ',') }} </td>
             <td>  </td>
         </tr>

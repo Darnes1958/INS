@@ -47,15 +47,19 @@
           font-family: Amiri ;
       }
 
-
-      #footer {
-          height: 50px;
-
+      #header {
           position: fixed;
-          margin: 10px;
-          bottom: 0;
-          text-align: center;
+          top: -115px;
+          width: 100%;
+          height: 109px;
 
+      }
+      #footer {
+          position: fixed;
+          bottom: -25px;
+          height: 20px;
+
+          text-align: center;
       }
 
       #footer .page:after {
@@ -68,36 +72,28 @@
       }
       @page {
           size: 21cm 29.7cm ;
-          margin: 4px;
-
+          margin: 30px 40px 30px 40px;
       }
       table {
           width: 96%;
           border-collapse: collapse;
-
-          margin-right: 12px;
-          margin-bottom: 20px;
-
           font-size: 12px;
-
       }
       tr {
-
           line-height: 12px;
-
       }
       th {
           text-align: center;
           border: 1pt solid  gray;
           font-size: 12px;
           height: 30px;
-
       }
       caption {
           font-family: DejaVu Sans, sans-serif ;
 
       }
       thead {
+
           font-family: DejaVu Sans, sans-serif;
       }
 
@@ -108,15 +104,20 @@
       .page-break {
           page-break-after: always;
       }
+      br[style] {
+          display:none;
+      }
   </style>
 </head>
 <body  >
+<div class="header">
  <div>
   <label style="font-size: 20pt; margin-right: 12px;margin-bottom: 0;margin-top: 0;padding: 0;" >{{$cus->CompanyName}}</label>
  </div>
  <div >
   <label style="font-size: 16pt; margin-right: 12px;margin-bottom: 0;margin-top: 0;padding: 0;">{{$cus->CompanyNameSuffix}}</label>
  </div>
+</div>
 <br>
 <div>
 

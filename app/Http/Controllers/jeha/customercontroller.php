@@ -130,10 +130,11 @@ class customercontroller extends Controller
       ,array($request->jeha_no,$request->tran_date)));
 
     $jeha_name=jeha::on(Auth()->user()->company)->find($request->jeha_no)->jeha_name;
+    $Alraseed=$request->DaenBefore-$request->MdenBefore;
 
     $reportHtml = view('PrnView.amma.pdf-jeha-tran',
       ['RepTable'=>$res,'cus'=>$cus,'jeha_name'=>$jeha_name,'Daen'=>$request->Daen,'DaenBefore'=>$request->DaenBefore
-        ,'Mden'=>$request->Mden,'MdenBefore'=>$request->MdenBefore,'RepDate'=>$RepDate,'tran_date'=>$request->tran_date])->render();
+        ,'Mden'=>$request->Mden,'MdenBefore'=>$request->MdenBefore,'RepDate'=>$RepDate,'tran_date'=>$request->tran_date,'Alraseed'=>$Alraseed])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 
