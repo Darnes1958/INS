@@ -20,10 +20,17 @@ class PlaceSum extends Component
   public $date1;
   public $date2;
   public $RepChk=false;
+  public $PlaceType=0;
+  public $PlaceNo=0;
+  public $PlaceName='';
+
+
 
     public $orderColumn = "place_name";
     public $sortOrder = "asc";
     public $sortLink = '<i class="sorticon fas fa-angle-up"></i>';
+
+
 
     public function sortOrder($columnName=""){
         $caretOrder = "up";
@@ -37,6 +44,13 @@ class PlaceSum extends Component
         $this->sortLink = '<i class="sorticon fas fa-angle-'.$caretOrder.'"></i>';
 
         $this->orderColumn = $columnName;
+
+    }
+
+    public function selectItem($type,$no,$name){
+       $this->PlaceType=$type;
+       $this->PlaceNo=$no;
+       $this->PlaceName=$name;
 
     }
 
@@ -65,11 +79,11 @@ class PlaceSum extends Component
               $join->on('sells.place_no', '=', 'place_view.place_no')
                   ->on('sells.sell_type', '=', 'place_view.place_type');
           })
-      ->selectRaw('sells.place_no, place_name, COUNT(*) AS WCOUNT, SUM(sul) AS sumsul, SUM(sul_pay) AS sumpay,
+      ->selectRaw('sells.place_no,sells.sell_type, place_name, COUNT(*) AS WCOUNT, SUM(sul) AS sumsul, SUM(sul_pay) AS sumpay,
                             SUM(raseed) AS sumraseed, SUM(dofa) AS sumdofa, SUM(sul_tot) AS sumsul_tot
 
                  ')
-      ->groupBy('sells.place_no','place_name')
+      ->groupBy('sells.place_no','sells.sell_type','place_name')
           ->orderby($this->orderColumn,$this->sortOrder)
       ->paginate(14),
       'RepTable2'=>DB::connection(Auth()->user()->company)
@@ -79,10 +93,10 @@ class PlaceSum extends Component
               $join->on('sells.place_no', '=', 'place_view.place_no')
                   ->on('sells.sell_type', '=', 'place_view.place_type');
           })
-        ->selectRaw('sells.place_no, place_name, COUNT(*) AS WCOUNT, SUM(sul) AS sumsul, SUM(sul_pay) AS sumpay,
+        ->selectRaw('sells.place_no,sells.sell_type, place_name, COUNT(*) AS WCOUNT, SUM(sul) AS sumsul, SUM(sul_pay) AS sumpay,
                             SUM(raseed) AS sumraseed, SUM(dofa) AS sumdofa, SUM(sul_tot) AS sumsul_tot
                  ')
-          ->groupBy('sells.place_no','place_name')
+          ->groupBy('sells.place_no','sells.sell_type','place_name')
           ->whereBetween('sul_date',[$this->date1,$this->date2])
           ->orderby($this->orderColumn,$this->sortOrder)
           ->paginate(14),
@@ -91,6 +105,18 @@ class PlaceSum extends Component
         'Rppay'=>main::on(Auth()->user()->company)->whereBetween('sul_date',[$this->date1,$this->date2])->sum('sul_pay'),
         'Rrraseed'=>main::on(Auth()->user()->company)->whereBetween('sul_date',[$this->date1,$this->date2])->sum('raseed'),
         'Rccount'=>main::on(Auth()->user()->company)->whereBetween('sul_date',[$this->date1,$this->date2])->count(),
+
+        'BankTable'=>DB::connection(Auth()->user()->company)
+            ->table('main_view')
+            ->join('sells','main_view.order_no','=','sells.order_no')
+
+            ->selectRaw('bank,bank_name, COUNT(*) AS WCOUNT, SUM(sul) AS sumsul, SUM(sul_pay) AS sumpay,
+                            SUM(raseed) AS sumraseed, SUM(dofa) AS sumdofa, SUM(sul_tot) AS sumsul_tot')
+            ->where('sells.sell_type',$this->PlaceType)
+            ->where('sells.place_no',$this->PlaceNo)
+            ->groupBy('bank','bank_name')
+            ->orderby('bank')
+            ->paginate(14, ['*'], 'BankPage'),
     ]);
   }
 }
