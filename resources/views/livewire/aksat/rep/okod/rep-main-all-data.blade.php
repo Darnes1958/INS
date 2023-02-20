@@ -67,6 +67,7 @@
      @endif
      <div class="col-md-5"> </div>
      @unlessrole('info')
+       @if (\App\Models\LarSetting::first()->ArcBtn=='rep')
        @if($MainOrArc=='قائم')
           <div class="col-md-3 " >
             <a wire:click="Archive" class="btn btn-info waves-effect waves-light "><i class="fa fa-archive"> &nbsp;&nbsp;نقل للأرشيف&nbsp;&nbsp;</i></a>
@@ -76,6 +77,7 @@
                <a wire:click="Retrieve" class="btn btn-info waves-effect waves-light mx-10"><i class="fa fa-archive"> &nbsp;&nbsp;استرجاع&nbsp;&nbsp;</i></a>
            </div>
 
+       @endif
        @endif
      @endunlessrole
    </div>

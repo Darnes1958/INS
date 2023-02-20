@@ -70,9 +70,11 @@
      </div>
      <div class="col-md-7"> </div>
      @unlessrole('info')
+     @if (\App\Models\LarSetting::first()->ArcBtn=='rep')
       <div class="col-md-3 " >
         <a wire:click="Archive" class="btn btn-info waves-effect waves-light mx-10"><i class="fa fa-archive"> &nbsp;&nbsp;نقل للأرشيف&nbsp;&nbsp;</i></a>
       </div>
+     @endif
      @endunlessrole
    </div>
 

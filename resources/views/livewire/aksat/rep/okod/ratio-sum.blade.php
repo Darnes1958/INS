@@ -30,73 +30,52 @@
     <thead class="font-size-12">
     <tr>
       <th class="sort text-primary" wire:click="sortOrder('place_name')">نقطة البيع {!! $sortLink !!}</th>
-      <th class="sort text-primary" wire:click="sortOrder('WCOUNT')">عدد العقود {!! $sortLink !!}</th>
+
       <th class="sort text-primary" wire:click="sortOrder('sumsul')">اجمالي العقود {!! $sortLink !!}</th>
       <th class="sort text-primary" wire:click="sortOrder('sumpay')">المسدد {!! $sortLink !!}</th>
       <th class="sort text-primary" wire:click="sortOrder('sumraseed')">المتبقي {!! $sortLink !!}</th>
+      <th class="sort text-primary" wire:click="sortOrder('ratio')">العمولة {!! $sortLink !!}</th>
+
     </tr>
     </thead>
     <tbody id="addRow" class="addRow">
 
     @if ($RepTable )
-      @if ($RepChk)
-      @foreach($RepTable2 as $key=>$item)
-        <tr class="font-size-12">
-          <td> {{ $item->place_name }}  </td>
-          <td> {{  number_format($item->WCOUNT,0, '.', ',') }} </td>
-          <td> {{  number_format($item->sumsul,0, '.', ',') }} </td>
-          <td> {{  number_format($item->sumpay,0, '.', ',') }} </td>
-          <td> {{  number_format($item->sumraseed,0, '.', ',') }} </td>
-        </tr>
-        @php $count+=$item->WCOUNT;$sul+=$item->sumsul;$pay+=$item->sumpay;$raseed+=$item->sumraseed;
-             @endphp
-      @endforeach
-      @else
+
         @foreach($RepTable as $key=>$item)
           <tr class="font-size-12">
-            <td><a wire:click="selectItem({{ $item->sell_type }},{{ $item->place_no }},'{{ $item->place_name }}')" href="#">{{ $item->place_name }}</a>  </td>
-            <td> {{  number_format($item->WCOUNT,0, '.', ',') }} </td>
+            <td><a wire:click="selectItem({{ $item->place_type }},{{ $item->place_no }},'{{ $item->place_name }}')" href="#">{{ $item->place_name }}</a>  </td>
+
             <td> {{  number_format($item->sumsul,0, '.', ',') }} </td>
             <td> {{  number_format($item->sumpay,0, '.', ',') }} </td>
             <td> {{  number_format($item->sumraseed,0, '.', ',') }} </td>
+            <td> {{  number_format($item->ratio,0, '.', ',') }} </td>
           </tr>
         @endforeach
-      @endif
-    @endif
+
+
     </tbody>
-      @if (! $RepChk)
-      <tbody>
-      <tr style="background: #9dc1d3;">
-          <td  style="text-align: center;"> الإجمــالي  </td>
-          <td style="font-weight: bold"> {{ number_format($ccount,0, '.', ',') }} </td>
-          <td style="font-weight: bold"> {{ number_format($ssul,0, '.', ',') }} </td>
-          <td style="font-weight: bold"> {{ number_format($ppay,0, '.', ',') }} </td>
-          <td style="font-weight: bold"> {{ number_format($rraseed,0, '.', ',') }} </td>
-      </tr>
-      </tbody>
-      @else
+
           <tbody>
           <tr style="background: #9dc1d3;">
               <td  style="text-align: center;"> الإجمــالي  </td>
-              <td style="font-weight: bold"> {{ number_format($Rccount,0, '.', ',') }} </td>
-              <td style="font-weight: bold"> {{ number_format($Rssul,0, '.', ',') }} </td>
-              <td style="font-weight: bold"> {{ number_format($Rppay,0, '.', ',') }} </td>
-              <td style="font-weight: bold"> {{ number_format($Rrraseed,0, '.', ',') }} </td>
+
+              <td style="font-weight: bold"> {{ number_format($ssul,0, '.', ',') }} </td>
+              <td style="font-weight: bold"> {{ number_format($ppay,0, '.', ',') }} </td>
+              <td style="font-weight: bold"> {{ number_format($rraseed,0, '.', ',') }} </td>
               <td > </td>
               <td style="font-weight: bold">  </td>
               <td style="font-weight: bold">  </td>
 
           </tr>
           </tbody>
-      @endif
-  </table>
 
+  </table>
+   @endif
   @if ($RepTable )
-    @if ($RepChk)
-    {{ $RepTable2->links() }}
-    @else
+
       {{ $RepTable->links() }}
-    @endif
+
   @endif
  </div>
 
@@ -106,10 +85,11 @@
          <thead class="font-size-12">
          <tr>
              <th>اسم المصرف</th>
-             <th>عدد العقود</th>
+
              <th>اجمالي العقود</th>
              <th>المسدد</th>
              <th>المتبقي</th>
+           <th>العمولة</th>
          </tr>
          </thead>
          <tbody id="addRow" class="addRow">
@@ -118,10 +98,12 @@
                  @foreach($BankTable as $key=>$item)
                      <tr class="font-size-12">
                          <td> {{ $item->bank_name }} </td>
-                         <td> {{ $item->WCOUNT }} </td>
-                         <td> {{ $item->sumsul }} </td>
-                         <td> {{ $item->sumpay }} </td>
-                         <td> {{ $item->sumraseed }} </td>
+
+                         <td> {{ number_format($item->sumsul,0, '.', ',') }} </td>
+                         <td> {{ number_format($item->sumpay,0, '.', ',') }} </td>
+                         <td> {{ number_format($item->sumraseed,0, '.', ',') }} </td>
+                         <td> {{ number_format($item->ratio,0, '.', ',') }} </td>
+
                      </tr>
                  @endforeach
          @endif

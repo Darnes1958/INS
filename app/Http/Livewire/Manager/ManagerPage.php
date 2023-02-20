@@ -11,6 +11,7 @@ class ManagerPage extends Component
     $this->emitTo('manager.inp-userm','show',False);
     $this->emitTo('manager.inp-rolem','show',False);
     $this->emitTo('admin.rep-old-roles','show',False);
+    $this->emitTo('manager.lar-setting','show',False);
 
   }
   public function InpUser(){
@@ -28,6 +29,11 @@ class ManagerPage extends Component
 
         $this->emitTo('admin.rep-old-roles','show',True);
     }
+  public function LarSetting(){
+    $this->FalseAll();
+
+    $this->emitTo('manager.lar-setting','show',True);
+  }
 
     public function render()
     {

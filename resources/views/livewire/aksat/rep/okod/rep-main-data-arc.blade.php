@@ -57,9 +57,11 @@
 
 
      @unlessrole('info')
+   @if (\App\Models\LarSetting::first()->ArcBtn=='rep')
      <div  >
        <a wire:click="Retrieve" class="btn btn-info waves-effect waves-light mx-10"><i class="fa fa-archive"> &nbsp;&nbsp;استرجاع&nbsp;&nbsp;</i></a>
      </div>
+   @endif
      @endunlessrole
 
 

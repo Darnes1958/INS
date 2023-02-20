@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Sell;
 
+use App\Models\LarSetting;
 use App\Models\sell\sells;
 use App\Models\jeha\jeha;
 use App\Models\stores\halls_names;
@@ -225,13 +226,18 @@ public function ChkPlace(){
 
     public function mount()
     {
+
         $conn=Auth()->user()->company;
-        $this->order_no=DB::connection($conn)->table('sells')->max('order_no')+1;
+        if (($this->price_type==2 and LarSetting::first()->SellTakInc=='inc') ||
+            ($this->price_type==1 and LarSetting::first()->SellNakInc=='inc') )
+         $this->order_no=DB::connection($conn)->table('sells')->max('order_no')+1;
+        else $this->order_no='';
+
         $this->order_date=date('Y-m-d');
         $this->jeha_no='';
         $this->jeha_name='';
         $this->jeha_type='1';
-      $this->HeadDataOpen=false;
+        $this->HeadDataOpen=false;
         $this->HeadOpen=True;
 
 

@@ -15,16 +15,23 @@
          منح وحجب الصلاحيات
        </button>
      </div>
-       <div class="col-md-2">
-           <button  wire:click="RepRole" class=" mx-1 btn btn-primary">
-               استفسار عن الباقات و الصلاحيات
-           </button>
-       </div>
+     <div class="col-md-3">
+         <button  wire:click="RepRole" class=" mx-1 btn btn-primary">
+             استفسار عن الباقات و الصلاحيات
+         </button>
+     </div>
+     <div class="col-md-2">
+       <button  wire:click="LarSetting" class=" mx-1 btn btn-primary">
+         اعدادات عامة
+       </button>
+     </div>
+
    </div>
 
     @livewire('manager.inp-userm')
     @livewire('manager.inp-rolem')
     @livewire('admin.rep-old-roles')
+    @livewire('manager.lar-setting')
 
 
 
