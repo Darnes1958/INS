@@ -20,7 +20,7 @@
         <input class="form-check-input" type="radio" wire:model="JehaRadio" wire:click="ChangeJeha"  value="Cust">
         <label class="form-check-label" >زبائن</label>
       </div>
-      @can('ايصالات الموردين')
+      @can('ايصالات موردين')
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" wire:model="JehaRadio" wire:click="ChangeJeha"  value="Supp">
         <label class="form-check-label" >موردين</label>

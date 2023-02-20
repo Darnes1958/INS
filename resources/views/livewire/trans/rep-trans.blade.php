@@ -26,7 +26,7 @@
         <label class="form-check-label" >الكل</label>
       </div>
     </div>
-    @can('ايصالات الموردين')
+    @can('ايصالات موردين')
     <div class="col-md-2">
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="checkbox" wire:model="Supp_Only"  name="inlineRadioOptions" id="inlineRadio1" value="false">

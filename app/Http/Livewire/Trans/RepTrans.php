@@ -71,7 +71,7 @@ class RepTrans extends Component
   }
   public function mount(){
     $user=Auth::user();
-    if ($user->can('ايصالات الموردين')) $this->NoSupp=true ;
+    if ($user->can('ايصالات موردين')) $this->NoSupp=true ;
       else $this->NoSupp=false;
   }
   public function render()
