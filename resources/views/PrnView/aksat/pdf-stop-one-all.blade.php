@@ -54,8 +54,10 @@
   <br>
   <br><br>
   <div style="text-align: left; margin-left: 100px; font-size: 14pt;">التوقيع ...................  </div>
-    <div style="text-align: left; margin-left: 100px;font-size: 14pt;">{{$CompMan}}  </div>
-  <div style="text-align: left; margin-left: 100px;font-size: 14pt;">مدير الشركة  </div>
+    <div style="display:flex; flex-direction: row; justify-content:
+     center; align-items: center; margin-right: 80px; font-size: 14pt;">
+
+  <div style="text-align: left; margin-left: 100px;font-size: 14pt;"> مفوض الشركة / {{$CompMan}}</div>
   <div class="page-break"></div>
   @endforeach
 @endsection
