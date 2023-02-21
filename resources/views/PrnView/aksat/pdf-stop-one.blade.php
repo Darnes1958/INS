@@ -46,6 +46,7 @@
 <br>
 <br><br>
 <div style="text-align: left; margin-left: 100px; font-size: 14pt;">التوقيع ...................  </div>
-<div style="text-align: left; margin-left: 100px;font-size: 14pt;">مدير الشركة  </div>
+<div style="text-align: left; margin-left: 100px;font-size: 14pt;">{{$CompMan}}  </div>
+<div style="text-align: left; margin-left: 100px;font-size: 14pt;">مفوض الشركة  </div>
 
 @endsection

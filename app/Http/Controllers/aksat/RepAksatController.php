@@ -191,7 +191,7 @@ class RepAksatController extends Controller
 
     $reportHtml = view('PrnView.aksat.pdf-stop-one',
       ['cus'=>$cus,'bank_name'=>$taj->TajName,'name'=>$request->name,'acc'=>$request->acc,
-        'kst'=>$request->kst,'comp_name'=>$company->CompName,'TajAcc'=>$taj->TajAcc])->render();
+        'kst'=>$request->kst,'comp_name'=>$company->CompName,'CompMan'=>$company->CompMan,'TajAcc'=>$taj->TajAcc])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 
@@ -219,7 +219,7 @@ class RepAksatController extends Controller
     $company=Companies::on(Auth::user()->company)->where('CompNo',$taj->CompNo)->first();
 
     $reportHtml = view('PrnView.aksat.pdf-stop-one-all',
-      ['res'=>$res,'cus'=>$cus,'bank_name'=>$taj->TajName,'comp_name'=>$company->CompName,'TajAcc'=>$taj->TajAcc])->render();
+      ['res'=>$res,'cus'=>$cus,'bank_name'=>$taj->TajName,'comp_name'=>$company->CompName,'CompMan'=>$company->CompMan,'TajAcc'=>$taj->TajAcc])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 
