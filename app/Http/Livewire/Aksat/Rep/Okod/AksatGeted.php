@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class KstGeted extends Component
+class AksatGeted extends Component
 {
   use WithPagination;
   protected $paginationTheme = 'bootstrap';
@@ -16,9 +16,32 @@ class KstGeted extends Component
   public $bank_name;
   public $search;
   public $date1,$date2,$rep_date1,$rep_date2;
+  public $RepRadio='Geted';
+
+
+  public $orderColumn = "no";
+  public $sortOrder = "asc";
+  public $sortLink = '<i class="sorticon fas fa-angle-up"></i>';
   protected $listeners = [
     'TakeBank',
   ];
+
+
+
+  public function sortOrder($columnName=""){
+    $caretOrder = "up";
+    if($this->sortOrder == 'asc'){
+      $this->sortOrder = 'desc';
+      $caretOrder = "down";
+    }else{
+      $this->sortOrder = 'asc';
+      $caretOrder = "up";
+    }
+    $this->sortLink = '<i class="sorticon fas fa-angle-'.$caretOrder.'"></i>';
+
+    $this->orderColumn = $columnName;
+
+  }
 
   public function TakeBank($bank_no){
     $this->bank_no=$bank_no;
@@ -77,43 +100,24 @@ class KstGeted extends Component
   }
     public function render()
     {
-      return view('livewire.aksat.rep.okod.kst-geted',[
-        'OkodTable'=>DB::connection(Auth()->user()->company)->table('main')
-          ->join('sells','main.order_no','=','sells.order_no')
-          ->join('place_view', function ($join) {
-            $join->on('sells.place_no', '=', 'place_view.place_no')
-              ->on('sells.sell_type', '=', 'place_view.place_type');
-          })
-          ->selectRaw('place_view.place_name,sum(main.sul_tot) sul_tot')
-          ->groupBy('place_view.place_name')
-          ->whereBetween('main.sul_date',[$this->rep_date1,$this->rep_date2])
-          ->where('main.bank', '=', $this->bank_no)
-          ->paginate(15),
-
-        'AksatTable'=>DB::connection(Auth()->user()->company)->table('main')
+      return view('livewire.aksat.rep.okod.aksat-geted',[
+        'GetedTable'=>DB::connection(Auth()->user()->company)->table('main')
           ->join('kst_trans','main.no','=','kst_trans.no')
-          ->join('sells','main.order_no','=','sells.order_no')
-          ->join('place_view', function ($join) {
-            $join->on('sells.place_no', '=', 'place_view.place_no')
-              ->on('sells.sell_type', '=', 'place_view.place_type');
-          })
-          ->selectRaw('place_view.place_name,sum(kst_trans.ksm) ksm')
-          ->groupBy('place_view.place_name')
+          ->selectRaw('main.*,kst_trans.ksm,Kst_trans.ksm_date')
           ->whereBetween('kst_trans.ksm_date',[$this->rep_date1,$this->rep_date2])
+          ->where('ksm','!=',0)
           ->where('main.bank', '=', $this->bank_no)
+          ->orderby($this->orderColumn,$this->sortOrder)
           ->paginate(15),
-        'SumAksat'=>DB::connection(Auth()->user()->company)->table('main')
+        'NotGetedTable'=>DB::connection(Auth()->user()->company)->table('main')
           ->join('kst_trans','main.no','=','kst_trans.no')
-          ->whereBetween('kst_trans.ksm_date',[$this->rep_date1,$this->rep_date2])
+          ->selectRaw('main.no,name,sul_date,acc,sul,sul_pay,raseed,kst_count,main.kst,max(ksm_date) as ksm_date')
+          ->whereNotBetween('kst_trans.ksm_date',[$this->rep_date1,$this->rep_date2])
+          ->where('raseed','>',0)
           ->where('main.bank', '=', $this->bank_no)
-          ->sum('ksm'),
-        'SumOkod'=>DB::connection(Auth()->user()->company)->table('main')
-          ->whereBetween('sul_date',[$this->rep_date1,$this->rep_date2])
-          ->where('bank', '=', $this->bank_no)
-          ->sum('sul_tot'),
-
-
+          ->groupBy('main.no','name','sul_date','acc','sul','sul_pay','raseed','kst_count','main.kst')
+          ->orderby($this->orderColumn,$this->sortOrder)
+          ->paginate(15),
       ]);
-
     }
 }

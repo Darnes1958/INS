@@ -11,6 +11,11 @@
           @livewire('aksat.rep.okod.kst-geted')
         </div>
       @endif
+      @if ($rep=='aksatgeted')
+        <div class=" themed-grid-col px-1">
+          @livewire('aksat.rep.okod.aksat-geted')
+        </div>
+      @endif
 
       @if ($rep=='before')
         <div class=" themed-grid-col px-1">

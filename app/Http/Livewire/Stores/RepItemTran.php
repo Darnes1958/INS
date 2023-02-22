@@ -9,9 +9,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class RepItemTran extends Component
 {
+  use WithPagination;
+  protected $paginationTheme = 'bootstrap';
+
   public $item_no;
 
   public $item_name;
