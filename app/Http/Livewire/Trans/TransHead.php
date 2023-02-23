@@ -23,6 +23,7 @@ class TransHead extends Component
   public $val;
   public $notes;
   public $impexp=1;
+  public $IsSave=false;
 
   public $ThePayNoListIsSelectd;
 
@@ -112,11 +113,12 @@ class TransHead extends Component
     'tran_date.required'=>'يجب ادخال تاريخ صحيح',
   ];
   public function DoSave(){
+    if ($this->IsSave) return;
     $this->validate();
     if (!$this->ChkTypeAndGo()) $this->emit('gotonext','tran_type');
     if (!$this->ChkJehaAndGo()) $this->emit('gotonext','jeha');
 
-
+    $this->TranNo=trans::on(Auth()->user()->company)->max('tran_no')+1;
     trans::on(Auth()->user()->company)->insert([
       'tran_no'=>$this->TranNo,
       'jeha'=>$this->jeha,
@@ -134,7 +136,7 @@ class TransHead extends Component
       'inp_date'=>date('Y-m-d'),
       'available'=>1,
     ]);
-
+    $this->IsSave=true;
     $this->jeha=null;
     $this->val=null;
     $this->notes=null;
@@ -163,8 +165,7 @@ public function mount(){
 }
   public function render()
    {
-
-
+      $this->IsSave=false;
       $this->TranNo=trans::on(Auth()->user()->company)->max('tran_no')+1;
       return view('livewire.trans.trans-head');
    }

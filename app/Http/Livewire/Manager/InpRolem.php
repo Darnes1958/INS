@@ -31,11 +31,13 @@ class InpRolem extends Component
 
   }
   public function selectPushRole($id){
+    if (! $this->UserNo) {$this->dispatchBrowserEvent('mmsg','يجب اختيار مستخدم'); return;};
     $user=User::where('id',$this->UserNo)->first();
     $role=Role::findById($id)->name;
     $user->assignRole($role);
   }
   public function selectPushPer($id){
+    if (! $this->UserNo) {$this->dispatchBrowserEvent('mmsg','يجب اختيار مستخدم'); return;};
     $user=User::where('id',$this->UserNo)->first();
     $per=Permission::findById($id)->name;
     $user->givePermissionTo($per);
@@ -43,12 +45,14 @@ class InpRolem extends Component
   }
 
   public function selectPullRole($id){
+    if (! $this->UserNo) {$this->dispatchBrowserEvent('mmsg','يجب اختيار مستخدم'); return;};
     $user=User::where('id',$this->UserNo)->first();
     $role=Role::findById($id)->name;
     $user->removeRole($role);
 
   }
   public function selectPullPer($id){
+    if (! $this->UserNo) {$this->dispatchBrowserEvent('mmsg','يجب اختيار مستخدم'); return;};
     $user=User::where('id',$this->UserNo)->first();
     $per=Permission::findById($id)->name;
     $user->revokePermissionTo($per);

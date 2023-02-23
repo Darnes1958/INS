@@ -165,12 +165,13 @@
           <table class="table-sm table-bordered " width="100%"  id="orderlist" >
               <thead>
               <tr style="background: #9dc1d3">
-                  <th width="15%">رقم الصنف</th>
+                  <th width="8%">رقم الصنف</th>
                   <th>اسم الصنف </th>
-                  <th width="10%">الكمية</th>
-                  <th width="15%">السعر </th>
-                  <th width="18%">المجموع</th>
-
+                  <th width="8%">الكمية</th>
+                <th width="12%">سعر الشراء</th>
+                <th width="12%">سعر التكلفة</th>
+                <th width="12%">مجموع الشراء</th>
+                <th width="12%">مجموع التكلفة</th>
               </tr>
               </thead>
               <tbody id="addRow" class="addRow">
@@ -180,8 +181,10 @@
                       <td style="color: #0c63e4; text-align: center"> {{ $item['item_no'] }} </td>
                       <td > {{ $item['item_name'] }} </td>
                       <td style=" text-align: center"> {{ $item['quant'] }} </td>
+                      <td> {{ $item['price_input'] }} </td>
                       <td> {{ $item['price'] }} </td>
                       <td> {{ $item['sub_tot'] }}</td>
+                      <td> {{ $item['sub_cost'] }}</td>
                   </tr>
               @endforeach
               </tbody>

@@ -23,7 +23,7 @@ class OrderSellHead extends Component
 {
 
     public $ToSal_L;
-    public $ToSal=true;
+    public $ToSal;
 
 
     public $order_no;
@@ -35,7 +35,7 @@ class OrderSellHead extends Component
     public $st_name;
     public $jeha_name;
 
-    public $OredrSellRadio='Makazen';
+    public $OredrSellRadio;
     public $PlaceLabel='المخزن';
 
     public $price_type=1;
@@ -226,7 +226,8 @@ public function ChkPlace(){
 
     public function mount()
     {
-
+        $this->OredrSellRadio=LarSetting::first()->SellSalOrMak;
+        $this->ToSal=(LarSetting::first()->ToSal=='yes');
         $conn=Auth()->user()->company;
         if (($this->price_type==2 and LarSetting::first()->SellTakInc=='inc') ||
             ($this->price_type==1 and LarSetting::first()->SellNakInc=='inc') )
@@ -261,6 +262,7 @@ public function ChkPlace(){
         $this->emit('mountdetail',$this->OredrSellRadio,$this->stno,$this->st_name,$this->price_type);
 
         $this->emitTo('stores.search-item','TakeItemType',$this->OredrSellRadio,$this->stno);
+
         return (true);
     }
 
@@ -279,9 +281,10 @@ public function ChkPlace(){
             $records = [];
             $this->isEmpty = __('Nothings Found.');
         }
-        $conn=Auth()->user()->company;
-        $this->stores_names=DB::connection($conn)->table('stores_names')->get();
-        $this->halls_names=DB::connection($conn)->table('halls_names')->get();
+
+
+        $this->stores_names=DB::connection(Auth::user()->company)->table('stores_names')->get();
+        $this->halls_names=DB::connection(Auth::user()->company)->table('halls_names')->get();
         return view('livewire.sell.order-sell-head',[
             'stores_names'=>$this->stores_names,
             'halls_names'=>$this->halls_names,

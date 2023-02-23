@@ -60,6 +60,8 @@ class InpMainHead extends Component
   public $TheOrderNoListIsSelectd;
   public $ThePlaceNoListIsSelectd;
 
+  public $IsSave=false;
+
   public function OpenPlace(){
 
     $this->dispatchBrowserEvent('OpenPlace');
@@ -167,6 +169,7 @@ class InpMainHead extends Component
     else {$this->emit('goto','sul_date');};}
   }
   public function ChkOrderAndGo(){
+    $this->IsSave=false;
    $res=sells_view::on(Auth()->user()->company)
      ->where('price_type',2)
      ->where('order_no',$this->orderno)
@@ -288,7 +291,9 @@ class InpMainHead extends Component
     'sul_date.required'=>'يجب ادخال تاريخ صحيح',
   ];
   public function SaveCont(){
-      $this->validate();
+    if ($this->IsSave) return;
+    $this->validate();
+
 
       DB::connection(Auth()->user()->company)->beginTransaction();
       try {

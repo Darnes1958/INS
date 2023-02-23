@@ -85,22 +85,26 @@
         <label style="margin-right: 12px;">صدرت من : </label>
     </div>
     <br>
-  <table  width="100%"   align="right" >
+  <table  width="100%"   align="right" style="border: none;">
 
     <thead style=" font-family: DejaVu Sans, sans-serif; margin-top: 8px;" >
     <tr  style="background: #9dc1d3;" >
-        <th width="18%">المجموع</th>
-        <th width="15%">السعر </th>
-        <th width="10%">الكمية</th>
+        <th width="14%">المجموع بالتكلفة</th>
+        <th width="12%">المجموع</th>
+        <th width="12%">سعر التكلفة </th>
+        <th width="12%">السعر </th>
+        <th width="8%">الكمية</th>
         <th>اسم الصنف </th>
-        <th  width="15%">رقم الصنف</th>
+        <th  width="8%">رقم الصنف</th>
     </tr>
     </thead>
     <tbody style="margin-bottom: 40px; ">
     @foreach($orderdetail as $key => $item)
       <tr >
+          <td style=" text-align: right;"> {{ $item['sub_cost'] }}</td>
           <td style=" text-align: right;"> {{ $item['sub_tot'] }}</td>
           <td style=" text-align: right;"> {{ $item['price'] }} </td>
+          <td style=" text-align: right;"> {{ $item['price_input'] }} </td>
           <td style="text-align: center;"> {{ $item['quant'] }} </td>
           <td style=" text-align: right;"> {{ $item['item_name'] }} </td>
           <td style="color: #0c63e4; text-align: center;"> {{ $item['item_no'] }} </td>
@@ -113,28 +117,47 @@
     @endforeach
     </tbody>
       <tbody>
-      <tr  >
-          <td style="font-weight: bold;text-align: right;">{{$res->tot1}}</td>
-          <td style="padding: 4px;" > إجمالي الفاتورة </td>
-          <td ></td>
-          <td ></td>
-          <td ></td>
+      <tr style="border-bottom: none;border-right: none;border-left: none;">
+        <td style="font-weight: bold;text-align: right;border: white solid 4pt; text-align: center;background: lightgray;">{{$res->tot1}}</td>
+        <td style="padding: 4px;border: none;" > إجمالي الفاتورة </td>
+        <td style="border: none;"></td>
+        <td style="border: none;"></td>
+        <td style="border: none;"></td>
+        <td style="border: none;"></td>
+        <td style="border: none;"></td>
       </tr>
-      <tr >
-          <td style="font-weight: bold;text-align: right;">{{$res->ksm}}</td>
-          <td style="padding: 4px;" >الخصم </td>
-          <td style="font-weight: bold;text-align: right;">{{$res->cash}}</td>
-          <td style="padding: 4px;">المدفوع </td>
-          <td ></td>
+      <tr style="border: none;">
+        <td style="font-weight: bold;text-align: right;border: white solid 4pt;text-align: center;background: lightgray;">{{$res->ksm}}</td>
+        <td style="padding: 4px;border: none;" >الخصم </td>
+        <td style="font-weight: bold;text-align: right;border: white solid 4pt;text-align: center;background: lightgray;">{{$res->cash}}</td>
+        <td style="padding: 4px;border: none;">المدفوع </td>
+        <td style="border: none;"></td>
+        <td style="border: none;"></td>
+        <td style="border: none;"></td>
 
+
+      </tr >
+
+      @if($res->tot_charges!=0)
+      <tr style="border: none;" >
+        <td style="font-weight: bold;text-align: right;border: white solid 4pt; text-align: center;background: lightgray;">{{$res->tot_charges}}</td>
+        <td style="padding: 4px;border: none;" > تكاليف إضافية </td>
+        <td style="border: none;"></td>
+        <td style="border: none;"></td>
+        <td style="border: none;"></td>
+        <td style="border: none;"></td>
+        <td style="border: none;"></td>
       </tr>
-      <tr >
-          <td style="font-weight: bold;text-align: right;">{{$res->tot}}</td>
-          <td style="padding: 4px;">الصافي </td>
-          <td style="font-weight: bold;text-align: right;">{{$res->not_cash}}</td>
-          <td style="padding: 4px;">المتبقي </td>
-          <td ></td>
+      @endif
 
+      <tr style="border: none;">
+        <td style="font-weight: bold;text-align: right;border: white solid 4pt;text-align: center;background: lightgray;">{{$res->tot}}</td>
+        <td style="padding: 4px;border: none;">الصافي </td>
+        <td style="font-weight: bold;text-align: right;border: white solid 4pt;text-align: center;background: lightgray;">{{$res->not_cash}}</td>
+        <td style="padding: 4px;border: none;">المتبقي </td>
+        <td style="border: none;"></td>
+        <td style="border: none;"></td>
+        <td style="border: none;"></td>
       </tr>
 
       </tbody>

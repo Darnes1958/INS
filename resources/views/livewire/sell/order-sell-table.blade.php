@@ -86,7 +86,9 @@
 
     <div class="form-group" >
 
-        <button wire:click.prevent="store()" class="btn btn-info" id="storeButton">تخزين الفاتورة</button>
+        <button wire:click.prevent="store()"
+
+                class="btn btn-info" id="storeButton">تخزين الفاتورة</button>
 
         @if (session()->has('message'))
             <div class="alert alert-success">

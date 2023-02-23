@@ -127,13 +127,6 @@
             </div>
         </div>
 
-
-
-
-
-
-
-
         <div class="col-md-6">
             <label  for="order_no" class="form-label-me ">رقم الفاتورة</label>
             <input wire:model="order_no"  wire:keydown.enter="$emit('gotohead','date')" type="text" class=" form-control "

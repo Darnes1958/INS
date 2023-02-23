@@ -33,6 +33,8 @@ class OrderSellTable extends Component
     public $ToSal_L;
     public $OrderChanged=false;
 
+    public $IsSave=false;
+
     protected $listeners = [
         'putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable'
     ];
@@ -40,8 +42,10 @@ class OrderSellTable extends Component
         $this->mount();
     }
 
-    public function store(){
-        $conn=Auth()->user()->company;
+
+  public function store(){
+        if ($this->IsSave) return;
+        $this->OrderChanged=false;
         if (count($this->orderdetail)==1){
             session()->flash('message', 'لم يتم ادخال اصناف بعد');
         }
@@ -50,7 +54,7 @@ class OrderSellTable extends Component
             {$this->order_no=sells::on(auth()->user()->company)->max('order_no')+1;
                $this->OrderChanged=true;}
             $this->HasRaseed=true;
-            DB::connection($conn)->beginTransaction();
+            DB::connection(Auth()->user()->company)->beginTransaction();
             try {
               if ($this->ToSal && $this->PlaceType=='Makazen') {
                 $per_no=store_exp::on(Auth()->user()->company)->max('per_no')+1;
@@ -76,7 +80,7 @@ class OrderSellTable extends Component
               }
 
                if ($this->PlaceType=='Makazen') $pt=1; else $pt=2;
-                DB::connection($conn)->table('sells')->insert([
+                DB::connection(Auth()->user()->company)->table('sells')->insert([
                     'order_no' => $this->order_no,
                     'jeha' => $this->jeha_no,
                     'order_date' => $this->order_date,
@@ -106,7 +110,7 @@ class OrderSellTable extends Component
                     if ($this->PlaceType=='Makazen')
                      {
                       $pt=1;
-                      $st_quant=DB::connection($conn)->table('stores')
+                      $st_quant=DB::connection(Auth()->user()->company)->table('stores')
                         ->where('st_no', '=', $this->st_no)
                         ->where('item_no','=',$item['item_no'])
                         ->pluck('raseed');
@@ -122,7 +126,7 @@ class OrderSellTable extends Component
                      }
 
                     if ($this->HasRaseed)
-                    {DB::connection($conn)->table('sell_tran')->insert([
+                    {DB::connection(Auth()->user()->company)->table('sell_tran')->insert([
                         'order_no' => $this->order_no,
                         'item_no' => $item['item_no'],
                         'quant' => $item['quant'],
@@ -134,9 +138,8 @@ class OrderSellTable extends Component
                     ]);}
                 }
                 if ($this->HasRaseed && $this->madfooh != 0) {
-
-                    $tran_no = trans::on($conn)->max('tran_no') + 1;
-                    DB::connection($conn)->table('trans')->insert([
+                    $tran_no = trans::on(Auth()->user()->company)->max('tran_no') + 1;
+                    DB::connection(Auth()->user()->company)->table('trans')->insert([
                         'tran_no' => $tran_no,
                         'jeha' => $this->jeha_no,
                         'val' => $this->madfooh,
@@ -149,29 +152,30 @@ class OrderSellTable extends Component
                         'kyde' => 0,
                         'emp' => Auth::user()->empno,
                         'order_no' => $this->order_no
-
                     ]);
                 }
               if ($this->HasRaseed)
               {
-                DB::connection($conn)->commit();
+                DB::connection(Auth()->user()->company)->commit();
                 if ($this->OrderChanged){
                     $this->OrderChanged=false;
                     $this->dispatchBrowserEvent('mmsg', 'تم تغيير رقم الفاتورة وتخرينها بالرقم : '.$this->order_no);
                 }
+                $this->IsSave=true;
                 $this->emit('mounttable');
                 $this->emit('dismountdetail');
                 $this->emit('mounthead');
-              } else {DB::connection($conn)->rollback();}
+              } else {DB::connection(Auth()->user()->company)->rollback();}
             } catch (\Exception $e) {
               //info($e);
-                DB::connection($conn)->rollback();
+                DB::connection(Auth()->user()->company)->rollback();
                 $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
             }
         }
     }
     public function HeadBtnClick($Wor,$wd,$wjh,$wplace,$wst,$price_type,$ToSal,$ToSal_L)
     {
+        $this->IsSave=false;
         $this->ToSal=$ToSal;
         $this->ToSal_L=$ToSal_L;
         $this->order_no=$Wor;

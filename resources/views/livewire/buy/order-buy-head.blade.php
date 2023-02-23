@@ -18,7 +18,7 @@
       <div class="row g-3 ">
         <div class="col-md-4">
           <label  for="jehano" class="form-label-me">المورد</label>
-          <input wire:model="jeha" wire:keydown.enter="$emit('gotonext','storeno')"
+          <input wire:model="jeha" wire:keydown.enter="$emit('gotonext','st_no')"
                  class="form-control  "
                  name="jehano" type="text"  id="jehano" >
           @error('jeha') <span class="error">{{ $message }}</span> @enderror

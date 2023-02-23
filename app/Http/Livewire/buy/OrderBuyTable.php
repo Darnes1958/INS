@@ -33,6 +33,7 @@ class OrderBuyTable extends Component
     public $OrderChanged=false;
     public $ChargeDetail=[];
     public $ChargeTot;
+    public $IsSave=false;
 
    protected $listeners = [
         'open','putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable',
@@ -52,7 +53,7 @@ class OrderBuyTable extends Component
    }
 
    public function store(){
-
+       if ($this->IsSave) return;
        if (count($this->orderdetail)==1){
            session()->flash('message', 'لم يتم ادخال اصناف بعد');
 
@@ -177,7 +178,7 @@ class OrderBuyTable extends Component
                   $this->OrderChanged=false;
                   $this->dispatchBrowserEvent('mmsg', 'تم تغيير رقم الفاتورة وتخرينها بالرقم : '.$this->order_no);
               }
-
+              $this->IsSave=true;
               $this->emit('mounttable');
               $this->emit('dismountdetail');
               $this->emit('mounthead');
@@ -193,6 +194,7 @@ class OrderBuyTable extends Component
    }
    public function HeadBtnClick($Wor,$wd,$wjh,$wst)
    {
+        $this->IsSave=false;
         $this->order_no=$Wor;
         $this->order_date=$wd;
         $this->jeha_no=$wjh;
