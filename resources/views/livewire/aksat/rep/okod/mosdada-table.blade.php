@@ -12,15 +12,17 @@
       <label for="baky" class="form-label mx-0 text-right " style="width: 30%; ">الباقي</label>
       <input wire:model="baky" class="form-control mx-0 text-center" type="number"  min="-5" max="5"  id="baky" style="width: 70%; ">
     </div>
-    <div  class="col-md-2 my-2 ">
-      <button x-show="open" wire:click="ArcTarheel" class="  btn btn-outline-warning
-      " style="height: 30px;" >نقل للأرشيف</button>
+    <div  class="col-md-4 my-2 d-flex ">
+      <button x-show="open" wire:click="ArcTarheel" class="btn btn-outline-warning mx-2" style="height: 30px;" >نقل للأرشيف</button>
       <progress wire:loading wire:target="ArcTarheel" x-bind:max="count" x-bind:value="progress"></progress>
-    </div>
-    <div  class="col-md-2 my-2 ">
+
+
       <a  href="{{route('pdfmosdada',['bank_no'=>$bank_no,'baky'=>$baky,'bank_name'=>$bank_name])}}"
-          class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
-    </div>
+          class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
+
+          <a  href="{{route('mosdadaex',['bank'=>$bank_no,'baky'=>$baky])}}"
+              class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fa fa-print"> &nbsp;&nbsp;إكسل&nbsp;&nbsp;</i></a>
+
   </div>
 
 

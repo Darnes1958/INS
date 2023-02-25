@@ -22,17 +22,20 @@
         <label class="form-check-label" for="inlineRadio2">خاملة ولم تسدد بعد</label>
       </div>
     </div>
-    <div class="col-md-4">
-      <div  class="col-md-2 my-2 ">
+    <div class="col-md-4 d-flex">
+
         <a  href="{{route('pdfkamla',['bank_no'=>$bank_no,'months'=>$months,'bank_name'=>$bank_name])}}"
-            class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
-      </div>
+            class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
+
+        <a  href="{{route('khamlaex',['bank'=>$bank_no,'months'=>$months])}}"
+                class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-file-excel"> &nbsp;&nbsp;إكسل&nbsp;&nbsp;</i></a>
+
     </div>
 
   </div>
 
   <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
-    <thead class="font-size-12">
+    <thead class="font-size-12 " style="color: #8a8f97">
     <tr>
       <th width="4%">ت</th>
       <th width="8%" class="sort text-primary" wire:click="sortOrder('no')" > رقم العقد {!! $sortLink !!}</th>

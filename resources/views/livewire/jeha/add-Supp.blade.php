@@ -71,7 +71,9 @@
              <th >اسم الزبون</th>
              <th width="5%">المفضلة</th>
              <th width="5%" style="text-align: center">ظهور</th>
+               @can('عميل خاص')
              <th width="5%" style="text-align: center">VIP</th>
+               @endcan
              <th width="5%" style="text-align: center"></th>
              <th width="5%" style="text-align: center"></th>
            </tr>

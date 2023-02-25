@@ -20,6 +20,7 @@ use App\Http\Controllers\bank\BankController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\email\EmailPdf;
+use App\Http\Controllers\Exls\ExController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,6 +29,10 @@ Route::get('/', function () {
 Auth::routes();
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::controller(ExController::class)->group(function () {
+    Route::get('mosdadaex/{bank?},{baky?}', 'MosdadaEx')->name('mosdadaex');
+    Route::get('khamlaex/{bank?},{months?}', 'KhamlaEx')->name('khamlaex');
+});
 Route::controller(EmailPdf::class)->group(function () {
     Route::get('send-mail', 'KlasaPdf')->name('sendmail');
 });
