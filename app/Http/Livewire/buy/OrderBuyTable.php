@@ -72,7 +72,7 @@ class OrderBuyTable extends Component
                   'order_no2' => 0,
                   'jeha' => $this->jeha_no,
                   'order_date' => $this->order_date,
-                  'order_date_input' => $this->order_date,
+                  'order_date_input' => date('Y-m-d'),
                   'notes' => $this->notes,
                   'price_type' => 1,
                   'tot1' => $this->tot1,
