@@ -242,6 +242,10 @@ class OrderSellTableEdit extends Component
     public function removeitem($value)    {
         unset($this->orderdetail[$value]);
         array_values($this->orderdetail);
+      $this->tot1 = number_format(array_sum(array_column($this->orderdetail, 'subtot')),2, '.', '');
+      $this->tot = number_format($this->tot1 - $this->ksm,2, '.', '');
+      $this->rebh = number_format(array_sum(array_column($this->orderdetail, 'rebh')),2, '.', '');
+
         $this->emitTo('sell.order-sell-detail','ClearData');
       $this->emitTo('sell.order-sell-detail','ClearData');
       $this->emitTo('sell.order-sell-detail','gotonext','item_no');

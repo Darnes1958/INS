@@ -82,10 +82,7 @@
         </div>
     </div>
     <!-- End Hide Add Customer Form -->
-
-
     <div class="form-group" >
-
         <button wire:click.prevent="store()" class="btn btn-info" id="storeButton">تخزين الفاتورة</button>
 
             @if (session()->has('message'))
@@ -93,10 +90,7 @@
                     {{ session('message') }}
                 </div>
             @endif
-
-
     </div>
-
 </div>
 
 @push('scripts')
@@ -109,16 +103,10 @@
                 }
             })
         });
-
         Livewire.on('gotonext',postid=>  {
-
             if (postid=='ksm') {  $("#madfooh").focus();  $("#madfooh").select();};
             if (postid=='madfooh') {  $("#ksm").focus();  $("#ksm").select();};
-
-
         });
-
-
     </script>
 @endpush
 

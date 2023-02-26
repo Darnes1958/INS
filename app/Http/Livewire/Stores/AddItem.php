@@ -34,7 +34,6 @@ class AddItem extends Component
       $this->itemtypel=item_type::on(Auth()->user()->company)->min('type_no');
       $this->price_sell=0;
       $this->price_buy=0;
-
     }
     public function OpenSecond(){
         $this->dispatchBrowserEvent('CloseFirst');
@@ -69,8 +68,6 @@ class AddItem extends Component
         'required' => 'لا يجوز ترك فراغ',
         'item_name.unique' => 'هذا الاسم مخزون مسبقا',
         'unique' => 'هذا الرقم مخزون مسبقا',
-
-
     ];
 
     public function updatedItemtypel(){
@@ -81,11 +78,9 @@ class AddItem extends Component
         $this->itemtypel=$this->itemtype;
     }
 
-
     public function SaveItem(){
         $this->validate();
         DB::connection(Auth()->user()->company)->beginTransaction();
-
         try {
               DB::connection(Auth()->user()->company)->table('items')->insert([
                 'item_no' => $this->item_no,
@@ -96,7 +91,6 @@ class AddItem extends Component
                 'price_cost' => $this->price_buy,
                 'raseed' => 0,
                 'available' => 1
-
               ]);
               DB::connection(Auth()->user()->company)->table('item_price_buy')->insert([
                 'item_no' => $this->item_no,
@@ -115,7 +109,6 @@ class AddItem extends Component
             DB::connection(Auth()->user()->company)->rollBack();
                    // something went wrong
                                     }
-
         $this->resetitem();
         $this->emitTo('stores.item-select','RefreshSelectItem');
         $this->dispatchBrowserEvent('CloseFirst');

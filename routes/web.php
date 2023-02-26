@@ -32,6 +32,7 @@ Auth::routes();
 Route::controller(ExController::class)->group(function () {
     Route::get('mosdadaex/{bank?},{baky?}', 'MosdadaEx')->name('mosdadaex');
     Route::get('khamlaex/{bank?},{months?}', 'KhamlaEx')->name('khamlaex');
+    Route::get('repmakex/{place_type?},{place_no?},{withzero?}', 'RepMakEx')->name('repmakex');
 });
 Route::controller(EmailPdf::class)->group(function () {
     Route::get('send-mail', 'KlasaPdf')->name('sendmail');

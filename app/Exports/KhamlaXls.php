@@ -1,11 +1,11 @@
 <?php
 namespace App\Exports;
 
-use App\Invoice;
+
 use App\Models\aksat\main_view;
 use App\Models\bank\bank;
 use App\Models\Customers;
-use Illuminate\Contracts\View\View;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -23,8 +23,6 @@ use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
-
-
 
 
 class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping, WithHeadings,
@@ -130,9 +128,7 @@ class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping
             'j' => 20,
         ];
     }
-    /**
-     * @var main_view $main_view
-     */
+
     public function bindValue(Cell $cell, $value)
     {
         $numericalColumns = ['B']; // columns with numerical values
@@ -142,6 +138,9 @@ class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping
         }
         return parent::bindValue($cell, $value);
     }
+  /**
+   * @var main_view $main_view
+   */
     public function map($main_view): array
     {
         return [

@@ -17,6 +17,7 @@ class MakRep extends Component
   protected $paginationTheme = 'bootstrap';
   public $search;
   public $RepChk=true;
+  public $withzero=1;
 
   public $place_no=0;
   public $place_name;
@@ -78,14 +79,12 @@ class MakRep extends Component
   }
     public function updatingPlaceChk()
     {
-        $this->resetPage();
+      $this->place_no=0;
+      $this->resetPage();
     }
     public function updatingPlacetype()
     {
-
-
         $this->place_no=0;
-
         $this->resetPage();
         if ($this->place_type==1) $this->Table='Makazen';
         if ($this->place_type==0) $this->Table='Salat';
@@ -94,44 +93,18 @@ class MakRep extends Component
 
     public function render()
     {
+      if ($this->RepChk) $this->withzero=1; else $this->withzero=0;
 
-      if ($this->RepChk) {
-       if ($this->PlaceChk) {
-           return view('livewire.amma.mak.mak-rep',[
-               'RepTable'=>DB::connection(Auth()->user()->company)->table('rep_makzoon')
-                   ->where('place_type',$this->place_type)
-                   ->where('place_no',$this->place_no)
-                   ->where(function ($query) {
-                       $query->where('item_name', 'like', '%' . $this->search . '%')
-                           ->orWhere('item_no', 'like', '%'.$this->search.'%')
-                           ->orWhere('type_name', 'like', '%'.$this->search.'%');
-                   })
-
-                   ->orderBy('item_type','asc')
-                   ->orderby($this->orderColumn,$this->sortOrder)
-                   ->paginate(15)
-           ]);
-       } else
-       return view('livewire.amma.mak.mak-rep',[
-          'RepTable'=>DB::connection(Auth()->user()->company)->table('rep_makzoon')
-            ->where('item_name', 'like', '%'.$this->search.'%')
-            ->orwhere('item_no', 'like', '%'.$this->search.'%')
-            ->orwhere('type_name', 'like', '%'.$this->search.'%')
-            ->orderBy('item_type','asc')
-            ->orderby($this->orderColumn,$this->sortOrder)
-            ->paginate(15)
-        ]);}
-      else {
         return view('livewire.amma.mak.mak-rep',[
           'RepTable'=>DB::connection(Auth()->user()->company)->table('rep_makzoon')
-            ->when($this->PlaceGeted,function ($q) {
+            ->when($this->place_no !=0,function ($q) {
               return $q->where('place_no','=', $this->place_no) ;     })
-            ->when($this->place_type==1,function ($q) {
-              return $q->where('place_type','=', 0) ;     })
-            ->when($this->place_type==2,function ($q) {
-              return $q->where('place_type','=', 1) ;     })
-            ->where('raseed','!=',0)
-            ->where('place_ras','!=',0)
+            ->when($this->place_no !=0,function ($q) {
+              return $q->where('place_type','=', $this->place_type) ;     })
+            ->when( ! $this->RepChk,function ($q) {
+              return $q->where('raseed','!=', 0) ;     })
+            ->when( ! $this->RepChk,function ($q) {
+              return $q->where('place_ras','!=', 0) ;     })
             ->where([
               ['item_name', 'like', '%'.$this->search.'%'],
               ['item_no', 'like', '%'.$this->search.'%'],
@@ -141,6 +114,6 @@ class MakRep extends Component
             ->orderby($this->orderColumn,$this->sortOrder)
             ->paginate(15)
         ]);
-      }
+
     }
 }

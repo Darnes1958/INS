@@ -230,8 +230,7 @@ class OrderBuyTable extends Component
 
    public function updatedKsm() {
 
-       $this->tot = number_format($this->tot1-$this->ksm,
-           2, '.', '');
+       $this->tot = number_format($this->tot1-$this->ksm,2, '.', '');
    }
 
     public function putdata($value)
@@ -252,11 +251,10 @@ class OrderBuyTable extends Component
                     'quant' => $value['quant'], 'price' => $value['price'],
                     'subtot' => number_format($value['price'] * $value['quant'], 2, '.', '')];
         }
-            $this->tot1 = number_format(array_sum(array_column($this->orderdetail, 'subtot')),
-                2, '.', '');
-            $this->tot = number_format($this->tot1 - $this->ksm,
-                2, '.', '');
+            $this->tot1 = number_format(array_sum(array_column($this->orderdetail, 'subtot')),2, '.', '');
+            $this->tot = number_format($this->tot1 - $this->ksm,2, '.', '');
         $this->emit('mountdetail');
+
     }
   public function removeitem($value)    {
     $this->TheDelete=$value;
@@ -265,6 +263,9 @@ class OrderBuyTable extends Component
   public function DoDelete(){
     unset($this->orderdetail[$this->TheDelete]);
     array_values($this->orderdetail);
+    $this->tot1 = number_format(array_sum(array_column($this->orderdetail, 'subtot')),2, '.', '');
+    $this->tot = number_format($this->tot1 - $this->ksm,2, '.', '');
+
     $this->emit('mountdetail');
   }
     public function edititem($value)

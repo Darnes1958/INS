@@ -6,7 +6,7 @@
             <th width="15%">رقم الصنف</th>
             <th>اسم الصنف </th>
             <th width="10%">الكمية</th>
-            <th width="15%">سعر الشراء</th>
+
             <th width="15%">السعر </th>
             <th width="18%">المجموع</th>
             <th width="12%"></th>

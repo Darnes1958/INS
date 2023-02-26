@@ -2,8 +2,6 @@
 
 namespace App\Http\Livewire\Buy;
 
-
-
 use App\Models\stores\stores;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -23,19 +21,15 @@ class OrderBuyDetailEdit extends Component
     public $quant;
     public $price;
     public $orderdetail=[];
-
     public $DetailOpen;
     public $OrderDetailOpen;
     public $ItemGeted=false;
-
     public $TheItemListSelected;
 
     public function updatedTheItemListSelected(){
         $this->TheItemListSelected=0;
-
         $this->ChkItemAndGo();
     }
-
     public function OpenFirst(){
         $this->dispatchBrowserEvent('OpenFirst');
     }
@@ -47,8 +41,6 @@ class OrderBuyDetailEdit extends Component
         $this->dispatchBrowserEvent('OpenFirst');
         $this->emit('gotoaddonetype');
     }
-
-
     protected $listeners = [
         'itemchange','edititem','YesIsFound','ClearData','mountdetail','dismountdetail','TakeParam'
     ];
@@ -58,7 +50,6 @@ class OrderBuyDetailEdit extends Component
     }
     public function ChkItemAndGo(){
         $this->item_name='';
-
         if ($this->item!=null) {
             $result=items::on(Auth()->user()->company)->with('iteminstore')
             ->where('item_no', $this->item)->first();
@@ -66,10 +57,8 @@ class OrderBuyDetailEdit extends Component
                 $this->IfBuyItemExists($this->order_no,$this->item,$this->stno);
                 $this->item_name=$result->item_name;
                 $this->price=number_format($result->price_buy, 2, '.', '')  ;
-
                 $this->raseed= $result->raseed;
                 $this->st_raseed=0;
-
                 for ($i=0;$i<count($result->iteminstore);$i++)
                  { if($result->iteminstore[$i]->st_no==$this->stno){$this->st_raseed=$result->iteminstore[$i]->raseed;}}
                 $this->emit('ChkIfDataExist',$this->item);
@@ -90,7 +79,6 @@ class OrderBuyDetailEdit extends Component
                  return (false);
              }
          }
-
          $this->emit('gotonext','price');
        return true;
      }
@@ -104,15 +92,12 @@ class OrderBuyDetailEdit extends Component
         $this->emit('gotonext', 'itemno');
     }
     public function dismountdetail(){
-
         $this->ClearData();
         $this->DetailOpen=false;
         $this->OrderDetailOpen=false;
     }
-
     public function mount()
     {
-
         $this->ClearData();
         $this->DetailOpen=false;
         $this->OrderDetailOpen=true;
@@ -155,15 +140,12 @@ class OrderBuyDetailEdit extends Component
     protected $messages = [
         'required' => 'لا يجوز ترك فراغ',
         'unique' => 'هذا الرقم مخزون مسبقا',
-
-
     ];
 
     public function ChkPriceAndGo()
     {
         $this->validate();
         if (!$this->ChkQuantAndGo()) return false;
-
         $this->orderdetail=['item_no'=>$this->item,'item_name'=>$this->item_name,
             'quant'=>$this->quant,'price'=>$this->price,'subtot'=>$this->price];
         $this->emit('putdata',$this->orderdetail);
@@ -171,8 +153,6 @@ class OrderBuyDetailEdit extends Component
         $this->emit('gotonext','itemno');
         return true;
     }
-
-
 
     public function render()
     {

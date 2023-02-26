@@ -127,9 +127,7 @@ class OrderBuyDetail extends Component
     {
         if(!is_null($value))
             $this->item = $value;
-
         $this->updatedItem();
-
         $this->emit('gotonext', 'item_no');
     }
 
@@ -145,17 +143,15 @@ class OrderBuyDetail extends Component
     protected $messages = [
         'required' => 'لا يجوز ترك فراغ',
         'unique' => 'هذا الرقم مخزون مسبقا',
-
-
     ];
 
   public function ChkPriceAndGo()
   {
     $this->validate();
     if (!$this->ChkQuantAndGo()) return false;
-
     $this->orderdetail=['item_no'=>$this->item,'item_name'=>$this->item_name,
       'quant'=>$this->quant,'price'=>$this->price,'subtot'=>$this->price];
+    info($this->orderdetail);
     $this->emit('putdata',$this->orderdetail);
     $this->mountdetail();
     $this->emit('gotonext','itemno');

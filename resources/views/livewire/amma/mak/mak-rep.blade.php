@@ -26,13 +26,17 @@
                 <label class="form-check-label" >مخزن</label>
             </div>
         </div>
-        <div  x-show="$wire.PlaceChk" class="col-md-4" >
+        <div  x-show="$wire.PlaceChk" class="col-md-3" >
 
           @livewire('stores.store-select1',['table'=>$Table])
             <div class="form-check form-check-inline">
                 <input class="form-check-input"  name="placechk" type="radio" wire:model="place_type" value="1" >
                 <label class="form-check-label" >صالة</label>
             </div>
+        </div>
+        <div class="col-md-2">
+          <a  href="{{route('repmakex',['place_type'=>$place_type,'place_no'=>$place_no,'withzero'=>$withzero])}}"
+              class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-file-excel"> &nbsp;&nbsp;إكسل&nbsp;&nbsp;</i></a>
         </div>
 
 
