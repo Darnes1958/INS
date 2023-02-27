@@ -27,10 +27,10 @@
         <label class="form-check-label" for="inlineRadio2">الغير محصلة</label>
       </div>
     </div>
-   <!--  <div  class="col-md-2 my-2 ">
-    <a  href="{{route('pdfwrong',['bank_no'=>$bank_no,'wrong_date1'=>$rep_date1,'wrong_date2'=>$rep_date2,'bank_name'=>$bank_name])}}"
+     <div  class="col-md-2 my-2 ">
+    <a  href="{{route('pdfksm',['bank_no'=>$bank_no,'rep_date1'=>$rep_date1,'rep_date2'=>$rep_date2,'bank_name'=>$bank_name,'RepRadio'=>$RepRadio])}}"
           class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
-   </div> -->
+   </div>
   </div>
 
 <div class="row">

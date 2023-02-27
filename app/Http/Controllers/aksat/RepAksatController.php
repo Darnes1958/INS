@@ -210,6 +210,46 @@ class RepAksatController extends Controller
 
   }
 
+  function PdfKsm(Request $request){
+
+    $RepDate=date('Y-m-d');
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+    if ($request->RepRadio=='Geted')
+    $res=DB::connection(Auth()->user()->company)->table('main')
+      ->join('kst_trans','main.no','=','kst_trans.no')
+      ->selectRaw('main.*,kst_trans.ksm,Kst_trans.ksm_date')
+      ->whereBetween('kst_trans.ksm_date',[$request->rep_date1,$request->rep_date2])
+      ->where('ksm','!=',0)
+      ->where('main.bank', '=', $request->bank_no)
+      ->orderby('no')
+      ->get();
+    else
+      $res=DB::connection(Auth()->user()->company)->table('main')
+      ->join('kst_trans','main.no','=','kst_trans.no')
+      ->selectRaw('main.no,name,sul_date,acc,sul,sul_pay,raseed,kst_count,main.kst,max(ksm_date) as ksm_date')
+      ->whereNotBetween('kst_trans.ksm_date',[$request->rep_date1,$request->rep_date2])
+      ->where('raseed','>',0)
+      ->where('main.bank', '=', $request->bank_no)
+      ->groupBy('main.no','name','sul_date','acc','sul','sul_pay','raseed','kst_count','main.kst')
+      ->orderby('no')
+      ->get();
+
+    $reportHtml = view('PrnView.aksat.pdf-ksm',
+      ['res'=>$res,'cus'=>$cus,'bank_name'=>$request->bank_name,'rep_date1'=>$request->rep_date1,
+        'rep_date2'=>$request->rep_date2,'RepRadio'=>$request->RepRadio])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('report.pdf');
+
+  }
+
   function PdfStop(Request $request){
 
     $RepDate=date('Y-m-d');
