@@ -157,6 +157,59 @@ class RepAksatController extends Controller
     return $pdf->download('report.pdf');
 
   }
+  function PdfOver(Request $request){
+
+    $RepDate=date('Y-m-d');
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+    $res=DB::connection(Auth()->user()->company)->table($request->Table)
+      ->whereBetween('tar_date',[$request->over_date1,$request->over_date2])
+
+      ->where('bank', '=', $request->bank_no)
+      ->where('letters',$request->letters)
+      ->get();
+
+    $reportHtml = view('PrnView.aksat.pdf-over',
+      ['res'=>$res,'cus'=>$cus,'bank_name'=>$request->bank_name,'over_date1'=>$request->over_date1,
+       'over_date2'=>$request->over_date2,'Table'=>$request->Table,'letters'=>$request->letters])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('report.pdf');
+
+  }
+  function PdfTar(Request $request){
+
+    $RepDate=date('Y-m-d');
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+    $res=DB::connection(Auth()->user()->company)->table('tar_kst')
+      ->whereBetween('tar_date',[$request->tar_date1,$request->tar_date2])
+
+      ->where('bank', '=', $request->bank_no)
+      ->where('tar_type',$request->tar_type)
+      ->get();
+
+    $reportHtml = view('PrnView.aksat.pdf-tar',
+      ['res'=>$res,'cus'=>$cus,'bank_name'=>$request->bank_name,'tar_date1'=>$request->tar_date1,
+        'tar_date2'=>$request->tar_date2,'tar_type'=>$request->tar_type])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('report.pdf');
+
+  }
+
   function PdfStop(Request $request){
 
     $RepDate=date('Y-m-d');

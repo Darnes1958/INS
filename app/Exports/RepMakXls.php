@@ -159,7 +159,7 @@ class RepMakXls  implements FromCollection,WithMapping, WithHeadings,
        ->get();
 
         $this->rowcount=$data->count();
-     
+
         return $data;
     }
 }

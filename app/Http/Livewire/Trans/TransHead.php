@@ -113,7 +113,9 @@ class TransHead extends Component
     'tran_date.required'=>'يجب ادخال تاريخ صحيح',
   ];
   public function DoSave(){
-    if ($this->IsSave) return;
+    if ($this->IsSave)
+    {$this->IsSave=false; return false;}
+
     $this->validate();
     if (!$this->ChkTypeAndGo()) $this->emit('gotonext','tran_type');
     if (!$this->ChkJehaAndGo()) $this->emit('gotonext','jeha');
@@ -165,7 +167,8 @@ public function mount(){
 }
   public function render()
    {
-      $this->IsSave=false;
+
+
       $this->TranNo=trans::on(Auth()->user()->company)->max('tran_no')+1;
       return view('livewire.trans.trans-head');
    }

@@ -93,11 +93,9 @@ Route::controller(TransController::class)->group(function (){
 });
 Route::controller(RepAksatController::class)->group(function (){
   route::get('/repMain/all', 'RepMain')->name('repmain.all')->middleware('auth');
-    route::get('/repMainall', 'RepMainAll')->name('repmainall')->middleware('auth');
+  route::get('/repMainall', 'RepMainAll')->name('repmainall')->middleware('auth');
   route::get('/repMain/arc', 'RepMainArc')->name('repmain.arc')->middleware('auth') ;
-
   route::get('/rep/okod/{rep}', 'RepOkod')->name('rep.okod')->middleware('auth') ;
-
   route::get('/pdfmain/{no}', 'PdfMain')->name('pdfmain') ;
   route::get('/pdfbanksum/{RepChk?}/{date1?}/{date2?}', 'PdfBankSum')->name('pdfbanksum') ;
   route::get('/pdfplacesum/{RepChk?}/{date1?}/{date2?}', 'PdfPlaceSum')->name('pdfplacesum') ;
@@ -109,12 +107,13 @@ Route::controller(RepAksatController::class)->group(function (){
   route::get('/pdfstopone/{name?}/{bank_tajmeeh?}/{acc?}/{kst?}', 'PdfStopOne')->name('pdfstopone') ;
   route::get('/pdfbefore/{bank_no?}/{month?}/{bank_name?}/{Not_pay?}', 'PdfBefore')->name('pdfbefore') ;
   route::get('/pdfchk/{bank_name?}/{name?}/{acc?}/{chk_count?}/{wdate?}', 'PdfChk')->name('pdfchk') ;
+  route::get('/pdfover/{bank_no?}/{over_date1?}/{over_date2?}/{bank_name?}/{Table?}/{letters?}', 'PdfOver')->name('pdfover') ;
+  route::get('/pdftar/{bank_no?}/{tar_date1?}/{tar_date2?}/{bank_name?}/{tar_type?}', 'PdfTar')->name('pdftar') ;
 });
 Route::controller(RepAmaaController::class)->group(function (){
   route::get('/repamma/{rep}', 'RepAmma')->name('repamma')->middleware('auth');
   route::get('/pdfklasa/{date1?}/{date2?}', 'PdfKlasa')->name('pdfklasa') ;
-    route::get('/pdfklasamail/{company}', 'PdfKlasaMail')->name('pdfklasamail') ;
-
+  route::get('/pdfklasamail/{company}', 'PdfKlasaMail')->name('pdfklasamail') ;
 });
 
 Route::controller(CustomerController::class)->group(function (){

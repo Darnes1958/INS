@@ -161,6 +161,8 @@
                         <li><a href="{{route('rep.okod','before')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تجهيز كشف المصرف</a></li>
                         <li><a href="{{route('rep.okod','aksatgeted')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">الاقساط المحصلة والغير محصلة</a></li>
                         <li><a href="{{route('rep.okod','kstgeted')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">إجمالي الاقساط المحصلة</a></li>
+                        <li><a href="{{route('rep.okod','over')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">خصم بالفائض</a></li>
+                        <li><a href="{{route('rep.okod','tar')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">ترجيع أقساط</a></li>
                         <li><a href="{{route('rep.okod','wrong')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">اقساط واردة بالخظأ</a></li>
                         <li><a href="{{route('rep.okod','stop')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">إيقاف الخصم</a></li>
                         <li><a href="{{route('rep.okod','haf')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">حوافظ</a></li>

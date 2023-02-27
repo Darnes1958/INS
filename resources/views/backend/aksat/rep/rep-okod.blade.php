@@ -28,11 +28,23 @@
           @livewire('haf.rep-haf')
         </div>
       @endif
+      @if ($rep=='over')
+        <div class=" themed-grid-col px-1">
+          @livewire('aksat.rep.okod.over')
+        </div>
+      @endif
+      @if ($rep=='tar')
+        <div class=" themed-grid-col px-1">
+          @livewire('aksat.rep.okod.tar')
+        </div>
+      @endif
+
       @if ($rep=='wrong')
         <div class=" themed-grid-col px-1">
           @livewire('aksat.rep.okod.wrong')
         </div>
       @endif
+
       @if ($rep=='stop')
         <div class=" themed-grid-col px-1">
           @livewire('aksat.rep.okod.stop')
