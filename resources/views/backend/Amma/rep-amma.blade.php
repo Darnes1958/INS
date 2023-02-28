@@ -50,6 +50,11 @@
         @livewire('jeha.rep-mordeen')
       </div>
     @endif
+    @if ($rep=='RepCustomers')
+      <div class=" themed-grid-col px-1">
+        @livewire('jeha.rep-customers')
+      </div>
+    @endif
       @if ($rep=='jehatran')
           <div >
               @livewire('jeha.rep-jeha-tran')
