@@ -2,7 +2,7 @@
   <div class="row">
   <div class="col-md-4">
    <div class="col-md-6">
-     <select  wire:model="place_name"   class="form-control  form-select " style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"  >
+     <select  wire:model="place_nameL"   class="form-control  form-select " style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"  >
        <option value="">اختيار من القائمة</option>
        @foreach($places as $place)
          <option value="{{ $place->place_name }}">{{ $place->place_name }}</option>
@@ -10,10 +10,10 @@
      </select>
    </div>
    <div class="col-md-6">
-     <select  wire:model="item_type"   class="form-control  form-select "  style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"  >
+     <select  wire:model="item_typeL"   class="form-control  form-select "  style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"  >
        <option value="">اختيار من القائمة</option>
        @foreach($item_types as $type)
-         <option value="{{ $type->item_type }}">{{ $type->type_name }}</option>
+         <option value="{{ $type->type_no }}">{{ $type->type_name }}</option>
        @endforeach
      </select>
    </div>
