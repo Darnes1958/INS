@@ -72,6 +72,7 @@
                         <li><a href="{{route('stores.add',21)}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">من صالة لمخزن</a></li>
                         <li><a href="{{route('stores.add',22)}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">من صالة لصالة</a></li>
                         <li><a href="{{route('itemprices')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تغيير أسعار لصنف</a></li>
+                        <li><a href="{{route('jaradraseed')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تعديل ارصدة بعد الجرد</a></li>
 
                     </ul>
                 </div>
@@ -194,6 +195,7 @@
                         <li><a href="{{route('repamma','mak')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن المخزون</a></li>
                         <li><a href="{{route('repamma','RepStoresTrans')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">الحركة اليومية للمخزون</a></li>
                         <li><a href="{{route('repamma','RepPer')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن اذن صرف</a></li>
+
                     </ul>
                 </div>
             </li>

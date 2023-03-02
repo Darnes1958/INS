@@ -107,6 +107,9 @@
       br[style] {
           display:none;
       }
+      .page-break {
+          page-break-after: always;
+      }
   </style>
 </head>
 <body  >

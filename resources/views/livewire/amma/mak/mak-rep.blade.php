@@ -34,11 +34,15 @@
                 <label class="form-check-label" >صالة</label>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 d-flex">
           <a  href="{{route('repmakex',['place_type'=>$place_type,'place_no'=>$place_no,'withzero'=>$withzero])}}"
               class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-file-excel"> &nbsp;&nbsp;إكسل&nbsp;&nbsp;</i></a>
-        </div>
 
+          @if($place_no!=0)
+          <a  href="{{route('repmakpdf',['place_type'=>$place_type,'place_no'=>$place_no])}}"
+              class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-print"> &nbsp;&nbsp;جرد&nbsp;&nbsp;</i></a>
+            @endif
+        </div>
 
       </div>
     </div>
