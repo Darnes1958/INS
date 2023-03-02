@@ -21,9 +21,26 @@ class JaradHead extends Component
     public $item_typeL;
   public $JarRaseed;
   public $item_no,$item_name,$raseed;
+  public $NotZero=false;
 
 
-
+  public function ChkItem($item=0){
+      if ($item!=0) $this->item_no=$item;
+      if ($this->item_no){
+          $res=RepMakzoon::where('place_type',$this->place_type)
+              ->where('place_no',$this->place_no)
+              ->where('item_type',$this->item_type)
+              ->where('item_no',$this->item_no)
+              ->first();
+          if ($res){
+              $this->item_no=$res->item_no;
+              $this->item_name=$res->item_name;
+              $this->raseed=$res->raseed;
+              $this->JarRaseed=$res->place_ras;
+              $this->emit('gotonext','JarRaseed');
+          }
+      }
+  }
   public function updated($field){
 
     if ($field=='place_nameL'){
@@ -57,13 +74,14 @@ class JaradHead extends Component
 
   public function SaveRas(){
 
-    if ($this->JarRaseed){
+    if ($this->JarRaseed>=0){
         $temp_place_type=$this->place_type;
         $temp_place_no=$this->place_no;
         $temp_item_no=$this->item_no;
         $temp_item_type=$this->item_type;
 
-       if ($this->place_type=0)
+
+       if ($this->place_type==0)
        stores::where('st_no',$this->place_no)
             ->where('item_no',$this->item_no)
             ->update(['raseed'=>$this->JarRaseed,]);
@@ -108,8 +126,12 @@ class JaradHead extends Component
           'RepMak'=>RepMakzoon::where('place_type',$this->place_type)
           ->where('place_no',$this->place_no)
           ->where('item_type',$this->item_type)
+          ->when($this->NotZero,function ($q){
+              $q->where('raseed','!=',0);
+          })
           ->orderby('item_no')
           ->get(),
+          'RepMak2'=>RepMakzoon::where('item_no',$this->item_no)->get(),
 
         ]);
     }
