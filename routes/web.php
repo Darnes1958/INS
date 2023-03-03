@@ -21,13 +21,14 @@ use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\email\EmailPdf;
 use App\Http\Controllers\Exls\ExController;
+use \App\Http\Controllers\ZipController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Auth::routes();
-
+Route::get('downzip', [ZipController::class, 'build'])->name('downzip');
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::controller(ExController::class)->group(function () {
     Route::get('mosdadaex/{bank?},{baky?}', 'MosdadaEx')->name('mosdadaex');

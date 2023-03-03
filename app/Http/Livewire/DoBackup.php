@@ -10,6 +10,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\Support\MediaStream;
 use ZipStream\File;
 use ZipStream\Option\Archive;
+use Zip;
 
 class DoBackup extends Component
 {
@@ -36,6 +37,13 @@ class DoBackup extends Component
       Storage::delete($invoice_file);
 
       return response()->download($zip_file)->deleteFileAfterSend(true);
+
+    }
+    public function DoLive(){
+        $path=storage_path(). '/app/'.Auth()->user()->company.'_'.date('Ymd').'.bak';
+
+        return Zip::create('package.zip')
+            ->add(storage_path(). '/app/'.Auth()->user()->company.'_'.date('Ymd').'.bak', 'Export.bak');
 
     }
     public function DoBackup(){

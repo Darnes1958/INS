@@ -29,28 +29,33 @@
 
 
               </div>
-
-        <!--            <div class="col-md-12">
-                    <p>الخظوة الثانية : إضغط علي "تنزيل" </p>
+               @if (AUth()->user()->company=='Daibany')
+                    <div class="col-md-12">
+                    <p>تجربة خاصة بمحلات اليباني فقط </p>
                   </div>
                   <div class="col-md-4">
-                    <input type="button"  id="downbtn"
-                           class="w-100 btn btn-outline-success  waves-effect waves-light   "
-                           wire:click.prevent="DoDel"   value="delete" />
+                      <a  href="{{route('downzip')}}"
+                          class="btn btn-outline-success waves-effect waves-light border-0 mx-2">
+                          <i class="fas fa-file-excel"> &nbsp;&nbsp;Down&nbsp;&nbsp;</i></a>
+
+                      <div wire:loading wire:target="downzip">
+                          يرجي الانتظار...
+                      </div>
 
                   </div>
-
-                    <div class="col-md-12 my-4">
-                      <p>الخظوة الثانية : إضغط علي "مسح" ليتم مسح الملف من السيرفر</p>
-                    </div>
-                    <div class="col-md-4">
-                        <input type="button"  id="delbtn"
-                               class="w-100 btn btn-outline-success  waves-effect waves-light   "
-                               wire:click.prevent="DeleteTheFile"   value="مسح" />
-                      <div wire:loading wire:target="DeleteTheFile">
-                        يرجي الانتظار...
-                      </div>
-                    </div> -->
+               @endif
+          <!--
+                              <div class="col-md-12 my-4">
+                                <p>الخظوة الثانية : إضغط علي "مسح" ليتم مسح الملف من السيرفر</p>
+                              </div>
+                              <div class="col-md-4">
+                                  <input type="button"  id="delbtn"
+                                         class="w-100 btn btn-outline-success  waves-effect waves-light   "
+                                         wire:click.prevent="DeleteTheFile"   value="مسح" />
+                                <div wire:loading wire:target="DeleteTheFile">
+                                  يرجي الانتظار...
+                                </div>
+                              </div> -->
 
 
       </div>
