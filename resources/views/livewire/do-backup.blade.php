@@ -29,7 +29,8 @@
 
 
               </div>
-               @if (AUth()->user()->company=='Daibany')
+          <!--
+
                     <div class="col-md-12">
                     <p>تجربة خاصة بمحلات اليباني فقط </p>
                   </div>
@@ -43,8 +44,8 @@
                       </div>
 
                   </div>
-               @endif
-          <!--
+
+
                               <div class="col-md-12 my-4">
                                 <p>الخظوة الثانية : إضغط علي "مسح" ليتم مسح الملف من السيرفر</p>
                               </div>

@@ -147,7 +147,7 @@ class InpBankRatio extends Component
           ->whereMonth('transarc.ksm_date',$this->month)
           ->where('transarc.ksm_type',2)
           ->where('transarc.ksm','>',0)
-          ->where(\DB::raw('substring(transarc.kst_notes,1,12)'), '=' , 'مبلغ تم دمجه')
+          ->where(\DB::raw('substring(transarc.kst_notes,1,12)'), '!=' , 'مبلغ تم دمجه')
 
           ->get();
         if ($second) {
