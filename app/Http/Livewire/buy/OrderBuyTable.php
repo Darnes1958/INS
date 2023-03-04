@@ -185,7 +185,7 @@ class OrderBuyTable extends Component
 
 
           } catch (\Exception $e) {
-
+info($e);
             $this->dispatchBrowserEvent('mmsg','حدث خطأ');
               DB::connection(Auth()->user()->company)->rollback();
           }
