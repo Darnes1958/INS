@@ -151,7 +151,7 @@ class OrderBuyDetail extends Component
     if (!$this->ChkQuantAndGo()) return false;
     $this->orderdetail=['item_no'=>$this->item,'item_name'=>$this->item_name,
       'quant'=>$this->quant,'price'=>$this->price,'subtot'=>$this->price];
-    info($this->orderdetail);
+
     $this->emit('putdata',$this->orderdetail);
     $this->mountdetail();
     $this->emit('gotonext','itemno');

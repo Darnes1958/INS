@@ -50,7 +50,7 @@ class OrderBuyHeadEdit extends Component
     public function TakeCharge($charge,$tot){
         $this->ChargeDetail=$charge;
         $this->Charge_Tot=$tot;
-        info($this->ChargeDetail);
+
     }
   public function OpenCharge(){
     $this->emitTo('buy.charge-buy','open',true);
