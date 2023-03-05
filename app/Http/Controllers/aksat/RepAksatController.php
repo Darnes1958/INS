@@ -258,9 +258,12 @@ class RepAksatController extends Controller
       ->whereBetween('stop_date',[$request->stop_date1,$request->stop_date2])
       ->where('bank', '=', $request->bank_no)
       ->get();
+    $TajNo=bank::on(Auth()->user()->company)->where('bank_no',$request->bank_no)->first()->bank_tajmeeh;
+    $taj=BankTajmeehy::on(Auth::user()->company)->where('TajNo',$TajNo)->first();
+    $company=Companies::on(Auth::user()->company)->where('CompNo',$taj->CompNo)->first();
 
     $reportHtml = view('PrnView.aksat.pdf-stop',
-      ['res'=>$res,'cus'=>$cus,'bank_name'=>$request->bank_name,'stop_date1'=>$request->stop_date1,'stop_date2'=>$request->stop_date2])->render();
+      ['res'=>$res,'cus'=>$cus,'bank_name'=>$taj->TajName,'comp_name'=>$company->CompName,'CompMan'=>$company->CompMan,'TajAcc'=>$taj->TajAcc])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 
