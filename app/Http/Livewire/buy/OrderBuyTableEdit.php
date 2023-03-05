@@ -66,7 +66,7 @@ class OrderBuyTableEdit extends Component
      foreach ($res as $value)
         $this->orderdetail[] =
          ['item_no' => $value['item_no'], 'item_name' => $value['item_name'],
-         'quant' => $value['quant'], 'price' => $value['price'],
+         'quant' => $value['quant'], 'price' => $value['price_input'],
          'subtot' => $value['sub_tot'],];
 
    }

@@ -52,8 +52,8 @@ class RepMainHead extends Component
         if ($result) {
             $this->CloseTable();
             $this->acc=$result->acc;
-            $this->emit('GotoDetail',$result);
-            $this->emit('GotoTrans',$this->no);
+            $this->emitTo('aksat.rep.okod.rep-main-data','GotoDetail',$result);
+            $this->emitTo('aksat.rep.okod.rep-main-trans','GotoTrans',$this->no);
             $this->emit('GetWhereEquelValue2',$result->order_no);
 
         }

@@ -44,8 +44,8 @@ class RepMainHeadArc extends Component
         $result = MainArc::on(Auth()->user()->company)->where('no',$this->no)->first();
         if ($result) {
             $this->acc=$result->acc;
-            $this->emit('GotoDetail',$result);
-            $this->emit('GotoTrans',$this->no);
+            $this->emitTo('aksat.rep.okod.rep-main-data-arc','GotoDetail',$result);
+            $this->emitTo('aksat.rep.okod.rep-main-trans-arc','GotoTrans',$this->no);
             $this->emit('GetWhereEquelValue2',$result->order_no);
 
         }
