@@ -2,62 +2,89 @@
 
 @section('mainrep')
   @foreach($res as $key => $item)
-    <div>
-      <label style="font-size: 20pt; margin-right: 12px;margin-bottom: 0;margin-top: 0;padding: 0;" >{{$comp_name}}</label>
+    <div style=" position: fixed; right: 30px;">
+      <label style="font-size: 20pt;" >{{$comp_name}}</label>
     </div>
-    <div >
-      <label style="font-size: 16pt; margin-right: 12px;margin-bottom: 0;margin-top: 0;padding: 0;">{{$cus->CompanyNameSuffix}}</label>
+    <div style=" position: fixed; right: 30px;">
+      <br>
+      <label style="font-size: 16pt;">{{$cus->CompanyNameSuffix}}</label>
     </div>
+    <div style=" position: fixed; right: 600px;">
+      <label> {{date('Y-m-d')}}التاريخ : </label>
+    </div>
+
+    <br>
     <br>
 
-  <div style="display:flex; flex-direction: row; justify-content:
-     center; align-items: center; margin-right: 80px; font-size: 16pt;">
-    <label> {{$bank_name}}</label>
-    <label >السادة المحترومون / </label>
+  <div style=" position: fixed;right: 80px; font-size: 16pt;">
+    <br>
+
+    <label > السادة المحترومون / {{$bank_name}}</label>
+
+  </div>
+    <br>
+
+    <div style="position: fixed;right: 80px;">
+      <br>
+      <label style=" font-size: 16pt;">تحية طيبة </label>
+      <br>
+    </div>
+<br>
+<br>
+  <div style="position: fixed; right: 80px; font-size: 14pt;">
+    <br>
+    <label >نأمل منكم إيقاف خصم الأقساط من حساب السيد / {{$item->name}}</label>
+  </div>
+    <br>
+  <div style=" position: fixed;right: 80px; font-size: 14pt;">
+    <br>
+
+    <label>{{$item->kst}} حساب جاري رقم   {{$item->acc}}      وقيمة القسط  </label>
   </div>
 
-  <label style="margin-right: 80px; font-size: 16pt;">تحية طيبة </label>
-  <br>
-  <br>
-  <div style="display:flex; flex-direction: row; justify-content:
-     center; align-items: center; margin-right: 80px; font-size: 14pt;">
-    <label style="font-weight: bold;font-family: DejaVu Sans, sans-serif;
-           font-size: 11pt;"> {{$item->name}}</label>
-    <label >نأمل منكم إيقاف خصم الأقساط من حساب السيد / </label>
-  </div>
-  <div style="display:flex; flex-direction: row; justify-content:
-     center; align-items: center; margin-right: 80px; font-size: 14pt;">
-    <label style="font-weight: bold;font-family: DejaVu Sans, sans-serif;
-           font-size: 11pt;"> {{$item->acc}}</label>
-    <label >حساب جاري رقم  </label>
-  </div>
-  <div style="display:flex; flex-direction: row; justify-content:
-     center; align-items: center; margin-right: 80px; font-size: 14pt;">
-    <label style="font-weight: bold;font-family: DejaVu Sans, sans-serif;
-           font-size: 11pt;"> {{$item->kst}}</label>
-    <label >وقيمة القسط  </label>
-  </div>
-  <div style="display:flex; flex-direction: row; justify-content:
-     center; align-items: center; margin-right: 80px; font-size: 14pt;">
-    <label style="font-weight: bold;font-family: DejaVu Sans, sans-serif;
-           font-size: 11pt;"> {{$TajAcc}}</label>
-    <label >لحساب الشركة التجميعي رقم   </label>
-  </div>
-  <label style="margin-right: 80px; font-size: 14pt;">مع رفع الحجز إن وجد  </label>
-  <br><br>
-  <label style="margin-right: 100px; font-size: 14pt;">نشكركم علي حسن تعاونكم  </label>
-  <br><br>
-  <div style="text-align: center;font-size: 14pt;">
-    والسلام عليكم ورحمة الله وبركاته
-  </div>
+    <br>
+  <div style="position: fixed; right: 80px; font-size: 14pt;">
 
-  <br>
-  <br><br>
-  <div style="text-align: left; margin-left: 100px; font-size: 14pt;">التوقيع ...................  </div>
-    <div style="display:flex; flex-direction: row; justify-content:
-     center; align-items: center; margin-right: 80px; font-size: 14pt;">
+    <br>
+    <label >لحساب الشركة التجميعي رقم   {{$TajAcc}}  مع رفع الحجز إن وجد </label>
+  </div>
+    <br>
+    <br>
 
-  <div style="text-align: left; margin-left: 100px;font-size: 14pt;"> مفوض الشركة / {{$CompMan}}</div>
+    <div style="position: fixed; right: 80px; font-size: 14pt;">
+
+      <br>
+     <label style=" font-size: 14pt;">نشكركم علي حسن تعاونكم  </label>
+
+    </div>
+<br>
+  <div style="position: fixed; right: 160px;font-size: 14pt;">
+    <br>
+    <br>
+    <label>والسلام عليكم ورحمة الله وبركاته</label>
+    <br>
+
+
+  </div>
+    <br>
+    <br>
+  <br>
+  <div style="position: fixed;right: 500px; font-size: 14pt;">
+    <br>
+    <br>
+    <label>
+      التوقيع ...................
+    </label>
+
+  </div>
+   <br>
+
+
+  <div style="position: fixed; right: 500px;font-size: 14pt;">
+    <br>
+    <br>
+    <label>    مفوض الشركة /      {{$CompMan}}</label>
+</div>
   <div class="page-break"></div>
   @endforeach
 @endsection
