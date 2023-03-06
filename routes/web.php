@@ -22,6 +22,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\email\EmailPdf;
 use App\Http\Controllers\Exls\ExController;
 use \App\Http\Controllers\ZipController;
+use App\Http\Controllers\Salary\SalaryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -81,6 +82,11 @@ Route::controller(MasrController::class)->group(function (){
   route::get('/inpmasr', 'MasrInp')->name('inpmasr')->middleware('auth') ;
 
 });
+Route::controller(SalaryController::class)->group(function (){
+  route::get('/inpsalary', 'SalaryInp')->name('inpsalary')->middleware('auth') ;
+
+});
+
 Route::controller(OverTarController::class)->group(function (){
     route::get('/overtar/inpover/{Proc}', 'OverInp')->name('over.input')->middleware('auth') ;
 
