@@ -1,6 +1,3 @@
-
-
-
 <div x-data x-bind:hidden="!$wire.OrderShow" class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
   <div class="col-md-4">
     <label for="no" class="form-label-me">رقم العقد</label>

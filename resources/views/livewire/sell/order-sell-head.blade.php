@@ -181,7 +181,8 @@
                    wire:click.prevent="BtnHeader"  wire:keydown.enter="BtnHeader" value="موافق" />
             </div>
 
-            @if ($OredrSellRadio=='Makazen')
+            @can('ادخال مخازن')
+            @if ($OredrSellRadio=='Makazen' )
              <div  class="col-md-2">
                 <input class="form-check-input" name="repchk" type="checkbox" wire:model="ToSal"  >
                 <label class="form-check-label" for="repchk">نقل للصالة</label>
@@ -202,6 +203,7 @@
               </select>
            </div>
            @endif
+           @endcan
 
 
 
@@ -256,7 +258,6 @@
 
 
         Livewire.on('gotohead',postid=>  {
-
 
             if (postid=='orderno') {  $("#order_no").focus();$("#order_no").select(); };
             if (postid=='date') {  $("#date").focus();$("#date").select(); };

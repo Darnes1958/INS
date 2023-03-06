@@ -176,8 +176,16 @@ class OrderSellDetail extends Component
                          $this->emit('gotonext','Quant');}
         if ($res=='not') { $this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ؟');}
         if ($res=='empty') { $this->dispatchBrowserEvent('mmsg', 'لا يجوز');}
-        if ($res=='zero') { $this->dispatchBrowserEvent('mmsg', 'رصيد الصنف صفر .. ويمكنك اضافة رصيد بالنقر علي الايقونة بجانب الاسم');
-                          $this->ShowBring=true;}
+        if ($res=='zero')
+        {
+          if (Auth::user()->can('ادخال مخازن'))
+          { $this->dispatchBrowserEvent('mmsg', 'رصيد الصنف صفر .. ويمكنك اضافة رصيد بالنقر علي الايقونة بجانب الاسم');
+            $this->ShowBring=true;}
+          else
+            $this->dispatchBrowserEvent('mmsg', 'رصيد الصنف صفر ');
+
+        }
+
     }
     public function updatedItem()
     {

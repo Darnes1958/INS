@@ -19,6 +19,7 @@ class RepMainHead extends Component
  public $IsSearch=true;
  public $bankno=0;
  public $TheBankListIsSelectd;
+ public $who='aksat.rep.okod.rep-main-data';
 
  protected $listeners = ['OpenTable',];
 
@@ -52,7 +53,7 @@ class RepMainHead extends Component
         if ($result) {
             $this->CloseTable();
             $this->acc=$result->acc;
-            $this->emitTo('aksat.rep.okod.rep-main-data','GotoDetail',$result);
+            $this->emitTo($this->who,'GotoDetail',$result);
             $this->emitTo('aksat.rep.okod.rep-main-trans','GotoTrans',$this->no);
             $this->emit('GetWhereEquelValue2',$result->order_no);
 
@@ -64,7 +65,7 @@ class RepMainHead extends Component
 
         return view('livewire.aksat.rep.okod.rep-main-head',[
             'TableList' => DB::connection(Auth()->user()->company)->table('main')
-                ->select('no','acc', 'name','sul')
+                ->select('no','acc', 'name','sul','kst')
                 ->when(($this->bankno==null||$this->bankno==0),function ($q) {
                     return $q->where('name', 'like', '%'.$this->search.'%')
                             ->orwhere('acc', 'like', '%'.$this->search.'%')

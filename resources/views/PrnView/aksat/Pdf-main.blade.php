@@ -88,6 +88,32 @@
         </tbody>
 
     </table>
+    <div class="page-break"></div>
+    <table style="width:  80%; margin-left: 10%;margin-right: 10%;">
+
+        <thead style=" font-family: DejaVu Sans, sans-serif; margin-top: 8px;" >
+        <tr  style="background: #9dc1d3;" >
+            <th style="width: 16%">المجموع</th>
+            <th style="width: 12%">السعر</th>
+            <th style="width: 12%">الكمية</th>
+            <th >اسم الصنف</th>
+            <th style="width: 16%">رقم الصنف</th>
+
+        </tr>
+        </thead>
+        <tbody style="margin-bottom: 40px; ">
+        @foreach($res3 as $key => $item)
+            <tr>
+                <td> {{ $item->sub_tot }} </td>
+                <td> {{ $item->price }} </td>
+                <td style="text-align: center"> {{ $item->quant }} </td>
+                <td style="text-align: center"> {{ $item->item_name }} </td>
+                <td style="text-align: center"> {{ $item->item_no }} </td>
+            </tr>
+        @endforeach
+        </tbody>
+
+    </table>
 
 @endsection
 

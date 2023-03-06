@@ -79,7 +79,7 @@ class OrderSellTableEdit extends Component
             return false;
           }
 
-        }
+        } else $no=0;
             $this->HasRaseed=true;
             DB::connection($conn)->beginTransaction();
 
@@ -168,6 +168,7 @@ class OrderSellTableEdit extends Component
               } else {DB::connection($conn)->rollback();}
 
             } catch (\Exception $e) {
+              info($e);
                 DB::connection($conn)->rollback();
                 $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
             }

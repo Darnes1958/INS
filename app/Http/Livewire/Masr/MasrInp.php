@@ -29,6 +29,8 @@ class MasrInp extends Component
     public $TheDetailListIsSelected;
     public $TheCenterListIsSelected;
 
+    public $IsSave=false;
+
     protected $listeners = [
         'TakeMasNo','refreshType','refreshDetail',
     ];
@@ -85,6 +87,7 @@ class MasrInp extends Component
                 $this->emitTo('masr.masr-detail-select','TakeMasType',$this->MasTypeNo);
                 $this->emit('gotonext','DetailNo');
                 $this->MasTypeGeted=true;
+                $this->IsSave=false;
             } else $this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون');
         }
      }
@@ -94,7 +97,7 @@ class MasrInp extends Component
                 $this->emitTo('masr.masr-center-select','TakeCenterNo',$this->CenterNo);
 
                 $this->emit('gotonext','Val');
-
+                $this->IsSave=false;
             } else $this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون');
         }
 
@@ -106,6 +109,7 @@ class MasrInp extends Component
                 $this->emitTo('masr.masr-detail-select','TakeDetailNo',$this->DetailNo);
 
                 $this->emit('gotonext','CenterNo');
+              $this->IsSave=false;
 
             } else $this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون');
         }
@@ -113,6 +117,7 @@ class MasrInp extends Component
     }
     public function mount(){
       $this->MasDate=date('Y-m-d');
+      $this->IsSave=false;
     }
     protected function rules()
     {
@@ -137,6 +142,7 @@ class MasrInp extends Component
     ];
 
     public function Save(){
+      if ($this->IsSave) return;
         $this->validate();
         if (!$this->Modify_Mod)
             Masrofat::insert([
@@ -158,9 +164,11 @@ class MasrInp extends Component
                 'Notes'=>$this->Notes,
                 'emp'=>Auth()->user()->empno,
             ]);
+        $this->IsSave=true;
         $this->Modify_Mod=false;
         $this->Val='';
         $this->Notes='';
+        $this->DetailNo='';
         $this->emitTo('masr.masr-table','TakeDate',$this->MasDate);
         $this->emit('gotonext','MasTypeNo');
     }

@@ -33,6 +33,7 @@
                         <td > <a wire:click="selectItem({{ $item->no }})" href="#">{{$item->acc}}</a>
                         <td > <a wire:click="selectItem({{ $item->no }})" href="#" >{{$item->name}}</a>
                         <td > <a wire:click="selectItem({{ $item->no }})" href="#" >{{$item->sul}}</a>
+                        <td > <a wire:click="selectItem({{ $item->no }})" href="#" >{{$item->kst}}</a>
                     </tr>
                 @endforeach
                 </tbody>

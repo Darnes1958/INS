@@ -7,7 +7,7 @@
       <div class="row mb-3 ">
         @csrf
         <div  class="col-md-8 themed-grid-col">
-          @livewire('aksat.rep.okod.rep-main-head')
+          @livewire('aksat.rep.okod.rep-main-head',['who'=>'aksat.edit-main-data'])
 
         </div>
         <div class="col-md-8 themed-grid-col ">

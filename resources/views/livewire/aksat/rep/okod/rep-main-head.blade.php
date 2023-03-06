@@ -40,6 +40,7 @@
                     <th>رقم الحساب</th>
                     <th>الاسم</th>
                     <th>اجمالي التقسيط</th>
+                    <th>القسط</th>
                 </tr>
                 </thead>
                 <tbody id="addRow" class="addRow">
@@ -49,6 +50,7 @@
                         <td > <a wire:click="selectItem({{ $item->no }})" href="#">{{$item->acc}}</a>
                         <td > <a wire:click="selectItem({{ $item->no }})" href="#" >{{$item->name}}</a>
                         <td > <a wire:click="selectItem({{ $item->no }})" href="#" >{{$item->sul}}</a>
+                        <td > <a wire:click="selectItem({{ $item->no }})" href="#" >{{$item->kst}}</a>
                     </tr>
                 @endforeach
                 </tbody>

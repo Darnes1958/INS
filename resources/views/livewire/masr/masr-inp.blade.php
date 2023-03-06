@@ -120,6 +120,7 @@
       });
 
       Livewire.on('gotonext',postid=>  {
+          @this.set('IsSave', false);
 
           if (postid=='MasTypeNo') {  $("#MasTypeNo").focus();$("#MasTypeNo").select(); };
           if (postid=='DetailNo') {  $("#DetailNo").focus();$("#DetailNo").select(); };

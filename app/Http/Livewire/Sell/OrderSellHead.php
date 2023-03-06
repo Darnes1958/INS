@@ -76,7 +76,7 @@ class OrderSellHead extends Component
   public function PlaceKeyEnter(){
 
     if ($this->ChkPlace()=='ok') {
-      if ($this->OredrSellRadio=='Makazen' && $this->ToSal) $this->emit('gotohead','ToSal_No');
+      if ($this->OredrSellRadio=='Makazen' && $this->ToSal && auth()->user()->can('ادخال مخازن')) $this->emit('gotohead','ToSal_No');
       else $this->emit('gotohead','head-btn');}
 }
 public function ChkPlace(){
@@ -227,7 +227,8 @@ public function ChkPlace(){
     public function mount()
     {
         $this->OredrSellRadio=LarSetting::first()->SellSalOrMak;
-        $this->ToSal=(LarSetting::first()->ToSal=='yes');
+        if (Auth::user()->can('ادخال مخازن')) $this->ToSal=(LarSetting::first()->ToSal=='yes');
+        else $this->ToSal=false;
         $conn=Auth()->user()->company;
         if (($this->price_type==2 and LarSetting::first()->SellTakInc=='inc') ||
             ($this->price_type==1 and LarSetting::first()->SellNakInc=='inc') )

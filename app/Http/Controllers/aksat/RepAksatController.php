@@ -12,6 +12,7 @@ use App\Models\bank\BankTajmeehy;
 use App\Models\bank\Companies;
 use App\Models\bank\rep_banks;
 use App\Models\Customers;
+use App\Models\sell\rep_sell_tran;
 use ArPHP\I18N\Arabic;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -339,9 +340,10 @@ class RepAksatController extends Controller
       ->where('no',  $no)
       ->orderBy('ser')
       ->get();
+    $res3=rep_sell_tran::where('order_no',$res->order_no)->get();
 
     $reportHtml = view('PrnView.aksat.Pdf-main',
-      ['res'=>$res,'res2'=>$res2,'cus'=>$cus])->render();
+      ['res'=>$res,'res2'=>$res2,'res3'=>$res3,'cus'=>$cus])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 

@@ -55,7 +55,7 @@ class RepMainHeadArc extends Component
     {
         return view('livewire.aksat.rep.okod.rep-main-head-arc',[
             'TableList' => DB::connection(Auth()->user()->company)->table('MainArc')
-                ->select('no','acc', 'name','sul')
+                ->select('no','acc', 'name','sul','kst')
                 ->where('name', 'like', '%'.$this->search.'%')
                 ->orwhere('acc', 'like', '%'.$this->search.'%')
                 ->orwhere('no', 'like', '%'.$this->search.'%')
