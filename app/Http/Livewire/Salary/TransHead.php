@@ -34,6 +34,7 @@ class TransHead extends Component
     $this->Name=$name;
     $this->Sal=$sal;
     $this->IsModify=false;
+      $this->emit('gotonext','Val');
 
   }
   public function updated(){
@@ -124,7 +125,9 @@ class TransHead extends Component
     public function render()
     {
         return view('livewire.salary.trans-head',[
-          'TransList'=>SalaryTrans::where('SalaryId',$this->SalId)
+          'TransList'=>SalaryTrans::join('SalTranType','SalaryTrans.TranType','=','SalTranType.id')
+              ->select('SalaryTrans.id','SalaryTrans.Val','SalaryTrans.TranDate','SalaryTrans.Notes','SalTranType.TypeName')
+             ->where('SalaryId',$this->SalId)
             ->where('TranType',$this->TranType)
             ->orderBy('TranDate','desc')
             ->paginate(5)

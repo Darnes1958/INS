@@ -1,5 +1,5 @@
 <div class="row  ">
-  <div  class="col-md-12  d-inline-flex my-2 " >
+  <div  class="col-md-12  d-inline-flex my-1 " >
     <label  class="form-label-me mx-1" style="width: 10%; ">السنة</label>
     <input wire:model="year"  wire:keydown.enter="ChkYear"
            class="form-control mx-1 text-center" type="number"    id="year" style="width: 35%; " autofocus>
@@ -10,12 +10,12 @@
     @error('month') <span class="error">{{ $message }}</span> @enderror
     @error('year') <span class="error">{{ $message }}</span> @enderror
   </div >
-  <div  class="col-md-12  d-inline-flex my-2 " >
+  <div  class="col-md-12  d-inline-flex my-1 " >
     <label  class="form-label-me mx-1" style="width: 10%; ">الاسم</label>
     <input wire:model="Name" class="form-control mx-1 " type="text"    id="name" style="width: 80%; " readonly>
   </div >
 
-  <div class="col-md-12 my-2 mx-4" >
+  <div class="col-md-12 my-1 mx-4" >
     <div class="form-check form-check-inline">
       <input class="form-check-input" type="radio" wire:model="TranType"  name="inlineRadioOptions" id="inlineRadio2" value="2">
       <label class="form-check-label" for="inlineRadio2">سحب</label>
@@ -29,19 +29,19 @@
       <label class="form-check-label" for="inlineRadio2">خصم</label>
     </div>
   </div>
-  <div  class="col-md-12  d-inline-flex my-2 " >
+  <div  class="col-md-12  d-inline-flex my-1 " >
     <label  class="form-label-me mx-1" style="width: 10%;">المبلغ</label>
     <input wire:model="Val" wire:keydown.enter="$emit('gotonext','Notes')"
            class="form-control mx-1 text-center" type="number"    id="Val" style="width: 50%; " autofocus>
     @error('Val') <span class="error">{{ $message }}</span> @enderror
   </div >
-  <div  class="col-md-12  d-inline-flex my-2 " >
+  <div  class="col-md-12  d-inline-flex my-1 " >
     <label  class="form-label-me mx-1" style="width: 10%;">ملاحظات</label>
     <input wire:model="Notes" wire:keydown.enter="$emit('gotonext','save-btn')"
            class="form-control mx-1 text-center" type="text"    id="Notes" style="width: 80%; " >
 
   </div >
-  <div   class="my-4 col-md-12  " style="width: 30%;margin: auto">
+  <div   class="my-2 col-md-12  " style="width: 30%;margin: auto">
     <button  wire:click="Save" class=" mx-1 btn btn-primary " id="save-btn" style="width: 100%">
       تخزين
     </button>
@@ -52,8 +52,9 @@
       <thead class="font-size-12 bg-primary text-white" >
       <tr >
 
-        <th width="24%">التاريخ</th>
-        <th width="14%">المبلغ</th>
+        <th width="20%">التاريخ</th>
+        <th width="10%">البيان</th>
+        <th width="10%">المبلغ</th>
         <th >ملاحظات</th>
         <th width="5%"></th>
         <th width="5%"></th>
@@ -64,6 +65,7 @@
         <tr class="font-size-12">
 
           <td >{{$item->TranDate  }}   </td>
+          <td >{{$item->TypeName  }}   </td>
           <td >{{$item->Val  }}   </td>
           <td >{{$item->Notes  }}   </td>
           <td  style="padding-top: 2px;padding-bottom: 2px; ">

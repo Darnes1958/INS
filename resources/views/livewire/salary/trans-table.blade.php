@@ -4,15 +4,15 @@
     <table class="table table-sm table-bordered table-striped " width="100%"  id="mytable3" >
       <thead class="font-size-12 bg-primary text-white" >
       <tr >
-        <th width="10%">الرقم الألي</th>
+        <th width="12%">الرقم الألي</th>
         <th >الإسم</th>
-        <th width="12%">المرتب</th>
+        <th width="10%">المرتب</th>
         <th width="5%">الحالة</th>
-        <th width="12%">خصم</th>
-        <th width="12%">إضافة</th>
-        <th width="12%">الصافي</th>
-        <th width="12%">سحب</th>
-        <th width="12%">الرصيد</th>
+        <th width="10%">خصم</th>
+        <th width="10%">إضافة</th>
+        <th width="10%">الصافي</th>
+        <th width="10%">سحب</th>
+        <th width="10%">الرصيد</th>
 
       </tr>
       </thead>

@@ -27,6 +27,7 @@ class TransTable extends Component
   public function selectItem($salid,$sal,$name){
    $this->SalId=$salid;
    $this->emit('TakeSalId',$this->SalId,$sal,$name);
+
   }
 
   public function mount(){
