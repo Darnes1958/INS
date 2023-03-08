@@ -7,18 +7,23 @@ use App\Models\Salary\Salarys;
 use App\Models\Salary\SalaryTrans;
 use Faker\Guesser\Name;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class TransHead extends Component
 {
+  use WithPagination;
+  protected $paginationTheme = 'bootstrap';
   public $year;
   public $month;
   public $TranType=3;
   public $SalId;
+  public $TransId;
   public $Name;
   public $Sal;
   public $Val;
   public $Notes;
   public $IsSave=false;
+  public $IsModify=false;
 
   protected $listeners = [
      'TakeSalId'
@@ -28,13 +33,32 @@ class TransHead extends Component
     $this->SalId=$salid;
     $this->Name=$name;
     $this->Sal=$sal;
+    $this->IsModify=false;
 
   }
   public function updated(){
     $this->IsSave=false;
   }
 
+  public function selectItem($transid,$val,$notes,$action){
+    $this->TransId=$transid;
+    $this->Val=$val;
+    $this->Notes=$notes;
 
+    if ($action=='delete') {$this->dispatchBrowserEvent('OpenMyDelete');}
+    if ($action=='update') {$this->IsModify=True;$this->emit('gotonext','Val');}
+  }
+  public function CloseDeleteDialog(){$this->dispatchBrowserEvent('CloseMyDelete');}
+
+
+  public function delete(){
+    $this->CloseDeleteDialog();
+
+    SalaryTrans::where('id',$this->TransId)->delete();
+
+    $this->Val='';
+    $this->emit('refreshTable');
+  }
 
   public function Save(){
     if ($this->IsSave) return;
@@ -49,19 +73,24 @@ class TransHead extends Component
       return;
     }
 
-
-      SalaryTrans::insert([
-
-        'SalaryId'=>$this->SalId,
-        'TranDate'=>date('Y-m-d'),
-        'TranType'=>$this->TranType,
+      if ($this->IsModify)
+      SalaryTrans::where('id',$this->TransId)->update([
         'Val'=>$this->Val,
         'Notes'=>$this->Notes,
-        'Y'=>$this->year,
-        'M'=>$this->month,
-        'MasNo'=>0,
-      ]);
+      ]); else
+        SalaryTrans::insert([
 
+          'SalaryId'=>$this->SalId,
+          'TranDate'=>date('Y-m-d'),
+          'TranType'=>$this->TranType,
+          'Val'=>$this->Val,
+          'Notes'=>$this->Notes,
+          'Y'=>$this->year,
+          'M'=>$this->month,
+          'MasNo'=>0,
+        ]);
+
+    $this->IsModify=false;
     $this->Name='';
     $this->Val='';
     $this->Notes='';
@@ -75,6 +104,11 @@ class TransHead extends Component
   }
     public function render()
     {
-        return view('livewire.salary.trans-head');
+        return view('livewire.salary.trans-head',[
+          'TransList'=>SalaryTrans::where('SalaryId',$this->SalId)
+            ->where('TranType',$this->TranType)
+            ->orderBy('TranDate','desc')
+            ->paginate(5)
+        ]);
     }
 }

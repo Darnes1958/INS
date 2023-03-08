@@ -3,11 +3,8 @@
     <label  class="form-label-me mx-1" style="width: 10%; ">الاسم</label>
     <input wire:model="Name" class="form-control mx-1 " type="text"    id="name" style="width: 80%; " readonly>
   </div >
-  <div  class="col-md-12  d-inline-flex my-2 " >
-    <label  class="form-label-me mx-1" style="width: 10%; ">المرتب</label>
-    <input wire:model="Sal" class="form-control mx-1 text-center" type="number"    id="Sal" style="width: 50%; " readonly>
-  </div >
-  <div class="col-md-12 my-4 mx-4" >
+
+  <div class="col-md-12 my-2 mx-4" >
     <div class="form-check form-check-inline">
       <input class="form-check-input" type="radio" wire:model="TranType"  name="inlineRadioOptions" id="inlineRadio2" value="2">
       <label class="form-check-label" for="inlineRadio2">سحب</label>
@@ -38,6 +35,59 @@
       تخزين
     </button>
   </div>
+
+  <div class="col-md-12">
+    <table class="table table-sm table-bordered table-striped " width="100%"  id="mytable3" >
+      <thead class="font-size-12 bg-primary text-white" >
+      <tr >
+
+        <th width="24%">التاريخ</th>
+        <th width="14%">المبلغ</th>
+        <th >ملاحظات</th>
+        <th width="5%"></th>
+        <th width="5%"></th>
+      </tr>
+      </thead>
+      <tbody id="addRow" class="addRow">
+      @foreach($TransList as  $item)
+        <tr class="font-size-12">
+
+          <td >{{$item->TranDate  }}   </td>
+          <td >{{$item->Val  }}   </td>
+          <td >{{$item->Notes  }}   </td>
+          <td  style="padding-top: 2px;padding-bottom: 2px; ">
+            <i wire:click="selectItem({{ $item->id }},{{$item->Val}},'{{$item->Notes}}','update')"
+               class="btn btn-outline-primary btn-sm fa fa-edit editable-input" style="margin-left: 2px;"></i>
+          </td>
+          <td  style="padding-top: 2px;padding-bottom: 2px; ">
+            <i wire:click="selectItem({{ $item->id }},{{$item->Val}},'{{$item->Notes}}','delete')"
+               class="btn btn-outline-danger btn-sm fa fa-times "></i>
+          </td>
+        </tr>
+      @endforeach
+      </tbody>
+    </table>
+    {{ $TransList->links() }}
+  </div>
+  <div class="modal fade" id="ModalMyDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">تأكيد الحذف</h5>
+          <button wire:click="CloseDeleteDialog" type="button" class="close"  >
+            <span aria-hidden="true close-btn">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h5>هل أنت متأكد من الإلغاء ?</h5>
+        </div>
+        <div class="modal-footer">
+          <button  wire:click="CloseDeleteDialog" type="button" class="btn btn-secondary close-btn" >تراجع</button>
+          <button type="button" wire:click.prevent="delete()" class="btn btn-danger close-modal" data-dismiss="modal">نعم متأكد</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 @push('scripts')
@@ -47,7 +97,12 @@
               confirmButtonText:  e.detail,
           })
       });
-
+      window.addEventListener('OpenMyDelete', event => {
+          $("#ModalMyDelete").modal('show');
+      })
+      window.addEventListener('CloseMyDelete', event => {
+          $("#ModalMyDelete").modal('hide');
+      })
       Livewire.on('gotonext',postid=>  {
 
       @this.set('IsSave', false);

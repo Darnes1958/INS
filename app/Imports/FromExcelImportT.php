@@ -16,8 +16,7 @@ class FromExcelImportT implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
-        if (!isset($row['ksm']) || !isset($row['name']) || !isset($row['acc'])
-            || !isset($row['ksm_date'])) {
+        if ($row['name']=null || $row['name']='' || !isset($row['ksm']) || !isset($row['name']) || !isset($row['acc'])   ) {
             return null;
         }
       $rec= FromExcelModel::on(auth()->user()->company)->create(
