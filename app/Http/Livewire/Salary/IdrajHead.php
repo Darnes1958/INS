@@ -36,9 +36,7 @@ class IdrajHead extends Component
       return;
     }
     if (SalaryTrans::where('Y',$this->year)->where('M',$this->month)->exists()) {
-      $this->dispatchBrowserEvent('mmsg','سبق ادراج مرتب هذا الشهر من السنة');
-      $this->emit('gotonext','month');
-      return;
+      SalaryTrans::where('Y',$this->year)->where('M',$this->month)->delete();
     }
     $salary=Salarys::where('SalCase',1)->get();
     foreach ($salary as $item) {

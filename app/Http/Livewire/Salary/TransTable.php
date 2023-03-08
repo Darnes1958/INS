@@ -17,10 +17,13 @@ class TransTable extends Component
   public $Y,$M;
 
   protected $listeners = [
-    'refreshTable'=>'$refresh',
+    'refreshTable'=>'$refresh','TakeYearMonth'
   ];
 
-
+  public function TakeYearMonth($y,$m){
+    $this->Y=$y;
+    $this->M=$m;
+  }
   public function selectItem($salid,$sal,$name){
    $this->SalId=$salid;
    $this->emit('TakeSalId',$this->SalId,$sal,$name);

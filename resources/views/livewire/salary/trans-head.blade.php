@@ -1,5 +1,16 @@
 <div class="row  ">
   <div  class="col-md-12  d-inline-flex my-2 " >
+    <label  class="form-label-me mx-1" style="width: 10%; ">السنة</label>
+    <input wire:model="year"  wire:keydown.enter="ChkYear"
+           class="form-control mx-1 text-center" type="number"    id="year" style="width: 35%; " autofocus>
+
+    <label  class="form-label-me mx-2" style="width: 10%; ">الشهر</label>
+    <input wire:model="month" wire:keydown.enter="ChkMonth" min="1" max="12"
+           class="form-control mx-1 text-center" type="number"    id="month" style="width: 30%; " >
+    @error('month') <span class="error">{{ $message }}</span> @enderror
+    @error('year') <span class="error">{{ $message }}</span> @enderror
+  </div >
+  <div  class="col-md-12  d-inline-flex my-2 " >
     <label  class="form-label-me mx-1" style="width: 10%; ">الاسم</label>
     <input wire:model="Name" class="form-control mx-1 " type="text"    id="name" style="width: 80%; " readonly>
   </div >
@@ -108,6 +119,8 @@
       @this.set('IsSave', false);
           if (postid=='Val') {  $("#Val").focus(); $("#Val").select();};
           if (postid=='Notes') {  $("#Notes").focus(); $("#Notes").select();};
+          if (postid=='year') {  $("#year").focus(); $("#year").select();};
+          if (postid=='month') {  $("#month").focus(); $("#month").select();};
           if (postid=='save-btn') {
               setTimeout(function() { document.getElementById('save-btn').focus(); },100);};
       })

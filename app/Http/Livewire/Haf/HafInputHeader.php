@@ -171,8 +171,8 @@ class HafInputHeader extends Component
       DB::connection(Auth()->user()->company)->commit();
 
       $this->bank=null;
-      $this->emit('goto','bank');
-      $this->ChkBankAndGo();
+      $this->render();
+
 
 
     } catch (\Exception $e) {

@@ -59,7 +59,26 @@ class TransHead extends Component
     $this->Val='';
     $this->emit('refreshTable');
   }
-
+  public function ChkYear(){
+    if (!$this->year || $this->year<date('Y')-1 || $this->month>date('Y')) {
+      $this->dispatchBrowserEvent('mmsg','ادخال خطأ');
+      return;
+    }
+    $this->SalId=null;
+    $this->emit('TakeYearMonth',$this->year,$this->month);
+    $this->emit('refreshTable');
+    $this->emit('gotonext','month');
+  }
+  public function ChkMonth(){
+    if (!$this->month || $this->month<1 || $this->month>12) {
+      $this->dispatchBrowserEvent('mmsg','ادخال خطأ');
+      return;
+    }
+    $this->SalId=null;
+    $this->emit('TakeYearMonth',$this->year,$this->month);
+    $this->emit('refreshTable');
+    $this->emit('gotonext','Val');
+  }
   public function Save(){
     if ($this->IsSave) return;
     if (!$this->Name) {
