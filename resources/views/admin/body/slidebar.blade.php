@@ -50,12 +50,18 @@
                 </button>
                 <div class="collapse" id="trans-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+
                         @canany(['ادخال ايصالات قبض','ادخال ايصالات دفع'])
                         <li><a href="{{route('trans.input')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">إيصال قبض أو دفع</a></li>
                         @endcanany
                         @can('ادخال مصروفات')
                         <li><a href="{{route('inpmasr')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">مصروفات</a></li>
                         @endcan
+
+                        @can('ادخال مرتبات')
+                            <li><a href="{{route('salarysaheb')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">سحب من المرتب</a></li>
+                        @endcan
+
                         @can('ادخال مرتبات')
                             <li><a href="{{route('idrajsalary')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">ادراج مرتبات</a></li>
                         @endcan

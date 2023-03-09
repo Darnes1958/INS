@@ -16,5 +16,8 @@ class SalaryController extends Controller
   function SalaryTrans(){
     return view('backend.salary.salary_trans');
   }
+  function SalarySaheb(){
+    return view('backend.salary.salary_saheb');
+  }
 
 }

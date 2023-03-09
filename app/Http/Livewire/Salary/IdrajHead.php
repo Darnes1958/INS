@@ -49,7 +49,7 @@ class IdrajHead extends Component
         'Notes'=>'مرتب شهر '.$this->month.' لسنه '.$this->year,
         'Y'=>$this->year,
         'M'=>$this->month,
-        'MasNo'=>0,
+        'MasCenter'=>$item->MasCenter,
       ]);
 
     }

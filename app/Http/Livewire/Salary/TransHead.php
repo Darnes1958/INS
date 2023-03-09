@@ -107,7 +107,7 @@ class TransHead extends Component
           'Notes'=>$this->Notes,
           'Y'=>$this->year,
           'M'=>$this->month,
-          'MasNo'=>0,
+          'MasCenter'=>Salarys::find($this->SalId)->MasCenter,
         ]);
 
     $this->IsModify=false;
