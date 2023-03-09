@@ -6,6 +6,7 @@ use App\Models\masr\MasCenters;
 use App\Models\salary\SalaryKsmIdafa_view;
 use App\Models\Salary\Salarys;
 use App\Models\Salary\SalaryTrans;
+use App\Models\Salary\SalaryView;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -28,8 +29,15 @@ class InpSaheb extends Component
 
     $this->TheSalIdListIsSelected=0;
     $res=SalaryKsmIdafa_view::where('id',$this->SalId)->first();
-    $this->CenterName=$res->CenterName;
-    $this->Raseed=$res->Raseed;
+    if ($res)
+    {
+     $this->CenterName=$res->CenterName;
+     $this->Raseed=$res->Raseed;}
+    else
+    {
+      $this->Raseed=0;
+      $this->CenterName=SalaryView::where('id',$this->SalId)->first()->CenterName;
+    }
 
     $this->emitTo('salary.emp-select','TakeSalIdNo',$this->SalId);
     $this->emit('gotonext','Val');
