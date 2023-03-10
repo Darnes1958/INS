@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Buy;
 
 
+use App\Http\Livewire\Stores\ItemSelect;
 use App\Models\stores\stores;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -12,6 +13,8 @@ use App\Models\stores\items;
 
 class OrderBuyDetail extends Component
 {
+    public $ItemToEdit;
+    public $ShowEditItem=false;
     public $stno=1;
     public $item;
     public $order_no;
@@ -23,11 +26,26 @@ class OrderBuyDetail extends Component
     public $orderdetail=[];
 
     public $DetailOpen;
-    public $OrderDetailOpen;
+    public $OrderDetailOpen=true;
 
     public $ItemGeted=false;
     public $TheItemIsSelected;
 
+    public function DoEditItem(){
+        $this->ShowEditItem=true;
+        $this->ItemToEdit=$this->item_name;
+
+        $this->emit('gotonext','ItemToEdit');
+
+    }
+  public function SaveItem(){
+    if ($this->ItemToEdit!=null){
+        items::find($this->item)->update(['item_name'=>$this->ItemToEdit]);
+        $this->item_name = $this->ItemToEdit;
+        $this->ShowEditItem = false;
+        $this->emit('gotonext','quant');
+    }
+  }
   public function updatedTheItemIsSelected(){
     $this->TheItemIsSelected=0;
     $this->ChkItemAndGo();

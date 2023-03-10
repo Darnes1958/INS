@@ -5,27 +5,27 @@
       @livewire('salary.emp-select')
     </div >
      <div  class="col-md-12  d-inline-flex my-2 " >
-       <label  class="form-label-me mx-1" style="width: 15%;">مكان العمل</label>
+       <label  class="form-label-me mx-1" style="width: 20%;">مكان العمل</label>
        <input wire:model="CenterName"
-              class="form-control mx-1 "  style="width: 85%; " readonly>
+              class="form-control mx-1 "  style="width: 80%; " readonly>
 
      </div >
      <div  class="col-md-12  d-inline-flex my-2 " >
-       <label  class="form-label-me mx-1" style="width: 15%;">الرصيد</label>
+       <label  class="form-label-me mx-1" style="width: 20%;">الرصيد</label>
        <input wire:model="Raseed"
               class="form-control mx-1 "  style="width: 50%; " readonly>
 
      </div >
     <div  class="col-md-12  d-inline-flex my-2 " >
-      <label  class="form-label-me mx-1" style="width: 15%;">المبلغ</label>
+      <label  class="form-label-me mx-1" style="width: 20%;">المبلغ</label>
       <input wire:model="Val" wire:keydown.enter="$emit('gotonext','Notes')"
              class="form-control mx-1 text-center" type="number"    id="Val" style="width: 50%; " autofocus>
       @error('Val') <span class="error">{{ $message }}</span> @enderror
     </div >
     <div  class="col-md-12  d-inline-flex my-2 " >
-      <label  class="form-label-me mx-1" style="width: 15%;">ملاحظات</label>
+      <label  class="form-label-me mx-1" style="width: 20%;">ملاحظات</label>
       <textarea wire:model="Notes" wire:keydown.enter="$emit('gotonext','save-btn')"
-             class="form-control mx-1 "     id="Notes" style="width: 85%; " ></textarea>
+             class="form-control mx-1 "     id="Notes" style="width: 80%; " ></textarea>
 
     </div >
     <div   class="my-4 col-md-12  " style="width: 30%;margin: auto">

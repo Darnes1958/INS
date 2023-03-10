@@ -17,6 +17,7 @@ class IdrajTable extends Component
     $this->SalId=$salid;
     Salarys::find($this->SalId)->update(['SalCase'=>$case]);
 
+
   }
     public function render()
     {

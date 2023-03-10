@@ -1,5 +1,6 @@
 
- <div x-data="{ $wire.OrderDetailOpen: true }" x-show="$wire.OrderDetailOpen"
+ <div x-data="{open:  @entangle('ShowEditItem') }"
+      x-show="$wire.OrderDetailOpen"
          class="row g-3 " style="border:1px solid lightgray;background: white;">
 
       <div class="col-md-12" x-show="$wire.DetailOpen"  >
@@ -50,12 +51,27 @@
                      type="text" class="form-control"  id="itemno" name="itemno" style="text-align: center;height: 39px;">
         </div>
       <div class="col-md-8">
+          <div class="d-flex">
             <label  for="item_name" class="form-label-me ">اسم الصنف</label>
-            <textarea wire:model="item_name" name="item_name" class="form-control"
+          <button wire:click="DoEditItem" x-show="$wire.item!=null && $wire.item!=0 "
+                  type="button" class="btn btn-outline-primary btn-sm fa fa-edit border-0" ></button>
+          </div>
+
+          <textarea wire:model="item_name" name="item_name" class="form-control"
                       style="color: #0b5ed7; "
                        readonly id="item_name" placeholder="اسم الصنف"></textarea>
+
             @error('item') <span class="error">{{ $message }}</span> @enderror
-        </div>
+
+      </div>
+     <div class="col-md-4"  x-show:="open" >
+     </div>
+     <div class="col-md-8 mb-2"  x-show:="open" @click.outside="open = false">
+         <textarea  wire:model="ItemToEdit" wire:keydown.enter="SaveItem"
+                    class="form-control"  id="ItemToEdit" ></textarea>
+     </div>
+
+
       <div class="col-6 ">
             <label for="quant" class="form-label-me " >الكمية</label>
             <input wire:model="quant" wire:keydown.enter="ChkQuantAndGo"  x-bind:disabled="!$wire.DetailOpen || !$wire.ItemGeted"
@@ -97,6 +113,7 @@
 
             if (postid=='item_no') {  $("#itemno").focus(); $("#itemno").select();};
             if (postid=='price') {  $("#price").focus(); $("#price").select();};
+            if (postid=='ItemToEdit') {  $("#ItemToEdit").focus(); $("#ItemToEdit").select();};
         });
 
 

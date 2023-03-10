@@ -80,7 +80,7 @@
 
     </div>
 
-    <div  x-show="!$wire.HeadOpen" class="row g-3 " style="border:1px solid lightgray;background: white;">
+    <div  x-show="!$wire.HeadOpen" class="row g-2 " style="border:1px solid lightgray;background: white;">
       <div class="col-md-6">
           <label   class="form-label-me ">رقم الفاتورة</label>
           <input wire:model="order_no" type="text" class=" form-control "   readonly  >
@@ -94,12 +94,12 @@
           <label  class="form-label-me">المورد</label>
           <input wire:model="jeha_name"   class="form-control  " type="text"  readonly >
       </div>
-      <div   class="col-md-12" >
+      <div   class="col-md-6" >
           <label  class="form-label-me">المخزن</label>
           <input wire:model="st_name"   class="form-control  " type="text"   readonly>
           <br>
       </div>
-        <div   class="col-md-12" >
+        <div   class="col-md-6" >
             <label  class="form-label-me">تكاليف اضافية</label>
             <input wire:model="Charge_Tot"   class="form-control  " type="text"   readonly>
             <br>

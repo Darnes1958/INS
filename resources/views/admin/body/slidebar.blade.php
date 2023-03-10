@@ -43,7 +43,8 @@
                 </div>
             </li>
             @endcanany
-            @canany(['ادخال ايصالات قبض','ادخال ايصالات دفع','ادخال مصروفات'])
+            @canany(['ادخال ايصالات قبض','ادخال ايصالات دفع','ادخال مصروفات',
+                     'سحب من المرتب','ادخال مرتبات','خصم واضافة وسحب','اعداد مرتبات'])
             <li class="mb-1">
                 <button class="font-size-14 btn btn-toggle d-inline-flex align-items-center rounded    border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#trans-collapse" aria-expanded="false">
                     &nbsp  <i class="fa fas fa-hand-holding-usd" aria-hidden="true"></i>&nbsp;  إيصالات قبض ودفع
@@ -58,18 +59,18 @@
                         <li><a href="{{route('inpmasr')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">مصروفات</a></li>
                         @endcan
 
-                        @can('ادخال مرتبات')
+                        @can('سحب من المرتب')
                             <li><a href="{{route('salarysaheb')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">سحب من المرتب</a></li>
                         @endcan
 
                         @can('ادخال مرتبات')
                             <li><a href="{{route('idrajsalary')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">ادراج مرتبات</a></li>
                         @endcan
-                        @can('ادخال مرتبات')
+                        @can('خصم واضافة وسحب')
                             <li><a href="{{route('salarytrans')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">اضافات وخصومات للمرتبات</a></li>
                         @endcan
 
-                        @can('ادخال مرتبات')
+                        @can('اعداد مرتبات')
                                 <li><a href="{{route('inpsalary')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">اعداد مرتبات</a></li>
                         @endcan
                     </ul>

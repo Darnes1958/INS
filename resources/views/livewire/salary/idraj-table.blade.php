@@ -4,10 +4,10 @@
     <table class="table table-sm table-bordered table-striped " width="100%"  id="mytable3" >
       <thead class="font-size-12 bg-primary text-white" >
       <tr >
-        <th width="12%">الرقم الألي</th>
+        <th width="18%">الرقم الألي</th>
         <th >الإسم</th>
-        <th width="12%">المرتب</th>
-        <th width="25%">الحالة</th>
+        <th width="16%">المرتب</th>
+        <th width="5%">الحالة</th>
 
       </tr>
       </thead>
