@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\aksat\kst_trans;
+use App\Models\aksat\main;
 use App\Models\buy\buy_tran;
 use App\Models\buy\buys;
 use App\Models\Customers;
@@ -17,6 +19,7 @@ class AdminPage extends Component
 {
 public $text;
 
+
 public $database='Daibany';
 public $ThedatabaseListIsSelectd;
 
@@ -28,52 +31,11 @@ public $ThedatabaseListIsSelectd;
     $this->redirect('/home');
   }
   public function BuyPrice(){
-    $items=items::on(Auth::user()->company)->get();
-    DB::connection(Auth::user()->company)->beginTransaction();
-      try {
-
-        foreach ($items as $item) {
-            if ($item->raseed==0) {
-                $max=buy_tran::on(Auth::user()->company)
-                    ->where('item_no',$item->item_no)->max('order_no');
-                if ($max)
-                    $price=buy_tran::on(Auth::user()->company)->where('order_no',$max)->first()->price;
-                else $price=$item->price_buy;
-                items::on(Auth::user()->company)->where('item_no', $item->item_no)
-                    ->update(['price_cost' => $price]);
-                continue;
-            }
-            $buys = buys::on(Auth::user()->company)
-                ->join('buy_tran', 'buys.order_no', '=', 'buy_tran.order_no')
-                ->select('quant', 'price')
-                ->where('item_no', $item->item_no)
-                ->orderBy('order_date_input', 'desc')
-                ->get();
-            if ($buys) {
-                $calc_raseed = $item->raseed;
-                $tot = 0;
-                for ($i = 0; $i < count($buys); $i++) {
-                    if ($calc_raseed > $buys[$i]->quant) {
-                        $tot += $buys[$i]->quant * $buys[$i]->price;
-                        $calc_raseed -= $buys[$i]->quant;
-                    } else {
-                        $tot += $calc_raseed * $buys[$i]->price;
-                        break;
-                    }
-                }
-                items::on(Auth::user()->company)->where('item_no', $item->item_no)
-                    ->update(['price_cost' => $tot / $item->raseed]);
-            }
-        }
-          DB::connection(Auth()->user()->company)->commit();
-
-          $this->dispatchBrowserEvent('mmsg', 'تمت العملية بنجاح');
-
-      } catch (\Exception $e) {
-
-          DB::connection(Auth()->user()->company)->rollback();
-          $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
-
+      $res=main::all();
+      foreach ($res as $item){
+          $trans=kst_trans::where('no',$item->no)->orderby('wrec_no')->get();
+          $i=0;
+          foreach ($trans as $ser) {$i+=1;kst_trans::where('wrec_no',$ser->wrec_no)->update(['ser'=>$i]);}
       }
 
 

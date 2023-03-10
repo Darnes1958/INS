@@ -127,7 +127,7 @@ class RepMainData extends Component
         $this->ChkTasleem='';
 
       } catch (\Exception $e) {
-
+info($e);
         DB::connection(Auth()->user()->company)->rollback();
         $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
       }
