@@ -256,19 +256,23 @@
             </li>
             @endcanany
 
-                @role('admin')
+
                 <li class="mb-1">
                     <button class="font-size-14 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#repmali-collapse" aria-expanded="false">
                         &nbsp <i class="fa  fas fa-list-ul" aria-hidden="true"></i>&nbsp تقارير مالية</button>
                     <div class="collapse" id="repmali-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            @can('تقارير الموردين')
                             <li><a href="{{route('repamma','RepMordeen')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن الموردين</a></li>
+                            @endcan
+                            @role('admin')
                             <li><a href="{{route('repamma','RepMali')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">التقرير المالي</a></li>
+                            @endrole
 
                         </ul>
                     </div>
                 </li>
-                @endrole
+
                 @role('admin')
                 <li class="mb-1">
                     <button class="font-size-14 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#manager-collapse" aria-expanded="false">
