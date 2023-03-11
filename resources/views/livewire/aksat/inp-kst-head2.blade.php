@@ -9,7 +9,7 @@
 
     </div>
     <div   class="col-md-7" >
-      <label  class="form-label-me">.</label>
+      <label  class="form-label-me">&nbsp;</label>
         <input wire:model="bankname"   type="text" class=" form-control "
                id="bank_no"   readonly >
     </div>
@@ -22,8 +22,12 @@
       @error('no') <span class="error">{{ $message }}</span> @enderror
     </div>
      <div   class="col-md-7" >
-      <label  class="form-label-me">.</label>
-      @livewire('aksat.no-select')
+
+      <label  class="form-label-me">&nbsp;</label>
+
+      @livewire('aksat.no-select-all')
+
+
     </div>
 
      <div class="col-md-5 mb-2" >
@@ -114,11 +118,11 @@
 
       $(document).ready(function ()
       {
-          $('#Main_L').select2({
+          $('#Main_L_All').select2({
               closeOnSelect: true
           });
-          $('#Main_L').on('change', function (e) {
-              var data = $('#Main_L').select2("val");
+          $('#Main_L_All').on('change', function (e) {
+              var data = $('#Main_L_All').select2("val");
 
           @this.set('no', data);
           @this.set('TheNoListIsSelectd', 1);
@@ -126,7 +130,7 @@
       });
       window.livewire.on('main-change-event',()=>{
 
-          $('#Main_L').select2({
+          $('#Main_L_All').select2({
               closeOnSelect: true
           });
           Livewire.emit('Go');

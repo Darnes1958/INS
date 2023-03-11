@@ -51,8 +51,6 @@ class NoSelect extends Component
   }
   public function render()
     {
-
-
       $this->MainList=DB::connection(Auth()->user()->company)->table($this->MainOrArc)
         ->where('bank','=',$this->bank)
         ->orderBy('name', 'DESC')->get();

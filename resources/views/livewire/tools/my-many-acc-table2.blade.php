@@ -13,14 +13,13 @@
     <tbody id="addRow" class="addRow">
     @foreach($TableList as  $item)
       <tr class="font-size-12">
-        <td>{{$item->no}}</td>
-        <td>{{$item->name}}</td>
-        <td>{{$item->sul}}</td>
-        <td>{{$item->kst}}</td>
-        <td>{{$item->bank_name}}</td>
-        <td  style="padding-top: 2px;padding-bottom: 2px; ">
-          <i wire:click="selectItem({{ $item->no }}, 'TheNo')" class="btn btn-outline-primary btn-sm far fa-arrow-alt-circle-down editable-input" style="margin-left: 2px;"></i>
-        </td>
+       <td> <a wire:click="selectItem({{ $item->no }})" href="#">{{$item->no}}</a></td>
+
+        <td><a wire:click="selectItem({{ $item->no }})" href="#">{{$item->name}}</a></td>
+        <td><a wire:click="selectItem({{ $item->no }})" href="#">{{$item->sul}}</a></td>
+        <td><a wire:click="selectItem({{ $item->no }})" href="#">{{$item->kst}}</a></td>
+        <td><a wire:click="selectItem({{ $item->no }})" href="#">{{$item->bank_name}}</a></td>
+
       </tr>
     @endforeach
     </tbody>

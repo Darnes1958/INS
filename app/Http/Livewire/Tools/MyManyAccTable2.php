@@ -28,7 +28,7 @@ class MyManyAccTable2 extends Component
 
   }
 
-  public function selectItem($TheId, $action)
+  public function selectItem($TheId)
   {
       $this->emit('Take_ManyAcc_No',$TheId);
       $this->dispatchBrowserEvent('CloseKstManyModal');

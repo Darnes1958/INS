@@ -51,6 +51,7 @@ class InpKstDetail extends Component
     $this->Ksm_type=$ksm_type;
    $this->FillKstDetail($res);
    $this->OpenKstDetail=true;
+      $this->emit('kstdetail_goto','ksm_date');
   }
   public function NoAtUpdate($res){
 

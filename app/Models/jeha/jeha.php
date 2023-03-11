@@ -46,7 +46,7 @@ class jeha extends Model
          return self::on(Auth()->user()->company)
              ->where('available',1)
              ->where('jeha_name', 'LIKE', '%' . $searchKey . '%')
-            
+
              ->orderBy('jeha_name');
         if ($jeha_type==3)
             return self::on(Auth()->user()->company)

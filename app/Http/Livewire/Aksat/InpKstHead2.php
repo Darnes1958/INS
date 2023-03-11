@@ -87,7 +87,7 @@ public function Ksthead_goto($wid){
 }
 public function Take_ManyAcc_No($The_no){
    $this->no=$The_no;
-    $this->emit('ksthead_goto','no');
+   $this->ChkNoAndGo();
 
 }
 public function Go(){
@@ -103,28 +103,14 @@ public function Go(){
   {
     $this->emit('GoResetKstDetail');
   }
-  public function ChkBankAndGo(){
 
-
-    $this->bankname='';
-    if ($this->bankno!=null) {
-      $result = bank::on(Auth()->user()->company)->where('bank_no',$this->bankno)->first();
-
-      if ($result) {  $this->bankname=$result->bankname;
-        $this->BankGet=true;
-        $this->ResetKstHead();
-        $this->emit('TakeHafBankNo',$this->bankno,$this->bankname);
-        $this->emit('bankfound',$this->bankno,$this->bankname);
-        $this->emit('ksthead_goto','no');
-      }}
-
-  }
   public function updatedNo()
   {
     $this->acc='';
     $this->resetValidation('acc');
 
     $this->emit('GoResetKstDetail');
+    $this->emit('GotoKstDetail',0,0);
   }
   public function FillHead(){
 
@@ -153,8 +139,10 @@ public function Go(){
         $orderno=$result->order_no;
         $this->emit('nofound',$result,$this->Ksm_type);
 
+        $this->emit('SelectMainAllnofound',$result);
         $this->emit('GetTheMainNo',$this->no);
         $this->emit('GotoKstDetail',$this->no,$orderno);
+        $this->emitTo('aksat.inp-kst-detail','kstdetail_goto','ksm_date');
       }
     }
   }
@@ -162,6 +150,7 @@ public function Go(){
 
     $this->resetValidation('acc');
     $this->emit('GoResetKstDetail');
+    $this->emit('GotoKstDetail',0,0);
   }
   public function ChkAccAndGo(){
     $this->resetValidation('acc');
@@ -184,7 +173,7 @@ public function Go(){
           $this->no=$result->no;
 
           $this->emit('NoAtUpdate',$result);
-          $this->emit('ksthead_goto','no');
+          $this->emitTo('aksat.inp-kst-detail','kstdetail_goto','ksm_date');
         }
       } }
 
