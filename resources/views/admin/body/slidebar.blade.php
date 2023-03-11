@@ -122,6 +122,7 @@
                 <div class="collapse" id="account-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="{{route('kst.input')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">قسط مصرفي</a></li>
+                        <li><a href="{{route('kst2.input')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">قسط مصرفي 2</a></li>
                         <li><a href="{{route('haf.input')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">حافظة </a></li>
 
                     </ul>

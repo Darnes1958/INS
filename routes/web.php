@@ -71,6 +71,7 @@ Route::controller(AdminController::class)->group(function (){
 });
 Route::controller(AKsatController::class)->group(function (){
   route::get('/kst/input', 'InpKst')->name('kst.input')->middleware('auth') ;
+  route::get('/kst2/input', 'InpKst2')->name('kst2.input')->middleware('auth') ;
   route::get('/haf/input', 'InpHaf')->name('haf.input')->middleware('auth') ;
   route::get('/main/input/{NewOld}', 'MainInp')->name('main.input')->middleware('auth') ;
   route::get('/main/Edit/{EditDel}', 'MainEdit')->name('main.edit')->middleware('auth') ;

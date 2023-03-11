@@ -10,7 +10,7 @@
     </div>
     <div class="col-md-2 my-2 mx-0 d-inline-flex ">
       <label for="baky" class="form-label mx-0 text-right " style="width: 30%; ">الباقي</label>
-      <input wire:model="baky" class="form-control mx-0 text-center" type="number"  min="-5" max="5"  id="baky" style="width: 70%; ">
+      <input wire:model="baky" class="form-control mx-0 text-center" type="number"  min="-10" max="10"  id="baky" style="width: 70%; ">
     </div>
     <div  class="col-md-4 my-2 d-flex ">
       <button x-show="open" wire:click="ArcTarheel" class="btn btn-outline-warning mx-2" style="height: 30px;" >نقل للأرشيف</button>

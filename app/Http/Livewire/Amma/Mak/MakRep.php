@@ -105,11 +105,7 @@ class MakRep extends Component
               return $q->where('raseed','!=', 0) ;     })
             ->when( ! $this->RepChk,function ($q) {
               return $q->where('place_ras','!=', 0) ;     })
-            ->where([
-              ['item_name', 'like', '%'.$this->search.'%'],
-              ['item_no', 'like', '%'.$this->search.'%'],
-              ['type_name', 'like', '%'.$this->search.'%'],
-            ])
+            ->where('item_name', 'like', '%'.$this->search.'%' )
             ->orderBy('item_type','asc')
             ->orderby($this->orderColumn,$this->sortOrder)
             ->paginate(15)
