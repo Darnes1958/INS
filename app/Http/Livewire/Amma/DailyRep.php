@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Amma;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,8 @@ class DailyRep extends Component
     public $RepRadio='sells_view';
     public $RepDate='order_date_input';
     public $RepSearch1='jeha_name';
+    public $ByChk=false;
+    public $By;
 
     public $DateVal;
 
@@ -38,6 +41,18 @@ class DailyRep extends Component
         $this->emitTo('amma.daily-rep-table','TakeParams',
             $this->RepRadio,$this->RepDate,$this->RepSearch1);
     }
+    public function updatedByChk()
+    {
+
+        $this->emitTo('amma.daily-rep-table','TakeBy',
+            $this->ByChk,$this->By);
+    }
+    public function updatedBy()
+    {
+
+        $this->emitTo('amma.daily-rep-table','TakeBy',
+            $this->ByChk,$this->By);
+    }
     public function ChkDateAndGo(){
       $this->emitTo('amma.daily-rep-table','TakeDate',$this->DateVal);
 
@@ -53,6 +68,8 @@ class DailyRep extends Component
     public function render()
     {
 
-        return view('livewire.amma.daily-rep');
+        return view('livewire.amma.daily-rep',[
+            'UserName'=>User::where('company',Auth::user()->company)->get(),
+        ]);
     }
 }

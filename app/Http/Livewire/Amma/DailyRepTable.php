@@ -17,8 +17,10 @@ class DailyRepTable extends Component
   public $search;
   public $SearchField1;
   public $DateVal;
+    public $ByChk=false;
+    public $By;
   protected $listeners = [
-    'TakeDate','TakeParams'
+    'TakeDate','TakeParams','TakeBy'
   ];
 
   public function TakeParams($tablename,$inpdate,$searachfield1){
@@ -32,6 +34,12 @@ class DailyRepTable extends Component
     $this->DateVal=$d;
 
   }
+    public function TakeBy($bychk,$by){
+
+        $this->ByChk=$bychk;
+        $this->By=$by;
+
+    }
 
   public function mount($tablename='buys_view',$inpdate='order_date_input',$searachfield1='jeha_name'){
     $this->TableName=$tablename;
@@ -49,6 +57,9 @@ class DailyRepTable extends Component
             ->join('bank', 'main.bank', '=', 'bank.bank_no')
             ->join('ksm_type', 'kst_trans.ksm_type', '=', 'ksm_type.ksm_type_no')
             ->join('pass','kst_trans.emp','=','pass.emp_no')
+            ->when($this->ByChk,function ($q){
+                  $q->where('kst_trans.emp',$this->By);
+              })
             ->where('kst_trans.inp_date',$this->DateVal)
 
             ->select('main.no','main.name','main.acc','kst_trans.ksm','kst_trans.ksm_date', 'bank.bank_name', 'ksm_type.ksm_type_name','pass.emp_name')
@@ -60,10 +71,21 @@ class DailyRepTable extends Component
         'TableList'=>DB::connection(Auth()->user()->company)->table($this->TableName)
           ->join('pass',$this->TableName.'.emp','=','pass.emp_no')
           ->select($this->TableName.'.*','pass.emp_name')
-          ->where([
-            [$this->InpDate,$this->DateVal],
-            [$this->SearchField1, 'like', '%'.$this->search.'%'],
-          ])
+          ->when($this->ByChk,function ($q){
+              $q->where([
+                  ['emp',$this->By],
+                  [$this->InpDate,$this->DateVal],
+                  [$this->SearchField1, 'like', '%'.$this->search.'%'],
+              ]);
+          })
+            ->when(!$this->ByChk,function ($q){
+                $q->where([
+
+                    [$this->InpDate,$this->DateVal],
+                    [$this->SearchField1, 'like', '%'.$this->search.'%'],
+                ]);
+            })
+
           ->paginate(15)
       ,'TableName'=>$this->TableName]);
     }

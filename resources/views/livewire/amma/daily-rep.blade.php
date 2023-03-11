@@ -1,12 +1,12 @@
-<div   class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
-    <div class="col-md-3 my-1 d-inline-flex align-items-center">
+<div x-data  class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
+    <div class="col-md-2 my-1 ml-0 pl-0 d-inline-flex align-items-center">
         <label for="date" class="form-label mx-1 my-1" >التاريخ</label>
         <input wire:model="DateVal" wire:keydown.enter="ChkDateAndGo"
-               class="form-control"
+               class="form-control mx-0 px-1"
                 type="date"  id="date" >
         @error('tran_date') <span class="error">{{ $message }}</span> @enderror
     </div>
-    <div class="col-md-9 my-2">
+    <div class="col-md-7 my-2 mx-0 px-0" style="font-size: 10pt;">
        @role('مشتريات')
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" wire:model="RepRadio"   value="buys_view">
@@ -42,6 +42,19 @@
             <label class="form-check-label" >عقود</label>
         </div>
 
+
+    </div>
+    <div class="col-md-3 my-1 ml-0 pl-0 d-inline-flex align-items-center">
+        <div class=" form-check form-check-inline mx-1">
+            <input class="form-check-input"  name="ByChk" type="checkbox" wire:model="ByChk"  >
+            <label class="form-check-label" >بواسطة</label>
+        </div>
+        <select  wire:model="By"  id="By" class="form-control  form-select " style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;" >
+            <option value="">اختيار</option>
+            @foreach($UserName as $key=>$s)
+                <option value="{{ $s->empno }}">{{ $s->name }}</option>
+            @endforeach
+        </select>
 
     </div>
     <div>
