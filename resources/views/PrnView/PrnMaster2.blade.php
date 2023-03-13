@@ -69,6 +69,7 @@
           border-collapse: collapse;
 
           margin-right: 12px;
+          margin-left: 20px;
           margin-bottom: 20px;
 
           font-size: 12px;

@@ -121,6 +121,7 @@ Route::controller(RepAksatController::class)->group(function (){
   route::get('/pdfover/{bank_no?}/{over_date1?}/{over_date2?}/{bank_name?}/{Table?}/{letters?}', 'PdfOver')->name('pdfover') ;
   route::get('/pdftar/{bank_no?}/{tar_date1?}/{tar_date2?}/{bank_name?}/{tar_type?}', 'PdfTar')->name('pdftar') ;
   route::get('/pdfksm/{bank_no?}/{rep_date1?}/{rep_date2?}/{bank_name?}/{RepRadio?}', 'PdfKsm')->name('pdfksm') ;
+  route::get('/pdfbankone/{bank_no?}/{column?}/{sort?}', 'PdfBankOne')->name('pdfbankone') ;
 });
 Route::controller(RepAmaaController::class)->group(function (){
   route::get('/repamma/{rep}', 'RepAmma')->name('repamma')->middleware('auth');

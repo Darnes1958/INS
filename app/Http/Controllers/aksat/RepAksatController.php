@@ -10,6 +10,7 @@ use App\Models\aksat\main;
 use App\Models\bank\bank;
 use App\Models\bank\BankTajmeehy;
 use App\Models\bank\Companies;
+use App\Models\bank\rep_bank;
 use App\Models\bank\rep_banks;
 use App\Models\Customers;
 use App\Models\sell\rep_sell_tran;
@@ -123,6 +124,28 @@ class RepAksatController extends Controller
 
     $reportHtml = view('PrnView.aksat.pdf-kamla',
       ['res'=>$second,'cus'=>$cus,'bank_name'=>$request->bank_name,'months'=>$request->months,'RepDate'=>$RepDate])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('report.pdf');
+
+  }
+  function PdfBankOne(Request $request){
+
+    $RepDate=date('Y-m-d');
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+    $res=rep_bank::where('bank', '=', $request->bank_no)
+      ->orderby($request->column,$request->sort)
+      ->get();
+    $bank_name=bank::find($request->bank_no)->bank_name;
+    $reportHtml = view('PrnView.aksat.pdf-bankone',
+      ['res'=>$res,'cus'=>$cus,'bank_name'=>$bank_name,'RepDate'=>$RepDate])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 

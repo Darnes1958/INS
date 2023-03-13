@@ -4,8 +4,13 @@
       @livewire('aksat.rep.bank-comp',
       ['sender' => 'aksat.rep.okod.bank-one',])
     </div>
-    <div class="col-md-2 my-2 ">
+    <div class="col-md-4 my-2 ">
       <input wire:model="search"  type="search"   placeholder="ابحث هنا .......">
+    </div>
+    <div class="col-md-2 my-2 ">
+      <a  href="{{route('pdfbankone',['bank_no'=>$bank_no,'column'=>$orderColumn,'sort'=>$sortOrder])}}"
+          class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
+
     </div>
 
   </div>
