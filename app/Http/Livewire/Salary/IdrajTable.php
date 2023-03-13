@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Salary;
 
 use App\Models\Salary\Salarys;
 use App\Models\Salary\SalaryView;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -22,7 +23,11 @@ class IdrajTable extends Component
     public function render()
     {
         return view('livewire.salary.idraj-table',[
-          'TableList'=>SalaryView::paginate(15),
+          'TableList'=>SalaryView::
+          when(!Auth::user()->can('مرتب خاص'),function($q){
+            $q->where('vip','!=',1);
+          })
+            ->paginate(15),
         ]);
     }
 }

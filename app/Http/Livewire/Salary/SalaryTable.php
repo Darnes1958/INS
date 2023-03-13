@@ -33,6 +33,14 @@ class SalaryTable extends Component
 
         if ($action=='delete') {$this->dispatchBrowserEvent('OpenMyDelete');}
         if ($action=='update') {$this->emitTo('salary.salary-inp','TakeSalNo',$salaryid);}
+      if ($action=='special'){
+        Salarys::where('id',$salaryid)
+          ->update(['vip'=>1]);
+      }
+      if ($action=='notspecial'){
+        Salarys::where('id',$salaryid)
+          ->update(['vip'=>0]);
+      }
     }
     public function CloseDeleteDialog(){$this->dispatchBrowserEvent('CloseMyDelete');}
 
@@ -51,7 +59,11 @@ class SalaryTable extends Component
     public function render()
     {
         return view('livewire.salary.salary-table',[
-            'TableList'=>SalaryView::paginate(15)
+            'TableList'=>SalaryView::
+              when(!Auth::user()->can('مرتب خاص'),function($q){
+                $q->where('vip','!=',1);
+              })
+            ->paginate(15)
         ]);
     }
 }

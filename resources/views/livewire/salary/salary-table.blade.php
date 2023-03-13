@@ -8,8 +8,10 @@
              <th width="14%">الإسم</th>
              <th width="12%">المرتب</th>
              <th width="25%">محمل علي</th>
+             <th width="5%" style="text-align: center"></th>
              <th width="5%"></th>
              <th width="5%"></th>
+
          </tr>
          </thead>
          <tbody id="addRow" class="addRow">
@@ -20,6 +22,19 @@
                  <td>{{$item->Name}}</td>
                  <td>{{$item->Sal}}</td>
                  <td>{{$item->CenterName}}</td>
+                 @can('مرتب خاص')
+                     @if($item->vip==1)
+                         <td  style="padding-top: 2px;padding-bottom: 2px; ">
+                             <i wire:click="selectItem({{ $item->id }},'notspecial')"
+                                class="btn btn-outline-dark btn-sm  fas fa-user-secret editable-input" style="margin-left: 2px;"></i>
+                         </td>
+                     @else
+                         <td  style="padding-top: 2px;padding-bottom: 2px; ">
+                             <i wire:click="selectItem({{ $item->id }},'special')"
+                                class="btn btn-outline-secondary btn-sm  far fa-user-secret editable-input" style="margin-left: 2px;"></i>
+                         </td>
+                     @endif
+                 @endcan
                  <td  style="padding-top: 2px;padding-bottom: 2px; ">
                      <i wire:click="selectItem({{ $item->id }},'update')"
                         class="btn btn-outline-primary btn-sm fa fa-edit editable-input" style="margin-left: 2px;"></i>
@@ -28,6 +43,7 @@
                      <i wire:click="selectItem({{ $item->id }},'delete')"
                         class="btn btn-outline-danger btn-sm fa fa-times "></i>
                  </td>
+
              </tr>
          @endforeach
          </tbody>

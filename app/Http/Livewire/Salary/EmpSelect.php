@@ -28,7 +28,11 @@ class EmpSelect extends Component
 
     public function render()
     {
-        $this->SalIdList=Salarys::where('SalCase',1)->get();
+        $this->SalIdList=Salarys::where('SalCase',1)
+          ->when(!Auth::user()->can('مرتب خاص'),function($q){
+            $q->where('vip','!=',1);
+          })
+          ->get();
         return view('livewire.salary.emp-select',$this->SalIdList);
     }
 }

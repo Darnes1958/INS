@@ -6,6 +6,7 @@ use App\Models\salary\SalaryKsmIdafa_view;
 use App\Models\Salary\Salarys;
 use App\Models\Salary\SalaryTrans;
 use App\Models\Salary\SalaryView;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -37,7 +38,11 @@ class TransTable extends Component
     public function render()
     {
         return view('livewire.salary.trans-table',[
-          'TableList'=>SalaryKsmIdafa_view::where('Y',$this->Y)->where('M',$this->M)->paginate(15),
+          'TableList'=>SalaryKsmIdafa_view::where('Y',$this->Y)->where('M',$this->M)
+            ->when(!Auth::user()->can('مرتب خاص'),function($q){
+              $q->where('vip','!=',1);
+            })
+            ->paginate(15),
         ]);
     }
 }
