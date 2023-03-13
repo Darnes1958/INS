@@ -8,7 +8,9 @@
              <th width="14%">الإسم</th>
              <th width="12%">المرتب</th>
              <th width="25%">محمل علي</th>
-             <th width="5%" style="text-align: center"></th>
+             @can('مرتب خاص')
+             <th width="5%" style="text-align: center">مرتب خاص</th>
+             @endcan
              <th width="5%"></th>
              <th width="5%"></th>
 
