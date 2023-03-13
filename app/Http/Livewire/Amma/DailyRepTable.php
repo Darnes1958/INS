@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Amma;
 
+use App\Models\aksat\kst_trans;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -61,6 +62,7 @@ class DailyRepTable extends Component
                   $q->where('kst_trans.emp',$this->By);
               })
             ->where('kst_trans.inp_date',$this->DateVal)
+            ->where('kst_trans.ksm','!=',0)
 
             ->select('main.no','main.name','main.acc','kst_trans.ksm','kst_trans.ksm_date', 'bank.bank_name', 'ksm_type.ksm_type_name','pass.emp_name')
             ->paginate(15)
