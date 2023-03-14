@@ -41,7 +41,10 @@
             <input class="form-check-input" type="radio" wire:model="RepRadio"   value="main_view">
             <label class="form-check-label" >عقود</label>
         </div>
-
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" wire:model="RepRadio"   value="store_exp_view">
+        <label class="form-check-label" >مخازن</label>
+      </div>
 
     </div>
     <div class="col-md-3 my-1 ml-0 pl-0 d-inline-flex align-items-center">

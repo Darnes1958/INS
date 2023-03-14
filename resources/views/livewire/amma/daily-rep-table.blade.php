@@ -1,11 +1,41 @@
 <div>
+  @if ($TableName=='store_exp_view' )
+    <table class="table table-striped table-bordered table-sm">
+      <thead class="font-size-12">
+      <tr>
+        <th style="width: 10%">رقم إذن الاستلام</th>
+        <th style="width: 16%">مــــــــن</th>
+        <th style="width: 16%">إلــــــــي</th>
+        <th style="width: 10%">رقم الصنف</th>
+        <th >اسم الصنف</th>
+        <th style="width: 8%">الكمية</th>
+        <th style="width: 20%">بواسطة</th>
+      </tr>
+      </thead>
+      <tbody id="addRow" class="addRow">
+      @foreach($TableList as $key=> $item)
+        <tr class="font-size-12">
+          <td> {{ $item->per_no }} </td>
+          <td> {{$item->st_name }} </td>
+          <td> {{$item->place_name }} </td>
+          <td> {{$item->item_no }} </td>
+          <td> {{$item->item_name }} </td>
+          <td> {{$item->quant }} </td>
+          <td> {{$item->emp_name }} </td>
+        </tr>
+      @endforeach
+      </tbody>
+    </table>
+
+  @endif
     @if ($TableName=='buys_view' || $TableName=='sells_view')
       <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
         <thead class="font-size-12">
         <tr>
-          <th width="16%">رقم الفاتورة</th>
+          <th width="16%">نقطة البيع</th>
+          <th width="12%">رقم الفاتورة</th>
           <th >العميل</th>
-          <th width="26%">التاريخ</th>
+          <th width="12%">التاريخ</th>
           <th width="10%">الاجمالي</th>
           <th width="10%">المدفوع</th>
           <th width="8%">الأجل</th>
@@ -15,6 +45,7 @@
         <tbody id="addRow" class="addRow">
         @foreach($TableList as $item)
           <tr class="font-size-12">
+            <td > {{ $item->place_name }} </td>
             <td > {{ $item->order_no }} </td>
             <td > {{ $item->jeha_name }} </td>
             <td> {{ $item->order_date }} </td>

@@ -44,7 +44,9 @@
     </div>
     <div class="d-inline-flex align-items-center">
         <label for="kst_count" class="form-label" style="width: 20% ">عدد الأقساط</label>
-        <input wire:model="kst_count" type="text" class="form-control" id="kst_count" style="width: 30%" readonly>
+        <input wire:model="kst_count" type="text" class="form-control" id="kst_count" style="width: 10%" readonly>
+        <label for="kst_count" class="form-label" style="width: 10% ;text-align: left;margin-left: 2px;">متبقي</label>
+        <input wire:model="kst_raseed" type="text" class="form-control" id="kst_count" style="width: 10%" readonly>
         <label for="kst" class="form-label" style="width: 20% ">&nbsp;&nbsp;القسط</label>
         <input wire:model="kst"  type="text" class="form-control" id="kst" style="width: 30%" readonly>
     </div>

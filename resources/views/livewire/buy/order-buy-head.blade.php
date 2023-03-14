@@ -57,11 +57,31 @@
           </select>
       </div>
 
+      <div  class="col-md-2">
+        <input class="form-check-input" name="repchk" type="checkbox" wire:model="ToSal"  >
+        <label class="form-check-label" for="repchk">نقل للصالة</label>
+      </div>
+      <div class="col-md-2">
+        <input  wire:model="ToSal_L"
+                class="form-control  "
+                type="text"  id="ToSal_No" wire:keydown.enter="ChkToSal_No">
+        @error('ToSal_L') <span class="error">{{ $message }}</span> @enderror
+      </div>
+      <div class="col-md-6 mx-1">
+
+        <select   wire:model="ToSal_L" name="sal_l_id" id="sal_l_id" class="form-control  form-select "
+                  style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;width: 100%"         >
+          @foreach($halls_names as $key=>$s)
+            <option value="{{ $s->hall_no }}">{{ $s->hall_name }}</option>
+          @endforeach
+        </select>
+      </div>
+
       <div class="col-md-4 my-3 align-center justify-content-center "  style="display: flex">
 
         <input type="button"  id="head-btn"
               class=" btn btn-outline-success  waves-effect waves-light   "
-              wire:click.prevent="BtnHeader"  wire:keydown.enter="BtnHeader" value="موافق" />
+              wire:click.prevent="BtnHeader"   value="موافق" />
 
       </div>
       <div class="col-md-4 my-3 align-center justify-content-center "  style="display: flex">

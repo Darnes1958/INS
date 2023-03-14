@@ -7,6 +7,7 @@ use App\Models\buy\buys;
 use App\Models\buy\charges_buy;
 use App\Models\jeha\jeha;
 use App\Models\stores\items;
+use App\Models\stores\store_exp;
 use App\Models\trans\trans;
 use Illuminate\Console\View\Components\Alert;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,8 @@ class OrderBuyTable extends Component
     public $ChargeDetail=[];
     public $ChargeTot;
     public $IsSave=false;
+  public $ToSal;
+  public $ToSal_L;
 
    protected $listeners = [
         'open','putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable',
@@ -173,6 +176,28 @@ class OrderBuyTable extends Component
                    ->update(['price_cost' => $tot / $item->raseed]);
                }
 
+            if ($this->ToSal) {
+              $per_no = store_exp::on(Auth()->user()->company)->max('per_no') + 1;
+              for ($i = 0; $i < count($this->orderdetail); $i++) {
+                $item = $this->orderdetail[$i];
+                if ($item['item_no'] == 0) {
+                  continue;
+                }
+                DB::connection(Auth()->user()->company)->table('store_exp')->insert([
+                  'st_no' => $this->st_no,
+                  'per_no' => $per_no,
+                  'item_no' => $item['item_no'],
+                  'quant' => $item['quant'],
+                  'exp_date' => $this->order_date,
+                  'order_no' => 0,
+                  'per_type' => 2,
+                  'st_no2' => 0,
+                  'hall_no' => $this->ToSal_L,
+                  'emp' => Auth::user()->empno,
+                ]);
+              }
+            }
+
               DB::connection(Auth()->user()->company)->commit();
               if ($this->OrderChanged){
                   $this->OrderChanged=false;
@@ -192,9 +217,11 @@ class OrderBuyTable extends Component
 
       }
    }
-   public function HeadBtnClick($Wor,$wd,$wjh,$wst)
+   public function HeadBtnClick($Wor,$wd,$wjh,$wst,$ToSal,$ToSal_L)
    {
         $this->IsSave=false;
+        $this->ToSal=$ToSal;
+        $this->ToSal_L=$ToSal_L;
         $this->order_no=$Wor;
         $this->order_date=$wd;
         $this->jeha_no=$wjh;

@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Buy;
 
 use App\Models\buy\buys;
 use App\Models\jeha\jeha;
+use App\Models\stores\halls_names;
 use App\Models\stores\items;
 use App\Models\stores\stores;
 use App\Models\stores\stores_names;
@@ -14,6 +15,8 @@ use Livewire\Component;
 
 class OrderBuyHead extends Component
 {
+  public $ToSal_L;
+  public $ToSal=false;
 
     public $order_no;
     public $order_date;
@@ -33,6 +36,15 @@ class OrderBuyHead extends Component
     protected $listeners = [
         'mounthead','jehaadded','TakeCharge'
     ];
+
+  public function ChkToSal_No(){
+    if ($this->ToSal_L!=null) {
+      $res=halls_names::on(Auth()->user()->company)->find($this->ToSal_L);
+      if ($res) {$this->emit('gotohead','head-btn');}
+      else {$this->dispatchBrowserEvent('mmsg','هذا الرقم غير مخزون');}
+    }
+
+  }
 
     public function TakeCharge($charge,$tot){
       $this->ChargeDetail=$charge;
@@ -123,6 +135,12 @@ class OrderBuyHead extends Component
     public function BtnHeader()
     {
         $this->validate();
+        if ($this->ToSal){
+         if ($this->ToSal_L==null || !(halls_names::on(auth()->user()->company)->where('hall_no',$this->ToSal_L)->exists()) ){
+          $this->dispatchBrowserEvent('mmsg', 'يجب ادخال رقم صالة صحيح');
+          return false;
+          }
+        }
         $this->st_name=stores_names::on(Auth()->user()->company)
             ->where('st_no',$this->st_no)->first()->st_name;
         $this->HeadOpen=false;
@@ -130,7 +148,7 @@ class OrderBuyHead extends Component
         $this->emitTo('buy.order-buy-table','TakeChargeAll',$this->ChargeDetail,$this->Charge_Tot);
         $this->emitTo('buy.charge-buy','open',false);
         $this->emitTo('buy.order-buy-table','open',true);
-        $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha,$this->st_no);
+        $this->emit('HeadBtnClick',$this->order_no,$this->order_date,$this->jeha,$this->st_no,$this->ToSal,$this->ToSal_L);
         $this->emitTo('buy.order-buy-detail','TakeParam',$this->order_no,$this->st_no);
         $this->emit('mountdetail');
 
@@ -143,6 +161,7 @@ class OrderBuyHead extends Component
             'jeha'=>jeha::on(Auth()->user()->company)->where('jeha_type',2)->where('available',1)->get(),
             'stores'=>stores::on(Auth()->user()->company)->where('raseed','>',0)->get(),
             'stores_names'=>stores_names::on(Auth()->user()->company)->get(),
+            'halls_names'=>halls_names::all(),
             'items'=>items::on(Auth()->user()->company)->where('raseed','>',0)->get(),
             'jeha_name'=>$this->jeha_name,
 

@@ -49,6 +49,7 @@ class ItemRep extends Component
     }
     public function render()
     {
+      if (!$this->itemno) $this->itemno=0;
         $first=DB::connection(Auth()->user()->company)->table('halls')
             ->join('halls_names','halls.hall_no','=','halls_names.hall_no')
             ->select('halls.item_no','halls.raseed','halls_names.hall_name as place_name')

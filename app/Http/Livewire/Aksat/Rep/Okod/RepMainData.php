@@ -54,6 +54,8 @@ class RepMainData extends Component
     public $HasChk=false;
     public $HasArc=false;
 
+    public $kst_raseed;
+
     protected $listeners = [
         'GotoDetail','DoArch','refreshme'=>'$refresh'
     ];
@@ -126,6 +128,8 @@ class RepMainData extends Component
         $this->ArcMain='';
         $this->ChkTasleem='';
 
+        $this->kst_raseed='';
+
       } catch (\Exception $e) {
 
         DB::connection(Auth()->user()->company)->rollback();
@@ -183,6 +187,14 @@ class RepMainData extends Component
       $this->TarKst=tar_kst::on(Auth()->user()->company)->where('no',$this->no)->count();
       $this->ArcMain=MainArc::on(Auth()->user()->company)->where('jeha',$this->jeha)->count();
       $this->ChkTasleem=chk_tasleem::on(Auth()->user()->company)->where('no',$this->no)->count();
+
+      if ($this->raseed<=0) $this->kst_raseed=0;
+      else {
+        if ($this->raseed<=$this->kst) $this->kst_raseed=1;
+        else {
+          $this->kst_raseed=ceil($this->raseed/$this->kst);
+        }
+      }
 
     }
   public function CloseArc(){
