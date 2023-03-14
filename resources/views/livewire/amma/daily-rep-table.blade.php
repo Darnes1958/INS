@@ -32,7 +32,9 @@
       <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
         <thead class="font-size-12">
         <tr>
+          @if ($TableName=='sells_view')
           <th width="16%">نقطة البيع</th>
+          @endif
           <th width="12%">رقم الفاتورة</th>
           <th >العميل</th>
           <th width="12%">التاريخ</th>
@@ -45,7 +47,9 @@
         <tbody id="addRow" class="addRow">
         @foreach($TableList as $item)
           <tr class="font-size-12">
+            @if ($TableName=='sells_view')
             <td > {{ $item->place_name }} </td>
+            @endif
             <td > {{ $item->order_no }} </td>
             <td > {{ $item->jeha_name }} </td>
             <td> {{ $item->order_date }} </td>
