@@ -7,6 +7,7 @@ use App\Models\aksat\main;
 use App\Models\aksat\main_items;
 use App\Models\aksat\MainArc;
 use App\Models\aksat\place;
+use App\Models\Operations;
 use App\Models\OverTar\over_kst;
 use App\Models\OverTar\over_kst_a;
 use App\Models\OverTar\stop_kst;
@@ -17,6 +18,7 @@ use App\Models\sell\sell_tran;
 use App\Models\sell\sells;
 use App\Models\bank\bank;
 use App\Models\sell\sells_view;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -120,6 +122,7 @@ class InpMainHead extends Component
         tar_kst_before::on(Auth()->user()->company)->whereIn('no', function($q){
             $q->select('no')->from('MainArc')->where('jeha',$this->jeha);})->update([
             'name'=>$this->NameToEdit,]);
+      Operations::insert(['Proce'=>'زبون','Oper'=>'تعديل','no'=>$this->jeha,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
     $this->name=$this->NameToEdit;
     $this->ShowEditName=false;}
   }

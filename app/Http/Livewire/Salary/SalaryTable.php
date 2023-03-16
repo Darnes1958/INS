@@ -4,9 +4,11 @@ namespace App\Http\Livewire\Salary;
 
 use App\Models\masr\Masrofat;
 use App\Models\masr\MasView;
+use App\Models\Operations;
 use App\Models\Salary\Salarys;
 use App\Models\Salary\SalaryTrans;
 use App\Models\Salary\SalaryView;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -53,6 +55,7 @@ class SalaryTable extends Component
           return;
         }
         Salarys::where('id',$this->SalaryId)->delete();
+        Operations::insert(['Proce'=>'مرتبات','Oper'=>'الغاء','no'=>$this->SalaryId,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
 
         $this->render();
     }

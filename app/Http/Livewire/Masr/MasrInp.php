@@ -6,6 +6,8 @@ use App\Models\masr\MasCenters;
 use App\Models\masr\Masrofat;
 use App\Models\masr\MasTypeDetails;
 use App\Models\masr\MasTypes;
+use App\Models\Operations;
+use Carbon\Carbon;
 use Carbon\Exceptions\NotACarbonClassException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -154,16 +156,18 @@ class MasrInp extends Component
                     'Notes'=>$this->Notes,
                     'emp'=>Auth()->user()->empno,
             ]);
-        else
-            Masrofat::where('MasNo',$this->MasNo)->update([
-                'MasType'=>$this->MasTypeNo,
-                'MasTypeDetail'=>$this->DetailNo,
-                'MasCenter'=>$this->CenterNo,
-                'Val'=>$this->Val,
-                'MasDate'=>$this->MasDate,
-                'Notes'=>$this->Notes,
-                'emp'=>Auth()->user()->empno,
-            ]);
+        else {
+          Masrofat::where('MasNo', $this->MasNo)->update([
+            'MasType' => $this->MasTypeNo,
+            'MasTypeDetail' => $this->DetailNo,
+            'MasCenter' => $this->CenterNo,
+            'Val' => $this->Val,
+            'MasDate' => $this->MasDate,
+            'Notes' => $this->Notes,
+            'emp' => Auth()->user()->empno,
+          ]);
+          Operations::insert(['Proce'=>'مصروفات','Oper'=>'تعديل','no'=>$this->MasNo,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
+        }
         $this->IsSave=true;
         $this->Modify_Mod=false;
         $this->Val='';

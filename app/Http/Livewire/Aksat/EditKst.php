@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Aksat;
 
 
 use App\Models\aksat\kst_trans;
+use App\Models\Operations;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -45,6 +47,7 @@ class EditKst extends Component
       'kst_notes'=>$this->EditNotes,
       'emp'=>auth::user()->empno,
     ]);
+    Operations::insert(['Proce'=>'قسط','Oper'=>'تعديل','no'=>$this->Edit_No,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
 
     $this->reset();
     $this->dispatchBrowserEvent('CloseMyTableEdit');

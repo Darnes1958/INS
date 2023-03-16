@@ -2,8 +2,11 @@
 
 namespace App\Http\Livewire\OverTar;
 
+use App\Models\Operations;
 use App\Models\OverTar\over_kst;
 use App\Models\OverTar\over_kst_a;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -42,6 +45,7 @@ class OverTable extends Component
 
       if ($this->Proc=='over_kst') over_kst::on(Auth()->user()->company)->where('wrec_no',$this->wrec_no)->delete();
       if ($this->Proc=='over_kst_a') over_kst_a::on(Auth()->user()->company)->where('wrec_no',$this->wrec_no)->delete();
+      Operations::insert(['Proce'=>'فائض','Oper'=>'الغاء','no'=>$this->no,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
       $this->render();
     }
 

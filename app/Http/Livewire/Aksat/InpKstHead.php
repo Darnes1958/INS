@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Aksat;
 
 use App\Models\aksat\kst_trans;
+use App\Models\Operations;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -71,6 +73,7 @@ class InpKstHead extends Component
     $raseed=$sul->sul-$sul_pay;
     main::on(Auth()->user()->company)->where('no',$this->no)->update(['sul_pay'=>$sul_pay,'raseed'=>$raseed]);
 
+    Operations::insert(['Proce'=>'قسط','Oper'=>'الغاء','no'=>$this->no,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
     DB::connection(Auth()->user()->company)->commit();
     $this->ChkNoAndGo();
     $this->emitTo('tools.my-table','refreshComponent');

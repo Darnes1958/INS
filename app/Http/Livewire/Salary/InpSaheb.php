@@ -3,10 +3,13 @@
 namespace App\Http\Livewire\Salary;
 
 use App\Models\masr\MasCenters;
+use App\Models\Operations;
 use App\Models\salary\SalaryKsmIdafa_view;
 use App\Models\Salary\Salarys;
 use App\Models\Salary\SalaryTrans;
 use App\Models\Salary\SalaryView;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -61,6 +64,7 @@ class InpSaheb extends Component
     $this->CloseDeleteDialog();
 
     SalaryTrans::where('id',$this->TransId)->delete();
+    Operations::insert(['Proce'=>'سحب مرتب','Oper'=>'الغاء','no'=>$this->SalId,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
 
     $this->Val='';
     $this->Notes='';
@@ -69,7 +73,7 @@ class InpSaheb extends Component
   }
   public function Save(){
     if ($this->IsSave) return;
-    info('tow : '.$this->SalId);
+
     if (!$this->SalId) {
       $this->dispatchBrowserEvent('mmsg','يجب اختيار موظف من القائمة');
 
@@ -81,11 +85,14 @@ class InpSaheb extends Component
       return;
     }
 
-    if ($this->IsModify)
+    if ($this->IsModify) {
       SalaryTrans::where('id',$this->TransId)->update([
         'Val'=>$this->Val,
         'Notes'=>$this->Notes,
-      ]); else
+      ]);
+      Operations::insert(['Proce'=>'سحب مرتب','Oper'=>'تعديل','no'=>$this->SalId,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
+
+    } else
       SalaryTrans::insert([
         'SalaryId'=>$this->SalId,
         'TranDate'=>date('Y-m-d'),

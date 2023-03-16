@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Models\Salary;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class Salarys extends Model
+class Operations extends Model
 {
   use HasFactory;
 
   protected $connection = 'other';
   protected $guarded = [];
-  protected $table = 'Salarys';
+  protected $table = 'Operations';
   public $timestamps = true;
 
 

@@ -2,8 +2,11 @@
 
 namespace App\Http\Livewire\OverTar;
 
+use App\Models\Operations;
 use App\Models\OverTar\over_kst;
 use App\Models\OverTar\over_kst_a;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class EditOver extends Component
@@ -54,7 +57,8 @@ class EditOver extends Component
                   'tar_date'=>$this->edittar_date,
               ]
           );
-
+    $res=over_kst::on(Auth()->user()->company)->find($this->editwrec_no);
+    Operations::insert(['Proce'=>'فائض','Oper'=>'نعديل','no'=>$res->no,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
     $this->emitTo('over-tar.over-table','closeandrefresh');
   }
   public function render()

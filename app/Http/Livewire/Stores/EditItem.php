@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire\Stores;
 
+use App\Models\Operations;
 use App\Models\stores\item_price_buy;
 use App\Models\stores\item_type;
 use App\Models\stores\items;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Livewire\Component;
@@ -44,6 +46,8 @@ class EditItem extends Component
       'price_buy'=>$this->price_buy,
       'price_sell'=>$this->price_sell,
     ]);
+    Operations::insert(['Proce'=>'اصناف','Oper'=>'تعديل','no'=>$this->item_no,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
+
     $this->reset();
     $this->dispatchBrowserEvent('CloseMyTableEdit');
   }

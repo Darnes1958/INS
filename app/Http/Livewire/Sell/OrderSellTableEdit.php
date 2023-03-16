@@ -3,12 +3,14 @@
 namespace App\Http\Livewire\Sell;
 
 use App\Models\aksat\main;
+use App\Models\Operations;
 use App\Models\sell\rep_sell_tran;
 use App\Models\sell\sell_tran;
 use App\Models\sell\sells;
 use App\Models\stores\items;
 use App\Models\stores\stores;
 use App\Models\trans\trans;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -161,6 +163,8 @@ class OrderSellTableEdit extends Component
                 }
               if ($this->HasRaseed)
               {
+                Operations::insert(['Proce'=>'مبيعات','Oper'=>'تعديل','no'=>$this->order_no,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
+
                 DB::connection($conn)->commit();
                 $this->emit('mounttable');
                 $this->emit('dismountdetail');

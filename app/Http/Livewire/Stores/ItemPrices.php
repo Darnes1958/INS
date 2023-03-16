@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire\Stores;
 
+use App\Models\Operations;
 use App\Models\stores\item_price_sell;
 use App\Models\stores\items;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Livewire\Component;
@@ -79,7 +81,9 @@ class ItemPrices extends Component
             ->update([
                 'price'=>$this->price_tak
             ]);
-        $this->item_no='';
+      Operations::insert(['Proce'=>'اسعار صنف','Oper'=>'تعديل','no'=>$this->item_no,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
+
+      $this->item_no='';
         $this->price_nakdy='';
         $this->price_tak='';
         $this->ItemGeted-false;

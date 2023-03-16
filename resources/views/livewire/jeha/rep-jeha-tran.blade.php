@@ -60,6 +60,7 @@
             <th style="width: 14%">دائن</th>
             <th style="width: 20%">رقم المستند</th>
             <th style="width: 20%">طريقة الدفع</th>
+            <th >ملاحظات</th>
         </tr>
         </thead>
         <tbody id="addRow" class="addRow">
@@ -80,6 +81,7 @@
                 <td> {{ $item->daen }} </td>
                 <td> {{ $item->order_no }} </td>
                 <td> {{ $item->type_name }} </td>
+                <td> {{ $item->notes }} </td>
             </tr>
         @endforeach
         <tr class="font-size-12" style="font-weight: bold">

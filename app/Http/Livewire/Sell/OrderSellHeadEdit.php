@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Sell;
 
 use App\Models\aksat\main;
+use App\Models\Operations;
 use App\Models\others\price_type;
 use App\Models\sell\sell_tran;
 use App\Models\sell\sells;
@@ -11,6 +12,7 @@ use App\Models\stores\halls_names;
 use App\Models\stores\items;
 use App\Models\stores\stores;
 use App\Models\stores\stores_names;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -126,7 +128,9 @@ class OrderSellHeadEdit extends Component
       try {
             sell_tran::on(Auth()->user()->company)->where('order_no',$this->order_no)->delete();
             sells::on(Auth()->user()->company)->where('order_no',$this->order_no)->delete();
-            DB::connection(Auth()->user()->company)->commit();
+            Operations::insert(['Proce'=>'مبيعات','Oper'=>'الغاء','no'=>$this->order_no,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
+
+        DB::connection(Auth()->user()->company)->commit();
             $this->emitTo('sell.order-sell-table-edit','mounttable');
             $this->emitTo('sell.order-sell-detail-edit','dismountdetail');
             $this->emitSelf('mounthead');

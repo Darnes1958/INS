@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Masr;
 
 use App\Models\masr\Masrofat;
 use App\Models\masr\MasView;
+use App\Models\Operations;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -40,6 +42,7 @@ class MasrTable extends Component
     public function delete(){
         $this->CloseDeleteDialog();
         Masrofat::where('MasNo',$this->MasNo)->delete();
+        Operations::insert(['Proce'=>'مصروفات','Oper'=>'الغاء','no'=>$this->MasNo,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
 
         $this->render();
     }

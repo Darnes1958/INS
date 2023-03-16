@@ -8,6 +8,7 @@ use App\Models\buy\buy_tran;
 use App\Models\buy\buys;
 use App\Models\jeha\jeha;
 use App\Models\jeha\jeha_type;
+use App\Models\Operations;
 use App\Models\OverTar\over_kst;
 use App\Models\OverTar\over_kst_a;
 use App\Models\OverTar\stop_kst;
@@ -15,6 +16,7 @@ use App\Models\OverTar\tar_kst;
 use App\Models\OverTar\tar_kst_before;
 use App\Models\sell\sells;
 use App\Models\trans\trans;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -126,6 +128,7 @@ class AddSupp extends Component
      tar_kst_before::on(Auth()->user()->company)->whereIn('no', function($q){
         $q->select('no')->from('MainArc')->where('jeha',$this->jeha_no);})->update([
         'name'=>$this->jehaname,]);
+      Operations::insert(['Proce'=>'زبون','Oper'=>'تعديل','no'=>$this->jeha_no,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
 
     }
     else {
@@ -210,6 +213,7 @@ class AddSupp extends Component
       return false;
     }
     jeha::on(Auth()->user()->company)->where('jeha_no',$this->jeha_no)->delete();
+    Operations::insert(['Proce'=>'زبون','Oper'=>'الغاء','no'=>$this->jeha_no,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
     $this->render();
   }
 

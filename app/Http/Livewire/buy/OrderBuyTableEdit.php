@@ -7,8 +7,10 @@ use App\Models\buy\rep_buy_tran;
 use App\Models\buy\buy_tran;
 use App\Models\buy\buys;
 use App\Models\jeha\jeha;
+use App\Models\Operations;
 use App\Models\stores\items;
 use App\Models\trans\trans;
+use Carbon\Carbon;
 use Illuminate\Console\View\Components\Alert;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -204,6 +206,7 @@ class OrderBuyTableEdit extends Component
               }
 
               if ($this->HasRaseed) {
+                Operations::insert(['Proce'=>'مشتريات','Oper'=>'تعديل','no'=>$this->order_no,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
 
                 DB::connection(Auth()->user()->company)->commit();
 

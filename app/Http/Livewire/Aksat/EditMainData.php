@@ -8,12 +8,14 @@ use App\Models\aksat\main_items;
 use App\Models\aksat\MainArc;
 use App\Models\aksat\place;
 use App\Models\bank\bank;
+use App\Models\Operations;
 use App\Models\OverTar\over_kst;
 use App\Models\OverTar\over_kst_a;
 use App\Models\OverTar\stop_kst;
 use App\Models\OverTar\tar_kst;
 use App\Models\OverTar\tar_kst_before;
 use App\Models\sell\sell_tran;
+use Carbon\Carbon;
 use Illuminate\Queue\Listener;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -179,6 +181,7 @@ class EditMainData extends Component
         'bank'=>$this->bankno,'acc'=>$this->acc,
       ]);
 
+      Operations::insert(['Proce'=>'عقد','Oper'=>'تعديل','no'=>$this->no,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
       DB::connection(Auth()->user()->company)->commit();
       $this->no=''; $this->orderno='';$this->name='';$this->bankno='';$this->acc='';$this->place='';
       $this->sul='';$this->sul_tot='';$this->dofa='';$this->kst='';
@@ -205,6 +208,8 @@ class EditMainData extends Component
       tar_kst_before::on(Auth()->user()->company)->where('no',$this->no)->delete();
       kst_trans::on(Auth()->user()->company)->where('no',$this->no)->delete();
       main::on(Auth()->user()->company)->where('no',$this->no)->delete();
+
+      Operations::insert(['Proce'=>'عقد','Oper'=>'الغاء','no'=>$this->no,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
 
       DB::connection(Auth()->user()->company)->commit();
       $this->no=''; $this->orderno='';$this->name='';$this->bankno='';$this->acc='';$this->place='';

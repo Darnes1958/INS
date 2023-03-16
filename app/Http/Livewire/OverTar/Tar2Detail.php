@@ -4,6 +4,7 @@ namespace App\Http\Livewire\OverTar;
 
 use App\Models\aksat\kst_trans;
 use App\Models\aksat\main;
+use App\Models\Operations;
 use App\Models\OverTar\tar_kst;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -122,6 +123,8 @@ class Tar2Detail extends Component
             ]);
 
             tar_kst::on(Auth()->user()->company)->where('wrec_no',$this->wrec_no)->delete();
+
+            Operations::insert(['Proce'=>'نرجيع اقساط','Oper'=>'الغاء','no'=>$res->no,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
 
             DB::connection(Auth()->user()->company)->commit();
             $this->render();

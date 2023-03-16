@@ -6,7 +6,9 @@ use App\Models\masr\MasCenters;
 use App\Models\masr\Masrofat;
 use App\Models\masr\MasTypeDetails;
 use App\Models\masr\MasTypes;
+use App\Models\Operations;
 use App\Models\Salary\Salarys;
+use Carbon\Carbon;
 use Carbon\Exceptions\NotACarbonClassException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -85,6 +87,7 @@ class SalaryInp extends Component
     ];
 
     public function Save(){
+      $created_at = Carbon::now();
       if ($this->IsSave) return;
         $this->validate();
         if (!$this->Modify_Mod)
@@ -92,13 +95,16 @@ class SalaryInp extends Component
                     'MasCenter'=>$this->CenterNo,
                     'Sal'=>$this->Sal,
                     'Name'=>$this->Name,
+                    'created_at'=>$created_at,
             ]);
-        else
-            Salarys::where('id',$this->SalaryId)->update([
-                'MasCenter'=>$this->CenterNo,
-                'Sal'=>$this->Sal,
-                'Name'=>$this->Name,
-            ]);
+        else {
+          Salarys::where('id', $this->SalaryId)->update([
+            'MasCenter' => $this->CenterNo,
+            'Sal' => $this->Sal,
+            'Name' => $this->Name,
+          ]);
+          Operations::insert(['Proce'=>'مرتبات','Oper'=>'نعديل','no'=>$this->SalaryId,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
+        }
         $this->IsSave=true;
         $this->Modify_Mod=false;
         $this->Sal='';

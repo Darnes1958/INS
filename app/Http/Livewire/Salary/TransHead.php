@@ -3,9 +3,12 @@
 namespace App\Http\Livewire\Salary;
 
 use App\Models\aksat\chk_tasleem;
+use App\Models\Operations;
 use App\Models\Salary\Salarys;
 use App\Models\Salary\SalaryTrans;
+use Carbon\Carbon;
 use Faker\Guesser\Name;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -56,6 +59,8 @@ class TransHead extends Component
     $this->CloseDeleteDialog();
 
     SalaryTrans::where('id',$this->TransId)->delete();
+    Operations::insert(['Proce'=>'حركة مرتب','Oper'=>'الغاء','no'=>$this->SalId,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
+
 
     $this->Val='';
     $this->emit('refreshTable');
@@ -93,11 +98,13 @@ class TransHead extends Component
       return;
     }
 
-      if ($this->IsModify)
+      if ($this->IsModify) {
       SalaryTrans::where('id',$this->TransId)->update([
         'Val'=>$this->Val,
         'Notes'=>$this->Notes,
-      ]); else
+      ]);
+        Operations::insert(['Proce'=>'حركة مرتب','Oper'=>'نعديل','no'=>$this->SalId,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
+      }else
         SalaryTrans::insert([
 
           'SalaryId'=>$this->SalId,

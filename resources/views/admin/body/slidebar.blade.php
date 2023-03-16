@@ -276,15 +276,28 @@
                 @role('admin')
                 <li class="mb-1">
                     <button class="font-size-14 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#manager-collapse" aria-expanded="false">
-                        &nbsp <i class="fa  fas fa-list-ul" aria-hidden="true"></i>&nbsp صلاحيات</button>
+                        &nbsp <i class="fa  fas fa-list-ul" aria-hidden="true"></i>&nbsp صلاحيات و مراقبة</button>
                     <div class="collapse" id="manager-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li><a href="{{route('manager')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">منح الصلاحيات والمستخدمين</a></li>
-
+                            <li><a href="{{route('oper')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">مراقبة عمليات التعديل والالغاء</a></li>
 
                         </ul>
                     </div>
                 </li>
+                @else
+                    @can('مراقبة التعديل')
+                    <li class="mb-1">
+                        <button class="font-size-14 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#manager-collapse" aria-expanded="false">
+                            &nbsp <i class="fa  fas fa-list-ul" aria-hidden="true"></i>&nbsp مراقبة</button>
+                        <div class="collapse" id="manager-collapse">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li><a href="{{route('oper')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">مراقبة عمليات التعديل والالغاء</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    @endcan
+
                 @endrole
         </ul>
     </div>

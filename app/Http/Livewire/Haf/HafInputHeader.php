@@ -6,6 +6,8 @@ use App\Models\aksat\hafitha_tran;
 use App\Models\aksat\hafitha;
 use App\Models\aksat\main;
 use App\Models\bank\bank;
+use App\Models\Operations;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -168,6 +170,7 @@ class HafInputHeader extends Component
       DB::connection(Auth()->user()->company)->table('hafitha_tran')->where('hafitha',$this->hafitha)->delete();
       DB::connection(Auth()->user()->company)->table('pages')->where('hafitha',$this->hafitha)->delete();
       DB::connection(Auth()->user()->company)->table('hafitha')->where('hafitha_no',$this->hafitha)->delete();
+      Operations::insert(['Proce'=>'حافظة','Oper'=>'الغاء','no'=>$this->hafitha,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
       DB::connection(Auth()->user()->company)->commit();
 
       $this->bank=null;

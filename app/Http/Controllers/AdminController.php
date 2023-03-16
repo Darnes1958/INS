@@ -13,6 +13,11 @@ class AdminController extends Controller
     return view('backend.manager');
 
   }
+  public function RepOper (){
+
+    return view('backend.RepOper');
+
+  }
     public function destroy(Request $request)
     {
         Auth::guard('web')->logout();

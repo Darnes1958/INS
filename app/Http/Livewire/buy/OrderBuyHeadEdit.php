@@ -8,9 +8,11 @@ use App\Models\buy\charge_by;
 use App\Models\buy\charge_type;
 use App\Models\buy\charges_buy;
 use App\Models\jeha\jeha;
+use App\Models\Operations;
 use App\Models\stores\items;
 use App\Models\stores\stores;
 use App\Models\stores\stores_names;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -160,6 +162,7 @@ class OrderBuyHeadEdit extends Component
     try {
       buy_tran::on(Auth()->user()->company)->where('order_no',$this->orderno)->delete();
       buys::on(Auth()->user()->company)->where('order_no',$this->orderno)->delete();
+      Operations::insert(['Proce'=>'مشتريات','Oper'=>'الغاء','no'=>$this->orderno,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
       DB::connection(Auth()->user()->company)->commit();
       $this->emitTo('buy.buy-select','refreshComponent');
       $this->emit('mounttable');

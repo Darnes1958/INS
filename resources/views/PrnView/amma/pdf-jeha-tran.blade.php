@@ -11,22 +11,24 @@
     </div>
 
 
-    <table style="border-collapse:collapse;"  >
+    <table style="border-collapse:collapse;width: 100%"  >
       <thead >
 
-      <tr style="background:lightgray">
-        <th style="width: 20%;">طريقة الدفع</th>
-        <th style="width: 12%;">رقم المستند</th>
-        <th style="width: 12%;">الرصيد</th>
-        <th style="width: 12%;">دائن</th>
-        <th style="width: 12%;">مدين</th>
+      <tr style="background:lightgray ;">
+        <th style="font-size: 7pt;">ملاحظات</th>
+        <th style="width: 10%;font-size: 7pt;">طريقة الدفع</th>
+        <th style="width: 10%;font-size: 7pt;">رقم المستند</th>
+        <th style="width: 10%;font-size: 7pt;">الرصيد</th>
+        <th style="width: 10%;font-size: 7pt;">دائن</th>
+        <th style="width: 10%;font-size: 7pt;">مدين</th>
 
-        <th style="width: 12%;">التاريخ</th>
-        <th >البيان</th>
+        <th style="width: 12%;font-size: 7pt;">التاريخ</th>
+        <th style="font-size: 7pt;">البيان</th>
       </tr>
       </thead>
       <tbody style="margin-bottom: 40px; ">
       <tr  >
+        <td>  </td>
         <td>  </td>
         <td>  </td>
         @if($Alraseed<0)
@@ -44,7 +46,12 @@
       @foreach($RepTable as $key=>$item)
         @php $Alraseed+=$item->daen-$item->mden; @endphp
         <tr style="border:1px solid ;">
+          <td> {{ $item->notes }} </td>
+          @if($item->type_name=='مشتريات')
+            <td></td>
+          @else
           <td> {{ $item->type_name }} </td>
+          @endif
           <td> {{ $item->order_no }} </td>
           @if ($Alraseed<0)
           <td style="color: red"  > {{ number_format($Alraseed,2, '.', ',') }} </td>
@@ -69,6 +76,7 @@
       @endforeach
 
       <tr  >
+        <td>  </td>
         <td>  </td>
         <td>  </td>
         @if ($Alraseed<0)

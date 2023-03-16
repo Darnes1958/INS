@@ -2,7 +2,10 @@
 
 namespace App\Http\Livewire\OverTar;
 
+use App\Models\Operations;
 use App\Models\OverTar\wrong_Kst;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -39,6 +42,7 @@ class WrongTable extends Component
   public function delete(){
     $this->CloseDeleteDialog();
     wrong_Kst::on(Auth()->user()->company)->where('wrong_no',$this->wrong_no)->delete();
+    Operations::insert(['Proce'=>'بالخطأ','Oper'=>'الغاء','no'=>0,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
     $this->render();
   }
     public function render()

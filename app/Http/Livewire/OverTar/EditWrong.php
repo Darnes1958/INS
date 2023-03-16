@@ -2,7 +2,10 @@
 
 namespace App\Http\Livewire\OverTar;
 
+use App\Models\Operations;
 use App\Models\OverTar\wrong_Kst;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class EditWrong extends Component
@@ -50,6 +53,7 @@ class EditWrong extends Component
         'name'=>$this->name,
       ]
     );
+    Operations::insert(['Proce'=>'بالخطأ','Oper'=>'نعديل','no'=>0,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
 
     $this->emitTo('over-tar.wrong-table','closeandrefresh');
   }
