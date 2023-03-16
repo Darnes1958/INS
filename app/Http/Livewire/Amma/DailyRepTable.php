@@ -63,7 +63,6 @@ class DailyRepTable extends Component
               })
             ->where('kst_trans.inp_date',$this->DateVal)
             ->where('kst_trans.ksm','!=',0)
-
             ->select('main.no','main.name','main.acc','kst_trans.ksm','kst_trans.ksm_date', 'bank.bank_name', 'ksm_type.ksm_type_name','pass.emp_name')
             ->paginate(15)
           ,'TableName'=>$this->TableName]);
@@ -96,8 +95,6 @@ class DailyRepTable extends Component
 
             ->paginate(15)
           ,'TableName'=>$this->TableName]);
-
-
 
       return view('livewire.amma.daily-rep-table',[
         'TableList'=>DB::connection(Auth()->user()->company)->table($this->TableName)

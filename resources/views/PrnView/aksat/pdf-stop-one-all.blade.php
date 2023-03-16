@@ -1,7 +1,7 @@
 @extends('PrnView.PrnMasterOneAll')
 
 @section('mainrep')
-  @foreach($res as $key => $item)
+  @forelse($res as $key => $item)
     <div style=" position: fixed; right: 30px;">
       <label style="font-size: 20pt;" >{{$comp_name}}</label>
     </div>
@@ -85,7 +85,12 @@
     <br>
     <label>    مفوض الشركة /      {{$CompMan}}</label>
 </div>
-  <div class="page-break"></div>
-  @endforeach
+    @if (!$loop->last)
+        <div class="page-break"></div>
+    @endif
+
+  @empty
+      
+  @endforelse
 @endsection
 

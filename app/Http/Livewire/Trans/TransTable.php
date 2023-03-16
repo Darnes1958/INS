@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Trans;
 
+use App\Models\Operations;
 use App\Models\trans\trans;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -45,6 +47,7 @@ class TransTable extends Component
     public function delete(){
       $this->CloseDeleteDialog();
       trans::on(Auth()->user()->company)->where('tran_no',$this->tran_no)->delete();
+        Operations::insert(['Proce'=>'ايصال','Oper'=>'الغاء','no'=>$this->tran_no,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
       $this->render();
     }
 

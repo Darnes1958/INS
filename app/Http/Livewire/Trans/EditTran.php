@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Trans;
 
+use App\Models\Operations;
 use App\Models\trans\trans;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Livewire\Component;
@@ -47,7 +49,7 @@ class EditTran extends Component
         'notes'=>$this->editnotes,
       ]
     );
-
+    Operations::insert(['Proce'=>'ايصال','Oper'=>'تعديل','no'=>$this->edittran_no,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
     $this->emitTo('trans.trans-table','closeandrefresh');
   }
   public function render()
