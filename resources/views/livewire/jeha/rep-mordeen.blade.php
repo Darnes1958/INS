@@ -39,9 +39,10 @@
           <th style="width: 5%">مفضل</th>
           <th style="width: 5%">خاص</th>
           <th >اسم المورد</th>
-          <th style="width: 14%">فواتير الشراء</th>
-          <th style="width: 14%">ايصالات القبض</th>
-          <th style="width: 14%">ايصالات الدفع</th>
+          <th style="width: 14%">شراء</th>
+          <th style="width: 14%">مردودات</th>
+          <th style="width: 14%">قبض</th>
+          <th style="width: 14%">دفع</th>
           <th style="width: 14%">الإجمالي</th>
 
         </tr>
@@ -75,6 +76,7 @@
               @endcan
             <td><a wire:click="selectItem({{ $item->jeha_no }},'nothing')" href="#">{{$item->jeha_name}}</a>  </td>
             <td> {{ number_format($item->tot,2, '.', ',') }} </td>
+            <td> {{ number_format($item->TarBuy,2, '.', ',') }} </td>
             <td> {{ number_format($item->ValImp,2, '.', ',') }} </td>
             <td> {{ number_format($item->ValExp,2, '.', ',') }} </td>
             <td> {{ number_format($item->differ,2, '.', ',') }} </td>
@@ -84,6 +86,7 @@
 
         <tfoot>
         <tr class="font-size-12 font-weight-bold">
+        <th></th>
         <th></th>
         <th></th>
         <th></th>

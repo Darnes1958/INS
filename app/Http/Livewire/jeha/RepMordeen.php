@@ -50,7 +50,7 @@ class RepMordeen extends Component
     if ($action=='nothing') {
       $this->jeha_no = $jeha;
       $this->jeha_name = jeha::on(Auth()->user()->company)->find($this->jeha_no)->jeha_name;
-      $this->resetPage();
+
     }
   }
     public function render()
