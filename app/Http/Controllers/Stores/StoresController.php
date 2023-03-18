@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Stores;
 use App\Http\Controllers\Controller;
 use App\Models\Customers;
 
+use App\Models\stores\place_view;
 use App\Models\stores\RepMakzoon;
 use ArPHP\I18N\Arabic;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -79,11 +80,17 @@ class StoresController extends Controller
         $cus=Customers::where('Company',Auth::user()->company)->first();
         $place_type=$request->place_type;
         $place_no=$request->place_no;
+
+        $place_name=place_view::where('place_type',$place_type+1)
+            ->where('place_no',$place_no)->first()->place_name;
         $res=RepMakzoon::
         when($request->place_no!=0,function ($q) use ($place_no){
             return $q->where('place_no','=', $place_no) ;     })
             ->when($request->place_no!=0,function  ($q )  use ($place_type) {
                 return $q->where('place_type','=', $place_type) ;     })
+            ->when($request->withzero==0,function ($q){
+                return $q->where('raseed','!=',0);
+            })
             ->where('place_type',$place_type)
             ->orderBy('item_type','asc')
             ->orderBy('item_no','asc')
@@ -91,7 +98,7 @@ class StoresController extends Controller
 
         $item_type=RepMakzoon::select('type_name')->where('place_type',$place_type)->where('place_no',$place_no)->groupby('type_name')->orderby('type_name')->get();
         $reportHtml = view('PrnView.amma.pdf-mak',
-            ['res'=>$res,'cus'=>$cus,'item_type'=>$item_type,])->render();
+            ['place_name'=>$place_name,'res'=>$res,'cus'=>$cus,'item_type'=>$item_type,])->render();
         $arabic = new Arabic();
         $p = $arabic->arIdentify($reportHtml);
 

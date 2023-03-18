@@ -45,7 +45,7 @@
               class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-print"> &nbsp;&nbsp;جرد&nbsp;&nbsp;</i></a>
             @endif
                 @if($place_no!=0)
-                    <a  href="{{route('repmakpdf2',['place_type'=>$place_type,'place_no'=>$place_no])}}"
+                    <a  href="{{route('repmakpdf2',['place_type'=>$place_type,'place_no'=>$place_no,'withzero'=>$withzero])}}"
                         class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
                 @endif
         </div>
