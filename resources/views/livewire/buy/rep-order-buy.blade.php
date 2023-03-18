@@ -25,12 +25,9 @@
         <div class="col-md-8">
           <input wire:model="order_date"
                  class="form-control  "  name="date" type="date"  id="date" readonly>
-
         </div>
       </div>
     </div>
-
-
 
       <div class="col-md-6">
         <div class="row">
@@ -156,6 +153,9 @@
         </div>-->
 
   </div>
+
+
+
 </div>
 
 
@@ -168,6 +168,9 @@
                   <th width="8%">رقم الصنف</th>
                   <th>اسم الصنف </th>
                   <th width="8%">الكمية</th>
+                  @if($has_tar)
+                   <th width="8%">ترجيع</th>
+                  @endif
                 <th width="12%">سعر الشراء</th>
                 <th width="12%">سعر التكلفة</th>
                 <th width="12%">مجموع الشراء</th>
@@ -181,6 +184,15 @@
                       <td style="color: #0c63e4; text-align: center"> {{ $item['item_no'] }} </td>
                       <td > {{ $item['item_name'] }} </td>
                       <td style=" text-align: center"> {{ $item['quant'] }} </td>
+                      @if($has_tar)
+                        @if($item['tarjeeh']==1)
+                          <td  style="padding-top: 2px;padding-bottom: 2px; ">
+                              <i class="btn btn-outline-success btn-sm fa fa-check "></i>
+                          </td>
+                          @else
+                            <td></td>
+                        @endif
+                      @endif
                       <td> {{ $item['price_input'] }} </td>
                       <td> {{ $item['price'] }} </td>
                       <td> {{ $item['sub_tot'] }}</td>
@@ -215,10 +227,48 @@
           </table><br>
           {{ $chargedetail->links() }}
       </div>
+      @if($has_tar)
+          <div class="pt-3 col-md-12 ">
+              <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
+                  <caption class="caption-top  w-25 mx-auto py-0 text-info">مردودات</caption>
+                  <thead class="font-size-12">
+                  <tr>
+                      <th width="16%">التاريخ</th>
+                      <th width="12%">رقم الصنف</th>
+                      <th >اسم الصنف</th>
+                      <th width="8%">الكمية</th>
+                      <th width="12%">السعر</th>
+                      <th width="14%">المجموع</th>
+                  </tr>
+                  </thead>
+                  <tbody id="addRow" class="addRow">
+                  @php $tot=0; @endphp
+                  @foreach($TarList as  $item)
+                      <tr class="font-size-12">
+                          <td>{{$item->tar_date}}</td>
+                          <td>{{$item->item_no}}</td>
+                          <td>{{$item->item_name}}</td>
+                          <td>{{$item->quant}}</td>
+                          <td>{{$item->price_input}}</td>
+                          <td>{{$item->sub_tot}}</td>
+                      </tr>
+                    @php($tot=$tot+$item->sub_tot)
+                  @endforeach
+                  <tr class="font-size-12">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td style="font-weight: bold"> الإجمالي</td>
+                      <td style="font-weight: bold">{{  number_format($tot,3, '.', '')}}</td>
+                  </tr>
+                  </tbody>
+              </table>
+              {{ $TarList->links() }}
+          </div>
+      @endif
+
   </div>
-
-
-
 </div>
 </div>
 
@@ -229,19 +279,11 @@
               confirmButtonText:  e.detail,
           })
       });
-  </script>
-
-  <script type="text/javascript">
-
 
       Livewire.on('gotonext',postid=>  {
           if (postid=='orderno') {  $("#order_no").focus();$("#order_no").select(); };
-
-
       })
 
-  </script>
-  <script type="text/javascript">
       $(document).ready(function()
       {
           $('.btnPrint').printPage();

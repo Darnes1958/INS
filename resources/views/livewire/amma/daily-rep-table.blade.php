@@ -1,4 +1,37 @@
 <div>
+    @if ($TableName=='tar_buy_view' )
+        <table class="table table-striped table-bordered table-sm">
+            <thead class="font-size-12">
+            <tr>
+                <th width="12%">رقم الفاتورة</th>
+                <th width="10%">الرقم الألي</th>
+
+                <th width="10%">رقم الصنف</th>
+                <th >اسم الصنف</th>
+                <th width="8%">الكمية</th>
+                <th width="10%">السعر</th>
+                <th width="12%">المجموع</th>
+
+
+            </tr>
+            </thead>
+            <tbody id="addRow" class="addRow">
+            @foreach($TableList as  $item)
+                <tr class="font-size-12">
+                    <td>{{$item->order_no}}</td>
+                    <td>{{$item->id}}</td>
+
+                    <td>{{$item->item_no}}</td>
+                    <td>{{$item->item_name}}</td>
+                    <td>{{$item->quant}}</td>
+                    <td>{{$item->price_input}}</td>
+                    <td>{{$item->sub_tot}}</td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+
+    @endif
   @if ($TableName=='store_exp_view' )
     <table class="table table-striped table-bordered table-sm">
       <thead class="font-size-12">

@@ -95,7 +95,7 @@
         <th width="12%">السعر </th>
         <th width="8%">الكمية</th>
         <th>اسم الصنف </th>
-        <th  width="8%">رقم الصنف</th>
+        <th  width="12%">رقم الصنف</th>
     </tr>
     </thead>
     <tbody style="margin-bottom: 40px; ">
@@ -164,6 +164,45 @@
   </table>
 
     <br>
+  @if($tar)
+        <label style="margin-right: 80px;">مردودات</label>
+        <table width="100%"   align="right" >
+
+            <thead style=" font-family: DejaVu Sans, sans-serif; ">
+            <tr style="background: #9dc1d3;">
+                <th style="width: 14%">المجموع</th>
+                <th style="width: 12%">السعر</th>
+                <th style="width: 8%">الكمية</th>
+                <th >اسم الصنف</th>
+                <th style="width: 12%">رقم الصنف</th>
+                <th style="width: 16%">التاريخ</th>
+            </tr>
+            </thead>
+            <tbody >
+            @php $tot=0; @endphp
+            @foreach($tar as  $item)
+                <tr class="font-size-12">
+                    <td style=" text-align: right;">{{$item->sub_tot}}</td>
+                    <td style=" text-align: right;">{{$item->price_input}}</td>
+                    <td style=" text-align: center;">{{$item->quant}}</td>
+                    <td style=" text-align: right;">{{$item->item_name}}</td>
+                    <td style=" text-align: right;">{{$item->item_no}}</td>
+                    <td style=" text-align: center;">{{$item->tar_date}}</td>
+                </tr>
+                @php($tot=$tot+$item->sub_tot)
+            @endforeach
+            <tr style=" font-family: DejaVu Sans, sans-serif; background: #9dc1d3;">
+                <td style="text-align: right;font-weight: bold">{{  number_format($tot,3, '.', '')}}</td>
+                <td style="text-align: center;font-weight: bold"> الإجمالي</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+
+  @endif
 
 
 </div>

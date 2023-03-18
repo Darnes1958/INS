@@ -10,6 +10,7 @@ use App\Models\jeha\jeha;
 use App\Models\sell\rep_sell_tran;
 use App\Models\sell\sells;
 use App\Models\stores\stores_names;
+use App\Models\Tar\tar_buy_view;
 use Illuminate\Http\Request;
 
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -85,16 +86,12 @@ $comp=Auth()->user()->company;
     $place_name=$request->place_name;
     $orderdetail=rep_buy_tran::on(Auth()->user()->company)->where('order_no',$order_no)->get();
     $res=buys::on(Auth()->user()->company)->where('order_no',$order_no)->first();
+    $tar=tar_buy_view::where('order_no',$order_no)->get();
 
 
-  //  return view('PrnView.buy.rep-order-buy',compact('orderdetail','res'));
-   //   $pdf = Pdf::loadView('PrnView.buy.rep-order-buy',
-     //     ['orderdetail'=>$orderdetail,'res'=>$res,'cus'=>$cus,'jeha_name'=>$jeha_name,'place_name'=>$place_name]);
-
-     // return $pdf->download('invoice.pdf');
 
       $reportHtml = view('PrnView.buy.rep-order-buy',
-          ['orderdetail'=>$orderdetail,'res'=>$res,'cus'=>$cus,'jeha_name'=>$jeha_name,'place_name'=>$place_name])->render();
+          ['tar'=>$tar,'orderdetail'=>$orderdetail,'res'=>$res,'cus'=>$cus,'jeha_name'=>$jeha_name,'place_name'=>$place_name])->render();
       $arabic = new Arabic();
       $p = $arabic->arIdentify($reportHtml);
 

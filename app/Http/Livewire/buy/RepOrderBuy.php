@@ -2,10 +2,12 @@
 
 namespace App\Http\Livewire\Buy;
 
+use App\Models\buy\buy_tran;
 use App\Models\buy\buys;
 use App\Models\buy\rep_buy_tran;
 use App\Models\jeha\jeha;
 use App\Models\stores\stores_names;
+use App\Models\Tar\tar_buy_view;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -43,6 +45,7 @@ class RepOrderBuy extends Component
 
   public $TheOrderListSelected;
   public $OrderGeted=false;
+  public $has_tar=false;
 
   public function printView(){
     $orderdetail=rep_buy_tran::on(Auth()->user()->company)->where('order_no',$this->orderno)->get();
@@ -88,6 +91,7 @@ class RepOrderBuy extends Component
         $res=buys::on(Auth()->user()->company)->find($this->orderno);
 
         if ($res) {
+          $this->has_tar=buy_tran::where('order_no',$this->orderno)->where('tarjeeh',1)->exists();
           $this->order_date=$res->order_date;
           $this->jeha_no=$res->jeha;
           $this->place_no=$res->place_no;
@@ -114,7 +118,8 @@ class RepOrderBuy extends Component
         'orderdetail'=>rep_buy_tran::on(Auth()->user()->company)
             ->where('order_no',$this->orderno)->paginate(10),
         'chargedetail'=>DB::connection(Auth()->user()->company)->table('charges_buy_view')
-              ->where('order_no',$this->orderno)->paginate(5)
+              ->where('order_no',$this->orderno)->paginate(5),
+        'TarList'=>tar_buy_view::where('order_no',$this->orderno)->paginate(5),
       ]);
     }
 }

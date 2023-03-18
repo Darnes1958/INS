@@ -100,17 +100,18 @@ class DailyRepTable extends Component
         'TableList'=>DB::connection(Auth()->user()->company)->table($this->TableName)
           ->join('pass',$this->TableName.'.emp','=','pass.emp_no')
           ->select($this->TableName.'.*','pass.emp_name')
+          ->whereDate($this->InpDate,$this->DateVal)
           ->when($this->ByChk,function ($q){
               $q->where([
                   ['emp',$this->By],
-                  [$this->InpDate,$this->DateVal],
+
                   [$this->SearchField1, 'like', '%'.$this->search.'%'],
               ]);
           })
             ->when(!$this->ByChk,function ($q){
                 $q->where([
 
-                    [$this->InpDate,$this->DateVal],
+
                     [$this->SearchField1, 'like', '%'.$this->search.'%'],
                 ]);
             })

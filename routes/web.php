@@ -23,6 +23,8 @@ use App\Http\Controllers\email\EmailPdf;
 use App\Http\Controllers\Exls\ExController;
 use \App\Http\Controllers\ZipController;
 use App\Http\Controllers\Salary\SalaryController;
+use App\Http\Controllers\Tar\TarController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -155,6 +157,10 @@ Route::controller(BankReportsController::class)->group(function (){
 
 });
 
+Route::controller(TarController::class)->group(function (){
+
+    route::get('/tarbuy','TarBuy')->name('tarbuy')->middleware('auth');
+});
 Route::controller(OrderBuyController::class)->group(function (){
     route::get('order_buy',  App\Http\Livewire\buy\OrderBuyAdd::class)->name('order_buy')->middleware('auth') ;
     route::get('/get-items-in-store','GetItemsInStore')->name('get-items-in-store')->middleware('auth');

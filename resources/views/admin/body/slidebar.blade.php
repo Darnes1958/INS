@@ -8,7 +8,7 @@
 @endauth
     <div id="sidebar"  >
         <ul class="list-unstyled ps-0">
-            @canany(['ادخال مشتريات','الغاء مشتريات','تعديل مشتريات'])
+            @canany(['ادخال مشتريات','الغاء مشتريات','تعديل مشتريات','ترجيع مشتريات'])
             <li class="mb-1">
                 <button class="font-size-14 btn btn-toggle d-inline-flex align-items-center rounded   border-0 collapsed"
                         data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
@@ -21,6 +21,9 @@
                         @canany(['الغاء مشتريات','تعديل مشتريات'])
                         <li><a href="{{route('order_buy.edit')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تعديل فاتورة مشتريات</a></li>
                         @endcanany
+                        @can('ترجيع مشتريات')
+                        <li><a href="{{route('tarbuy')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">ترجيع مشتريات (مردودات)</a></li>
+                        @endcan
                     </ul>
                 </div>
             </li>
@@ -166,6 +169,7 @@
                     </div>
                 </li>
             @endcan
+
             <li class="border-top my-3"></li>
             @can('عقود')
             <li class="mb-1">
