@@ -167,6 +167,7 @@ Route::controller(OrderBuyController::class)->group(function (){
     route::get('/order_buy/add','OrderBuy')->name('order_buy.add')->middleware('auth');
     route::get('/order_buy/edit','OrderBuyEdit')->name('order_buy.edit')->middleware('auth');
     route::get('/order_buy/rep','OrderBuyRep')->name('order_buy.rep')->middleware('auth');
+    route::get('/orderbuy','OrderBuy')->name('orderbuy')->middleware('auth');
 });
 Route::controller(OrderSellController::class)->group(function (){
      route::get('/order_sell/add/{price_type}','OrderSell')->name('order_sell.add')->middleware('auth');

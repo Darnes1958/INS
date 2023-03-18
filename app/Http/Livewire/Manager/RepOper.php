@@ -12,12 +12,15 @@ class RepOper extends Component
 {
   use WithPagination;
   protected $paginationTheme = 'bootstrap';
-  public $DateChk=false,$ByChk=false;
+  public $DateChk=true,$ByChk=false;
   public $created_at,$By;
 
   public function ChkDateAndGo(){
 
 }
+  public function mount(){
+      $this->created_at=date('Y-m-d');
+  }
   public function render()
     {
 

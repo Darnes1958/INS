@@ -16,7 +16,8 @@
                 <div class="collapse " id="home-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         @can('ادخال مشتريات')
-                        <li><a href="{{route('order_buy.add')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">فاتورة مشتريات</a></li>
+                         <!--   <li><a href="{{route('order_buy.add')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">فاتورة مشتريات</a></li> -->
+                            <li><a href="{{route('orderbuy')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">فاتورة مشتريات</a></li>
                         @endcan
                         @canany(['الغاء مشتريات','تعديل مشتريات'])
                         <li><a href="{{route('order_buy.edit')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تعديل فاتورة مشتريات</a></li>

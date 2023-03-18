@@ -1,5 +1,5 @@
 <div x-data  class="row gy-1 my-1 w-50"  >
-  <div class="col-md-4 my-1 ml-0 pl-0 d-inline-flex align-items-center">
+  <div class="col-md-6 my-1 ml-0 pl-0 d-inline-flex align-items-center">
     <div class=" form-check form-check-inline mx-1">
       <input class="form-check-input"  name="DateChk" type="checkbox" wire:model="DateChk"  >
       <label class="form-check-label" >التاريخ</label>

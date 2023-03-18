@@ -1,7 +1,7 @@
 
  <div x-data="{open:  @entangle('ShowEditItem') }"
       x-show="$wire.OrderDetailOpen"
-         class="row g-3 " style="border:1px solid lightgray;background: white;">
+      class="row g-3 " style="border:1px solid lightgray;background: white;">
 
       <div class="col-md-12" x-show="$wire.DetailOpen"  >
          <div class="row g-2 ">
