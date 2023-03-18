@@ -11,11 +11,11 @@
       <input wire:model="search"  type="search"   placeholder="ابحث هنا ......." style="width: 100%;">
     </div>
 
-    <div class="col-md-8">
-      <div x-data class="row">
-        <div class="col-md-3 form-check form-check-inline">
+    <div class="col-md-9">
+      <div x-data class="row ">
+        <div class="col-md-2 form-check form-check-inline">
           <input class="form-check-input"  name="placechk" type="checkbox" wire:model="PlaceChk"  >
-          <label class="form-check-label" >مكان تخزين معين</label>
+          <label class="form-check-me " style="font-size: 9pt;">مكان تخزين معين</label>
         </div>
         <div x-show="$wire.PlaceChk" class="col-md-3 ">
 
@@ -34,7 +34,7 @@
                 <label class="form-check-label" >صالة</label>
             </div>
         </div>
-        <div class="col-md-2 d-flex">
+        <div class="col-md-3 d-flex">
             @can('سعر الشراء')
           <a  href="{{route('repmakex',['place_type'=>$place_type,'place_no'=>$place_no,'withzero'=>$withzero])}}"
               class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-file-excel"> &nbsp;&nbsp;إكسل&nbsp;&nbsp;</i></a>
@@ -44,6 +44,10 @@
           <a  href="{{route('repmakpdf',['place_type'=>$place_type,'place_no'=>$place_no])}}"
               class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-print"> &nbsp;&nbsp;جرد&nbsp;&nbsp;</i></a>
             @endif
+                @if($place_no!=0)
+                    <a  href="{{route('repmakpdf2',['place_type'=>$place_type,'place_no'=>$place_no])}}"
+                        class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
+                @endif
         </div>
 
       </div>

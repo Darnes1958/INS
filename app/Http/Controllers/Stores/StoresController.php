@@ -73,5 +73,37 @@ class StoresController extends Controller
     return $pdf->download('report.pdf');
 
   }
+    function RepMakPdf2(Request $request){
+
+        $RepDate=date('Y-m-d');
+        $cus=Customers::where('Company',Auth::user()->company)->first();
+        $place_type=$request->place_type;
+        $place_no=$request->place_no;
+        $res=RepMakzoon::
+        when($request->place_no!=0,function ($q) use ($place_no){
+            return $q->where('place_no','=', $place_no) ;     })
+            ->when($request->place_no!=0,function  ($q )  use ($place_type) {
+                return $q->where('place_type','=', $place_type) ;     })
+            ->where('place_type',$place_type)
+            ->orderBy('item_type','asc')
+            ->orderBy('item_no','asc')
+            ->get();
+
+        $item_type=RepMakzoon::select('type_name')->where('place_type',$place_type)->where('place_no',$place_no)->groupby('type_name')->orderby('type_name')->get();
+        $reportHtml = view('PrnView.amma.pdf-mak',
+            ['res'=>$res,'cus'=>$cus,'item_type'=>$item_type,])->render();
+        $arabic = new Arabic();
+        $p = $arabic->arIdentify($reportHtml);
+
+        for ($i = count($p)-1; $i >= 0; $i-=2) {
+            $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+            $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+        }
+
+        $pdf = PDF::loadHTML($reportHtml);
+        return $pdf->download('report.pdf');
+
+    }
+
 
 }

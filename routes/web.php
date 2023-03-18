@@ -178,6 +178,7 @@ Route::controller(StoresController::class)->group(function (){
   route::get('/pdfitemtran/{item_no?}/{item_name?}/{tran_date?}', 'PdfItemTran')->name('pdfitemtran') ;
   route::get('/itemprices','ItemPrices')->name('itemprices')->middleware('auth');
   Route::get('repmakpdf/{place_type?},{place_no?}', 'RepMakPdf')->name('repmakpdf');
+  Route::get('repmakpdf2/{place_type?},{place_no?}', 'RepMakPdf2')->name('repmakpdf2');
   route::get('/jaradraseed','JaradRaseed')->name('jaradraseed')->middleware('auth');
 });
 
