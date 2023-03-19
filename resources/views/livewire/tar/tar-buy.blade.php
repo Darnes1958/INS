@@ -53,11 +53,7 @@
                     id="quant"  style="text-align: center" >
              @error('quant') <span class="error">{{ $message }}</span> @enderror
          </div>
-
-
-
      </div>
-
  </div>
  <div class="col-md-8">
      <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
@@ -70,7 +66,6 @@
              <th width="8%">الكمية</th>
              <th width="10%">السعر</th>
              <th width="12%">المجموع</th>
-
              <th width="5%"></th>
          </tr>
          </thead>
@@ -84,7 +79,6 @@
                  <td>{{$item->quant}}</td>
                  <td>{{$item->price_input}}</td>
                  <td>{{$item->sub_tot}}</td>
-
                  <td  style="padding-top: 2px;padding-bottom: 2px; ">
                      <i wire:click="selectItem({{ $item->id }},{{$item->item_no}},{{$item->quant}})"
                         class="btn btn-outline-danger btn-sm fa fa-times "></i>
@@ -116,15 +110,12 @@
  </div>
 
 </div>
-
 @push('scripts')
     <script type="text/javascript">
         Livewire.on('gotonext',postid=>  {
             if (postid=='order_no') {  $("#order_no").focus();$("#order_no").select(); };
             if (postid=='tar_date') {  $("#tar_date").focus();$("#tar_date").select(); };
             if (postid=='quant') {  $("#quant").focus();$("#quant").select(); };
-
-
         });
         window.addEventListener('mmsg',function(e){
             MyMsg.fire({

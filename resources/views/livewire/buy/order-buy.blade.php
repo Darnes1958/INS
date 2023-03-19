@@ -185,16 +185,15 @@
              </tr>
              </thead>
              <tbody id="addRow" class="addRow">
+
              @foreach($orderdetail as $key => $item)
-                 @php if ($key==0) {
-             continue; }
-                 @endphp
+
                  <tr>
-                     <td style="color: #0c63e4; text-align: center"> {{ $item['item_no'] }} </td>
-                     <td > {{ $item['item_name'] }} </td>
-                     <td> {{ $item['quant'] }} </td>
-                     <td> {{ $item['price'] }} </td>
-                     <td> <input value="{{ $item['subtot'] }}" type="text"
+                     <td style="color: #0c63e4; text-align: center"> {{ $item->item_no }} </td>
+                     <td > {{ $item->item_name }} </td>
+                     <td> {{ $item->quant }} </td>
+                     <td> {{ $item->price }} </td>
+                     <td> <input value="{{ $item->subtot }}" type="text"
                                  class="form-control estimated_amount" readonly style="background-color: #ddd;" ></td>
                      <td style="padding-top: 2px;padding-bottom: 2px; ">
                          <i wire:click.prevent="edititem({{$key}})" class="btn btn-outline-primary btn-sm fa fa-edit editable-input" style="margin-left: 2px;"></i>
@@ -207,7 +206,7 @@
              <tr>
                  <td colspan="4"> إجمالي الفاتورة</td>
                  <td>
-                     <input wire:model="tot1" type="text" name="tot1"  id="tot1" class="form-control estimated_amount" readonly style="background-color: #ddd;" >
+                     <input wire:model="tot1" type="number"   id="tot1" class="form-control estimated_amount" readonly style="background-color: #ddd;" >
                  </td>
                  <td></td>
              </tr>
@@ -247,41 +246,39 @@
 
 
 
-         <div class="form-group" >
-
-             <button wire:click.prevent="store()" class="btn btn-info" id="storeButton">تخزين الفاتورة</button>
-             <div  class="col-md-2">
-                 <input class="form-check-input" name="repchk" type="checkbox" wire:model="ToSal"  >
-                 <label class="form-check-label" for="repchk">نقل للصالة</label>
-             </div>
+         <div class="row" >
              <div class="col-md-2">
-                 <input  wire:model="ToSal_L"
-                         class="form-control  "
-                         type="text"  id="ToSal_No" wire:keydown.enter="ChkToSal_No">
-                 @error('ToSal_L') <span class="error">{{ $message }}</span> @enderror
+                 <button wire:click.prevent="store()" class="btn btn-info" id="storeButton">تخزين الفاتورة</button>
              </div>
-             <div class="col-md-6 mx-1">
 
-                 <select   wire:model="ToSal_L" name="sal_l_id" id="sal_l_id" class="form-control  form-select "
+
+             <div class="col-md-4 d-flex my-1">
+                 <div  >
+                     <input class="form-check-input" name="repchk" type="checkbox" wire:model="ToSal"  >
+                     <label class="form-check-label" for="repchk">نقل للصالة</label>
+                 </div>
+                 <input  wire:model="ToSal_L"
+                         class="form-control w-25 mx-1 "
+                         type="text"  id="ToSal_No" wire:keydown.enter="ChkToSal_No">
+                 <select   wire:model="ToSal_L" name="sal_l_id" id="sal_l_id" class="form-control  form-select w-50"
                            style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;width: 100%"         >
                      @foreach($halls_names as $key=>$s)
                          <option value="{{ $s->hall_no }}">{{ $s->hall_name }}</option>
                      @endforeach
                  </select>
+                 @error('ToSal_L') <span class="error">{{ $message }}</span> @enderror
              </div>
 
+             <div class="col-md-2"></div>
 
-             <div class="col-md-4 my-3 align-center justify-content-center "  style="display: flex">
+             <div class="col-md-3  d-flex "  >
 
                  <input type="button"  id="charge-btn"
-                        class=" btn btn-outline-primary  waves-effect waves-light   "
+                        class="w-50 mx-1 btn btn-outline-primary  waves-effect waves-light   "
                         wire:click.prevent="OpenCharge"   value="تكاليف إضافية" />
-
-             </div>
-             <div class="col-md-4 my-3 align-center justify-content-center "  style="display: flex">
-
                  <input type="text"  id="charge-tot"
-                        class="form-control " wire:model="Charge_Tot" readonly  />
+                        class="form-control w-50 my-1" wire:model="Charge_Tot" readonly  />
+
 
              </div>
 
@@ -302,7 +299,7 @@
 @push('scripts')
     <script type="text/javascript">
         Livewire.on('gotonext',postid=>  {
-            if (postid=='orderno') {  $("#order_no").focus();$("#order_no").select(); };
+            if (postid=='order_no') {  $("#order_no").focus();$("#order_no").select(); };
             if (postid=='order_date') {  $("#order_date").focus();$("#order_date").select(); };
             if (postid=='jeha_no') {  $("#jeha_no").focus(); $("#jeha_no").select();};
             if (postid=='st_no') {  $("#st_no").focus(); $("#st_no").select();};
