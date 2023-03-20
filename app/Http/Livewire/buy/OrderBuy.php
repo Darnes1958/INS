@@ -264,7 +264,7 @@ class OrderBuy extends Component
       }
 
       $this->order_date = date('Y-m-d');
-      $this->st_no = '1';
+      $this->st_no = 1;
       $this->st_nol = 1;
       $this->st_name = 'المخزن الرئيسي';
       $this->jeha_no = '2';
@@ -336,7 +336,7 @@ class OrderBuy extends Component
   }
 
   public function store(){
-   
+
     if (!buy_tran_work::all()){
       session()->flash('message', 'لم يتم ادخال اصناف بعد');
 

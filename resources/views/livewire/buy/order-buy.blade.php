@@ -247,15 +247,15 @@
 
 
          <div class="row" >
-             <div class="col-md-2">
+             <div class="col-md-3">
                  <button wire:click.prevent="store()" class="btn btn-info" id="storeButton">تخزين الفاتورة</button>
              </div>
 
 
-             <div class="col-md-4 d-flex my-1">
+             <div class="col-md-5 d-flex my-1">
                  <div  >
                      <input class="form-check-input" name="repchk" type="checkbox" wire:model="ToSal"  >
-                     <label class="form-check-label" for="repchk">نقل للصالة</label>
+                     <label class="form-check-label" for="repchk" style="font-size: 8pt">نقل للصالة</label>
                  </div>
                  <input  wire:model="ToSal_L"
                          class="form-control w-25 mx-1 "
@@ -269,9 +269,9 @@
                  @error('ToSal_L') <span class="error">{{ $message }}</span> @enderror
              </div>
 
-             <div class="col-md-2"></div>
 
-             <div class="col-md-3  d-flex "  >
+
+             <div class="col-md-4  d-flex "  >
 
                  <input type="button"  id="charge-btn"
                         class="w-50 mx-1 btn btn-outline-primary  waves-effect waves-light   "
