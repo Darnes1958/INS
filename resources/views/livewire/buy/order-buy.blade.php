@@ -4,7 +4,7 @@
      <div  class="row  mb-2" style="border:1px solid lightgray;background: white; padding: 4px;">
          <div class="col-md-6">
              <label  for="order_no" class="form-label-me ">رقم الفاتورة</label>
-             <input wire:model="order_no"  wire:keydown.enter="$emit('gotonext','date')"
+             <input wire:model="order_no"  wire:keydown.enter="ChkOrderNo"
                     type="number" class=" form-control "  id="order_no"  autofocus >
              @error('order_no') <span class="error">{{ $message }}</span> @enderror
          </div>
@@ -18,7 +18,7 @@
          <div class="row  ">
              <div class="col-md-4">
                  <label  for="jeha_no" class="form-label-me">المورد</label>
-                 <input wire:model="jeha_no" wire:keydown.enter="$emit('gotonext','st_no')"
+                 <input wire:model="jeha_no" wire:keydown.enter="ChkJeha_no"
                         class="form-control" type="number"  id="jeha_no" >
                  @error('jeha_no') <span class="error">{{ $message }}</span> @enderror
                  @error('jeha_type') <span class="error">{{ $message }}</span> @enderror
@@ -41,7 +41,7 @@
 
          <div class="col-md-4">
              <label   class="form-label-me">المخزن</label>
-             <input  wire:model="st_no"
+             <input  wire:model="st_no" wire:keydown.enter="ChkSt_no"
                      class="form-control  "  type="number"  id="st_no" >
              @error('st_no') <span class="error">{{ $message }}</span> @enderror
          </div>
@@ -170,7 +170,7 @@
  </div>
 
  <!-- Begin Table -->
- <div class="col-md-8">
+ <div x-show="$wire.OpenTable" class="col-md-8">
      <div x-data  style="border:1px solid lightgray;background: white;padding: 4px;">
          <table class="table-sm table-bordered " width="100%"   >
              <thead>
@@ -214,14 +214,14 @@
              <tr>
                  <td colspan="4"> خصم (تخفيض)  @error('ksm') <span class="error">{{ $message }}</span> @enderror</td>
                  <td>
-                     <input wire:model="ksm" wire:keydown.enter="$emit('gotonext','ksm')" type="text" name="ksm" id="ksm" class="form-control estimated_amount"   >
+                     <input wire:model="ksm" wire:keydown.enter="ChkKsm" type="text" name="ksm" id="ksm" class="form-control estimated_amount"   >
 
                  </td>
              </tr>
              <tr>
                  <td colspan="4">المدفـــــــوع  @error('madfooh') <span class="error">{{ $message }}</span> @enderror</td>
                  <td>
-                     <input wire:model="madfooh" wire:keydown.enter="$emit('gotonext','madfooh')" type="text" name="madfooh" id="madfooh" class="form-control estimated_amount"   >
+                     <input wire:model="madfooh" wire:keydown.enter="ChkMadfooh" type="text" name="madfooh" id="madfooh" class="form-control estimated_amount"   >
                  </td>
              </tr>
 
@@ -259,7 +259,7 @@
                  </div>
                  <input  wire:model="ToSal_L"
                          class="form-control w-25 mx-1 "
-                         type="text"  id="ToSal_No" wire:keydown.enter="ChkToSal_No">
+                         type="number"  id="ToSal_No" wire:keydown.enter="ChkToSal_No">
                  <select   wire:model="ToSal_L" name="sal_l_id" id="sal_l_id" class="form-control  form-select w-50"
                            style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;width: 100%"         >
                      @foreach($halls_names as $key=>$s)
@@ -294,6 +294,9 @@
      </div>
  </div>
  <!-- End Table -->
+    <div x-show="$wire.xcharge_open" class="col-md-8">
+        @livewire('buy.charge-buy2')
+    </div>
 </div>
 
 @push('scripts')
