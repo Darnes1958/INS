@@ -35,6 +35,9 @@
 
     @livewire('aksat.order-select')
   </div>
+  @if($has_cont)
+      <div class="col-md-12 text-warning">{{$last_cont_text}}</div>
+      @endif
   <div class="col-md-12 mb-2" >
       <div class="row ">
           <div class="col-md-2  gx-3">

@@ -62,6 +62,9 @@ class InpMainHead extends Component
   public $TheOrderNoListIsSelectd;
   public $ThePlaceNoListIsSelectd;
 
+  public $has_cont=false;
+  public $last_cont_text;
+
   public $IsSave=false;
 
   public function OpenPlace(){
@@ -173,6 +176,7 @@ class InpMainHead extends Component
   }
   public function ChkOrderAndGo(){
     $this->IsSave=false;
+    $this->has_cont=false;
    $res=sells_view::on(Auth()->user()->company)
      ->where('price_type',2)
      ->where('order_no',$this->orderno)
@@ -197,8 +201,15 @@ class InpMainHead extends Component
      $this->emit('goto','no');
      $this->emit('TakeOrderNo',$res->order_no,$res->jeha_name);
      $this->sul_date=date('Y-m-d');
+
      $res=main::on(Auth()->user()->company)->where('jeha',$this->jeha)->first();
      if ($res){
+       $last_cont=main::where('jeha',$this->jeha)
+           ->selectRaw('jeha,count(*) count,sum(sul) sul,sum(raseed) raseed')
+           ->groupBy('jeha')
+           ->first();
+       $this->last_cont_text='لديه عدد '.'('.$last_cont->count.')'.' عقود .. بإجمالي '.'('.$last_cont->sul.')'.' ومتبقي منها  '.'('.$last_cont->raseed.')';
+       $this->has_cont=true;
        $this->acc=$res->acc;
        $this->bankno=$res->bank;
        $this->place=$res->place;
