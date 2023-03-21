@@ -61,6 +61,7 @@ class OrderBuy extends Component
     public $TheItemIsSelected;
 
     public $TheJehaIsSelected;
+    public $ThePlace1ListIsSelected;
 
     public $OpenTable=true;
     public $xcharge_open=false;
@@ -75,15 +76,18 @@ class OrderBuy extends Component
     {
         if ($field=='st_nol') {
             $this->st_no=$this->st_nol;
-            $this->ChkSt_no();
         }
-        if ($field=='st_no')
+        if ($field=='st_no') {
             $this->st_nol=$this->st_no;
-            $this->ChkSt_no();
+            $this->ChkSt_no();}
 
         if ($field=='TheJehaIsSelected'){
             $this->TheJehaIsSelected=0;
             $this->ChkJeha_no();
+        }
+        if ($field=='ThePlace1ListIsSelected'){
+            $this->ThePlace1ListIsSelected=0;
+            $this->ChkSt_no();
         }
         if ($field=='TheItemIsSelected'){
           $this->TheItemIsSelected=0;
@@ -98,6 +102,13 @@ class OrderBuy extends Component
                     $this->jeha_type=$result->jeha_type;
                   $this->ChkJeha_no();
                 }}
+        }
+    }
+    public function ChkSt_no(){
+        if ($this->st_no)
+        {
+            buys_work::where('emp',Auth::user()->empno)->update(['place_no'=>$this->st_no]);
+            $this->emit('gotonext','theitem');
         }
     }
     public function DoEditItem(){
@@ -148,13 +159,14 @@ class OrderBuy extends Component
         $res=buy_tran_work::where('item_no',$this->item_no)->where('emp',Auth::user()->empno)->first();
         if ($res && (!$this->quant || $this->quant==0)) {
           $this->quant=$res->quant;
-          $this->price=$res->price;
+
         }
+        if ($res)  $this->price=$res->price;
         $this->ItemGeted=true;
 
         $this->emit('gotonext','quant');
         return true;
-      } $this->emit('gotonext','item_no'); return false; }
+      } else $this->emit('gotonext','item_no'); return false; }
     $this->emit('gotonext','item_no'); return false;
   }
   public function ChkQuantAndGo(){
@@ -184,13 +196,7 @@ class OrderBuy extends Component
       $this->emit('gotonext','st_no');
     }
   }
-  public function ChkSt_no(){
-    if ($this->st_no)
-    {
-      buys_work::where('emp',Auth::user()->empno)->update(['place_no'=>$this->st_no]);
-      $this->emit('gotonext','st_no');
-    }
-  }
+
   public function ChkKsm(){
     if ($this->ksm)
     {
@@ -208,10 +214,9 @@ class OrderBuy extends Component
 
   public function ChkPriceAndGo()
   {
-    if (!$this->ChkItemAndGo()) return false;
-
-    if (!$this->ChkQuantAndGo()) return false;
-
+    if (!$this->item_no) return false;
+    if (!items::where('item_no', $this->item_no)->exists())  return false;
+    if (!$this->quant) return false;
     if (buy_tran_work::where('order_no',$this->order_no)
       ->where('item_no',$this->item_no)
       ->where('emp',Auth::user()->empno)
@@ -225,11 +230,8 @@ class OrderBuy extends Component
         'order_no'=>$this->order_no,'item_no'=>$this->item_no,'emp'=>Auth::user()->empno,'tarjeeh'=>0,
         'quant'=>$this->quant,'price_input'=>$this->price,'price'=>$this->price
       ]);
-
-
     $this->ClearData();
-    $this->render();
-    $this->emit('gotonext','item_no');
+      $this->emit('gotonext','theitem');
   }
   public function ClearData () {
     $this->raseed=0;

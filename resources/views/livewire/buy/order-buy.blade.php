@@ -46,14 +46,12 @@
              @error('st_no') <span class="error">{{ $message }}</span> @enderror
          </div>
          <div  class="col-md-8" >
-             <label  class="form-label-me">اختيار من القائمة</label>
-             <select  wire:model="st_nol"   class="form-control  form-select "
-                      style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"  >
-                 <option >اختيار</option>
-                 @foreach($stores_names as $s)
-                     <option value="{{ $s->st_no }}">{{ $s->st_name }}</option>
-                 @endforeach
-             </select>
+             <label  class="form-label-me">&nbsp;</label>
+             <div class="row g-2 ">
+                 <div  class="col-md-11" >
+                     @livewire('stores.store-select1',['table'=>'Makazen'])
+                 </div>
+             </div>
          </div>
 
 
@@ -121,7 +119,9 @@
          <div class="col-md-4" >
              <label  for="item_no" class="form-label-me ">رقم الصنف</label>
              <input wire:model="item_no"  wire:keydown.enter="ChkItemAndGo"
-                    type="number" class="form-control"  id="item_no"  style="text-align: center;height: 39px;">
+                    type="text" class="form-control" value="0"
+                    id="theitem" name="theitem" style="text-align: center;height: 39px;">
+             @error('item_no') <span class="error">{{ $message }}</span> @enderror
          </div>
          <div class="col-md-8">
              <div class="d-flex">
@@ -131,7 +131,7 @@
              </div>
              <textarea wire:model="item_name" name="item_name" class="form-control"
                        style="color: #0b5ed7; "  readonly id="item_name" placeholder="اسم الصنف"></textarea>
-             @error('item_no') <span class="error">{{ $message }}</span> @enderror
+
          </div>
          <div class="col-md-4"  x-show:="open" >
          </div>
@@ -155,7 +155,7 @@
          </div>
          <div class="col-6">
              <label for="price" class="form-label-me">السعر</label>
-             <input wire:model="price" wire:keydown.enter="ChkPriceAndGo" class="form-control" name="price" type="text" value=""
+             <input wire:model="price" wire:keydown.enter="ChkPriceAndGo" class="form-control"  type="number"
                     id="price"  style="text-align: center"  x-bind:disabled="!$wire.ItemGeted">
              <br>
              @error('price') <span class="error">{{ $message }}</span> @enderror
@@ -302,18 +302,20 @@
 @push('scripts')
     <script type="text/javascript">
         Livewire.on('gotonext',postid=>  {
+if(postid=='item_no') alert('here');
+            if (postid=='theitem') {  $("#theitem").focus(); $("#theitem").select();};
             if (postid=='order_no') {  $("#order_no").focus();$("#order_no").select(); };
             if (postid=='order_date') {  $("#order_date").focus();$("#order_date").select(); };
             if (postid=='jeha_no') {  $("#jeha_no").focus(); $("#jeha_no").select();};
             if (postid=='st_no') {  $("#st_no").focus(); $("#st_no").select();};
             if (postid=='quant') {  $("#quant").focus();  $("#quant").select();};
 
-            if (postid=='item_no') {  $("#item_no").focus(); $("#item_no").select();};
+
             if (postid=='price') {  $("#price").focus(); $("#price").select();};
             if (postid=='ItemToEdit') {  $("#ItemToEdit").focus(); $("#ItemToEdit").select();};
 
-            if (postid=='ksm') {  $("#madfooh").focus();  $("#madfooh").select();};
-            if (postid=='madfooh') {  $("#ksm").focus();  $("#ksm").select();};
+            if (postid=='madfooh') {  $("#madfooh").focus();  $("#madfooh").select();};
+            if (postid=='ksm') {  $("#ksm").focus();  $("#ksm").select();};
 
 
         })
@@ -367,6 +369,22 @@
         });
         window.livewire.on('item-change-event',()=>{
             $('#Item_L').select2({
+                closeOnSelect: true
+            });
+        });
+        $(document).ready(function ()
+        {
+            $('#Place_L1').select2({
+                closeOnSelect: true
+            });
+            $('#Place_L1').on('change', function (e) {
+                var data = $('#Place_L1').select2("val");
+            @this.set('st_no', data);
+            @this.set('ThePlace1ListIsSelected', 1);
+            });
+        });
+        window.livewire.on('place1-change-event',()=>{
+            $('#Place_L1').select2({
                 closeOnSelect: true
             });
         });
