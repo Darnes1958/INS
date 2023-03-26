@@ -12,6 +12,7 @@ use App\Models\jeha\jeha;
 use App\Models\OverTar\over_kst;
 use App\Models\OverTar\tar_kst;
 use App\Models\sell\sells;
+use App\Models\stores\halls_names;
 use App\Models\stores\stores_names;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
