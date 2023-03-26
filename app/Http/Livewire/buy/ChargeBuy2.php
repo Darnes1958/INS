@@ -17,9 +17,6 @@ class ChargeBuy2 extends Component
   public $charge_by,$charge_type,$val;
   public $TotCharge=0;
 
-  public $order_no;
-
-
 
     public function OpenByAdd(){
 
@@ -37,9 +34,9 @@ class ChargeBuy2 extends Component
 
         $this->dispatchBrowserEvent('CloseTypeAdd');
     }
-    public function open($open,$order_no){
+    public function open($open){
         $this->showcharge=$open;
-        $this->order_no=$order_no;
+
 
     }
 
@@ -77,7 +74,7 @@ class ChargeBuy2 extends Component
   public function removeitem($rec_no)    {
     charges_buy_work::where('rec_no',$rec_no)->delete();
 
-    $this->TotCharge = number_format(charges_buy_work::where('emp',Auth::user()->empno)->where('order_no',$this->order_no)->sum('val'),2, '.', '');
+    $this->TotCharge = number_format(charges_buy_work::where('emp',Auth::user()->empno)->sum('val'),2, '.', '');
     $this->emitTo('order-buy','TakeCharge',$this->TotCharge);
     $this->render();
 
@@ -100,16 +97,15 @@ class ChargeBuy2 extends Component
       'charge_type'=>$this->charge_type,
       'val'=>$this->val,
       'emp'=>Auth::user()->empno,
-      'order_no'=>$this->order_no,
+      'order_no'=>0,
     ]);
     else
       charges_buy_work::where('emp',Auth::user()->empno)
-        ->where('order_no',$this->order_no)
         ->where('charge_by',$this->charge_by)
         ->where('charge_type',$this->charge_type)->update([
         'val'=>$this->val,
       ]);
-      $this->TotCharge = number_format(charges_buy_work::where('emp',Auth::user()->empno)->where('order_no',$this->order_no)->sum('val'),2, '.', '');
+      $this->TotCharge = number_format(charges_buy_work::where('emp',Auth::user()->empno)->sum('val'),2, '.', '');
       $this->emitTo('order-buy','TakeCharge',$this->TotCharge);
     $this->charge_type='';
     $this->charge_by='';
@@ -117,13 +113,13 @@ class ChargeBuy2 extends Component
   }
     public function render()
     {
-      $this->TotCharge = number_format(charges_buy_work::where('emp',Auth::user()->empno)->where('order_no',$this->order_no)->sum('val'),2, '.', '');
+      $this->TotCharge = number_format(charges_buy_work::where('emp',Auth::user()->empno)->sum('val'),2, '.', '');
         return view('livewire.buy.charge-buy2',[
           'ChargeDetail'=>charges_buy_work::
           join('charge_by','charges_buy_work.charge_by','=','charge_by.no')
           ->join('charge_type','charges_buy_work.charge_type','=','charge_type.type_no')
           ->select('charges_buy_work.*','name','type_name')
-            ->where('emp',Auth::user()->empno)->where('order_no',$this->order_no)->get(),
+            ->where('emp',Auth::user()->empno)->get(),
           'charge_by_table'=>charge_by::on(Auth::user()->company)->get(),
           'charge_type_table'=>charge_type::on(Auth::user()->company)->get(),
         ]);

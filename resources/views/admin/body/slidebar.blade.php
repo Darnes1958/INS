@@ -1,7 +1,6 @@
 
 @auth
     @php
-        $id = Auth::user()->id;
          $id = Auth::user()->id;
          $admindata = App\Models\User::find($id);
     @endphp

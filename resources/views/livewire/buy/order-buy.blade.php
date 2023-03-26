@@ -2,18 +2,15 @@
  <div class="col-md-4">
      <!-- Begin Header -->
      <div  class="row  mb-2" style="border:1px solid lightgray;background: white; padding: 4px;">
-         <div class="col-md-6">
-             <label  for="order_no" class="form-label-me ">رقم الفاتورة</label>
-             <input wire:model="order_no"  wire:keydown.enter="ChkOrderNo"
-                    type="number" class=" form-control "  id="order_no"  autofocus >
-             @error('order_no') <span class="error">{{ $message }}</span> @enderror
-         </div>
+
          <div class="col-md-6">
              <label for="date_date" class="form-label-me">التاريخ</label>
              <input wire:model="order_date" wire:keydown.enter="$emit('gotonext','jeha_no')"
                     class="form-control  "  type="date"  id="order_date" >
              @error('order_date') <span class="error">{{ $message }}</span> @enderror
          </div>
+
+         <div class="col-md-6"> </div>
 
          <div class="row  ">
              <div class="col-md-4">
@@ -237,8 +234,22 @@
          </table><br>
 
 
-         <div class="form-row">
-             <div class="form-group col-md-12">
+         <div class="row">
+             <div class="col-md-4">
+               <div class="row">
+                 <div class="col-md-4">
+                     <button wire:click.prevent="pre_store()" class="btn btn-info" id="storeButton">تخزين الفاتورة</button>
+                 </div>
+                 <div  class="col-md-8">
+                     <label  for="order_no" class="form-label-me ">رقم الفاتورة</label>
+                     <input wire:model="order_no"  wire:keydown.enter="store"
+                            type="number" class=" form-control "  id="order_no"  x-bind:disabled="!$wire.OpenSave" autofocus >
+                     @error('order_no') <span class="error">{{ $message }}</span> @enderror
+                 </div>
+               </div>
+             </div>
+
+             <div class="col-md-8">
                  <label for="ntoes" class="form-label">ملاحظات</label>
                  <textarea wire:model="notes" name="description" class="form-control" id="description" placeholder="ملاحظات"></textarea>
              </div>
@@ -247,9 +258,6 @@
 
 
          <div class="row" >
-             <div class="col-md-3">
-                 <button wire:click.prevent="store()" class="btn btn-info" id="storeButton">تخزين الفاتورة</button>
-             </div>
 
 
              <div class="col-md-5 d-flex my-1">

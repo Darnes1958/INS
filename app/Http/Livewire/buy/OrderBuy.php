@@ -25,7 +25,7 @@ class OrderBuy extends Component
 {
     public $ToSal_L;
     public $ToSal=false;
-    public $OrderChanged;
+
     public $order_no;
     public $order_date;
     public $jeha_no;
@@ -65,6 +65,7 @@ class OrderBuy extends Component
 
     public $OpenTable=true;
     public $xcharge_open=false;
+    public $OpenSave=false;
 
   protected $listeners = [
     'openTable',
@@ -136,7 +137,7 @@ class OrderBuy extends Component
   public function OpenCharge(){
     $this->xcharge_open=true;
     $this->OpenTable=false;
-    $this->emitTo('buy.charge-buy2','open',true,$this->order_no);
+    $this->emitTo('buy.charge-buy2','open',true);
   }
   public function openTable($open){
 
@@ -177,18 +178,7 @@ class OrderBuy extends Component
     } else $this->emit('gotonext','quant'); return false;
 
   }
-  public function ChkOrderNo(){
-    if ($this->order_no)
-    {
-      if (buys::where('order_no',$this->order_no)->exists()) $this->dispatchBrowserEvent('mmsg','هذا الرقم مخزون مسبقا');
-      if (buys_work::where('order_no',$this->order_no)->where('emp','!=',Auth::user()->empno)->exists())
-        $this->dispatchBrowserEvent('mmsg','هذا الرقم قيد الادخال لمسنخدم أخر');
-      buys_work::where('emp',Auth::user()->empno)->update(['order_no'=>$this->order_no]);
-      buy_tran_work::where('emp',Auth::user()->empno)->update(['order_no'=>$this->order_no]);
-      charges_buy_work::where('emp',Auth::user()->empno)->update(['order_no'=>$this->order_no]);
-      $this->emit('gotonext','order_no');
-    }
-  }
+
   public function ChkJeha_no(){
     if ($this->jeha_no)
     {
@@ -217,17 +207,15 @@ class OrderBuy extends Component
     if (!$this->item_no) return false;
     if (!items::where('item_no', $this->item_no)->exists())  return false;
     if (!$this->quant) return false;
-    if (buy_tran_work::where('order_no',$this->order_no)
-      ->where('item_no',$this->item_no)
+    if (buy_tran_work::where('item_no',$this->item_no)
       ->where('emp',Auth::user()->empno)
       ->exists())
-     buy_tran_work::where('order_no',$this->order_no)
-       ->where('item_no',$this->item_no)
+     buy_tran_work::where('item_no',$this->item_no)
        ->where('emp',Auth::user()->empno)->update([
          'quant'=>$this->quant,'price_input'=>$this->price,'price'=>$this->price]);
     else
       buy_tran_work::insert([
-        'order_no'=>$this->order_no,'item_no'=>$this->item_no,'emp'=>Auth::user()->empno,'tarjeeh'=>0,
+        'order_no'=>0,'item_no'=>$this->item_no,'emp'=>Auth::user()->empno,'tarjeeh'=>0,
         'quant'=>$this->quant,'price_input'=>$this->price,'price'=>$this->price
       ]);
     $this->ClearData();
@@ -259,12 +247,7 @@ class OrderBuy extends Component
     ];
 
     public function NewBuys(){
-      $this->order_no = buys::on(Auth()->user()->company)->max('order_no') + 1;
-      while (true){
-        if ( ! buys_work::where('order_no',$this->order_no)->exists()) break;
-        $this->order_no+=1;
-      }
-
+      $this->order_no = 0;
       $this->order_date = date('Y-m-d');
       $this->st_no = 1;
       $this->st_nol = 1;
@@ -297,10 +280,11 @@ class OrderBuy extends Component
 
     public function mount()
     {
+      $this->OpenSave=false;
       if (buys_work::where('emp',Auth::user()->empno)->exists())
       {
         $res=buys_work::where('emp',Auth()->user()->empno)->first();
-        $this->order_no=$res->order_no;
+
         $this->order_date=$res->order_date;
         $this->st_no=$res->place_no;
         $this->st_nol=$res->st_no;
@@ -337,21 +321,29 @@ class OrderBuy extends Component
     $this->emit('gotoaddonetype');
   }
 
-  public function store(){
 
-    if (!buy_tran_work::all()){
+  public function pre_store(){
+    if (!buy_tran_work::where('emp',Auth::user()->empno)->exists()) {
       session()->flash('message', 'لم يتم ادخال اصناف بعد');
-
+      return false;
     }
-    else {
+   $this->OpenSave=true;
+   $this->order_no=buys::max('order_no')+1;
+   $this->emit('gotonext','order_no');
+
+  }
+  public function store(){
+    if (!buy_tran_work::where('emp',Auth::user()->empno)->exists()){
+      session()->flash('message', 'لم يتم ادخال اصناف بعد');
+      return false;
+    }
+    if (buys::where('order_no',$this->order_no)->exists()) {
+      session()->flash('message', 'هذا الرقم مخزون مسبقاً');
+      return false;
+    }
      $this->validate();
-
       DB::connection(Auth()->user()->company)->beginTransaction();
-
       try {
-        if (buys::on(auth()->user()->company)->where('order_no',$this->order_no)->exists())
-        {$this->order_no=buys::on(auth()->user()->company)->max('order_no')+1;
-          $this->OrderChanged=true;}
         DB::connection(Auth()->user()->company)->table('buys')->insert([
           'order_no' => $this->order_no,
           'order_no2' => 0,
@@ -373,8 +365,6 @@ class OrderBuy extends Component
         ]);
         $orderdetail=buy_tran_work::where('emp',Auth::user()->empno)->where('order_no',$this->order_no)->get();
         foreach ($orderdetail as $item) {
-
-
           DB::connection(Auth()->user()->company)->table('buy_tran')->insert([
             'order_no' => $this->order_no,
             'item_no' => $item['item_no'],
@@ -383,7 +373,6 @@ class OrderBuy extends Component
             'price' => $item['price'],
             'emp' => Auth::user()->empno,
             'tarjeeh' => 0
-
           ]);
         }
         if ($this->madfooh != 0) {
@@ -474,29 +463,22 @@ class OrderBuy extends Component
             ]);
           }
         }
-
         DB::connection(Auth()->user()->company)->commit();
-        if ($this->OrderChanged){
-          $this->OrderChanged=false;
-          $this->dispatchBrowserEvent('mmsg', 'تم تغيير رقم الفاتورة وتخرينها بالرقم : '.$this->order_no);
-        }
         $this->IsSave=true;
+        $this->OpenSave=false;
         charges_buy_work::where('emp',Auth::user()->empno)->delete();
-        buys_work::where('emp',Auth::user()->empno)->delete();
         buy_tran_work::where('emp',Auth::user()->empno)->delete();
+        buys_work::where('emp',Auth::user()->empno)->delete();
         $this->NewBuys();
-
       } catch (\Exception $e) {
         info($e);
         $this->dispatchBrowserEvent('mmsg','حدث خطأ');
         DB::connection(Auth()->user()->company)->rollback();
       }
-
-    }
   }
     public function render()
     {
-      $this->Charge_Tot = number_format(charges_buy_work::where('emp',Auth::user()->empno)->where('order_no',$this->order_no)->sum('val'),2, '.', '');
+        $this->Charge_Tot = number_format(charges_buy_work::where('emp',Auth::user()->empno)->sum('val'),2, '.', '');
         $this->tot1=number_format(buy_tran_work_view::where('emp',Auth::user()->empno)->sum('subtot'), 2, '.', '');
         $this->tot=number_format($this->tot1-$this->ksm, 2, '.', '');
         $this->madfooh=number_format($this->madfooh, 2, '.', '');
