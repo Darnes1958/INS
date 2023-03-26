@@ -12,6 +12,7 @@ use App\Models\jeha\jeha;
 use App\Models\OverTar\over_kst;
 use App\Models\OverTar\tar_kst;
 use App\Models\sell\sells;
+use App\Models\stores\stores_names;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -178,7 +179,11 @@ class RepMainData extends Component
       $this->bank_name=bank::on(Auth()->user()->company)->find($this->bank)->bank_name;
       $this->place=$res['place'];
       $this->place_name=place::on(Auth()->user()->company)->find($this->place)->place_name;
-      $point=sells::find($res-$this->order_no);
+      $point=sells::find($this->order_no)->first();
+      if ($point->sell_type==1)
+       $this->point_name=stores_names::find($point->place_no)->st_name;
+      else
+       $this->point_name=halls_names::find($point->place_no)->hall_name;
       $tel=jeha::on(Auth()->user()->company)->where('jeha_no',$this->jeha)->first();
        $this->libyana=$tel['libyana'];
        $this->mdar=$tel['mdar'];

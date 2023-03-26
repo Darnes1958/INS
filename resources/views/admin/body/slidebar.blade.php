@@ -260,7 +260,7 @@
             </li>
             @endcanany
 
-
+                @can('تقارير الموردين')
                 <li class="mb-1">
                     <button class="font-size-14 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#repmali-collapse" aria-expanded="false">
                         &nbsp <i class="fa  fas fa-list-ul" aria-hidden="true"></i>&nbsp تقارير مالية</button>
@@ -276,6 +276,7 @@
                         </ul>
                     </div>
                 </li>
+                @endcan
 
                 @role('admin')
                 <li class="mb-1">

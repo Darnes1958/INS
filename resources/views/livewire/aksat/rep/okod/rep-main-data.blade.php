@@ -11,9 +11,10 @@
 
    </div>
      <div class="d-inline-flex align-items-center">
-         <label for="place_name" class="form-label align-right" style="width: 20% ">جهة العمل</label>
-         <input  wire:model="place_name" type="text" class="form-control " id="place_name" readonly style="width: 80%" >
-
+         <label for="place_name" class=" form-label " style="width: 20% ">جهة العمل</label>
+         <input  wire:model="place_name" type="text" class="form-control " id="place_name" readonly style="width: 30%" >
+         <label  class="form-label " style="width: 20% ">&nbsp;&nbsp;نقطة البيع</label>
+         <input  wire:model="point_name" type="text" class="form-control "  readonly style="width: 30%;margin-right: 4px;" >
      </div>
     <div class="d-inline-flex align-items-center">
         <label for="no" class="form-label" style="width: 20%">رقم العقد</label>
