@@ -180,11 +180,11 @@ class RepMainData extends Component
       $this->bank_name=bank::on(Auth()->user()->company)->find($this->bank)->bank_name;
       $this->place=$res['place'];
       $this->place_name=place::on(Auth()->user()->company)->find($this->place)->place_name;
-      $point=sells::find($this->order_no)->first();
+      $point=sells::where('order_no',$this->order_no)->first();
       if ($point->sell_type==1)
-       $this->point_name=stores_names::find($point->place_no)->st_name;
+       $this->point_name=stores_names::where('st_no',$point->place_no)->first()->st_name;
       else
-       $this->point_name=halls_names::find($point->place_no)->hall_name;
+       $this->point_name=halls_names::where('hall_no',$point->place_no)->first()->hall_name;
       $tel=jeha::on(Auth()->user()->company)->where('jeha_no',$this->jeha)->first();
        $this->libyana=$tel['libyana'];
        $this->mdar=$tel['mdar'];
