@@ -24,6 +24,7 @@ class MakRep extends Component
   public $place_type=0;
   public $Table='Makazen';
   public $PlaceChk=false;
+  public $TotChk=false;
   public $PlaceGeted=false;
   public $ThePlaceListIsSelected;
 
@@ -108,7 +109,15 @@ class MakRep extends Component
             ->where('item_name', 'like', '%'.$this->search.'%' )
             ->orderBy('item_type','asc')
             ->orderby($this->orderColumn,$this->sortOrder)
-            ->paginate(15)
+            ->paginate(15),
+          'TotTable'=>DB::connection(Auth()->user()->company)->table('rep_makzoon')
+           ->selectRaw('place_type,place_no,place_name,sum(price_buy*place_ras) price_buy,
+                                 sum(price_sell*place_ras) price_sell,sum(price_cost*place_ras) price_cost
+                                 ,sum(dbo.ret_price_tak(item_no)*place_ras) price_tak')
+           ->groupby('place_type','place_no','place_name')
+           ->orderBy('place_type')
+           ->orderBy('place_no')
+           ->paginate(15),
         ]);
 
     }
