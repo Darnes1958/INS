@@ -363,7 +363,7 @@ class OrderBuy extends Component
           'emp' => Auth::user()->empno,
           'available' => 0
         ]);
-        $orderdetail=buy_tran_work::where('emp',Auth::user()->empno)->where('order_no',$this->order_no)->get();
+        $orderdetail=buy_tran_work::where('emp',Auth::user()->empno)->get();
         foreach ($orderdetail as $item) {
           DB::connection(Auth()->user()->company)->table('buy_tran')->insert([
             'order_no' => $this->order_no,
@@ -396,7 +396,7 @@ class OrderBuy extends Component
         }
 
         if ($this->Charge_Tot!=0){
-          $ChargeDetail=charges_buy_work::where('emp',Auth::user()->empno)->where('order_no',$this->order_no)->get();
+          $ChargeDetail=charges_buy_work::where('emp',Auth::user()->empno)->get();
 
           foreach ($ChargeDetail as $item) {
             charges_buy::on(Auth()->user()->company)->insert([
