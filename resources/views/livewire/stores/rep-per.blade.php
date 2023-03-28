@@ -1,6 +1,5 @@
 <div class="row">
   <div x-data class="col-md-6 my-2"  >
-
     <div   class="row g-3 " style="border:1px solid lightgray;background: white;">
       <div class="col-md-12" >
         @livewire('stores.per-select')
@@ -72,6 +71,10 @@
           </div>
           <div class="col-md-4">
             <input wire:model="order_no"   class="form-control" readonly    type="text"   >
+          </div>
+          <div class="col-md-6">
+            <a  href="{{route('repperpdf',['per_no'=>$per_no])}}"
+                class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
           </div>
         </div>
       </div>
