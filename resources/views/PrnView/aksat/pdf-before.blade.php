@@ -21,12 +21,13 @@
         <th style="width: 8%">مجموعها</th>
         <th style="width: 8%">عدد المتأخرة</th>
         <th style="width: 8%">عدد المسددة</th>
-        <th style="width: 8%">المطلوب</th>
-        <th style="width: 8%">المسدد</th>
-        <th style="width: 8%"> ج.التقسيط</th>
-        <th style="width: 8%">ت.العقد</th>
+        <th style="width: 7%">المطلوب</th>
+        <th style="width: 7%">المسدد</th>
+        <th style="width: 7%">القسط</th>
+        <th style="width: 7%"> ج.التقسيط</th>
+        <th style="width: 7%">ت.العقد</th>
         <th >الاسم</th>
-        <th style="width: 14%">رقم الحساب</th>
+        <th style="width: 12%">رقم الحساب</th>
         <th style="width: 8%">رقم العقد</th>
       </tr>
       </thead>
@@ -40,6 +41,7 @@
           <td> {{number_format($item->pay_count, 0, '.', ',')}}  </td>
           <td> {{ $item->raseed }} </td>
           <td> {{ $item->sul_pay }} </td>
+          <td> {{ $item->kst }} </td>
           <td> {{ $item->sul }} </td>
           <td style="text-align: center;"> {{ $item->sul_date }} </td>
           <td> {{ $item->name }} </td>
@@ -59,6 +61,7 @@
         <td>   </td>
         <td> {{number_format($sumraseed, 2, '.', ',')}}  </td>
         <td> {{number_format($sumsul_pay, 2, '.', ',')}}  </td>
+        <td>   </td>
         <td> {{number_format($sumsul, 2, '.', ',')}}  </td>
         <td>   </td>
         <td>   </td>

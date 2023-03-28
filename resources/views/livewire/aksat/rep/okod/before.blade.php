@@ -33,6 +33,7 @@
       <th width="8%" class="sort  text-primary" wire:click="sortOrder('sul_date')"> تاريخ العقد {!! $sortLink !!}</th>
 
       <th width="8%">اجمالي التقسيط</th>
+      <th width="8%">القسط</th>
 
       <th width="8%">المسدد</th>
       <th width="8%">المطلوب</th>
@@ -52,6 +53,7 @@
           <td> {{ $item->name }} </td>
           <td> {{ $item->sul_date }} </td>
           <td> {{ $item->sul }} </td>
+            <td> {{ $item->kst }} </td>
 
           <td> {{ $item->sul_pay }} </td>
           <td> {{ $item->raseed }} </td>
@@ -64,6 +66,7 @@
       <tr class="font-size-12 " style="font-weight: bold">
         <td colspan="4">الإجمــــــــالي  </td>
         <td> {{number_format($sumsul, 2, '.', ',')}}  </td>
+          <td></td>
         <td> {{number_format($sumsul_pay, 2, '.', ',')}}  </td>
         <td> {{number_format($sumraseed, 2, '.', ',')}} </td>
         <td></td>
