@@ -28,6 +28,7 @@
                      @if($item->vip==1)
                          <td  style="padding-top: 2px;padding-bottom: 2px; ">
                              <i wire:click="selectItem({{ $item->id }},'notspecial')"
+
                                 class="btn btn-outline-dark btn-sm  fas fa-user-secret editable-input" style="margin-left: 2px;"></i>
                          </td>
                      @else
