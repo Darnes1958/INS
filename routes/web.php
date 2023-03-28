@@ -181,6 +181,7 @@ Route::controller(StoresController::class)->group(function (){
   Route::get('repmakpdf/{place_type?},{place_no?}', 'RepMakPdf')->name('repmakpdf');
   Route::get('repmakpdf2/{place_type?},{place_no?},{withzero?}', 'RepMakPdf2')->name('repmakpdf2');
   route::get('/jaradraseed','JaradRaseed')->name('jaradraseed')->middleware('auth');
+  Route::get('repperpdf/{per_no}', 'RepPerPdf')->name('repperpdf');
 });
 
 
