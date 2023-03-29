@@ -197,7 +197,7 @@ class OrderBuy extends Component
   public function ChkMadfooh(){
     if ($this->ksm)
     {
-      buys_work::where('emp',Auth::user()->empno)->update(['madfooh'=>$this->madfooh]);
+      buys_work::where('emp',Auth::user()->empno)->update(['cash'=>$this->madfooh]);
       $this->emit('gotonext','ksm');
     }
   }
@@ -284,7 +284,6 @@ class OrderBuy extends Component
       if (buys_work::where('emp',Auth::user()->empno)->exists())
       {
         $res=buys_work::where('emp',Auth()->user()->empno)->first();
-
         $this->order_date=$res->order_date;
         $this->st_no=$res->place_no;
         $this->st_nol=$res->st_no;
@@ -293,6 +292,7 @@ class OrderBuy extends Component
         $this->jeha_name=jeha::find($this->jeha_no)->jeha_name;
         $this->jeha_type='2';
         $this->Charge_Tot=0;
+        $this->madfooh=$res->cash;
       }
       else {
         $this->NewBuys();
