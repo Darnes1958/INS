@@ -42,6 +42,23 @@ class RepJehaTran extends Component
         'Take_Search_JehaNo',
     ];
 
+    public function DisModal($data,$order_no){
+
+      if ($data=='مبيعات')
+      {
+        $this->OpenModalToDis();
+        $this->emitTo('sell.rep-order-sell','TakeOrderNo',$order_no);
+      }
+
+
+    }
+    public function CloseModalToDis(){
+      $this->dispatchBrowserEvent('CloseModalToDis');
+    }
+  public function OpenModalToDis(){
+    $this->dispatchBrowserEvent('OpenModalToDis');
+  }
+
     public function Chkjeha(){
         if ($this->jeha_no !=null ) {
             $this->jeha_name = '';

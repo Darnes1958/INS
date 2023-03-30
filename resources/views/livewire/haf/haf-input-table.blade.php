@@ -24,6 +24,7 @@
           <th width="10%">الباقي</th>
           <th width="8%">الحالة</th>
           <th width="8%">&nbsp;</th>
+          <th width="8%">&nbsp;</th>
 
         </tr>
         </thead>
@@ -42,8 +43,10 @@
                      <td> {{ $item->kst_type_name }} </td>
                  @endif
               <td style="padding-top: 2px;padding-bottom: 2px; ">
+                @if($item->kst_type!=3)
                 <i  class="btn btn-outline-primary btn-sm fa fa-edit editable-input" style="margin-left: 2px;"
                     wire:click="SelectItem({{ $item->no }},{{ $item->acc }},{{ $item->ser_in_hafitha }}, 'update')" ></i>
+                @endif
               </td>
               <td style="padding-top: 2px;padding-bottom: 2px; ">
                 <i  class="btn btn-outline-danger btn-sm fa fa-times "

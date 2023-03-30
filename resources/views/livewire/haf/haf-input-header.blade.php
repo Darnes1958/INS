@@ -55,7 +55,7 @@
   <div   class="col-md-8" >
    <table class="table-sm table-bordered " width="100%"  id="hafheadertable" style="font-size: 10pt;">
       <thead>
-      <tr>
+      <tr style="background: #1c6ca1;color: white;">
         <th >البيان</th>
         <th width="15%">العدد</th>
         <th width="30%">الاجمالي</th>

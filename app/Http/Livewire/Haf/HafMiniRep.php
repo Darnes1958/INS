@@ -82,54 +82,53 @@ class HafMiniRep extends Component
         main::on(Auth()->user()->company)->where('jeha', $jeha)->update(['acc' => $accToEdit,]);
         MainArc::on(Auth()->user()->company)->where('jeha', $jeha)->update(['acc' => $accToEdit,]);
 
-           if (main::on(Auth()->user()->company)->where('no',$no)->exists())
-            $raseed=main::on(Auth()->user()->company)->find($no)->raseed;
+           if (main::where('no',$no)->exists())
+            $raseed=main::where('no',$no)->first()->raseed;
            else
-             $raseed=MainArc::on(Auth()->user()->company)->find($no)->raseed;
+             $raseed=MainArc::where('no',$no)->first()->raseed;
 
-           $NoList=hafitha_tran::on(Auth()->user()->company)
-               ->where('hafitha', $this->hafitha)
+           $NoList=hafitha_tran::where('hafitha', $this->hafitha)
                ->where('acc','=',str($accToEdit))->get();
 
 
            $sumkst=0;
            foreach ($NoList as $List) {
-
                $sumkst += $List->kst;
-
                if ($raseed >= $sumkst) {
-                   hafitha_tran::on(Auth()->user()->company)->
-                   where('hafitha', $this->hafitha)
-                   ->where('ser_in_hafitha',$List->ser_in_hafitha)->update([
-                           'name'=>$List->name,'no'=>$no,'kst_type' => 1, 'baky' => 0,]);
+                   hafitha_tran::where('hafitha', $this->hafitha)
+                               ->where('ser_in_hafitha',$List->ser_in_hafitha)
+                               ->update(['name'=>$List->name,'no'=>$no,'kst_type' => 1, 'baky' => 0,]);
                } else {
                    if (($sumkst - $raseed) < $List->kst) {
-                       hafitha_tran::on(Auth()->user()->company)->where('hafitha', $this->hafitha)
-                           ->where('ser_in_hafitha',$List->ser_in_hafitha)->update([
-                           'name'=>$List->name,'no'=>$no, 'kst' => $List->kst-($sumkst - $raseed), 'kst_type' => 3, 'baky' => $sumkst - $raseed,]);
-                   } else hafitha_tran::on(Auth()->user()->company)->where('hafitha', $this->hafitha)
-                       ->where('ser_in_hafitha',$List->ser_in_hafitha)->update([
-                           'name'=>$List->name,'no'=>$no,'kst' => $List->kst, 'kst_type' => 2, 'baky' => 0,]);
+                       hafitha_tran::where('hafitha', $this->hafitha)
+                                   ->where('ser_in_hafitha',$List->ser_in_hafitha)
+                                   ->update(['name'=>$List->name,'no'=>$no, 'kst' => $List->kst-($sumkst - $raseed), 'kst_type' => 3, 'baky' => $sumkst - $raseed,]);
+                   } else hafitha_tran::where('hafitha', $this->hafitha)
+                                      ->where('ser_in_hafitha',$List->ser_in_hafitha)
+                                      ->update(['name'=>$List->name,'no'=>$no,'kst' => $List->kst, 'kst_type' => 2, 'baky' => 0,]);
                }
            }
-           $summorahel=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',1)->sum('kst');
-           $sumover1=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',2)->sum('kst');
-           $sumover2=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',5)->sum('kst');
-           $sumover3=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',3)->sum('baky');
+           $summorahel=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',1)->sum('kst');
+           $sumover1=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',2)->sum('kst');
+           $sumover2=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',5)->sum('kst');
+           $sumover3=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',3)->sum('baky');
            if ($sumover1==null) {$sumover1=0;}
            if ($sumover2==null) {$sumover2=0;}
            if ($sumover3==null) {$sumover3=0;}
            $sumover=$sumover1+$sumover2+$sumover3;
-           $sumhalfover=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',3)->sum('kst');
+           $sumhalfover=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',3)->sum('kst');
+           $sumwrong=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',4)->sum('kst');
            DB::connection(Auth()->user()->company)->table('hafitha')->where('hafitha_no',$this->hafitha)->update([
-               'kst_morahel'=>$summorahel,'kst_over'=>$sumover,'kst_half_over'=>$sumhalfover,
+               'kst_morahel'=>$summorahel,'kst_over'=>$sumover,'kst_half_over'=>$sumhalfover,'kst_wrong'=>$sumwrong,
            ]);
 
         DB::connection(Auth()->user()->company)->commit();
-
+           $this->NoToEdit='';
+           $this->OldAcc='';
+           $this->name='';
            $this->resetPage();
         } catch (\Exception $e) {
-
+           info($e);
             DB::connection(Auth()->user()->company)->rollback();
             $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
         }

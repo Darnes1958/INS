@@ -25,7 +25,7 @@ class HafInputHeader extends Component
  public $hafitha_date_new;
 
  public $hafitha_tot;
-  public $hafitha_tot_new;
+ public $hafitha_tot_new;
  public $hafitha_enter;
  public $hafitha_differ;
  public $HafHeadDetail;

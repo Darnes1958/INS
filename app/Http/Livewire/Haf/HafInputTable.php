@@ -53,6 +53,11 @@ class HafInputTable extends Component
       $this->dispatchBrowserEvent('delkst');
     }
     if ($action=='update'){
+        if (hafitha_tran::where('hafitha',$this->hafitha)->where('no',$no)->where('acc',$acc)->count()>1)
+        {
+          $this->dispatchBrowserEvent('mmsg','لا يجوز التعديل في حالة اكثر من قسط لزبون');
+          return false;
+        }
         $this->emit('ParamToUpdate',$this->hafitha,$ser);
         $this->dispatchBrowserEvent('OpenUpdateModal');
     }

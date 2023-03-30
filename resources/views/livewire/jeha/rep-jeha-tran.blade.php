@@ -79,7 +79,7 @@
                 <td> {{ $item->order_date }} </td>
                 <td> {{ $item->mden }} </td>
                 <td> {{ $item->daen }} </td>
-                <td> {{ $item->order_no }} </td>
+                <td> <a wire:click="DisModal('{{$item->data}}',{{$item->order_no}})" href="#">{{ $item->order_no }}</a>   </td>
                 <td> {{ $item->type_name }} </td>
                 <td> {{ $item->notes }} </td>
             </tr>
@@ -96,12 +96,31 @@
     </table>
     {{ $RepTable->links('custom-pagination-links-view') }}
 
+    <div  class="modal fade" id="ModalToDis" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button wire:click="CloseModalToDis" type="button" class="btn-close" ></button>
+                </div>
+                <div class="modal-body">
+                    @livewire('sell.rep-order-sell')
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 @push('scripts')
 
 
     <script type="text/javascript">
+        window.addEventListener('CloseModalToDis', event => {
+            $("#ModalToDis").modal('hide');
+        })
+        window.addEventListener('OpenModalToDis', event => {
+            $("#ModalToDis").modal('show');
+        })
         window.addEventListener('mmsg',function(e){
             MyMsg.fire({
                 confirmButtonText:  e.detail,

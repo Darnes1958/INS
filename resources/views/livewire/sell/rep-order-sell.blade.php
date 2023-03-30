@@ -2,16 +2,18 @@
 <div x-data class="col-md-5 my-2"  >
 
   <div   class="row g-2 " style="border:1px solid lightgray;background: white;">
+    @if( ! $DoNotShowOrder)
     <div class="col-md-12" >
       @livewire('sell.sell-select')
     </div>
+    @endif
     <div class="col-md-7">
       <div class="row">
         <div class="col-md-5">
           <label  for="order_no" class="form-label-me ">رقم الفاتورة</label>
         </div>
         <div class="col-md-7">
-          <input wire:model="order_no"  wire:keydown.enter="ChkOrderNoAndGo" type="text" class=" form-control "
+          <input wire:model="order_no" x-bind:disabled="$DoNotShowOrder" wire:keydown.enter="ChkOrderNoAndGo" type="text" class=" form-control "
                  id="order_no" name="order_no"   >
         </div>
       </div>

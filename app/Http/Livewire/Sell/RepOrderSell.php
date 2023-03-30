@@ -38,6 +38,16 @@ class RepOrderSell extends Component
 
   public $TheOrderListSelected;
 
+  public $DoNotShowOrder=false;
+  protected $listeners = [
+    'TakeOrderNo',
+    ];
+
+  public function TakeOrderNo($order_no){
+    $this->order_no=$order_no;
+    $this->DoNotShowOrder=true;
+    $this->ChkOrderNoAndGo();
+  }
   public function updatedTheOrderListSelected(){
     $this->TheOrderListSelected=0;
     $this->ChkOrderNoAndGo();
@@ -62,7 +72,7 @@ class RepOrderSell extends Component
   public function ChkOrderNoAndGo(){
     if ($this->order_no) {
 
-      $res=sells::on(Auth()->user()->company)->find($this->order_no);
+      $res=sells::where('order_no',$this->order_no)->first();
 
     if ($res) {
       $this->orderno2=$this->order_no;
