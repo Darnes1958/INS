@@ -179,6 +179,13 @@ class OrderBuy extends Component
 
   }
 
+  public function ChkOrder_date(){
+    if ($this->order_date)
+    {
+      buys_work::where('emp',Auth::user()->empno)->update(['order_date'=>$this->order_date]);
+      $this->emit('gotonext','jeha_no');
+    }
+  }
   public function ChkJeha_no(){
     if ($this->jeha_no)
     {
@@ -246,60 +253,8 @@ class OrderBuy extends Component
         'order_date.required'=>'يجب ادخال تاريخ صحيح',
     ];
 
-    public function NewBuys(){
-      $this->order_no = 0;
-      $this->order_date = date('Y-m-d');
-      $this->st_no = 1;
-      $this->st_nol = 1;
-      $this->st_name = 'المخزن الرئيسي';
-      $this->jeha_no = '2';
-      $this->jeha_name = 'مشتريات عامة';
-      $this->jeha_type = '2';
-
-      $this->Charge_Tot = 0;
-      buys_work::insert([
-        'order_no' => $this->order_no,
-        'order_no2' => 0,
-        'jeha' => $this->jeha_no,
-        'order_date' => $this->order_date,
-        'order_date_input' => date('Y-m-d'),
-
-        'price_type' => 1,
-        'tot1' => 0,
-        'ksm' => 0,
-        'tot' => 0,
-        'tot_charges' => 0,
-        'cash' => 0,
-        'not_cash' =>0,
-        'place_no' => $this->st_no,
-        'tran_no' => 0,
-        'emp' => Auth::user()->empno,
-        'available' => 0,
-      ]);
-    }
-
-    public function mount()
-    {
-      $this->OpenSave=false;
-      if (buys_work::where('emp',Auth::user()->empno)->exists())
-      {
-        $res=buys_work::where('emp',Auth()->user()->empno)->first();
-        $this->order_date=$res->order_date;
-        $this->st_no=$res->place_no;
-        $this->st_nol=$res->st_no;
-        $this->st_name=stores_names::find($this->st_no)->st_name;
-        $this->jeha_no=$res->jeha;
-        $this->jeha_name=jeha::find($this->jeha_no)->jeha_name;
-        $this->jeha_type='2';
-        $this->Charge_Tot=0;
-        $this->madfooh=$res->cash;
-      }
-      else {
-        $this->NewBuys();
-      }
 
 
-    }
 
     public function OpenModal(){
         $this->emitTo('jeha.add-supp','WithJehaType',2);
@@ -476,13 +431,69 @@ class OrderBuy extends Component
         DB::connection(Auth()->user()->company)->rollback();
       }
   }
+
+  public function NewBuys(){
+    $this->order_no = 0;
+    $this->order_date = date('Y-m-d');
+    $this->st_no = 1;
+    $this->st_nol = 1;
+    $this->st_name = 'المخزن الرئيسي';
+    $this->jeha_no = '2';
+    $this->jeha_name = 'مشتريات عامة';
+    $this->jeha_type = '2';
+
+    $this->Charge_Tot = 0;
+    buys_work::insert([
+      'order_no' => $this->order_no,
+      'order_no2' => 0,
+      'jeha' => $this->jeha_no,
+      'order_date' => $this->order_date,
+      'order_date_input' => date('Y-m-d'),
+
+      'price_type' => 1,
+      'tot1' => 0,
+      'ksm' => 0,
+      'tot' => 0,
+      'tot_charges' => 0,
+      'cash' => 0,
+      'not_cash' =>0,
+      'place_no' => $this->st_no,
+      'tran_no' => 0,
+      'emp' => Auth::user()->empno,
+      'available' => 0,
+    ]);
+  }
+
+  public function mount()
+  {
+    $this->OpenSave=false;
+    if (buys_work::where('emp',Auth::user()->empno)->exists())
+    {
+      $res=buys_work::where('emp',Auth()->user()->empno)->first();
+      $this->order_date=$res->order_date;
+      $this->st_no=$res->place_no;
+      $this->st_nol=$res->st_no;
+      $this->st_name=stores_names::find($this->st_no)->st_name;
+      $this->jeha_no=$res->jeha;
+      $this->jeha_name=jeha::find($this->jeha_no)->jeha_name;
+      $this->jeha_type='2';
+      $this->Charge_Tot=0;
+      $this->madfooh=$res->cash;
+    }
+    else {
+      $this->NewBuys();
+    }
+
+
+  }
     public function render()
     {
         $this->Charge_Tot = number_format(charges_buy_work::where('emp',Auth::user()->empno)->sum('val'),2, '.', '');
         $this->tot1=number_format(buy_tran_work_view::where('emp',Auth::user()->empno)->sum('subtot'), 2, '.', '');
         $this->tot=number_format($this->tot1-$this->ksm, 2, '.', '');
-        $this->madfooh=number_format($this->madfooh, 2, '.', '');
+        $this->madfooh=number_format( $this->madfooh, 2, '.', '');
         $this->ksm=number_format($this->ksm, 2, '.', '');
+
         return view('livewire.buy.order-buy',[
             'orderdetail'=>buy_tran_work_view::where('emp',Auth::user()->empno)->get(),
             'stores_names'=>stores_names::get(),

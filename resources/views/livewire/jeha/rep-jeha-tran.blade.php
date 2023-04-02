@@ -54,12 +54,12 @@
     <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
         <thead class="font-size-12">
         <tr>
-            <th >البيان</th>
-            <th style="width: 14%">التاريخ</th>
-            <th style="width: 14%">مدين</th>
-            <th style="width: 14%">دائن</th>
-            <th style="width: 20%">رقم المستند</th>
-            <th style="width: 20%">طريقة الدفع</th>
+            <th style="width: 12%">البيان</th>
+            <th style="width: 12%">التاريخ</th>
+            <th style="width: 12%">مدين</th>
+            <th style="width: 12%">دائن</th>
+            <th style="width: 12%">رقم المستند</th>
+            <th style="width: 12%">طريقة الدفع</th>
             <th >ملاحظات</th>
         </tr>
         </thead>

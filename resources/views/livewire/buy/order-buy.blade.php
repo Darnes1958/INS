@@ -5,7 +5,7 @@
 
          <div class="col-md-6">
              <label for="date_date" class="form-label-me">التاريخ</label>
-             <input wire:model="order_date" wire:keydown.enter="$emit('gotonext','jeha_no')"
+             <input wire:model="order_date" wire:keydown.enter="ChkOrder_date"
                     class="form-control  "  type="date"  id="order_date" >
              @error('order_date') <span class="error">{{ $message }}</span> @enderror
          </div>
