@@ -146,6 +146,7 @@
                         <li><a href="{{route('over.input','tar_list')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">ترجيع مبالغ من الفائض او الخطأ</a></li>
                         <li><a href="{{route('over.input','tar_maksoom')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">ترجع مبلغ مخصوم من عقد</a></li>
                         <li><a href="{{route('over.input','stop_kst')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">ايقاف خصم</a></li>
+                        <li><a href="{{route('stopkst2')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">ايقاف خصم بدون عقد</a></li>
 
                     </ul>
                 </div>
