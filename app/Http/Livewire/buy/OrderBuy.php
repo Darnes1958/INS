@@ -121,7 +121,7 @@ class OrderBuy extends Component
     }
   public function SaveItem(){
         if ($this->ItemToEdit!=null){
-            items::find($this->item)->update(['item_name'=>$this->ItemToEdit]);
+            items::where('item_no',$this->item_no)->update(['item_name'=>$this->ItemToEdit]);
             $this->item_name = $this->ItemToEdit;
             $this->ShowEditItem = false;
             $this->emit('gotonext','quant');
