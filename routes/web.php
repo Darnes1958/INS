@@ -96,6 +96,7 @@ Route::controller(SalaryController::class)->group(function (){
 
 Route::controller(OverTarController::class)->group(function (){
     route::get('/overtar/inpover/{Proc}', 'OverInp')->name('over.input')->middleware('auth') ;
+    route::get('/stopkst2', 'StopKst2')->name('stopkst2')->middleware('auth') ;
 
 });
 Route::controller(PasswordController::class)->group(function (){

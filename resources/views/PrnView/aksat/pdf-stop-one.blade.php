@@ -23,12 +23,16 @@
            font-size: 11pt;"> {{$acc}}</label>
     <label >حساب جاري رقم  </label>
 </div>
+
+@if($kst !=0)
 <div style="display:flex; flex-direction: row; justify-content:
      center; align-items: center; margin-right: 80px; font-size: 14pt;">
     <label style="font-weight: bold;font-family: DejaVu Sans, sans-serif;
            font-size: 11pt;"> {{$kst}}</label>
     <label >وقيمة القسط  </label>
 </div>
+@endif
+
 <div style="display:flex; flex-direction: row; justify-content:
      center; align-items: center; margin-right: 80px; font-size: 14pt;">
     <label style="font-weight: bold;font-family: DejaVu Sans, sans-serif;

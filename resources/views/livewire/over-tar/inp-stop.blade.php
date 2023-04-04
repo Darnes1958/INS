@@ -1,4 +1,6 @@
 <div x-data class="row gy-1 my-1" style="border:1px solid lightgray;background: white;">
+
+
   <div class="col-md-6 mb-2">
     <label for="stop_date" class="form-label-me">التاريخ</label>
     <input x-bind:disabled="!$wire.OpenDetail" wire:model="stop_date" wire:keydown.enter="storDate"

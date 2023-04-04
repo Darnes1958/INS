@@ -13,4 +13,8 @@ class OverTarController extends Controller
 
     return view('backend.aksat.InpOverTar',compact('Proc'));
   }  //
+  function StopKst2 (){
+
+    return view('backend.aksat.InpStop2');
+  }  //
 }
