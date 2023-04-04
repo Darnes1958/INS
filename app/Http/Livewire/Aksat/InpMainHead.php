@@ -256,7 +256,8 @@ class InpMainHead extends Component
   }
   public function ChkKstCountAndGo(){
     if ($this->kstcount){
-      $this->kst=$this->truncate( $this->sul/$this->kstcount);
+
+      $this->kst=number_format($this->sul/$this->kstcount,2, '.', '');
       $this->CountGet=true;
       $this->emit('goto','kst');
 
