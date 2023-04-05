@@ -28,6 +28,24 @@ class IdrajHead extends Component
     }
     $this->emit('gotonext','save-btn');
   }
+
+  public function ConfirmDel(){
+     $this->dispatchBrowserEvent('OpenMyDelete');
+  }
+  public function CloseDeleteDialog()
+  {$this->dispatchBrowserEvent('CloseMyDelete');}
+
+  public function Delete(){
+    $this->CloseDeleteDialog();
+    $year=SalaryTrans::max('Y');
+    if ($year){
+      $month=SalaryTrans::where('Y',$year)->max('M');
+      SalaryTrans::where('Y',$year)->where('M',$month)->where('TranType',1)->delete();
+      $this->render();
+
+    }
+  }
+
   public function Save(){
     if ($this->IsSave) return;
     if (!$this->month || $this->month<1 || $this->month>12) {

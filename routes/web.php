@@ -91,6 +91,7 @@ Route::controller(SalaryController::class)->group(function (){
   route::get('/idrajsalary', 'IdrajSalary')->name('idrajsalary')->middleware('auth') ;
   route::get('/salarytrans', 'SalaryTrans')->name('salarytrans')->middleware('auth') ;
   route::get('/salarysaheb', 'SalarySaheb')->name('salarysaheb')->middleware('auth') ;
+  route::get('/repsalary', 'RepSalary')->name('repsalary')->middleware('auth') ;
 
 });
 

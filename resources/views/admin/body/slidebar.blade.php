@@ -62,20 +62,6 @@
                         <li><a href="{{route('inpmasr')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">مصروفات</a></li>
                         @endcan
 
-                        @can('سحب من المرتب')
-                            <li><a href="{{route('salarysaheb')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">سحب من المرتب</a></li>
-                        @endcan
-
-                        @can('ادخال مرتبات')
-                            <li><a href="{{route('idrajsalary')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">ادراج مرتبات</a></li>
-                        @endcan
-                        @can('خصم واضافة وسحب')
-                            <li><a href="{{route('salarytrans')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">اضافات وخصومات للمرتبات</a></li>
-                        @endcan
-
-                        @can('اعداد مرتبات')
-                                <li><a href="{{route('inpsalary')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">اعداد مرتبات</a></li>
-                        @endcan
                     </ul>
                 </div>
             </li>
@@ -178,7 +164,6 @@
                     &nbsp <i class="fa  fas fa-list-ul" aria-hidden="true"></i>&nbsp تقارير عقود</button>
                 <div class="collapse" id="repokod-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-
                         <li><a href="{{route('repmain.all')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن عقد</a></li>
                         <li><a href="{{route('repmain.arc')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن عقد من الأرشيف</a></li>
                         <li><a href="{{route('repmainall')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">جميع العقود لزبون</a></li>
@@ -260,6 +245,36 @@
                 </div>
             </li>
             @endcanany
+
+                @canany(['سحب من المرتب','خصم واضافة وسحب','ادخال مرتبات','اعداد مرتبات'])
+                <li class="mb-1">
+                    <button class="font-size-14 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#salary-collapse" aria-expanded="false">
+                        &nbsp <i class="fa  fas fa-list-ul" aria-hidden="true"></i>&nbsp مرتبات</button>
+                    <div class="collapse" id="salary-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            @can('سحب من المرتب')
+                                <li><a href="{{route('salarysaheb')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">سحب من المرتب</a></li>
+                            @endcan
+
+                            @can('ادخال مرتبات')
+                                <li><a href="{{route('idrajsalary')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">ادراج مرتبات</a></li>
+                            @endcan
+                            @can('خصم واضافة وسحب')
+                                <li><a href="{{route('salarytrans')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">اضافات وخصومات للمرتبات</a></li>
+                            @endcan
+
+                            @can('تقارير مرتبات')
+                                    <li><a href="{{route('repsalary')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير مرتبات عن شهر معين</a></li>
+                            @endcan
+
+                            @can('اعداد مرتبات')
+                                <li><a href="{{route('inpsalary')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">اعداد مرتبات</a></li>
+                            @endcan
+
+                        </ul>
+                    </div>
+                </li>
+                @endcanany
 
                 @can('تقارير الموردين')
                 <li class="mb-1">
