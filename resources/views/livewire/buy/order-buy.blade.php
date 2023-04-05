@@ -193,8 +193,8 @@
                      <td> <input value="{{ $item->subtot }}" type="text"
                                  class="form-control estimated_amount" readonly style="background-color: #ddd;" ></td>
                      <td style="padding-top: 2px;padding-bottom: 2px; ">
-                         <i wire:click.prevent="edititem({{$key}})" class="btn btn-outline-primary btn-sm fa fa-edit editable-input" style="margin-left: 2px;"></i>
-                         <i  wire:click.prevent="removeitem({{$key}})" class="btn btn-outline-danger btn-sm fa fa-times "></i>
+                         <i wire:click.prevent="edititem({{$item->item_no}})" class="btn btn-outline-primary btn-sm fa fa-edit editable-input" style="margin-left: 2px;"></i>
+                         <i  wire:click.prevent="removeitem({{$item->item_no}})" class="btn btn-outline-danger btn-sm fa fa-times "></i>
                      </td>
                  </tr>
              @endforeach
@@ -310,7 +310,7 @@
 @push('scripts')
     <script type="text/javascript">
         Livewire.on('gotonext',postid=>  {
-if(postid=='item_no') alert('here');
+
             if (postid=='theitem') {  $("#theitem").focus(); $("#theitem").select();};
             if (postid=='order_no') {  $("#order_no").focus();$("#order_no").select(); };
             if (postid=='order_date') {  $("#order_date").focus();$("#order_date").select(); };

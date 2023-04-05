@@ -68,7 +68,7 @@ class OrderBuy extends Component
     public $OpenSave=false;
 
   protected $listeners = [
-    'openTable',
+    'openTable','DoDelete'
   ];
 
 
@@ -118,6 +118,25 @@ class OrderBuy extends Component
 
         $this->emit('gotonext','ItemToEdit');
 
+    }
+    public function edititem($item)
+    {
+        $res=buy_tran_work_view::where('emp',Auth::user()->empno)
+            ->where('item_no',$item)->first();
+        $this->item_no=$res->item_no;
+        $this->item_name=$res->item_name;
+        $this->quant=$res->quant;
+        $this->price=$res->price ;
+        $this->emit('gotonext', 'quant');
+    }
+    public function removeitem($item)    {
+        $this->TheDelete=$item;
+        $this->dispatchBrowserEvent('dodelete');
+    }
+    public function DoDelete(){
+
+        buy_tran_work::where('emp',Auth::user()->empno)->where('item_no',$this->TheDelete)->delete();
+        $this->render();
     }
   public function SaveItem(){
         if ($this->ItemToEdit!=null){
