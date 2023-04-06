@@ -104,7 +104,7 @@ class OrderSellTableEdit extends Component
                     'order_date' => $this->order_date,
                     'order_date_input' => $this->order_date,
                     'notes' => $this->notes,
-
+                    'price_type'=>$this->price_type,
                     'tot1' => $this->tot1,
                     'ksm' => $this->ksm,
                     'tot' => $this->tot,
