@@ -75,7 +75,7 @@ class HafMiniRep extends Component
        try {
 
         over_kst::on(Auth()->user()->company)->where('bank', $this->bank)->where('acc',$acc)->update(['acc' => $accToEdit,]);
-        over_kst_a::on(Auth()->user()->company)->where('bank', $this->bank)->where('acc',$acc)->update(['acc' => $accToEdit,]);
+        over_kst_a::on(Auth()->user()->company)->where('bank', $this->bank)->where('acc', $acc)->update(['acc' => $accToEdit,]);
         tar_kst::on(Auth()->user()->company)->where('bank', )->where('acc',$acc)->update(['acc' => $accToEdit,]);
         stop_kst::on(Auth()->user()->company)->where('bank', )->where('acc',$acc)->update(['acc' => $accToEdit,]);
         tar_kst_before::on(Auth()->user()->company)->where('bank', $this->bank)->where('acc',$acc)->update(['acc' => $accToEdit,]);
