@@ -35,6 +35,6 @@ class FromExcel2Import implements ToModel, WithHeadingRow
     }
   public function headingRow(): int
   {
-    return 18;
+    return 10;
   }
 }
