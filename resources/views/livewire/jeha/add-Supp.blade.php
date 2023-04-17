@@ -60,7 +60,19 @@
    <div class="col-md-7">
      <div class="card">
          <div class="card-header align-content-center">
-             <input wire:model="search"  type="search"   placeholder="ابحث هنا .......">
+             <div class="row">
+                 <div class="col-md-6">
+                     <input wire:model="search"  type="search"   placeholder="ابحث هنا .......">
+                 </div>
+                 @if(Auth::user()->company=='Motahedon')
+                 <div class="col-md-6">
+                     <a  href="{{route('pdfcustomer')}}"
+                         class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
+                 </div>
+                 @endif
+             </div>
+
+
          </div>
        <div class="card-body">
 

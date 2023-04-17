@@ -144,7 +144,7 @@ Route::controller(CustomerController::class)->group(function (){
     route::get('/search_customerall','SearchCustomerall')->name('search-customerall')->middleware('auth');
     route::get('/pdfjehatran/{jeha_no?}/{tran_date?}/{Mden?}/{MdenBefore?}/{Daen?}/{DaenBefore?}', 'PdfJehaTran')->name('pdfjehatran') ;
     route::get('/inpcust/{jeha_type}', 'InpCust')->name('inpcust')->middleware('auth') ;
-
+    route::get('/pdfcustomer', 'PdfCustomer')->name('pdfcustomer')->middleware('auth') ;
 
 });
 Route::controller(BankController::class)->group(function (){
