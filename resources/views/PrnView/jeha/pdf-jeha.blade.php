@@ -16,9 +16,9 @@
     <tr  style="background: #9dc1d3;" >
 
 
-      <th style="width: 30%">ملاحظات</th>
+      <th style="width: 40%">ملاحظات</th>
       <th >اسم الزبون</th>
-      <th style="width: 20%">رقم الزبون</th>
+      <th style="width: 12%">رقم الزبون</th>
 
 
     </tr>
@@ -27,9 +27,11 @@
 
     @foreach($res as $key => $item)
       <tr >
+          <td> </td>
+          <td > {{ $item->jeha_name }} </td>
         <td> {{ $item->jeha_no }} </td>
-        <td > {{ $item->jeha_name }} </td>
-        <td> </td>
+
+
 
       </tr>
       <div id="footer" style="height: 50px; width: 100%; margin-bottom: 0px; margin-top: 10px;
