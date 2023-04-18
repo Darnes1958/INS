@@ -25,7 +25,8 @@ class customercontroller extends Controller
         $res=jeha::when(!Auth::user()->can('عميل خاص'),function($q){
                 $q->where('acc_no','!=',1);
             })
-
+            ->where('jeha_type',1)
+            ->where('jeha_no','!=',1)
             ->orderBy('jeha_no','asc')
             ->get();
 
