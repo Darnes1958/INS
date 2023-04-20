@@ -199,6 +199,7 @@ class OrderBuyTableEdit extends Component
                       break;
                     }
                   }
+                 if (items::where('item_no', $item->item_no)->first()->raseed>0)
                   items::on(Auth::user()->company)->where('item_no', $item->item_no)
                     ->update(['price_cost' => $tot / $item->raseed]);
                 }
