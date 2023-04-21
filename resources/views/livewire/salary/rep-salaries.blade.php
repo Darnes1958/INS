@@ -1,5 +1,5 @@
 <div class="row">
- <div class="col-md-8">
+ <div class="col-md-7">
      <div x-data= "{open:  @entangle('PlaceChk')}" class="card ">
          <div class="card-header " style="background: #0e8cdb;color: white;">شاشة عرض المرتبات</div>
          <div class="card-body">
@@ -36,7 +36,7 @@
                      <th width="8%">المرتب</th>
                      <th width="8%">اضافة</th>
                      <th width="8%">خصم</th>
-                     <th width="16%">سحب خلال الشهر</th>
+
                      <th width="8%">الرصيد</th>
                      <th width="20%">محمل علي</th>
                  </tr>
@@ -47,9 +47,9 @@
                          <td>{{$item->id}}</td>
                          <td>{{$item->Name}}</td>
                          <td>{{$item->Sal}}</td>
-                         <td ><a wire:click="selectItem({{ $item->id }},3)" href="#">{{ $item->idaf }}</a> </td>
+                         <td ><a wire:click="selectItem({{ $item->id }},3)" href="#">{{ $item->idafa }}</a> </td>
                          <td ><a wire:click="selectItem({{ $item->id }},4)" href="#">{{ $item->ksm }}</a> </td>
-                         <td ><a wire:click="selectItem({{ $item->id }},2)" href="#">{{ $item->saheb }}</a> </td>
+
 
                          <td>{{$item->raseed}}</td>
                          <td>{{$item->CenterName}}</td>
@@ -62,9 +62,9 @@
 
  </div>
  </div>
- <div class="col-md-4">
+ <div class="col-md-5">
         <div x-data= "{open:  @entangle('PlaceChk')}" class="card ">
-            <div class="card-header " style="background: #0e8cdb;color: white;">تفاصيل الخصم والاضافة والسحب</div>
+            <div class="card-header " style="background: #0e8cdb;color: white;">تفاصيل الخصم والاضافة</div>
             <div class="card-body">
                 <table class="table table-sm table-bordered table-striped " width="100%"  >
                     <thead class="font-size-12 bg-primary text-white" >

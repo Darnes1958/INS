@@ -51,6 +51,8 @@ class RepSalaries extends Component
          ->paginate(15)
          ,'TableDetail'=>SalaryTrans::where('SalaryId',$this->SalaryId)
                 ->where('TranType',$this->TranType)
+                ->where('Y',$this->Y)
+                ->where('M',$this->M)
                 ->paginate(15, ['*'], 'tranPage')]);
 
     }

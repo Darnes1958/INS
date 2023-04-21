@@ -265,7 +265,9 @@
 
                             @can('تقارير مرتبات')
                                     <li><a href="{{route('repsalary')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير مرتبات عن شهر معين</a></li>
-                            @endcan
+
+                                    <li><a href="{{route('repsaltran')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير حركة مرتب</a></li>
+                                @endcan
 
                             @can('اعداد مرتبات')
                                 <li><a href="{{route('inpsalary')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">اعداد مرتبات</a></li>
