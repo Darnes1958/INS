@@ -17,6 +17,7 @@ class RepSalTran extends Component
     public $Y,$M;
     public $date;
     public  $SalaryId=0;
+    public $Name;
     public $TheSalIdListIsSelected;
 
     public function updatedTheSalIdListIsSelected(){
@@ -25,8 +26,9 @@ class RepSalTran extends Component
 
     }
 
-    public function selectItem($id){
+    public function selectItem($id,$name){
         $this->SalaryId=$id;
+        $this->Name=$name;
 
     }
     public function mount(){

@@ -20,8 +20,8 @@
                     <tbody id="addRow" class="addRow">
                     @foreach($TableList as  $item)
                         <tr class="font-size-12">
-                            <td ><a wire:click="selectItem({{ $item->id }})" href="#">{{ $item->id }}</a> </td>
-                            <td ><a wire:click="selectItem({{ $item->id }})" href="#">{{ $item->Name }}</a> </td>
+                            <td ><a wire:click="selectItem({{ $item->id }},'{{ $item->Name }}')" href="#">{{ $item->id }}</a> </td>
+                            <td ><a wire:click="selectItem({{ $item->id }},'{{ $item->Name }}')" href="#">{{ $item->Name }}</a> </td>
                             <td>{{$item->Sal}}</td>
                             <td>{{$item->raseed}}</td>
                         </tr>
@@ -38,6 +38,7 @@
 
             <div class="card-body">
                 <table class="table table-sm table-bordered table-striped " width="100%"  >
+                    <caption class="caption-top text-center text-pink font-size-16">{{$Name}}</caption>
                     <thead class="font-size-12 bg-primary text-white" >
                     <tr >
                         <th width="26%">التاريخ</th>
