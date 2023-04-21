@@ -41,6 +41,7 @@ class RepSalaries extends Component
 
          ->where('Y',$this->Y)
          ->where('M',$this->M)
+         ->where('TranType',1)
 
          ->paginate(15)
         ,'Years'=>SalaryTrans::select('Y')->distinct()->get()
