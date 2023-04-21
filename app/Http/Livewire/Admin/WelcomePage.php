@@ -25,7 +25,8 @@ class WelcomePage extends Component
     public function render()
     {
       if ($this->ShowDailyTot)
-        $DailyTot =DB::connection(Auth()->user()->company)->table('Daily_Tot')->where('val','!=',0)->get();
+        $DailyTot =DB::connection(Auth()->user()->company)->table('Daily_Tot')
+            ->where('val','!=',0)->get();
       else  $DailyTot = [];
         return view('livewire.admin.welcome-page',[
 

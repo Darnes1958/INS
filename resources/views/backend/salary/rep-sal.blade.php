@@ -1,7 +1,7 @@
 @extends('admin.admin_master')
 
 @section('admin')
-   <div class="col-md-6">
+   <div class="col-md-10">
          @livewire('salary.rep-salaries')
    </div>
 

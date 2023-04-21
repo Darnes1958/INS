@@ -2,14 +2,27 @@
 
 namespace App\Http\Livewire\Salary;
 
+use App\Models\masr\MasCenters;
+use App\Models\Salary\Sal_All_View;
 use App\Models\Salary\SalaryTrans;
 use App\Models\Salary\SalaryView;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class RepSalaries extends Component
 {
+    use WithPagination;
+  protected $paginationTheme = 'bootstrap';
   public $Y,$M;
+  public $CenterNo=0;
+  public $PlaceChk=false;
+
+    public $TheCenterListIsSelected;
+    public function updatedTheCenterListIsSelected(){
+        $this->TheCenterListIsSelected=0;
+
+    }
 
   public function mount(){
     $this->Y=SalaryTrans::max('Y');
@@ -18,14 +31,17 @@ class RepSalaries extends Component
     public function render()
     {
         return view('livewire.salary.rep-salaries',[
-          'TableList'=>SalaryView::
+          'TableList'=>Sal_All_View::
           when(!Auth::user()->can('مرتب خاص'),function($q){
             $q->where('vip','!=',1);
           })
-         ->join('SalaryTrans','SalaryView.id','=','SalaryTrans.SalaryId')
-            ->where('Y',$this->Y)
-            ->where('M',$this->M)
-         ->select('SalaryView.*','SalaryTrans.*')
+         ->when($this->PlaceChk,function($q){
+           $q->where('MasCenter','=',$this->CenterNo);
+          })
+
+         ->where('Y',$this->Y)
+         ->where('M',$this->M)
+
          ->paginate(15)
         ,'Years'=>SalaryTrans::select('Y')->distinct()->get()
         ,'Months'=>SalaryTrans::select('M')->where('Y',$this->Y)->distinct()->get()]);
