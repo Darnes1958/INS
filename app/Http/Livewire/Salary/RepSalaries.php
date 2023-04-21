@@ -17,13 +17,18 @@ class RepSalaries extends Component
   public $Y,$M;
   public $CenterNo=0;
   public $PlaceChk=false;
+  public  $SalaryId=0;
+  public $TranType=0;
 
     public $TheCenterListIsSelected;
     public function updatedTheCenterListIsSelected(){
         $this->TheCenterListIsSelected=0;
 
     }
-
+  public function selectItem($id,$type){
+     $this->SalaryId=$id;
+     $this->TranType=$type;
+  }
   public function mount(){
     $this->Y=SalaryTrans::max('Y');
     if ($this->Y) $this->M=SalaryTrans::where('Y',$this->Y)->max('M');
@@ -44,7 +49,9 @@ class RepSalaries extends Component
          ->where('TranType',1)
 
          ->paginate(15)
-        ,'Years'=>SalaryTrans::select('Y')->distinct()->get()
-        ,'Months'=>SalaryTrans::select('M')->where('Y',$this->Y)->distinct()->get()]);
+         ,'TableDetail'=>SalaryTrans::where('SalaryId',$this->SalaryId)
+                ->where('TranType',$this->TranType)
+                ->paginate(15, ['*'], 'tranPage')]);
+
     }
 }
