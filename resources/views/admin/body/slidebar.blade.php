@@ -2,6 +2,7 @@
 @auth
     @php
          $id = Auth::user()->id;
+         $company = Auth::user()->company;
          $admindata = App\Models\User::find($id);
     @endphp
 @endauth
@@ -233,7 +234,8 @@
                        @can('العملاء')
                     <!--   <li><a href="{{route('customer.all')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">عرض الزبائن</a></li> -->
                        <li><a href="{{route('repamma','jehatran')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">حركة زبون</a></li>
-                       <li><a href="{{route('repamma','RepCustomers')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن الزبائن</a></li>
+                     @if($company!='Daibany')  <li><a href="{{route('repamma','RepCustomers')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن الزبائن</a></li>
+                     @endif
                        @endcan
                        @can('الايصالات')
                        <li><a href="{{route('repamma','RepTrans')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن ايصالات القبض والدفع</a></li>

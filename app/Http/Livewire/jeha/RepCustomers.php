@@ -4,6 +4,9 @@ namespace App\Http\Livewire\Jeha;
 
 use App\Models\jeha\jeha;
 use App\Models\User;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -57,23 +60,47 @@ class RepCustomers extends Component
       $this->resetPage();
     }
   }
+    public function paginate($items, $perPage = 15, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
     public function render()
     {
+
         return view('livewire.jeha.rep-customers',[
-          'RepTable'=>DB::connection(Auth()->user()->company)->table('jeha')
-            ->where('jeha_type',1)
-            ->where('available',1)
-            ->when($this->Favorite==1,function ($q){
-              $q->where('Favorite',1);
-            })
-            ->when($this->Special==1,function ($q){
-              $q->where('acc_no',1);
-            })
-            ->when(!Auth::user()->can('عميل خاص'),function($q){
-              $q->where('acc_no','!=',1);
-            })
-            ->where('jeha_name', 'like', '%'.$this->search.'%')
-            ->paginate(15),
+            'RepTable'=>DB::connection(Auth()->user()->company)->table('CustomerMasterView')
+                ->where('available',1)
+                ->Where('jeha_name', 'like', '%'.$this->search.'%')
+                ->when($this->Favorite==1,function ($q){
+                    $q->where('Favorite',1);
+                })
+                ->when($this->Special==1,function ($q){
+                    $q->where('acc_no',1);
+                })
+
+                ->when(!Auth::user()->can('عميل خاص'),function($q){
+                    $q->where('acc_no','!=',1);
+                })
+                ->when($this->ZeroShow!='yes',function ($q) {
+                    return $q->where('differ','!=', 0) ;     })
+                ->paginate(15),
+            'Sum'=>DB::connection(Auth()->user()->company)->table('CustomerMasterView')
+                ->where('available',1)
+                ->when($this->Favorite==1,function ($q){
+                    $q->where('Favorite',1);
+                })
+                ->when($this->Special==1,function ($q){
+                    $q->where('acc_no',1);
+                })
+
+                ->when(!Auth::user()->can('عميل خاص'),function($q){
+                    $q->where('acc_no','!=',1);
+                })
+                ->when($this->ZeroShow!='yes',function ($q) {
+                    return $q->where('differ','!=', 0) ;     })
+                ->sum('differ'),
           'RepTable2'=>DB::connection(Auth()->user()->company)->table('CustomerDetailView')
             ->where('jeha',$this->jeha_no)
             ->orderBy('order_date')

@@ -216,13 +216,13 @@ class InpBankRatio extends Component
             $CenterNo=MasCenters::on(Auth()->user()->company)
               ->where('CenterWho',$pt)
               ->where('WhoID',$item->place)->first()->CenterNo;
-
+              $MasDate=$this->year.'-'.$this->month.'-1';
               $TheId=DB::connection(Auth()->user()->company)->table('Masrofat')->insertGetId([
                 'MasType'=>$MasTypeNo,
                 'MasTypeDetail'=>$DetailNo,
                 'MasCenter'=>$CenterNo,
                 'Val'=>$item->tot_ratio,
-                'MasDate'=>date('Y-m-d'),
+                'MasDate'=>$MasDate,
                 'Notes'=>'عمولة مصارف',
                 'emp'=>Auth()->user()->empno,
               ]);

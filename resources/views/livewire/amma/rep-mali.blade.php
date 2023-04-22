@@ -124,13 +124,27 @@
         </div>
       </div>
     </div>
+      <div class="col-md-1 my-1 " >
+          <div class="row" style="border:1px solid blue ;border-bottom: none;background: white; ">
+              <div class="col-md-12" >
+                  <label class="form-check-label font-size-12" style="color: #bf800c">مصروفات</label>
+                  <label class="form-check-label" >{{number_format($masrofat, 0, '.', ',')}}</label>
+              </div>
+              <div class="col-md-12" style="border-top:1px solid blue ; background: white;">
+                  <label class="form-check-label"style="color: #bf800c" >مرتبات</label>
+                  <label class="form-check-label" >{{number_format($mortbat, 0, '.', ',')}}</label>
+              </div>
+
+
+          </div>
+      </div>
     <div class="col-md-1 my-1 mx-1" style="border:1px solid blue ;background: white; ">
       <div >
         <div class="text-center">
           <label class="form-check-label" style="color: #bf800c">المصروفات</label>
         </div>
         <div class="text-center">
-          <label class="form-check-label" >{{number_format($masrofat, 0, '.', ',')}}</label>
+          <label class="form-check-label" >{{number_format($masrofat+$mortbat, 0, '.', ',')}}</label>
         </div>
       </div>
       <div >
@@ -155,7 +169,7 @@
           <td rowspan="2" style="width: 10%;"></td>
           <th colspan="5" scope="colgroup" style="text-align: center;">المبيعات</th>
           <th colspan="6" scope="colgroup" style="text-align: center;">العقود</th>
-          <th rowspan="2" scope="colgroup" style="width: 6%;text-align: center;">المصروفات</th>
+          <th rowspan="2" scope="colgroup" style="width: 6%;text-align: center;">مصروفات ومرتبات</th>
           <th rowspan="2" scope="colgroup" style="width: 6%;text-align: center;">الربح النقدي</th>
           <th rowspan="2" scope="colgroup" style="width: 6%;text-align: center;">الربح تقسيط</th>
           <th rowspan="2" scope="colgroup" style="width: 6%;text-align: center;">الإجمالي</th>

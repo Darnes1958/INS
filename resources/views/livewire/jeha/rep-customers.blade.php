@@ -3,7 +3,7 @@
 
 
  <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
       <table class="table table-striped table-bordered table-sm" >
 
         <thead class="font-size-14">
@@ -24,7 +24,14 @@
           @endif
             <th><input wire:model="search"  type="search"   placeholder="ابحث هنا ......."></th>
 
+              <th colspan="4">
+                  <div class=" form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" wire:model="ZeroShow"
+                             name="inlineRadioOptions" id="inlineRadio1" value="yes">
+                      <label class="form-check-label" for="inlineRadio1">إظهار الأرصدة صفر</label>
 
+                  </div>
+              </th>
         </tr>
         </thead>
 
@@ -33,12 +40,16 @@
           <th style="width: 5%">مفضل</th>
           <th style="width: 5%">خاص</th>
           <th >اسم الزبون</th>
-
+            <th style="width: 14%">مبيعات</th>
+            <th style="width: 14%">قبض</th>
+            <th style="width: 14%">دفع</th>
+            <th style="width: 14%">الإجمالي</th>
 
         </tr>
         </thead>
         <tbody id="addRow" class="addRow">
         @foreach($RepTable as $key=> $item)
+
           <tr class="font-size-12">
             @if($item->Favorite==1)
               <td  style="padding-top: 2px;padding-bottom: 2px; ">
@@ -65,16 +76,34 @@
                 @endif
               @endcan
             <td><a wire:click="selectItem({{ $item->jeha_no }},'nothing')" href="#">{{$item->jeha_name}}</a>  </td>
+                <td> {{ number_format($item->tot,2, '.', ',') }} </td>
 
+                <td> {{ number_format($item->ValImp,2, '.', ',') }} </td>
+                <td> {{ number_format($item->ValExp,2, '.', ',') }} </td>
+                <td> {{ number_format($item->differ,2, '.', ',') }} </td>
+                <td>  </td>
           </tr>
+
         @endforeach
         </tbody>
+          <tfoot>
+          <tr class="font-size-12 font-weight-bold">
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th style="font-weight: bold">الاجمالي</th>
+              <th style="font-weight: bold">{{ number_format($Sum,2, '.', ',') }}</th>
 
+          </tr>
+          </tfoot>
 
       </table>
       {{ $RepTable->links('custom-pagination-links-view') }}
     </div>
-   <div class="col-md-8">
+   <div class="col-md-6">
      <table class="table table-sm table-bordered table-striped  " width="100%"  id="mytable3" >
        <caption class="font-size-18 caption-top text-center p-0" style="color: #0a53be">{{$jeha_name}}</caption>
        <thead class="font-size-12 bg-primary text-white">
@@ -101,6 +130,7 @@
          </tr>
        @endforeach
        </tbody>
+
      </table>
      {{ $RepTable2->links() }}
 

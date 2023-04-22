@@ -4,13 +4,16 @@ namespace App\Http\Livewire\Amma;
 
 use App\Models\aksat\kst_trans;
 use App\Models\aksat\main;
+use App\Models\bank\BankRatio;
 use App\Models\buy\buys;
 use App\Models\masr\Masrofat;
 use App\Models\OverTar\over_kst;
 use App\Models\OverTar\tar_kst;
 use App\Models\OverTar\wrong_Kst;
+use App\Models\Salary\SalaryTrans;
 use App\Models\sell\sells;
 use App\Models\trans\trans;
+use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
@@ -37,10 +40,13 @@ class RepMali extends Component
   public $wrong=0;
   public $wrongtar=0;
   public $masrofat=0;
+  public $mortbat=0;
+  public $Omolat=0;
   public $rebh=0;
 
   public $date1;
   public $date2;
+  public $Y1,$Y2,$M1,$M2;
 
   protected function rules()
   {
@@ -53,7 +59,6 @@ class RepMali extends Component
 
   protected $messages = [
     'required' => 'لا يجوز',
-
     'required.date1' => 'يجب ادخال تاريخ صحيح',
     'required.date2' => 'يجب ادخال تاريخ صحيح',
 
@@ -80,6 +85,13 @@ class RepMali extends Component
     $this->validate();
     $this->mas_date1 = $this->date1;
     $this->mas_date2 = $this->date2;
+      $d1=Carbon::createFromFormat('Y-m-d',$this->mas_date1 );
+      $d2=Carbon::createFromFormat('Y-m-d',$this->mas_date2 );
+
+      $this->M1=$d1->month;
+      $this->Y1=$d1->year;
+      $this->M2=$d2->month;
+      $this->Y2=$d2->year;
     $this->buys=buys::on(Auth()->user()->company)->whereBetween('order_date',[$this->mas_date1,$this->mas_date2])->sum('tot');
 
     $this->sells=sells::on(Auth()->user()->company)->whereBetween('order_date',[$this->mas_date1,$this->mas_date2])->sum('tot');
@@ -105,6 +117,11 @@ class RepMali extends Component
     $this->wrongtar=tar_kst::on(Auth()->user()->company)->where('no',0)->whereBetween('tar_date',[$this->mas_date1,$this->mas_date2])->sum('kst');
 
     $this->masrofat=Masrofat::on(Auth()->user()->company)->whereBetween('MasDate',[$this->mas_date1,$this->mas_date2])->sum('Val');
+    $this->mortbat=SalaryTrans::whereBetween('TranDate',[$this->mas_date1,$this->mas_date2])
+        ->where('TranType',2)->sum('Val');
+
+
+
     $this->rebh=sells::on(Auth()->user()->company)->whereBetween('order_date',[$this->mas_date1,$this->mas_date2])->sum('rebh');
 
   }

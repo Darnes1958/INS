@@ -14,7 +14,7 @@
           <tbody id="addRow" class="addRow">
           @foreach($Tabledata as  $item)
             <tr>
-              <td > {{ $item->id }} </td>
+              <td > {{ $item->CompCode }} </td>
               <td > {{ $item->CompanyName }} </td>
               <td> {{ $item->CompanyNameSuffix }} </td>
               <td> {{ $item->Company }} </td>
