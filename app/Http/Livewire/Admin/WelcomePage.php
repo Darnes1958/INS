@@ -95,7 +95,7 @@ class WelcomePage extends Component
         ;
         $columnChartModelCount =
             (new ColumnChartModel())
-               
+
                 ->withoutLegend()
                 ->setColumnWidth(20)
                 ->addColumn($jan, $jancount, '#f6ad55')
