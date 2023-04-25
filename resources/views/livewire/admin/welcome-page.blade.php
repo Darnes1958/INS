@@ -20,7 +20,25 @@
       @role('admin')
 
       <div x-data class="row ">
+          <div class="card col-md-5 mx-1" >
+              <div class="card-header  bg-white text-warning">اجمالي المبيعات الشهرية</div>
+              <div class="card-body" style="height: 24rem; !important;">
+                  <livewire:livewire-column-chart
+                      :column-chart-model="$columnChartModelTot"
+                  />
+              </div>
+          </div>
+          <div class="card col-md-5 mx-1" >
+              <div class="card-header  bg-white text-primary">عددالفواتير المباعة شهريا</div>
+              <div class="card-body" style="height: 24rem; !important;">
+                  <livewire:livewire-column-chart
+                      :column-chart-model="$columnChartModelCount"
+                  />
+              </div>
+          </div>
         <div class="col-md-2 my-4">
+
+        </div>
           <div class="form-check form-check-inline">
             <input class="form-check-input" name="repchk" type="checkbox" wire:model="ShowUsers"  >
             <label class="form-check-label" for="inlineRadio2">عرض االمستخدمين</label>
@@ -99,7 +117,8 @@
             </tbody>
           </table>
         </div>
-      </div>
+
+
       @endrole
 
   </div>
