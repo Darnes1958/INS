@@ -28,8 +28,10 @@ class WelcomePage extends Component
     public array $backgroundColor;
 
     public array $sellcount = [];
-    public array $mainlcount = [];
+    public array $maincount = [];
+    public array $maintot = [];
     public array $kstcount = [];
+    public array $ksttot = [];
 
 
 
@@ -70,7 +72,14 @@ class WelcomePage extends Component
         $maincount=main::selectRaw('month(sul_date) month,count(*) count')
             ->WhereYear('sul_date',$year)
             ->groupByRaw('month(sul_date)')->get();
+        $maintot=main::selectRaw('month(sul_date) month,round(sum(sul),0) tot')
+            ->WhereYear('sul_date',$year)
+            ->groupByRaw('month(sul_date)')->get();
         $kstcount=kst_trans::selectRaw('month(ksm_date) month,count(*) count')
+            ->WhereYear('ksm_date',$year)
+            ->WhereYear('ksm','!=',0)
+            ->groupByRaw('month(ksm_date)')->get();
+        $ksttot=kst_trans::selectRaw('month(ksm_date) month,round(sum(ksm),0) tot')
             ->WhereYear('ksm_date',$year)
             ->WhereYear('ksm','!=',0)
             ->groupByRaw('month(ksm_date)')->get();
@@ -106,6 +115,18 @@ class WelcomePage extends Component
                 'data' => $data2,
             ],
         ];
+        foreach ($maintot as $item) {
+            $data5[] =$item->tot;
+
+        }
+        $this->maintot = [
+            [
+                'label' => 'اجمالي العقود شهريا',
+                'backgroundColor'=> $this->backgroundColor,
+                'borderColor' => 'rgba(15,64,97,255)',
+                'data' => $data5,
+            ],
+        ];
         foreach ($maincount as $item) {
             $data3[] =$item->count;
 
@@ -131,7 +152,18 @@ class WelcomePage extends Component
             ],
         ];
 
-        ;
+        foreach ($ksttot as $item) {
+            $data6[] =$item->tot;
+
+        }
+        $this->ksttot = [
+            [
+                'label' => 'اجمالي الاقساط المحصلة شهريا',
+                'backgroundColor'=> $this->backgroundColor,
+                'borderColor' => 'rgba(15,64,97,255)',
+                'data' => $data6,
+            ],
+        ];
       if ($this->ShowDailyTot)
         $DailyTot =DB::connection(Auth()->user()->company)->table('Daily_Tot')
             ->where('val','!=',0)->get();

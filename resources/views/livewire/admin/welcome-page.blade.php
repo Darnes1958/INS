@@ -46,7 +46,24 @@
               <div class="card-body" >
 
                   <div>
+                      <canvas id="maintotchart"></canvas>
+                  </div>
+              </div>
+          </div>
+          <div class="card col-md-5 mx-1" >
+
+              <div class="card-body" >
+
+                  <div>
                       <canvas id="maincountchart"></canvas>
+                  </div>
+              </div>
+          </div>
+          <div class="card col-md-5 mx-1" >
+
+              <div class="card-body" >
+                  <div>
+                      <canvas id="ksttotchart"></canvas>
                   </div>
               </div>
           </div>
@@ -219,6 +236,28 @@
             data: {
                 labels: @json($labels),
                 datasets: @json($kstcount)
+            },
+
+        }
+    );
+    const ctx5 = document.getElementById('maintotchart');
+    new Chart(ctx5,
+        {
+            type: 'bar',
+            data: {
+                labels: @json($labels),
+                datasets: @json($maintot)
+            },
+
+        }
+    );
+    const ctx6 = document.getElementById('ksttotchart');
+    new Chart(ctx6,
+        {
+            type: 'bar',
+            data: {
+                labels: @json($labels),
+                datasets: @json($ksttot)
             },
 
         }
