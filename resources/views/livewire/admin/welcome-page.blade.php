@@ -41,6 +41,23 @@
                   </div>
               </div>
           </div>
+          <div class="card col-md-5 mx-1" >
+
+              <div class="card-body" >
+
+                  <div>
+                      <canvas id="maincountchart"></canvas>
+                  </div>
+              </div>
+          </div>
+          <div class="card col-md-5 mx-1" >
+
+              <div class="card-body" >
+                  <div>
+                      <canvas id="kstcountchart"></canvas>
+                  </div>
+              </div>
+          </div>
         <div class="col-md-2 my-4">
 
         </div>
@@ -184,6 +201,27 @@
             }
         }
     );
+    const ctx3 = document.getElementById('maincountchart');
+    new Chart(ctx3,
+        {
+            type: 'bar',
+            data: {
+                labels: @json($labels),
+                datasets: @json($maincount)
+            },
 
+        }
+    );
+    const ctx4 = document.getElementById('kstcountchart');
+    new Chart(ctx4,
+        {
+            type: 'bar',
+            data: {
+                labels: @json($labels),
+                datasets: @json($kstcount)
+            },
+
+        }
+    );
 </script>
 @endpush
