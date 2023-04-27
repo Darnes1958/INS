@@ -25,8 +25,8 @@
 
       <div x-data class="row ">
           <div class="card col-md-5 mx-1" >
-              <div class="card-header  bg-white text-warning">اجمالي المبيعات الشهرية</div>
-              <div class="card-body" style="height: 24rem; !important;">
+
+              <div class="card-body" >
 
                   <div>
                       <canvas id="mychart"></canvas>
@@ -34,11 +34,11 @@
               </div>
           </div>
           <div class="card col-md-5 mx-1" >
-              <div class="card-header  bg-white text-primary">عددالفواتير المباعة شهريا</div>
-              <div class="card-body" style="height: 24rem; !important;">
-                  <livewire:livewire-column-chart
-                      :column-chart-model="$columnChartModelCount"
-                  />
+
+              <div class="card-body" >
+                  <div>
+                      <canvas id="sellcountchart"></canvas>
+                  </div>
               </div>
           </div>
         <div class="col-md-2 my-4">
@@ -133,13 +133,49 @@
 <script>
     const ctx = document.getElementById('mychart');
     new Chart(ctx,
-    {
+        {
             type: 'bar',
-        data: {
-            labels: @json($labels),
-            datasets: @json($dataset)
-        },
+            data: {
+                labels: @json($labels),
+                datasets: @json($dataset)
+
+            },
             options: {
+
+                plugins: {
+
+
+                    tooltip: {
+                        enabled: false
+                    }
+                }
+            },
+        }
+    );
+    const ctx2 = document.getElementById('sellcountchart');
+    new Chart(ctx2,
+        {
+            type: 'bar',
+            data: {
+                labels: @json($labels),
+                datasets: @json($sellcount)
+            },
+            options: {
+
+                plugins: {
+
+                legend: {
+
+                    labels: {
+
+                        // This more specific font property overrides the global property
+                        font: {
+                            size: 12,
+
+
+                        }
+                    }
+                }},
                 scales: {
                     y: {
                         beginAtZero: true
