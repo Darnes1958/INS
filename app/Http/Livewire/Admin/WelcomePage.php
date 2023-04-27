@@ -84,6 +84,13 @@ class WelcomePage extends Component
             ->WhereYear('ksm','!=',0)
             ->groupByRaw('month(ksm_date)')->get();
 
+        if (!$tot) $data=['0',];
+        if (!$count) $data2=['0',];
+        if (!$maintot) $data5=['0',];
+        if (!$maincount) $data3=['0',];
+        if (!$ksttot) $data6=['0',];
+        if (!$kstcount) $data4=['0',];
+
         foreach ($tot as $item) {
             $data[] =$item->tot;
 
