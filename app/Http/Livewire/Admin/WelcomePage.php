@@ -20,16 +20,39 @@ class WelcomePage extends Component
    public $CompanyNameSuffix;
    public $Whome;
    public $ShowDailyTot=false,$ShowUsers=true;
+
+    public array $dataset = [];
+    public array $labels = [];
+
+
    public function mount(){
      $this->Company=Auth::user()->company;
      $res=Customers::where('company',$this->Company)->first();
      $this->CompanyName=$res->CompanyName;
      $this->CompanyNameSuffix=$res->CompanyNameSuffix;
 
-   }
 
+
+   }
+    private function getData()
+    {
+        $data = [];
+        for ($i = 0; $i < count($this->getLabels()); $i++) {
+            $data[] = rand(10, 100);
+        }
+        return $data;
+    }
+    private function getLabels()
+    {
+        $labels = [];
+        for ($i = 0; $i < 12; $i++) {
+            $labels[] = now()->subMonths($i)->format('M');
+        }
+        return $labels;
+    }
     public function render()
     {
+
         $date=Carbon::now();
         $year=$date->year;
         $tot=sells::selectRaw('month(order_date) month,round(sum(tot),0) tot')
@@ -44,20 +67,30 @@ class WelcomePage extends Component
         $oct='10';$octVal=0;$octcount=0; $nov='11';$novVal=0;$novcount=0;  $dec='12';$decVal=0;$deccount=0;
         foreach ($tot as $item) {
             switch ($item->month) {
-                case 1: $janVal=$item->tot; break;
-                case 2: $febVal=$item->tot; break;
-                case 3: $marVal=$item->tot; break;
-                case 4: $aprVal=$item->tot; break;
-                case 5: $mayVal=$item->tot; break;
-                case 6: $junVal=$item->tot; break;
-                case 7: $julVal=$item->tot; break;
-                case 8: $augVal=$item->tot; break;
-                case 9: $sepVal=$item->tot; break;
-                case 10: $octVal=$item->tot; break;
-                case 11: $novVal=$item->tot; break;
-                case 12: $decVal=$item->tot; break;
+                case 1: $janVal=$item->tot; $data[] =$janVal; break;
+                case 2: $febVal=$item->tot; $data[] =$febVal; break;
+                case 3: $marVal=$item->tot; $data[] =$marVal;break;
+                case 4: $aprVal=$item->tot; $data[] =$aprVal;break;
+                case 5: $mayVal=$item->tot; $data[] =$mayVal;break;
+                case 6: $junVal=$item->tot; $data[] =$junVal;break;
+                case 7: $julVal=$item->tot; $data[] =$julVal;break;
+                case 8: $augVal=$item->tot; $data[] =$augVal;break;
+                case 9: $sepVal=$item->tot; $data[] =$sepVal;break;
+                case 10: $octVal=$item->tot; $data[] =$octVal;break;
+                case 11: $novVal=$item->tot; $data[] =$novVal;break;
+                case 12: $decVal=$item->tot; $data[] =$decVal;break;
             }
         }
+        //$this->labels[] = $this->getLabels();
+        $this->labels= ['1', '2', '3', '4', '5', '6','7','8','9','10','11','12'];
+        $this->dataset = [
+            [
+                'label' => 'اجمالي المبيعات',
+                'backgroundColor' => 'rgba(15,64,97,255)',
+                'borderColor' => 'rgba(15,64,97,255)',
+                'data' => $data,
+            ],
+        ];
         foreach ($count as $item) {
             switch ($item->month) {
                 case 1: $jancount=$item->count; break;

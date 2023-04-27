@@ -1,3 +1,7 @@
+
+
+
+
 <div>
   @php
     $id = Auth::user()->id;
@@ -23,9 +27,10 @@
           <div class="card col-md-5 mx-1" >
               <div class="card-header  bg-white text-warning">اجمالي المبيعات الشهرية</div>
               <div class="card-body" style="height: 24rem; !important;">
-                  <livewire:livewire-column-chart
-                      :column-chart-model="$columnChartModelTot"
-                  />
+
+                  <div>
+                      <canvas id="mychart"></canvas>
+                  </div>
               </div>
           </div>
           <div class="card col-md-5 mx-1" >
@@ -123,3 +128,26 @@
 
   </div>
 </div>
+
+@push('scripts')
+<script>
+    const ctx = document.getElementById('mychart');
+    new Chart(ctx,
+    {
+            type: 'bar',
+        data: {
+            labels: @json($labels),
+            datasets: @json($dataset)
+        },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        }
+    );
+
+</script>
+@endpush
