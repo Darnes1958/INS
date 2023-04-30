@@ -44,6 +44,45 @@ class customercontroller extends Controller
         return $pdf->download('report.pdf');
 
     }
+    function PdfRepCustomer(Request $request){
+
+        $RepDate=date('Y-m-d');
+        $cus=Customers::where('Company',Auth::user()->company)->first();
+        $res=DB::connection(Auth()->user()->company)->table('CustomerMasterView')
+            ->where('available',1)
+            ->where('jeha_no','>',1)
+
+
+            ->when(!Auth::user()->can('عميل خاص'),function($q){
+                $q->where('acc_no','!=',1);
+            })
+            ->when($request->ZeroShow!='yes',function ($q) {
+                return $q->where('differ','!=', 0) ;     })
+            ->get();
+        $Sum=DB::connection(Auth()->user()->company)->table('CustomerMasterView')
+            ->where('available',1)
+            ->where('jeha_no','!=',1)
+
+            ->when(!Auth::user()->can('عميل خاص'),function($q){
+                $q->where('acc_no','!=',1);
+            })
+
+            ->sum('differ');
+
+        $reportHtml = view('PrnView.jeha.pdf-rep-customer',
+            ['res'=>$res,'cus'=>$cus,'Sum'=>$Sum])->render();
+        $arabic = new Arabic();
+        $p = $arabic->arIdentify($reportHtml);
+
+        for ($i = count($p)-1; $i >= 0; $i-=2) {
+            $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+            $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+        }
+
+        $pdf = PDF::loadHTML($reportHtml);
+        return $pdf->download('report.pdf');
+
+    }
   function CustomerAll (Request $request)
   {
       $jeharep = jeha::on(auth()->user()->company)->where('jeha_type',1)->paginate(15);

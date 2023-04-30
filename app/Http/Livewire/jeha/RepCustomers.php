@@ -88,6 +88,7 @@ class RepCustomers extends Component
                 ->paginate(15),
             'Sum'=>DB::connection(Auth()->user()->company)->table('CustomerMasterView')
                 ->where('available',1)
+                ->where('jeha_no','!=',1)
                 ->when($this->Favorite==1,function ($q){
                     $q->where('Favorite',1);
                 })

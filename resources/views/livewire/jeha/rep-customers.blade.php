@@ -9,27 +9,33 @@
         <thead class="font-size-14">
         <tr>
           @if($Favorite==1)
-           <th style="width: 5%"> <i wire:click="selectFav(0)"
+           <th > <i wire:click="selectFav(0)"
                class=" btn btn-outline-success btn-sm  fas fa-star editable-input" style="margin-left: 2px;"></i></th>
           @else
-            <th style="width: 5%"><i wire:click="selectFav(1)"
+            <th ><i wire:click="selectFav(1)"
                                           class="btn btn-outline-warning btn-sm  far fa-star editable-input" style="margin-left: 2px;"></i></th>
           @endif
           @if($Special==1)
-            <th style="width: 5%">  <i wire:click="selectSpc(0)"
+            <th >  <i wire:click="selectSpc(0)"
                                             class="btn btn-outline-success btn-sm  fas fa-user-secret editable-input" style="margin-left: 2px;"></i></th>
           @else
-              <th style="width: 5%"> <i wire:click="selectSpc(1)"
+              <th > <i wire:click="selectSpc(1)"
                                         class="btn btn-outline-success btn-sm  far fa-user-secret editable-input" style="margin-left: 2px;"></i></th>
           @endif
-            <th><input wire:model="search"  type="search"   placeholder="ابحث هنا ......."></th>
+            <th ><input wire:model="search"  type="search"   placeholder="ابحث هنا ......."></th>
 
-              <th colspan="4">
+              <th colspan="3">
                   <div class=" form-check form-check-inline">
                       <input class="form-check-input" type="checkbox" wire:model="ZeroShow"
                              name="inlineRadioOptions" id="inlineRadio1" value="yes">
-                      <label class="form-check-label" for="inlineRadio1">إظهار الأرصدة صفر</label>
+                      <label class="form-check-label" for="inlineRadio1">الأرصدة الصفرية</label>
 
+                  </div>
+              </th>
+              <th class="d-inline-flex">
+                  <div >
+                      <a  href="{{route('pdfrepcustomer',['ZeroShow'=>$ZeroShow])}}"
+                          class="btn btn-outline-success waves-effect waves-light border-0 "><i class="fas fa-print"> طباعة</i></a>
                   </div>
               </th>
         </tr>
@@ -81,7 +87,7 @@
                 <td> {{ number_format($item->ValImp,2, '.', ',') }} </td>
                 <td> {{ number_format($item->ValExp,2, '.', ',') }} </td>
                 <td> {{ number_format($item->differ,2, '.', ',') }} </td>
-                <td>  </td>
+
           </tr>
 
         @endforeach
@@ -93,7 +99,7 @@
               <th></th>
               <th></th>
               <th></th>
-              <th></th>
+
               <th style="font-weight: bold">الاجمالي</th>
               <th style="font-weight: bold">{{ number_format($Sum,2, '.', ',') }}</th>
 

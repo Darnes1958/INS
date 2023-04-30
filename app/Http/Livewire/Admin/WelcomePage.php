@@ -184,3 +184,4 @@ class WelcomePage extends Component
         ]);
     }
 }
+
