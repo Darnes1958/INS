@@ -27,6 +27,7 @@ class IdrajTable extends Component
           when(!Auth::user()->can('مرتب خاص'),function($q){
             $q->where('vip','!=',1);
           })
+          ->orderby('id')
             ->paginate(15),
         ]);
     }
