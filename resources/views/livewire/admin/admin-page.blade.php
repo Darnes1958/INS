@@ -48,6 +48,11 @@
              Please Wait...
          </div>
 
+       <div class="col-md-1">
+         <a  href="{{route('SeeWelcomePage')}}"
+             class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;Welcome Page&nbsp;&nbsp;</i></a>
+       </div>
+
 
 
 

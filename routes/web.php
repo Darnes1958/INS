@@ -72,6 +72,7 @@ Route::controller(AdminController::class)->group(function (){
 
   route::get('/manager', 'ManagerPage')->name('manager')->middleware('auth') ;
   route::get('/oper', 'RepOper')->name('oper')->middleware('auth') ;
+  route::get('/SeeWelcomePage', 'SeeWelcomePage')->name('SeeWelcomePage')->middleware('auth') ;
 });
 Route::controller(AKsatController::class)->group(function (){
   route::get('/kst/input', 'InpKst')->name('kst.input')->middleware('auth') ;

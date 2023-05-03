@@ -13,6 +13,11 @@ class AdminController extends Controller
     return view('backend.manager');
 
   }
+  public function SeeWelcomePage (){
+
+    return view('backend.SeeWelcomePage');
+
+  }
   public function RepOper (){
 
     return view('backend.RepOper');
