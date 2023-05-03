@@ -7,6 +7,7 @@ use App\Models\Salary\Sal_All_View;
 use App\Models\Salary\SalaryTrans;
 use App\Models\Salary\SalaryView;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -48,12 +49,34 @@ class RepSalaries extends Component
          ->where('M',$this->M)
          ->where('TranType',1)
 
-         ->paginate(15)
+         ->paginate(12)
          ,'TableDetail'=>SalaryTrans::where('SalaryId',$this->SalaryId)
                 ->where('TranType',$this->TranType)
                 ->where('Y',$this->Y)
                 ->where('M',$this->M)
-                ->paginate(15, ['*'], 'tranPage')]);
+                ->paginate(15, ['*'], 'tranPage')
+         ,'Sum'=>Sal_All_View::select(
+            DB::raw("SUM(Sal) as Sal"),
+            DB::raw("SUM(idafa) as idafa"),
+            DB::raw("SUM(ksm) as ksm"),
+            DB::raw("SUM(raseed) as raseed")
+          )
+            ->when(!Auth::user()->can('مرتب خاص'),function($q){
+              $q->where('vip','!=',1);
+            })
+              ->when($this->PlaceChk,function($q){
+                $q->where('MasCenter','=',$this->CenterNo);
+              })
+
+              ->where('Y',$this->Y)
+              ->where('M',$this->M)
+              ->where('TranType',1)
+            ->first()
+
+
+            ]
+        );
+
 
     }
 }

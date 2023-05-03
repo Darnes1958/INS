@@ -25,6 +25,7 @@ class WelcomePage extends Component
 
     public array $dataset = [];
     public array $labels = [];
+    public array $years = [];
     public array $backgroundColor;
 
     public array $sellcount = [];
@@ -32,6 +33,8 @@ class WelcomePage extends Component
     public array $maintot = [];
     public array $kstcount = [];
     public array $ksttot = [];
+    public array $rebhyear = [];
+    public array $rebhtot = [];
 
 
 
@@ -83,6 +86,15 @@ class WelcomePage extends Component
             ->WhereYear('ksm_date',$year)
             ->WhereYear('ksm','!=',0)
             ->groupByRaw('month(ksm_date)')->get();
+        $rebhtot=sells::selectRaw('month(order_date) month,round(sum(rebh),0) tot')
+          ->WhereYear('order_date',$year)
+          ->groupByRaw('month(order_date)')->get();
+        $rebhyear=sells::selectRaw('year(order_date) year,round(sum(rebh),0) tot')
+        ->WhereYear('order_date','>=',$year-4)
+        ->WhereYear('order_date','<=',$year)
+          ->orderbyRaw('year(order_date)')
+          ->groupByRaw('year(order_date)')->get();
+
 
         if (count($tot)==0) $data=['0',];
         if (count($count)==0) $data2=['0',];
@@ -90,6 +102,8 @@ class WelcomePage extends Component
         if (count($maincount)==0) $data3=['0',];
         if (count($ksttot)==0) $data6=['0',];
         if (count($kstcount)==0) $data4=['0',];
+        if (count($rebhtot)==0) $rebh_tot_data=['0',];
+      if (count($rebhyear)==0) {$rebh_year_data=['0',];$this->years=['0',];};
 
         foreach ($tot as $item) {
             $data[] =$item->tot;
@@ -171,6 +185,33 @@ class WelcomePage extends Component
                 'data' => $data6,
             ],
         ];
+
+      foreach ($rebhtot as $item) {
+        $rebh_tot_data[] =$item->tot;
+
+      }
+      $this->rebhtot = [
+        [
+          'label' => 'اجمالي الأرباح شهريا',
+          'backgroundColor'=> $this->backgroundColor,
+          'borderColor' => 'rgba(15,64,97,255)',
+          'data' => $rebh_tot_data,
+        ],
+      ];
+      foreach ($rebhyear as $item) {
+        $rebh_year_data[] =$item->tot;
+        $this->years[] =$item->year;
+
+      }
+
+      $this->rebhyear = [
+        [
+          'label' => 'اجمالي الأرباح أخر خمس سنوات',
+          'backgroundColor'=> $this->backgroundColor,
+          'borderColor' => 'rgba(15,64,97,255)',
+          'data' => $rebh_year_data,
+        ],
+      ];
       if ($this->ShowDailyTot)
         $DailyTot =DB::connection(Auth()->user()->company)->table('Daily_Tot')
             ->where('val','!=',0)->get();
