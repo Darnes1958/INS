@@ -75,6 +75,23 @@
                   </div>
               </div>
           </div>
+        <div class="card col-md-5 mx-1" >
+          <div class="card-body" >
+            <div>
+              <canvas id="rebhtotchart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="card col-md-5 mx-1" >
+          <div class="card-body" >
+            <div>
+              <canvas id="rebhyearchart"></canvas>
+            </div>
+          </div>
+        </div>
+
+
         <div class="col-md-2 my-4">
 
         </div>
@@ -258,6 +275,28 @@
             data: {
                 labels: @json($labels),
                 datasets: @json($ksttot)
+            },
+
+        }
+    );
+    const ctx7 = document.getElementById('rebhtotchart');
+    new Chart(ctx7,
+        {
+            type: 'bar',
+            data: {
+                labels: @json($labels),
+                datasets: @json($rebhtot)
+            },
+
+        }
+    );
+    const ctx8 = document.getElementById('rebhyearchart');
+    new Chart(ctx8,
+        {
+            type: 'bar',
+            data: {
+                labels: @json($years),
+                datasets: @json($rebhyear)
             },
 
         }

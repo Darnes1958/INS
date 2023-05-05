@@ -37,6 +37,7 @@ Route::controller(ExController::class)->group(function () {
     Route::get('mosdadaex/{bank?},{baky?}', 'MosdadaEx')->name('mosdadaex');
     Route::get('khamlaex/{bank?},{months?}', 'KhamlaEx')->name('khamlaex');
     Route::get('repmakex/{place_type?},{place_no?},{withzero?}', 'RepMakEx')->name('repmakex');
+
 });
 Route::controller(EmailPdf::class)->group(function () {
     Route::get('send-mail', 'KlasaPdf')->name('sendmail');
@@ -71,6 +72,7 @@ Route::controller(AdminController::class)->group(function (){
 
   route::get('/manager', 'ManagerPage')->name('manager')->middleware('auth') ;
   route::get('/oper', 'RepOper')->name('oper')->middleware('auth') ;
+  route::get('/SeeWelcomePage', 'SeeWelcomePage')->name('SeeWelcomePage')->middleware('auth') ;
 });
 Route::controller(AKsatController::class)->group(function (){
   route::get('/kst/input', 'InpKst')->name('kst.input')->middleware('auth') ;

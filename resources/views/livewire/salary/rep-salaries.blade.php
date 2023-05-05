@@ -42,6 +42,7 @@
                  </tr>
                  </thead>
                  <tbody id="addRow" class="addRow">
+
                  @foreach($TableList as  $item)
                      <tr class="font-size-12">
                          <td>{{$item->id}}</td>
@@ -56,6 +57,19 @@
                      </tr>
                  @endforeach
                  </tbody>
+                 <tfoot>
+                 <tr class="font-size-12 font-weight-bold bg-primary text-white">
+                     <th></th>
+                     <th>الإجمــــــــــــالي</th>
+                     <th>{{$Sum->Sal}}</th>
+                     <th >{{ $Sum->idafa }} </th>
+                     <th >{{ $Sum->ksm }} </th>
+
+
+                     <th>{{$Sum->raseed}}</th>
+                     <th></th>
+                 </tr>
+                 </tfoot>
              </table>
              {{ $TableList->links() }}
          </div>

@@ -8,7 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Models\stores\RepMakzoon;
 use Illuminate\Http\Request;
 use App\Exports\MosdadaXls;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+
 
 class ExController extends Controller
 {
