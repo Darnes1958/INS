@@ -54,7 +54,8 @@ class IdrajHead extends Component
       return;
     }
     if (SalaryTrans::where('Y',$this->year)->where('M',$this->month)->exists()) {
-      SalaryTrans::where('Y',$this->year)->where('M',$this->month)->delete();
+      SalaryTrans::where('Y',$this->year)->where('M',$this->month)
+          ->where('TranType',1)->delete();
     }
     $salary=Salarys::where('SalCase',1)->get();
     foreach ($salary as $item) {
