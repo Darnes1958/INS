@@ -44,6 +44,7 @@ class RepSalTot extends Component
             $q->where('vip','!=',1);
           })
             ->selectRaw('Y,M,sum(Sal) sal,sum(saheb) saheb,sum(idafa) idafa,sum(ksm) ksm')
+            ->where('TranType',1)
             ->groupby('Y','M')
             ->get(),
 
