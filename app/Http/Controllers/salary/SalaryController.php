@@ -25,5 +25,7 @@ class SalaryController extends Controller
     function RepSalTran(){
         return view('backend.salary.rep-sal-tran');
     }
-
+  function RepSalTot(){
+    return view('backend.salary.rep-sal-tot');
+  }
 }

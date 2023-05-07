@@ -90,6 +90,16 @@
       window.addEventListener('OpenTajEdit', event => {
           $("#TajEditModal").modal('show');
       })
+      window.addEventListener('ExistRatio',function(e){
+          MyConfirm.fire({
+              title: 'سبق ادراج هذا الشهر من هذذه السنة .. هل ترغب في الاستمرار ؟',
+          }).then((result) => {
+              /* Read more about isConfirmed, isDenied below */
+              if (result.isConfirmed) {
+                  Livewire.emit('DoRatio');
+              }
+          })
+      });
 
   </script>
 @endpush
