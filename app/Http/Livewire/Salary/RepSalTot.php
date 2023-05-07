@@ -48,7 +48,10 @@ class RepSalTot extends Component
             ->get(),
 
          'TableDetail'=>Sal_All_View::
-            where('Y',$this->Y)
+         when(!Auth::user()->can('مرتب خاص'),function($q){
+           $q->where('vip','!=',1);
+         })
+           ->where('Y',$this->Y)
             ->where('M',$this->M)
             ->paginate(15)
            ]);
