@@ -53,6 +53,7 @@ class RepSalTot extends Component
          })
            ->where('Y',$this->Y)
             ->where('M',$this->M)
+           ->where('TranType',1)
            ->orderby('id')
             ->paginate(15)
            ]);
