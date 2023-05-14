@@ -29,7 +29,7 @@ class InpBankRatio extends Component
   public $Isvalid=false;
 
   protected $listeners = [
-    'TakeBank',
+    'TakeBank','DoRatio'
   ];
   public function OpenTajModal(){
       $this->emitTo('bank.edit-ratio','TakeTaj',$this->TajNo);
@@ -67,8 +67,23 @@ class InpBankRatio extends Component
     'required' => 'لا يجوز ترك فراغ',
     'exists' => 'هذا الرقم غير مخزون مسبقا',
   ];
-  public function Do(){
-   $this->validate();
+  public function Do()
+  {
+    $this->validate();
+    if (BankRatio::where('bank', $this->bank_no)
+      ->where('Y', $this->year)
+      ->where('M', $this->month)->exists()) {
+
+      $this->dispatchBrowserEvent('ExistRatio');
+      return;
+    }
+
+    $this->DoRatio();
+
+  }
+
+  public function DoRatio(){
+
    $this->TajNo=bank::on(Auth()->user()->company)->find($this->bank_no)->bank_tajmeeh;
    $res=DB::connection(Auth()->user()->company)->table('BankTajmeehy')->where('TajNo',$this->TajNo)->first();
    $this->R=$res->ratio_type;

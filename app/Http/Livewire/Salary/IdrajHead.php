@@ -55,6 +55,10 @@ class IdrajHead extends Component
       return;
     }
     if (SalaryTrans::where('Y',$this->year)->where('M',$this->month)->exists()) {
+      $this->dispatchBrowserEvent('mmsg','سبق ادراج مرتب هذا الشهر من السنة');
+      return;
+    }
+    if (SalaryTrans::where('Y',$this->year)->where('M',$this->month)->exists()) {
       SalaryTrans::where('Y',$this->year)->where('M',$this->month)
           ->where('TranType',1)->delete();
     }

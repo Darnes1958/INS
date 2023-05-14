@@ -207,7 +207,7 @@
 </script>
 <script>
     const Succ = Swal.mixin({
-        position : top
+        position : top,
         toast: true,
         title: 'تم تحزين البيانات',
         timerProgressBar: true,
