@@ -22,7 +22,8 @@ class IdrajHead extends Component
       $this->dispatchBrowserEvent('mmsg','ادخال خطأ');
       return;
     }
-    if (SalaryTrans::where('Y',$this->year)->where('M',$this->month)
+    if (SalaryTrans::where('Y',$this->year)
+        ->where('M',$this->month)
         ->where('TranType',1)->exists()) {
       $this->dispatchBrowserEvent('mmsg','سبق ادراج مرتب هذا الشهر من السنة');
       return;
@@ -54,7 +55,10 @@ class IdrajHead extends Component
       $this->emit('gotonext','month');
       return;
     }
-    if (SalaryTrans::where('Y',$this->year)->where('M',$this->month)->exists()) {
+    if (SalaryTrans::where('Y',$this->year)
+        ->where('M',$this->month)
+        ->where('TranType',1)
+        ->exists()) {
       $this->dispatchBrowserEvent('mmsg','سبق ادراج مرتب هذا الشهر من السنة');
       return;
     }
