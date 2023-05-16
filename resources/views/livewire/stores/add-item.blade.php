@@ -1,11 +1,11 @@
-<div class="col-md-10 col-lg-12">
+<div  class="col-md-10 col-lg-12">
 
-    <form >
-        <div class="row g-3">
-            <div class="col-md-4">
-                <label for="item_no" class="form-label">رقم الصنف</label>
-                <input wire:model="item_no"  wire:keydown.enter="$emit('gotonext','item_name')"  type="text" class="form-control" id="item_no" placeholder="" value="" >
-                @error('item_no') <span class="error">{{ $message }}</span> @enderror
+
+        <div  class="row g-3">
+            <div  class="col-md-4">
+                <label for="item_add" class="form-label">رقم الصنف</label>
+                <input   wire:model="item_add"  wire:keydown.enter="$emit('gotonext','item_name')"  type="text" class="form-control" id="item_add"  >
+                @error('item_add') <span class="error">{{ $message }}</span> @enderror
             </div>
             <div class="col-md-8">
                 <label for="item_name" class="form-label">اسم الصنف</label>
@@ -53,21 +53,28 @@
 
         <input type="button"  id="save-item"
                class="w-100 btn btn-outline-success  waves-effect waves-light   "
-               wire:click.prevent="SaveItem"  wire:keydown.enter="SaveItem" value="موافق" />
+                 wire:keydown.enter="SaveItem" value="موافق" />
         <br>
-    </form>
+
 </div>
 
 @push('scripts')
     <script type="text/javascript">
+
         Livewire.on('gotonext',postid=>  {
 
-            if (postid=='item_no') {  $("#item_no").focus(); $("#item_no").select();};
+
+            if (postid=='item_no') {  $("#item_no").focus(); $("#item_no").select(); };
             if (postid=='item_name') {  $("#item_name").focus(); $("#item_name").select();};
             if (postid=='itemtype') {  $("#item_type").focus(); $("#item_type").select();};
             if (postid=='price_buy') {  $("#price_buy").focus(); $("#price_buy").select();};
             if (postid=='price_sell') {  $("#price_sell").focus(); $("#price_sell").select(); };
             if (postid=='save-item') { setTimeout(function() { document.getElementById('save-item').focus(); },100);};
+
+        })
+        Livewire.on('gotoadditem',postid=>  {
+
+         if (postid=='item_add')  { $("#item_add").focus(); $("#item_add").select() ;  }
 
         })
 

@@ -97,7 +97,7 @@
                      <div class="modal-dialog modal-dialog-centered">
                          <div class="modal-content">
                              <div class="modal-header">
-                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                 <button type="button" class="btn-close" wire:click.prevent="CloseSecond"></button>
                                  <h3 class="modal-title fs-5" id="exampleModalToggleLabel2">ادخال النوع الجديد ثم اضغط ENTER</h3>
                              </div>
                              <div class="modal-body">
@@ -333,9 +333,13 @@
         })
         window.addEventListener('OpenModal', event => {
             $("#ModalForm").modal('show');
+
         })
         window.addEventListener('CloseFirst', event => {
             $("#ModalFormOne").modal('hide');
+            $("#theitem").focus();
+            $("#theitem").select();
+
         })
         window.addEventListener('OpenFirst', event => {
             $("#ModalFormOne").modal('show');

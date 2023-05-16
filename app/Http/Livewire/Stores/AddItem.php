@@ -16,7 +16,7 @@ use Livewire\Component;
 class AddItem extends Component
 {
 
-    public $item_no;
+    public $item_add;
     public $item_name;
     public $itemtype;
     public $itemtypel;
@@ -24,16 +24,23 @@ class AddItem extends Component
     public $price_sell;
 
     protected $listeners = [
-        'itemtypeadded','gotoaddonetype'
+        'itemtypeadded','gotoaddonetype','gotoitem'
     ];
+
+    public function gotoitem(){
+      $this->emit('gotoadditem','item_add');
+    }
     public function resetitem(){
 
-      $this->item_no=items::on(Auth()->user()->company)->max('item_no')+1;
+      $this->item_add=items::on(Auth()->user()->company)->max('item_no')+1;
       $this->item_name='';
       $this->itemtype=item_type::on(Auth()->user()->company)->min('type_no');
       $this->itemtypel=item_type::on(Auth()->user()->company)->min('type_no');
       $this->price_sell=0;
       $this->price_buy=0;
+
+
+
     }
     public function OpenSecond(){
         $this->dispatchBrowserEvent('CloseFirst');
@@ -57,7 +64,7 @@ class AddItem extends Component
     {
         Config::set('database.connections.other.database', Auth::user()->company);
         return [
-            'item_no' => ['required','integer','gt:0', 'unique:other.items,item_no'],
+            'item_add' => ['required','integer','gt:0', 'unique:other.items,item_no'],
             'item_name' => ['required', 'unique:other.items,item_name'],
             'itemtype' => ['required','integer','gt:0','exists:other.item_type,type_no'],
             'price_buy' => ['required','numeric','gt:0'],
@@ -83,7 +90,7 @@ class AddItem extends Component
         DB::connection(Auth()->user()->company)->beginTransaction();
         try {
               DB::connection(Auth()->user()->company)->table('items')->insert([
-                'item_no' => $this->item_no,
+                'item_no' => $this->item_add,
                 'item_name' => $this->item_name,
                 'item_type' => $this->itemtype,
                 'price_buy' => $this->price_buy,
@@ -93,12 +100,12 @@ class AddItem extends Component
                 'available' => 1
               ]);
               DB::connection(Auth()->user()->company)->table('item_price_buy')->insert([
-                'item_no' => $this->item_no,
+                'item_no' => $this->item_add,
                 'price_type' => 1,
                 'price' => $this->price_buy,
               ]);
               DB::connection(Auth()->user()->company)->table('item_price_sell')->insert([
-                'item_no' => $this->item_no,
+                'item_no' => $this->item_add,
                 'price_type' => 1,
                 'price' => $this->price_sell,
               ]);
@@ -111,7 +118,8 @@ class AddItem extends Component
                                     }
         $this->resetitem();
         $this->emitTo('stores.item-select','RefreshSelectItem');
-        $this->dispatchBrowserEvent('CloseFirst');
+        $this->emit('gotonext','item_no');
+       // $this->dispatchBrowserEvent('CloseFirst');
     }
     public function mount()
     {

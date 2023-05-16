@@ -6,13 +6,6 @@
         <input wire:model="name"  wire:keydown.enter="SaveOne" type="text" class="form-control" id="name" placeholder="" autofocus>
         @error('name') <span class="error">{{ $message }}</span> @enderror
     </div>
-    @if (session()->has('message'))
-        <div class="alert alert-success">
-            {{ session('message') }}
-        </div>
-    @endif
-
-
 
     <table class="table-sm table-bordered " width="100%"  id="itemtype" >
         <thead>

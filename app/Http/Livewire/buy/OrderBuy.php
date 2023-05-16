@@ -284,7 +284,11 @@ class OrderBuy extends Component
     }
 
   public function OpenFirst(){
+
     $this->dispatchBrowserEvent('OpenFirst');
+    $this->emitTo('stores.add-item','gotoitem','item_add');
+
+
   }
   public function CloseFirst(){
     $this->dispatchBrowserEvent('CloseFirst');
@@ -292,7 +296,7 @@ class OrderBuy extends Component
   public function CloseSecond(){
     $this->dispatchBrowserEvent('CloseSecond');
     $this->dispatchBrowserEvent('OpenFirst');
-    $this->emit('gotoaddonetype');
+    $this->emitTo('stores.add-item','gotoitem','item_add');
   }
 
 
