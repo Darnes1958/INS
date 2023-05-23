@@ -5,7 +5,12 @@
 <div id="page-content" class="page-content" >
   <div class="container-fluid">
    @csrf
-      @if ($rep=='RepMas')
+    @if ($rep=='DelPer')
+      <div class=" themed-grid-col px-1">
+        @livewire('stores.del-per')
+      </div>
+    @endif
+    @if ($rep=='RepMas')
           <div class=" themed-grid-col px-1">
               @livewire('masr.rep-mas')
           </div>
