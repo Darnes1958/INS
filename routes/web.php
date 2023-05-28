@@ -81,9 +81,7 @@ Route::controller(AKsatController::class)->group(function (){
   route::get('/main/input/{NewOld}', 'MainInp')->name('main.input')->middleware('auth') ;
   route::get('/main/Edit/{EditDel}', 'MainEdit')->name('main.edit')->middleware('auth') ;
 
-
-
-});
+}) ;
 Route::controller(MasrController::class)->group(function (){
   route::get('/inpmasr', 'MasrInp')->name('inpmasr')->middleware('auth') ;
 

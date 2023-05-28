@@ -3,6 +3,7 @@
 namespace Illuminate\Foundation\Auth;
 
 use App\Models\Customers;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,6 +51,14 @@ trait AuthenticatesUsers
         if ($this->attemptLogin($request)) {
 
           $CompCode=Customers::where('Company',Auth()->user()->company)->first()->CompCode;
+          
+          if (Auth::user()->isBanned()){
+            $this->logout($request);
+
+            return back();
+          }
+
+
           if (Auth::user()->id<>1)
           if ($CompCode<>$request->CompCode) {
             $this->logout($request);

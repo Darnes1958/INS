@@ -8,6 +8,7 @@
         "php": "^8.0.2",
         "asantibanez/livewire-charts": "^2.5",
         "barryvdh/laravel-dompdf": "^2.0",
+        "cybercog/laravel-ban": "^4.8",
         "guzzlehttp/guzzle": "^7.2",
         "jenssegers/agent": "^2.6",
         "khaled.alshamaa/ar-php": "^6.3",

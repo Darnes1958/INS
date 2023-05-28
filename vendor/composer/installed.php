@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'd4dea6731a6fb564d8fecfe4fdc07efb79df8595',
+        'reference' => '52b64621f68623fec541df184fb1cad71cf2c059',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -51,6 +51,15 @@
             'replaced' => array(
                 0 => '*',
             ),
+        ),
+        'cybercog/laravel-ban' => array(
+            'pretty_version' => '4.8.0',
+            'version' => '4.8.0.0',
+            'reference' => '90ab93b75caf15453d8f024b4aa704dc2638fe76',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../cybercog/laravel-ban',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'davedevelopment/hamcrest-php' => array(
             'dev_requirement' => true,
@@ -448,7 +457,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'd4dea6731a6fb564d8fecfe4fdc07efb79df8595',
+            'reference' => '52b64621f68623fec541df184fb1cad71cf2c059',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -11,6 +11,15 @@
           <input wire:model="name"  type="text" class="form-control"   readonly>
         </div>
 
+
+        <div class=" my-2 ">
+          <button  wire:click="StopUser" class="btn btn-primary" id="btn-save">
+            ايقاف
+          </button>
+        </div>
+
+
+
     </div>
   </div>
 </div>

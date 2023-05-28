@@ -194,6 +194,8 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
             'Cron\\' => 5,
             'Composer\\Semver\\' => 16,
             'Complex\\' => 8,
+            'Cog\\Laravel\\Ban\\' => 16,
+            'Cog\\Contracts\\Ban\\' => 18,
             'Carbon\\' => 7,
         ),
         'B' => 
@@ -627,6 +629,14 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         array (
             0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
         ),
+        'Cog\\Laravel\\Ban\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/cybercog/laravel-ban/src',
+        ),
+        'Cog\\Contracts\\Ban\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/cybercog/laravel-ban/contracts',
+        ),
         'Carbon\\' => 
         array (
             0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
@@ -836,6 +846,7 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         'App\\Http\\Livewire\\Salary\\IdrajHead' => __DIR__ . '/../..' . '/app/Http/Livewire/Salary/IdrajHead.php',
         'App\\Http\\Livewire\\Salary\\IdrajTable' => __DIR__ . '/../..' . '/app/Http/Livewire/Salary/IdrajTable.php',
         'App\\Http\\Livewire\\Salary\\InpSaheb' => __DIR__ . '/../..' . '/app/Http/Livewire/Salary/InpSaheb.php',
+        'App\\Http\\Livewire\\Salary\\RepSalTot' => __DIR__ . '/../..' . '/app/Http/Livewire/Salary/RepSalTot.php',
         'App\\Http\\Livewire\\Salary\\RepSalTran' => __DIR__ . '/../..' . '/app/Http/Livewire/Salary/RepSalTran.php',
         'App\\Http\\Livewire\\Salary\\RepSalaries' => __DIR__ . '/../..' . '/app/Http/Livewire/Salary/RepSalaries.php',
         'App\\Http\\Livewire\\Salary\\SalaryInp' => __DIR__ . '/../..' . '/app/Http/Livewire/Salary/SalaryInp.php',
@@ -854,6 +865,7 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         'App\\Http\\Livewire\\Sell\\SellSelect' => __DIR__ . '/../..' . '/app/Http/Livewire/Sell/SellSelect.php',
         'App\\Http\\Livewire\\Stores\\AddItem' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/AddItem.php',
         'App\\Http\\Livewire\\Stores\\AddItemType' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/AddItemType.php',
+        'App\\Http\\Livewire\\Stores\\DelPer' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/DelPer.php',
         'App\\Http\\Livewire\\Stores\\EditItem' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/EditItem.php',
         'App\\Http\\Livewire\\Stores\\ItemPrices' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/ItemPrices.php',
         'App\\Http\\Livewire\\Stores\\ItemSelect' => __DIR__ . '/../..' . '/app/Http/Livewire/Stores/ItemSelect.php',
@@ -1106,6 +1118,23 @@ class ComposerStaticInitd2b88077737e28ded71fb8105884a351
         'Carbon\\Translator' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Translator.php',
         'Carbon\\TranslatorImmutable' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/TranslatorImmutable.php',
         'Carbon\\TranslatorStrongTypeInterface' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/TranslatorStrongTypeInterface.php',
+        'Cog\\Contracts\\Ban\\Ban' => __DIR__ . '/..' . '/cybercog/laravel-ban/contracts/Ban.php',
+        'Cog\\Contracts\\Ban\\BanService' => __DIR__ . '/..' . '/cybercog/laravel-ban/contracts/BanService.php',
+        'Cog\\Contracts\\Ban\\Bannable' => __DIR__ . '/..' . '/cybercog/laravel-ban/contracts/Bannable.php',
+        'Cog\\Laravel\\Ban\\Console\\Commands\\DeleteExpiredBans' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Console/Commands/DeleteExpiredBans.php',
+        'Cog\\Laravel\\Ban\\Events\\ModelWasBanned' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Events/ModelWasBanned.php',
+        'Cog\\Laravel\\Ban\\Events\\ModelWasUnbanned' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Events/ModelWasUnbanned.php',
+        'Cog\\Laravel\\Ban\\Http\\Middleware\\ForbidBannedUser' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Http/Middleware/ForbidBannedUser.php',
+        'Cog\\Laravel\\Ban\\Http\\Middleware\\LogsOutBannedUser' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Http/Middleware/LogsOutBannedUser.php',
+        'Cog\\Laravel\\Ban\\Models\\Ban' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Models/Ban.php',
+        'Cog\\Laravel\\Ban\\Observers\\BanObserver' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Observers/BanObserver.php',
+        'Cog\\Laravel\\Ban\\Providers\\BanServiceProvider' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Providers/BanServiceProvider.php',
+        'Cog\\Laravel\\Ban\\Scopes\\BannedAtScope' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Scopes/BannedAtScope.php',
+        'Cog\\Laravel\\Ban\\Services\\BanService' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Services/BanService.php',
+        'Cog\\Laravel\\Ban\\Traits\\Bannable' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Traits/Bannable.php',
+        'Cog\\Laravel\\Ban\\Traits\\HasBannedAtHelpers' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Traits/HasBannedAtHelpers.php',
+        'Cog\\Laravel\\Ban\\Traits\\HasBannedAtScope' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Traits/HasBannedAtScope.php',
+        'Cog\\Laravel\\Ban\\Traits\\HasBansRelation' => __DIR__ . '/..' . '/cybercog/laravel-ban/src/Traits/HasBansRelation.php',
         'Complex\\Complex' => __DIR__ . '/..' . '/markbaker/complex/classes/src/Complex.php',
         'Complex\\Exception' => __DIR__ . '/..' . '/markbaker/complex/classes/src/Exception.php',
         'Complex\\Functions' => __DIR__ . '/..' . '/markbaker/complex/classes/src/Functions.php',

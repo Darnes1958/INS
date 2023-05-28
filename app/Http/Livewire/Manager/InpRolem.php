@@ -18,6 +18,7 @@ class InpRolem extends Component
   public $UserNo;
   public $name;
   public $Show=false;
+  public $stop='NoThing';
 
   protected $listeners = ['show'];
   public function show($show){
@@ -56,6 +57,15 @@ class InpRolem extends Component
     $user=User::where('id',$this->UserNo)->first();
     $per=Permission::findById($id)->name;
     $user->revokePermissionTo($per);
+
+  }
+  public function StopUser(){
+    if (! $this->UserNo) {$this->dispatchBrowserEvent('mmsg','يجب اختيار مستخدم'); return;};
+    $user=User::where('id',$this->UserNo)->first();
+    if ($user->isBanned()) $user->unban();
+    else $user->ban([
+      'comment' => 'موقوف من الإدارة',
+    ]);
 
   }
 
