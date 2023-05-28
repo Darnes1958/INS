@@ -51,7 +51,7 @@ trait AuthenticatesUsers
         if ($this->attemptLogin($request)) {
 
           $CompCode=Customers::where('Company',Auth()->user()->company)->first()->CompCode;
-          
+
           if (Auth::user()->isBanned()){
             $this->logout($request);
 

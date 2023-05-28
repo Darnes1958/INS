@@ -11,12 +11,20 @@
           <input wire:model="name"  type="text" class="form-control"   readonly>
         </div>
 
-
+       @if($stop!='NoThing')
         <div class=" my-2 ">
-          <button  wire:click="StopUser" class="btn btn-primary" id="btn-save">
-            ايقاف
-          </button>
+          @if($stop=='Stop')
+            <button  wire:click="StopUser" class="btn btn-primary" id="btn-save">
+              تحرير
+            </button>
+          @else
+            <button  wire:click="StopUser" class="btn btn-primary" id="btn-save">
+              ايقاف
+            </button>
+
+          @endif
         </div>
+      @endif
 
 
 

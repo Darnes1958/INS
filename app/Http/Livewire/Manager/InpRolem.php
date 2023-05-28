@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Manager;
 
 use App\Models\User;
 use FontLib\Table\Table;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -28,6 +29,11 @@ class InpRolem extends Component
   public function updatedTheUserListIsSelectd(){
     $this->TheUserListIsSelectd=0;
     $this->name=User::find($this->UserNo)->name;
+   $user=User::where('id',$this->UserNo)->first();
+    if ($user->isBanned())
+      $this->stop='Stop';
+    else $this->stop='Free';
+
     $this->emit('TakeUserNo',$this->UserNo);
 
   }
@@ -62,15 +68,17 @@ class InpRolem extends Component
   public function StopUser(){
     if (! $this->UserNo) {$this->dispatchBrowserEvent('mmsg','يجب اختيار مستخدم'); return;};
     $user=User::where('id',$this->UserNo)->first();
-    if ($user->isBanned()) $user->unban();
-    else $user->ban([
+    if ($user->isBanned()) {$user->unban();$this->stop='Free';}
+    else {$user->ban([
       'comment' => 'موقوف من الإدارة',
     ]);
+      $this->stop='Stop';}
 
   }
 
     public function render()
     {
+
         $activeRoles = DB::table('model_has_roles')->select('role_id')->where('model_id', $this->UserNo);
         $activePer   = DB::table('model_has_permissions')->select('permission_id')->where('model_id', $this->UserNo);
         $perinrole=DB::table('role_has_permissions')->select('permission_id')->whereIn('role_id', $activeRoles);
