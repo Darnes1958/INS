@@ -198,6 +198,7 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Cog\Laravel\Ban\Providers\BanServiceProvider::class,
 
 
 
