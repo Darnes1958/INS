@@ -7,6 +7,7 @@ use App\Models\aksat\kst_trans;
 use App\Models\aksat\main;
 use App\Models\aksat\MainArc;
 use App\Models\aksat\TransArc;
+use App\Models\bank\bank;
 use App\Models\jeha\jeha;
 use App\Models\OverTar\over_kst;
 use App\Models\OverTar\over_kst_a;
@@ -24,6 +25,7 @@ class RepMainDataArc extends Component
     public $no=0;
     public $acc;
     public $name;
+    public $bank;
     public $bank_name;
     public $order_no;
     public $jeha=0;
@@ -159,6 +161,8 @@ class RepMainDataArc extends Component
       $this->chk_in=$res['chk_in'];
       $this->chk_out=$res['chk_out'];
       $this->notes=$res['notes'];
+      $this->bank=$res['bank'];
+      $this->bank_name=bank::on(Auth()->user()->company)->find($this->bank)->bank_name;
 
       $tel=jeha::on(Auth()->user()->company)->where('jeha_no',$this->jeha)->first();
       $this->libyana=$tel['libyana'];

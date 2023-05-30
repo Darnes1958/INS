@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Exls;
 
 use App\Exports\KhamlaXls;
-use App\Exports\RepMakXls;
+use App\Exports\KlasaXls;
 use App\Http\Controllers\Controller;
 use App\Models\stores\RepMakzoon;
 use Illuminate\Http\Request;
@@ -26,5 +26,8 @@ class ExController extends Controller
   {
     return Excel::download(new RepMakXls($place_type,$place_no,$withzero), 'RepStores.xlsx');
   }
-
+  public function KlasaEX($date1,$date2)
+  {
+    return Excel::download(new KlasaXls($date1,$date2), 'RepKlasa.xlsx');
+  }
 }

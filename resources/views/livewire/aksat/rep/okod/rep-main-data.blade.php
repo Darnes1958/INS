@@ -40,8 +40,8 @@
     <div class="d-inline-flex align-items-center">
         <label for="sul_pay" class="form-label" style="width: 20% ">المسدد</label>
         <input  wire:model="sul_pay" type="text" class="form-control" id="sul_pay" style="width: 30%" readonly>
-        <label for="raseed" class="form-label" style="width: 20% ">&nbsp;&nbsp;المطلوب</label>
-        <input  wire:model="raseed" type="text" class="form-control" id="raseed" style="width: 30%" readonly>
+        <label for="raseed" class="form-label" style="width: 20% ;font-size: 14pt;color: red;">&nbsp;&nbsp;المطلوب</label>
+        <input  wire:model="raseed" type="text" class="form-control" id="raseed" style="width: 30%;font-size: 12pt;color: red;" readonly>
     </div>
     <div class="d-inline-flex align-items-center">
         <label for="kst_count" class="form-label" style="width: 20% ">عدد الأقساط</label>

@@ -62,7 +62,8 @@ class Klasa extends Component
             ->whereBetween('order_date',[$this->klasa_date1,$this->klasa_date2])
             ->selectRaw('stores_names.st_no place_no,st_name as place_name,type_no,type_name,
                                  sum(tot1) as tot1,sum(ksm) as ksm,sum(tot) as tot,sum(cash) as cash,sum(not_cash) as not_cash')
-            ->groupBy('stores_names.st_no','st_name','type_no','type_name')->get(),
+            ->groupBy('stores_names.st_no','st_name','type_no','type_name')
+            ->orderBy('st_no')->get(),
           'SellTableMak'=>DB::connection(Auth()->user()->company)->table('sells')
             ->join('price_type','sells.price_type','=','price_type.type_no')
             ->join('stores_names','sells.place_no','=','stores_names.st_no')
@@ -70,7 +71,8 @@ class Klasa extends Component
             ->whereBetween('order_date',[$this->klasa_date1,$this->klasa_date2])
             ->selectRaw('stores_names.st_no place_no,st_name as place_name,type_no,type_name,
                                  sum(tot1) as tot1,sum(ksm) as ksm,sum(tot) as tot,sum(cash) as cash,sum(not_cash) as not_cash')
-            ->groupBy('stores_names.st_no','st_name','type_no','type_name')->get(),
+            ->groupBy('stores_names.st_no','st_name','type_no','type_name')
+            ->orderBy('st_no')->get(),
           'SellTableSalat'=>DB::connection(Auth()->user()->company)->table('sells')
           ->join('price_type','sells.price_type','=','price_type.type_no')
           ->join('halls_names','sells.place_no','=','halls_names.hall_no')
@@ -78,21 +80,22 @@ class Klasa extends Component
           ->whereBetween('order_date',[$this->klasa_date1,$this->klasa_date2])
           ->selectRaw('halls_names.hall_no place_no,hall_name as place_name,type_no,type_name,
                                      sum(tot1) as tot1,sum(ksm) as ksm,sum(tot) as tot,sum(cash) as cash,sum(not_cash) as not_cash')
-          ->groupBy('halls_names.hall_no','hall_name','type_no','type_name')->get(),
+          ->groupBy('halls_names.hall_no','hall_name','type_no','type_name')
+            ->orderBy('hall_no')->get(),
           'TransTableImp'=>DB::connection(Auth()->user()->company)->table('trans')
           ->join('price_type','trans.tran_type','=','price_type.type_no')
           ->join('tran_who','trans.tran_who','=','tran_who.who_no')
           ->where('imp_exp',1)
           ->whereBetween('tran_date',[$this->klasa_date1,$this->klasa_date2])
           ->selectRaw('imp_exp,who_no,who_name,type_no,type_name,sum(val) as val')
-          ->groupBy('imp_exp','who_no','who_name','type_no','type_name')->get(),
+          ->groupBy('imp_exp','who_no','who_name','type_no','type_name')->orderBy('who_no')->get(),
           'TransTableExp'=>DB::connection(Auth()->user()->company)->table('trans')
             ->join('price_type','trans.tran_type','=','price_type.type_no')
             ->join('tran_who','trans.tran_who','=','tran_who.who_no')
             ->where('imp_exp',2)
             ->whereBetween('tran_date',[$this->klasa_date1,$this->klasa_date2])
             ->selectRaw('imp_exp,who_no,who_name,type_no,type_name,sum(val) as val')
-            ->groupBy('imp_exp','who_no','who_name','type_no','type_name')->get()]);
+            ->groupBy('imp_exp','who_no','who_name','type_no','type_name')->orderBy('who_no')->get()]);
 
     }
 }
