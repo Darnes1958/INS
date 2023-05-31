@@ -42,7 +42,10 @@ class KlasaXls implements WithMultipleSheets
 
 
       $sheets[] = new KlasaBuyXls($this->date1, $this->date2);
-      $sheets[] = new KlasaBuSellMakXls($this->date1, $this->date2);
+      $sheets[] = new KlasaSellMakXls($this->date1, $this->date2);
+      $sheets[] = new KlasaSellSalXls($this->date1, $this->date2);
+      $sheets[] = new KlasaImpXls($this->date1, $this->date2);
+      $sheets[] = new KlasaExpXls($this->date1, $this->date2);
 
 
     return $sheets;

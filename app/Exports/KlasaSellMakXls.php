@@ -2,9 +2,8 @@
 
 namespace App\Exports;
 
-use App\Http\Livewire\Buy\BuySelect;
-use App\Models\buy\buys;
 use App\Models\Customers;
+use App\Models\sell\sells;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -18,7 +17,7 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class KlasaBuyXls implements FromCollection, WithHeadings, WithEvents,WithColumnWidths,WithColumnFormatting, WithTitle,WithStyles
+class KlasaSellMakXls implements FromCollection, WithHeadings, WithEvents,WithColumnWidths,WithColumnFormatting, WithTitle,WithStyles
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -37,17 +36,18 @@ class KlasaBuyXls implements FromCollection, WithHeadings, WithEvents,WithColumn
     $this->date2=$date2;
 
 
+
   }
-  public function map($BuyTable): array
+  public function map($SellTableMak): array
   {
     return [
-      $BuyTable->place_name,
-      $BuyTable->type_name,
-      $BuyTable->tot1,
-      $BuyTable->ksm,
-      $BuyTable->tot,
-      $BuyTable->cash,
-      $BuyTable->not_cash,
+      $SellTableMak->place_name,
+      $SellTableMak->type_name,
+      $SellTableMak->tot1,
+      $SellTableMak->ksm,
+      $SellTableMak->tot,
+      $SellTableMak->cash,
+      $SellTableMak->not_cash,
 
     ];
   }
@@ -66,18 +66,18 @@ class KlasaBuyXls implements FromCollection, WithHeadings, WithEvents,WithColumn
     ];
   }
   public function columnWidths(): array
-{
-  return [
-    'A' => 30,
-    'B' => 20,
-    'C' => 16,
-    'D' => 16,
-    'E' => 16,
-    'F' => 16,
-    'G' => 16,
+  {
+    return [
+      'A' => 30,
+      'B' => 20,
+      'C' => 16,
+      'D' => 16,
+      'E' => 16,
+      'F' => 16,
+      'G' => 16,
 
-  ];
-}
+    ];
+  }
   public function registerEvents(): array
   {
     return [
@@ -90,7 +90,8 @@ class KlasaBuyXls implements FromCollection, WithHeadings, WithEvents,WithColumn
           ->getStartColor()
           ->setARGB('E8E1E1');
 
-        $event->sheet->setCellValue('C6', 'خلاصة المشتريات من  '.$this->date1.' إلي '.$this->date2);
+        $event->sheet->setCellValue('C6', 'خلاصة مبيعات المخازن من  '.$this->date1.' إلي '.$this->date2);
+        $event->sheet->getDelegate()->setRightToLeft(true);
         $event->sheet->setCellValue('B'.$this->rowcount+9, 'الإجمالـــــــــي');
         $event->sheet->setCellValue('C'.$this->rowcount+9, $this->tot1);
         $event->sheet->setCellValue('D'.$this->rowcount+9, $this->ksm);
@@ -105,6 +106,7 @@ class KlasaBuyXls implements FromCollection, WithHeadings, WithEvents,WithColumn
           ->getStartColor()
           ->setARGB('E8E1E1');
         $event->sheet->getDelegate()->setRightToLeft(true);
+
       },
     ];
   }
@@ -116,7 +118,6 @@ class KlasaBuyXls implements FromCollection, WithHeadings, WithEvents,WithColumn
       'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
       'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
       'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-
 
     ];
   }
@@ -140,37 +141,38 @@ class KlasaBuyXls implements FromCollection, WithHeadings, WithEvents,WithColumn
       'F'.$this->rowcount+9 => ['numberFormat' => ['formatCode' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1]],
       'G'.$this->rowcount+9 => ['numberFormat' => ['formatCode' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1]],
 
-
-
     ];
 
 
   }
   public function title(): string
   {
-    return 'المشتريات ' ;
+    return 'مبيعات مخازن ' ;
   }
-    public function collection()
+  public function collection()
     {
-      $BuyTable=buys::
-        join('price_type','buys.price_type','=','price_type.type_no')
-        ->join('stores_names','buys.place_no','=','stores_names.st_no')
+      $SellTableMak=DB::connection(Auth()->user()->company)->table('sells')
+        ->join('price_type','sells.price_type','=','price_type.type_no')
+        ->join('stores_names','sells.place_no','=','stores_names.st_no')
+        ->where('sell_type',1)
         ->whereBetween('order_date',[$this->date1,$this->date2])
         ->selectRaw('st_name as place_name,type_name,
                                  sum(tot1) as tot1,sum(ksm) as ksm,sum(tot) as tot,sum(cash) as cash,sum(not_cash) as not_cash')
-        ->groupBy('stores_names.st_no','st_name','type_no','type_name')->orderby('st_no')->get();
-      $tot=buys::
-        whereBetween('order_date',[$this->date1,$this->date2])
+        ->groupBy('stores_names.st_no','st_name','type_no','type_name')
+        ->orderBy('st_no')->get();
+      $tot=sells::
+      whereBetween('order_date',[$this->date1,$this->date2])
+        ->where('sell_type',1)
         ->selectRaw('sum(tot1) as tot1,sum(ksm) as ksm,sum(tot) as tot,sum(cash) as cash,sum(not_cash) as not_cash')
         ->first();
 
-      $this->rowcount=$BuyTable->count();
+      $this->rowcount=$SellTableMak->count();
       $this->tot1=$tot->tot1;
 
       $this->ksm=$tot->ksm;
       $this->tot=$tot->tot;
       $this->cash=$tot->cash;
       $this->not_cash=$tot->not_cash;
-      return $BuyTable;//
+      return $SellTableMak; //
     }
 }

@@ -18,11 +18,11 @@
       <a  href="{{route('pdfklasa',['date1'=>$date1,'date2'=>$date2])}}"
           class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
     </div>
-<!--
+
     <div  class="col-md-2 my-2 ">
      <a  href="{{route('klasaex',['date1'=>$date1,'date2'=>$date2])}}"
         class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-file-excel"> &nbsp;&nbsp;إكسل&nbsp;&nbsp;</i></a>
-    </div> -->
+    </div>
 
 
   </div>
