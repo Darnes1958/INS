@@ -365,11 +365,15 @@ public function FillHead($res){
           ->where('bank',$this->bank)
           ->first();
 
-        if ($result) {
-          $this->FillHead($result);
-
-        }
       }
+      else
+      {
+        $result=DB::connection(Auth()->user()->company)->
+        table('hafitha_view')->where('hafitha_state','=',0)
+          ->where('bank',0)
+          ->first();
+      }
+      $this->FillHead($result);
         return view('livewire.haf.haf-input-header');
     }
 }

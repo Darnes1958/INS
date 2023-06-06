@@ -207,6 +207,9 @@
                         <li><a href="{{route('repamma','mak')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن المخزون</a></li>
                         <li><a href="{{route('repamma','RepStoresTrans')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">الحركة اليومية للمخزون</a></li>
                         <li><a href="{{route('repamma','RepPer')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن اذن صرف</a></li>
+                        <li><a href="{{route('repamma','itemrep')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن صنف</a></li>
+                        <li><a href="{{route('repamma','RepItemTran')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن حركة صنف</a></li>
+                        <li><a href="{{route('repamma','RepItemStoresTran')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0"> تقرير عن حركة  المخزون لصنف</a></li>
 
                     </ul>
                 </div>
@@ -222,8 +225,7 @@
                         <li><a href="{{route('repamma','daily')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">الحركة اليومية</a></li>
 
                        <li><a href="{{route('repamma','RepKlasa')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">خلاصة الحركة اليومية</a></li>
-                       <li><a href="{{route('repamma','itemrep')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن صنف</a></li>
-                       <li><a href="{{route('repamma','RepItemTran')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن حركة صنف</a></li>
+
 
                         @endcan
                         @can('فاتورة مبيعات')
