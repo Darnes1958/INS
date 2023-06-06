@@ -364,6 +364,7 @@ public function FillHead($res){
         table('hafitha_view')->where('hafitha_state','=',0)
           ->where('bank',$this->bank)
           ->first();
+        $this->FillHead($result);
 
       }
       else
@@ -373,7 +374,7 @@ public function FillHead($res){
           ->where('bank',0)
           ->first();
       }
-      $this->FillHead($result);
+
         return view('livewire.haf.haf-input-header');
     }
 }
