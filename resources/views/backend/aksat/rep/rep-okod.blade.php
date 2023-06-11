@@ -81,7 +81,11 @@
           @livewire('aksat.rep.okod.bank-one')
         </div>
       @endif
-
+      @if ($rep=='kaema')
+        <div class=" themed-grid-col px-1">
+          @livewire('aksat.rep.okod.rep-kaema')
+        </div>
+      @endif
     </div>
   </div>
 

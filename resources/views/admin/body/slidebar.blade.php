@@ -194,6 +194,7 @@
                         <li><a href="{{route('rep.okod','ratiosum')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">اجمالي الفروع بالعمولات</a></li>
                        <li><a href="{{route('rep.okod','bankone')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">كشف تقصيلي بالمصرف</a></li>
                        <li><a href="{{route('banksinput','repbankratio')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0"> عمولات المصارف</a></li>
+                        <li><a href="{{route('rep.okod','kaema')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">العقود القائمة بالمصارف</a></li>
                     </ul>
                 </div>
             </li>
