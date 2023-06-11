@@ -54,6 +54,7 @@ Route::controller(ExcelController::class)->group(function (){
   route::get('/impfromsheet/{filename?}/{TajNo?}', 'ImportFromSheet')->name('impfromsheet')->middleware('auth');
   route::get('/impfromsheet2/{filename?}/{TajNo?}', 'ImportFromSheet2')->name('impfromsheet2')->middleware('auth');
   route::get('/impkaema/{filename?}/{TajNo?}', 'ImportKaema')->name('impkaema')->middleware('auth');
+  route::get('/impmahjoza/{filename?}/{TajNo?}', 'ImportMahjoza')->name('impmahjoza')->middleware('auth');
 });
 
 

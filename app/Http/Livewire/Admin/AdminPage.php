@@ -53,6 +53,7 @@ public $ThedatabaseListIsSelectd;
       $this->emitTo('admin.from-excel2','show',false);
       $this->emitTo('admin.rep-log-user','show',False);
       $this->emitTo('admin.kaema','show',false);
+      $this->emitTo('admin.mahjoza','show',false);
   }
   public function InpUser(){
 
@@ -106,7 +107,11 @@ public $ThedatabaseListIsSelectd;
 
     $this->emitTo('admin.kaema','show',True);
   }
+    public function Mahjoza(){
+        $this->FalseAll();
 
+        $this->emitTo('admin.mahjoza','show',True);
+    }
 
 
     public function Clickme(){

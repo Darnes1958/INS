@@ -55,6 +55,9 @@
        <button  wire:click="Kaema" class="col-md-1 mx-1 btn btn-danger fas fa fa-file-excel">
          Kaema
        </button>
+         <button  wire:click="Mahjoza" class="col-md-1 mx-1 btn btn-danger fas fa fa-file-excel">
+             Mahjoza
+         </button>
 
 
 
@@ -68,7 +71,8 @@
      @livewire('admin.manage-roles')
      @livewire('admin.rep-old-roles')
      @livewire('admin.rep-roles')
-      @livewire('admin.kaema')
+     @livewire('admin.kaema')
+     @livewire('admin.mahjoza')
      @livewire('admin.from-excel')
 
      @livewire('admin.to-hafitha')

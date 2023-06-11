@@ -82,7 +82,7 @@
                         <li><a href="{{route('itemprices')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تغيير أسعار لصنف</a></li>
                       @if (Auth()->User()->company=='Bentaher2')
                         <li><a href="{{route('jaradraseed')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تعديل ارصدة بعد الجرد</a></li>
-                       @endif 
+                       @endif
 
                     </ul>
                 </div>
@@ -195,6 +195,7 @@
                        <li><a href="{{route('rep.okod','bankone')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">كشف تقصيلي بالمصرف</a></li>
                        <li><a href="{{route('banksinput','repbankratio')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0"> عمولات المصارف</a></li>
                         <li><a href="{{route('rep.okod','kaema')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">العقود القائمة بالمصارف</a></li>
+                        <li><a href="{{route('rep.okod','mahjoza')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">الأقساط المحجوزة</a></li>
                     </ul>
                 </div>
             </li>
