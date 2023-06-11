@@ -52,6 +52,9 @@
          <a  href="{{route('SeeWelcomePage')}}"
              class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;Welcome Page&nbsp;&nbsp;</i></a>
        </div>
+       <button  wire:click="Kaema" class="col-md-1 mx-1 btn btn-danger fas fa fa-file-excel">
+         Kaema
+       </button>
 
 
 
@@ -65,10 +68,12 @@
      @livewire('admin.manage-roles')
      @livewire('admin.rep-old-roles')
      @livewire('admin.rep-roles')
+      @livewire('admin.kaema')
      @livewire('admin.from-excel')
 
      @livewire('admin.to-hafitha')
      @livewire('admin.from-excel2')
+
     </div>
 
     @push('scripts')

@@ -52,6 +52,7 @@ public $ThedatabaseListIsSelectd;
       $this->emitTo('admin.to-hafitha','show',false);
       $this->emitTo('admin.from-excel2','show',false);
       $this->emitTo('admin.rep-log-user','show',False);
+      $this->emitTo('admin.kaema','show',false);
   }
   public function InpUser(){
 
@@ -100,6 +101,11 @@ public $ThedatabaseListIsSelectd;
 
         $this->emitTo('admin.rep-log-user','show',True);
     }
+  public function Kaema(){
+    $this->FalseAll();
+
+    $this->emitTo('admin.kaema','show',True);
+  }
 
 
 
