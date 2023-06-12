@@ -34,6 +34,7 @@ Auth::routes();
 Route::get('downzip', [ZipController::class, 'build'])->name('downzip');
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::controller(ExController::class)->group(function () {
+    Route::get('bankoneex/{bank}', 'BankoneEx')->name('bankoneex');
     Route::get('mosdadaex/{bank?},{baky?}', 'MosdadaEx')->name('mosdadaex');
     Route::get('khamlaex/{bank?},{months?}', 'KhamlaEx')->name('khamlaex');
     Route::get('repmakex/{place_type?},{place_no?},{withzero?}', 'RepMakEx')->name('repmakex');

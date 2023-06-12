@@ -36,7 +36,7 @@ class TajCompMahjoza extends Component
 
         $this->TajName=$result->TajName;
         $this->emitTo($this->Sender,'TakeTajNo',$this->TajNo);
-       
+
         $this->emitTo('admin.taj-mahjoza-select','TakeTajNo',$this->TajNo);
       } else {$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون');}
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Exls;
 
+use App\Exports\BankoneXls;
 use App\Exports\KhamlaXls;
 use App\Exports\KlasaXls;
 use App\Http\Controllers\Controller;
@@ -14,6 +15,12 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ExController extends Controller
 {
+    public function BankoneEX($bank)
+    {
+
+
+        return Excel::download(new BankoneXls($bank), 'BankOne.xlsx');
+    }
     public function MosdadaEX($bank,$baky)
     {
         return Excel::download(new MosdadaXls($bank,$baky), 'Mosdada.xlsx');
