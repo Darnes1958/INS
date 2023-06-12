@@ -13,6 +13,7 @@ use App\Models\bank\Companies;
 use App\Models\bank\rep_bank;
 use App\Models\bank\rep_banks;
 use App\Models\Customers;
+use App\Models\excel\KaemaModel;
 use App\Models\sell\rep_sell_tran;
 use ArPHP\I18N\Arabic;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -146,6 +147,55 @@ class RepAksatController extends Controller
     $bank_name=bank::find($request->bank_no)->bank_name;
     $reportHtml = view('PrnView.aksat.pdf-bankone',
       ['res'=>$res,'cus'=>$cus,'bank_name'=>$bank_name,'RepDate'=>$RepDate])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('report.pdf');
+
+  }
+  function PdfKaemaNotOur( $TajNo){
+
+    $RepDate=date('Y-m-d');
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+    $ActiveBank = DB::connection(Auth::user()->company)->table('bank')->select('bank_no')->where('bank_tajmeeh', $TajNo);
+    $ActiveAcc = DB::connection(Auth::user()->company)-> table('main')->select('Acc')->whereIn('bank', $ActiveBank);
+    $res=KaemaModel::
+    whereNotIn('acc', $ActiveAcc)
+      ->get();
+    $TajName=BankTajmeehy::where('TajNo',$TajNo)->first()->TajName;
+    $reportHtml = view('PrnView.aksat.pdf-kaemaNotOur',
+      ['res'=>$res,'cus'=>$cus,'TajName'=>$TajName,'RepDate'=>$RepDate])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('report.pdf');
+
+  }
+  function PdfKaemaNotThere( $TajNo){
+
+    $RepDate=date('Y-m-d');
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+    $ActiveBank = DB::connection(Auth::user()->company)->table('bank')->select('bank_no')->where('bank_tajmeeh', $TajNo);
+    $ActiveAcc2 = DB::connection(Auth::user()->company)-> table('Kaema')->select('Acc')->whereIn('bank', $ActiveBank);
+
+    $res=main::
+    whereNotIn('acc', $ActiveAcc2)
+      ->get();
+    $TajName=BankTajmeehy::where('TajNo',$TajNo)->first()->TajName;
+    $reportHtml = view('PrnView.aksat.pdf-kaemaNotOur',
+      ['res'=>$res,'cus'=>$cus,'TajName'=>$TajName,'RepDate'=>$RepDate])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 

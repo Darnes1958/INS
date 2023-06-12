@@ -2,12 +2,14 @@
 
 namespace App\Http\Livewire\Aksat\Rep\Okod;
 
+use App\Http\Livewire\Admin\Mahjoza;
 use App\Models\aksat\chk_tasleem;
 use App\Models\aksat\kst_trans;
 use App\Models\aksat\main;
 use App\Models\aksat\MainArc;
 use App\Models\aksat\place;
 use App\Models\bank\bank;
+use App\Models\excel\MahjozaModel;
 use App\Models\jeha\jeha;
 use App\Models\OverTar\over_kst;
 use App\Models\OverTar\tar_kst;
@@ -52,6 +54,8 @@ class RepMainData extends Component
     public $TarKst=0;
     public $ArcMain=0;
     public $ChkTasleem=0;
+
+    public $aksat_tot=0,$aksat_count=0,$sal_date;
 
     public $HasOver=false;
     public $HasTar=false;
@@ -215,6 +219,16 @@ class RepMainData extends Component
 
     public function render()
     {
+        $res=MahjozaModel::where('no',$this->no)->first();
+        if ($res){
+        $this->aksat_tot=number_format($res->aksat_tot,2, '.', '');
+        $this->aksat_count=$res->aksat_count;
+        $this->sal_date=$res->sal_date;}
+        else {
+          $this->aksat_tot=null;
+          $this->aksat_count=null;
+          $this->sal_date=null;}
+
 
 
         return view('livewire.aksat.rep.okod.rep-main-data',[

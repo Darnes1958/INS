@@ -26,7 +26,7 @@ class Kaema extends Component
   }
   public function Take(){
    KaemaModel::on(Auth()->user()->company)->truncate();
-    $this->filename='c:\Excel\\'.Auth()->user()->company.'.xlsx';
+    $this->filename='c:\Excel\Kaema\\'.Auth()->user()->company.'.xlsx';
 
     $this->ShowDo=true;
 

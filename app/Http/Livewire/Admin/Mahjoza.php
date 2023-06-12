@@ -27,7 +27,7 @@ class Mahjoza extends Component
   }
   public function Take(){
    MahjozaModel::on(Auth()->user()->company)->truncate();
-    $this->filename='c:\Excel\\'.Auth()->user()->company.'.xlsx';
+    $this->filename='c:\Excel\Mahjoza\\'.Auth()->user()->company.'.xlsx';
 
     $this->ShowDo=true;
 

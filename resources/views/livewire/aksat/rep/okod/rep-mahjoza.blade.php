@@ -16,13 +16,13 @@
   <div class="row">
     <div class="col-md-8">
       <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
-        <caption class="caption-top text-center text-warning" >الحجوزات القائمة</caption>
+        <caption class="caption-top text-center text-warning font-size-18" >الحجوزات القائمة</caption>
         <thead class="font-size-12">
         <tr>
           <th width="10%" class="sort  text-primary" wire:click="sortOrder('no')"> رقم العقد {!! $sortLink !!}</th>
           <th width="16%" class="sort  text-primary" wire:click="sortOrder('acc')"> رقم الحساب {!! $sortLink !!}</th>
           <th  class="sort  text-primary" wire:click="sortOrder('name')"> الاسم {!! $sortLink !!}</th>
-          <th width="16%" class="sort  text-primary" wire:click="sortOrder('sul_date')"> تاريخ اخر مرتب {!! $sortLink !!}</th>
+          <th width="16%" class="sort  text-primary" wire:click="sortOrder('sal_date')"> تاريخ اخر مرتب {!! $sortLink !!}</th>
           <th width="12%">الأقساط المحجوزة</th>
           <th width="10%">عددها</th>
         </tr>

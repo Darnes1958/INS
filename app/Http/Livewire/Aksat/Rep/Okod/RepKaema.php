@@ -13,7 +13,7 @@ class RepKaema extends Component
 {
   use WithPagination;
   protected $paginationTheme = 'bootstrap';
-  public $TajNo;
+  public $TajNo=0;
   public $search;
 
   public $orderColumn = "acc";
@@ -67,6 +67,7 @@ class RepKaema extends Component
             ->paginate(15, ['*'], 'NotOurPage'),
           'RepThere'=>main::
           whereNotIn('acc', $ActiveAcc2)
+
             ->where('name', 'like', '%'.$this->search.'%')
 
             ->paginate(15, ['*'], 'NotTherePage'),

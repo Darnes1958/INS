@@ -71,7 +71,7 @@
      <div class="col-md-2">
        <a  href="{{route('pdfmain',$no)}}" class="btn btn-success waves-effect waves-light "><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
      </div>
-     <div class="col-md-7"> </div>
+
      @unlessrole('info')
      @if (\App\Models\LarSetting::first()->ArcBtn=='rep')
       <div class="col-md-3 " >
@@ -79,6 +79,28 @@
       </div>
      @endif
      @endunlessrole
+     <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-4">
+          <label  class="form-label my-0" >أقساط محجوزة</label>
+          <input wire:model="aksat_tot" type="text" class="form-control"   readonly>
+
+        </div>
+        <div class="col-md-3">
+          <label  class="form-label my-0" >عددها</label>
+          <input wire:model="aksat_count" type="text" class="form-control"   readonly>
+
+        </div>
+        <div class="col-md-5">
+          <label  class="form-label my-0" >تاريخ أخر مرتب</label>
+          <input wire:model="sal_date" type="text" class="form-control text-center text-danger"   readonly>
+
+        </div>
+
+      </div>
+
+
+     </div>
    </div>
 
     @livewire('tools.my-table2',
