@@ -65,12 +65,18 @@ class RepKaema extends Component
         return view('livewire.aksat.rep.okod.rep-kaema',[
           'RepTable'=>KaemaModel::
           where('Taj', '=', $this->TajNo)
-          ->where('name', 'like', '%'.$this->search.'%')
+          ->Where(function($query) {
+            $query->where('name', 'like', '%'.$this->search.'%')
+              ->orwhere('acc', 'like', '%'.$this->search.'%');})
+
             ->orderby($this->orderColumn,$this->sortOrder)
             ->paginate(15),
           'RepOur'=>KaemaModel::
             whereNotIn('acc', $ActiveAcc)
-            ->where('name', 'like', '%'.$this->search.'%')
+
+            ->Where(function($query) {
+              $query->where('name', 'like', '%'.$this->search.'%')
+                ->orwhere('acc', 'like', '%'.$this->search.'%');})
             ->when($this->bank_no!=0,function($q){
               return $q->where('bank', '=', $this->bank_no);})
             ->paginate(15, ['*'], 'NotOurPage'),
@@ -79,7 +85,9 @@ class RepKaema extends Component
             ->when($this->bank_no!=0,function($q){
               return $q->where('bank', '=', $this->bank_no);})
 
-            ->where('name', 'like', '%'.$this->search.'%')
+            ->Where(function($query) {
+              $query->where('name', 'like', '%'.$this->search.'%')
+                ->orwhere('acc', 'like', '%'.$this->search.'%');})
 
             ->paginate(15, ['*'], 'NotTherePage'),
 
