@@ -38,6 +38,7 @@ class TajComp extends Component
         $this->emitTo($this->Sender,'TakeTajNo',$this->TajNo);
 
         $this->emitTo('admin.taj-kaema-select','TakeTajNo',$this->TajNo);
+        $this->emitTo('bank.bank-select','TakeTaj',$this->TajNo);
       } else {$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون');}
     }
 

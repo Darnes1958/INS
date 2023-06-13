@@ -133,8 +133,8 @@ Route::controller(RepAksatController::class)->group(function (){
   route::get('/pdftar/{bank_no?}/{tar_date1?}/{tar_date2?}/{bank_name?}/{tar_type?}', 'PdfTar')->name('pdftar') ;
   route::get('/pdfksm/{bank_no?}/{rep_date1?}/{rep_date2?}/{bank_name?}/{RepRadio?}', 'PdfKsm')->name('pdfksm') ;
   route::get('/pdfbankone/{bank_no?}/{column?}/{sort?}', 'PdfBankOne')->name('pdfbankone') ;
-  route::get('/pdfkaemaNotOur/{TajNo}', 'PdfKaemaNotOur')->name('pdfkaemaNotOur') ;
-  route::get('/pdfkaemaNotThere/{TajNo}', 'PdfKaemaNotThere')->name('pdfkaemaNotThere') ;
+  route::get('/pdfkaemaNotOur/{TajNo?}/{bank_no?}', 'PdfKaemaNotOur')->name('pdfkaemaNotOur') ;
+  route::get('/pdfkaemaNotThere/{TajNo?}/{bank_no?}', 'PdfKaemaNotThere')->name('pdfkaemaNotThere') ;
 });
 Route::controller(RepAmaaController::class)->group(function (){
   route::get('/repamma/{rep}', 'RepAmma')->name('repamma')->middleware('auth');

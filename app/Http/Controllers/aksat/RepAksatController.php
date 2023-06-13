@@ -14,6 +14,7 @@ use App\Models\bank\rep_bank;
 use App\Models\bank\rep_banks;
 use App\Models\Customers;
 use App\Models\excel\KaemaModel;
+use App\Models\excel\MahjozaModel;
 use App\Models\sell\rep_sell_tran;
 use ArPHP\I18N\Arabic;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -159,7 +160,7 @@ class RepAksatController extends Controller
     return $pdf->download('report.pdf');
 
   }
-  function PdfKaemaNotOur( $TajNo){
+  function PdfKaemaNotOur( $TajNo,$bank_no){
 
     $RepDate=date('Y-m-d');
     $cus=Customers::where('Company',Auth::user()->company)->first();
@@ -167,10 +168,14 @@ class RepAksatController extends Controller
     $ActiveAcc = DB::connection(Auth::user()->company)-> table('main')->select('Acc')->whereIn('bank', $ActiveBank);
     $res=KaemaModel::
     whereNotIn('acc', $ActiveAcc)
+      ->when($bank_no!=0,function($q) use ($bank_no) {
+        return $q->where('bank', '=', $bank_no);})
       ->get();
     $TajName=BankTajmeehy::where('TajNo',$TajNo)->first()->TajName;
+    if ($bank_no!=0) $bank_name=bank::where('bank_no',$bank_no)->first()->bank_name;
+    else $bank_name=null;
     $reportHtml = view('PrnView.aksat.pdf-kaemaNotOur',
-      ['res'=>$res,'cus'=>$cus,'TajName'=>$TajName,'RepDate'=>$RepDate])->render();
+      ['res'=>$res,'cus'=>$cus,'TajName'=>$TajName,'RepDate'=>$RepDate,'bank_no'=>$bank_no,'bank_name'=>$bank_name])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 
@@ -183,7 +188,7 @@ class RepAksatController extends Controller
     return $pdf->download('report.pdf');
 
   }
-  function PdfKaemaNotThere( $TajNo){
+  function PdfKaemaNotThere( $TajNo,$bank_no){
 
     $RepDate=date('Y-m-d');
     $cus=Customers::where('Company',Auth::user()->company)->first();
@@ -192,10 +197,15 @@ class RepAksatController extends Controller
 
     $res=main::
     whereNotIn('acc', $ActiveAcc2)
+      ->when($bank_no!=0,function($q) use ($bank_no) {
+        return $q->where('bank', '=', $bank_no);})
       ->get();
     $TajName=BankTajmeehy::where('TajNo',$TajNo)->first()->TajName;
+    if ($bank_no!=0) $bank_name=bank::where('bank_no',$bank_no)->first()->bank_name;
+    else $bank_name=null;
+
     $reportHtml = view('PrnView.aksat.pdf-kaemaNotOur',
-      ['res'=>$res,'cus'=>$cus,'TajName'=>$TajName,'RepDate'=>$RepDate])->render();
+      ['res'=>$res,'cus'=>$cus,'TajName'=>$TajName,'RepDate'=>$RepDate,'bank_no'=>$bank_no,'bank_name'=>$bank_name])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 
@@ -414,9 +424,10 @@ class RepAksatController extends Controller
       ->orderBy('ser')
       ->get();
     $res3=rep_sell_tran::where('order_no',$res->order_no)->get();
+    $res4=MahjozaModel::where('no',$no)->first();
 
     $reportHtml = view('PrnView.aksat.Pdf-main',
-      ['res'=>$res,'res2'=>$res2,'res3'=>$res3,'cus'=>$cus])->render();
+      ['res'=>$res,'res2'=>$res2,'res3'=>$res3,'res4'=>$res4,'cus'=>$cus])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 

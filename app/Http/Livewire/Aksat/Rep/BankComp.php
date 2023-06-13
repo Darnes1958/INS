@@ -12,6 +12,7 @@ class BankComp extends Component
   public $bank_no;
   public $bank_name;
   public $Sender;
+  public $Taj;
 
   public $TheBankListIsSelectd;
 
@@ -22,8 +23,9 @@ class BankComp extends Component
 
     $this->ChkBankAndGo();
   }
-  public function mount($sender=null){
+  public function mount($sender=null,$taj=null){
     $this->Sender=$sender;
+    $this->Taj=$taj;
     }
   public function ChkBankAndGo(){
 

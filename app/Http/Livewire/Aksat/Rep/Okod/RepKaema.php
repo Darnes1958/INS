@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Aksat\Rep\Okod;
 
 use App\Models\aksat\main;
+use App\Models\bank\bank;
 use App\Models\excel\KaemaModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +15,8 @@ class RepKaema extends Component
   use WithPagination;
   protected $paginationTheme = 'bootstrap';
   public $TajNo=0;
+  public $bank_no=0;
+  public $bank_name;
   public $search;
 
   public $orderColumn = "acc";
@@ -42,10 +45,15 @@ class RepKaema extends Component
   }
 
   protected $listeners = [
-    'TakeTajNo',
+    'TakeTajNo','TakeBank',
   ];
   public function TakeTajNo($tajno){
     $this->TajNo=$tajno;
+
+  }
+  public function TakeBank($bank_no){
+    $this->bank_no=$bank_no;
+    $this->bank_name=bank::on(Auth()->user()->company)->where('bank_no',$this->bank_no)->first()->bank_name;
 
   }
     public function render()
@@ -63,10 +71,13 @@ class RepKaema extends Component
           'RepOur'=>KaemaModel::
             whereNotIn('acc', $ActiveAcc)
             ->where('name', 'like', '%'.$this->search.'%')
-
+            ->when($this->bank_no!=0,function($q){
+              return $q->where('bank', '=', $this->bank_no);})
             ->paginate(15, ['*'], 'NotOurPage'),
           'RepThere'=>main::
           whereNotIn('acc', $ActiveAcc2)
+            ->when($this->bank_no!=0,function($q){
+              return $q->where('bank', '=', $this->bank_no);})
 
             ->where('name', 'like', '%'.$this->search.'%')
 

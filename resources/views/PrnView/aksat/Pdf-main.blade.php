@@ -16,15 +16,15 @@
                 <td class="order-td" style="width: 15%; text-align: center"> {{$res->sul_date}} </td>
                 <td style="border: none;width: 12%;font-size: 12pt; "> تاريخ العقد </td>
                 <td style="border: none;width: 2%; ">  </td>
-                <td class="order-td" style="width: 35%;"> {{$res->name}} </td>
-                <td style="border: none;width: 12%;font-size: 14pt; "> اسم الزبون </td>
+                <td class="order-td" style="width: 30%;"> {{$res->name}} </td>
+                <td style="border: none;width: 15%;font-size: 14pt; "> اسم الزبون </td>
             </tr>
             <tr style="border: none; line-height: 18px;">
                 <td style="border: none;width: 15%; ">  </td>
                 <td class="order-td" style="width: 15%; text-align: center"> {{$res->acc}} </td>
                 <td style="border: none;width: 12%;font-size: 12pt; "> رقم الحساب </td>
                 <td style="border: none;width: 2%; ">  </td>
-                <td class="order-td" style="width: 35%;"> {{$res->bank_name}} </td>
+                <td class="order-td" style="width: 30%;"> {{$res->bank_name}} </td>
                 <td style="border: none;width: 12%;font-size: 12pt; "> اسم المصرف </td>
             </tr>
         </tbody>
@@ -55,6 +55,18 @@
             <td class="order-td" style="width: 15%;"> {{$res->kst}} </td>
             <td style="border: none;width: 12%;font-size: 12pt; "> القسط </td>
         </tr>
+        @if($res4)
+            <tr style="border: none; line-height: 18px;">
+                <td style="border: none;width: 30%; ">  </td>
+                <td class="order-td" style="width: 15%;text-align: center"> {{$res4->aksat_count}} </td>
+                <td style="border: none;width: 12%;font-size: 12pt; "> عددها </td>
+
+                <td style="border: none;width: 2%; ">  </td>
+                <td class="order-td" style="width: 15%; "> {{$res4->aksat_tot}} </td>
+                <td style="border: none;width: 12%;font-size: 12pt; "> اقساط محجوزة </td>
+
+            </tr>
+        @endif
         </tbody>
 
     </table>

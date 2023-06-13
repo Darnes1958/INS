@@ -13,10 +13,11 @@ class BankSelect extends Component
   public $BankNo;
   public $BankName;
   public $BankList;
+  public $Taj;
 
 
   protected $listeners = [
-    'TakeBankNo',
+    'TakeBankNo','TakeTaj'
   ];
 
   public function TakeBankNo($bankno){
@@ -24,14 +25,26 @@ class BankSelect extends Component
       $this->BankNo = $bankno;
 
   }
+  public function TakeTaj($tajno){
 
+    $this->Taj = $tajno;
+
+  }
+
+  public function mount($taj=null){
+
+    $this->Taj=$taj;
+  }
   public function hydrate(){
     $this->emit('bank-change-event');
   }
     public function render()
     {
 
-      $this->BankList=DB::connection(Auth()->user()->company)->table('bank')->get();
+      $this->BankList=DB::connection(Auth()->user()->company)->table('bank')->
+      when($this->Taj,function($q){
+        return $q->where('bank_tajmeeh', '=', $this->Taj);})
+        ->get();
       return view('livewire.bank.bank-select',$this->BankList);
     }
 }

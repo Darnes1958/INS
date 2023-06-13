@@ -8,7 +8,12 @@
     <label style="font-size: 10pt;">{{$TajName}}</label>
     <label style="font-size: 12pt;margin-right: 12px;" >المصرف التجميعي : </label>
   </div>
-
+  @if($bank_no!=0)
+    <div >
+      <label style="font-size: 10pt;">{{$bank_name}}</label>
+      <label style="font-size: 12pt;margin-right: 12px;" >الفرع : </label>
+    </div>
+  @endif
 
   <table     >
     <caption style="font-size: 12pt; margin: 8px;">{{' كشف بالعقود المدخلة لدينا والغير قائمة بالمصرف  حتي '.$RepDate }} </caption>

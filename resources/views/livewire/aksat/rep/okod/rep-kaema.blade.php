@@ -1,5 +1,8 @@
 <div xdata >
-  <div   class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
+  <div style="border:1px solid lightgray;background: white; " >
+
+
+  <div   class="row gy-1 my-1" >
     <div class="col-md-5">
       @livewire('aksat.rep.taj-comp',
       ['sender' => 'aksat.rep.okod.rep-kaema',])
@@ -20,7 +23,12 @@
 
 
   </div>
+  <div class="col-md-5">
+    @livewire('aksat.rep.bank-comp',
+    ['Sender' => 'aksat.rep.okod.rep-kaema','Taj' => $TajNo,])
+  </div>
 
+  </div>
 
   <div class="row">
     <div class="col-md-6">
@@ -67,7 +75,7 @@
 
           </div>
           <div class="col-md-4">
-            <a href="{{route('pdfkaemaNotOur',['TajNo'=>$TajNo])}}"
+            <a href="{{route('pdfkaemaNotOur',['TajNo'=>$TajNo,'bank_no'=>$bank_no])}}"
               class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
           </div>
 
