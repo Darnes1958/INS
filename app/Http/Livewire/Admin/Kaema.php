@@ -16,7 +16,7 @@ class Kaema extends Component
   public $ShowDo=false;
   public $TajNo=0;
   public $BankRadio='wahda';
-  public $DelRadio='WithDel';
+  public $WithDel=true;
 
 
   protected $listeners = ['show'];
@@ -26,7 +26,7 @@ class Kaema extends Component
     $this->Show=$show;
   }
   public function Take(){
-    if ($this->DelRadio=='WithDel')
+    if ($this->WithDel)
       KaemaModel::on(Auth()->user()->company)->truncate();
     $this->filename='c:\Excel\Kaema\\'.Auth()->user()->company.'.xlsx';
 
