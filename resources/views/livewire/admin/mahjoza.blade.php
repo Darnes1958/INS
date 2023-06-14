@@ -18,11 +18,11 @@
         </div>
         <div class="col-md-3">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" wire:model="DelRadio"  name="inlineRadioOptions" id="inlineRadio1" value="WithDel">
+            <input class="form-check-input" type="radio" wire:model="DelRadio"  name="inlineRadioOptions2" id="inlineRadio3" value="WithDel">
             <label class="form-check-label" for="inlineRadio1">مسح السابق</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" wire:model="DelRadio" name="inlineRadioOptions" id="inlineRadio2" value="NotDel">
+            <input class="form-check-input" type="radio" wire:model="DelRadio" name="inlineRadioOptions2" id="inlineRadio4" value="NotDel">
             <label class="form-check-label" for="inlineRadio2">عدم المسح</label>
           </div>
         </div>
