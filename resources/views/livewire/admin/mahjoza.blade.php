@@ -16,6 +16,16 @@
             <label class="form-check-label" for="inlineRadio2">التجاري</label>
           </div>
         </div>
+        <div class="col-md-3">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" wire:model="DelRadio"  name="inlineRadioOptions" id="inlineRadio1" value="WithDel">
+            <label class="form-check-label" for="inlineRadio1">مسح السابق</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" wire:model="DelRadio" name="inlineRadioOptions" id="inlineRadio2" value="NotDel">
+            <label class="form-check-label" for="inlineRadio2">عدم المسح</label>
+          </div>
+        </div>
         <div class="col-md-2">
           <button  wire:click="Take" class="btn btn-outline-success border-0  ">Prepere</button>
         </div>
