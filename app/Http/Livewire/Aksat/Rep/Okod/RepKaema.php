@@ -72,7 +72,8 @@ class RepKaema extends Component
             ->orderby($this->orderColumn,$this->sortOrder)
             ->paginate(15),
           'RepOur'=>KaemaModel::
-            whereNotIn('acc', $ActiveAcc)
+            where('Taj', '=', $this->TajNo)
+            ->whereNotIn('acc', $ActiveAcc)
 
             ->Where(function($query) {
               $query->where('name', 'like', '%'.$this->search.'%')
@@ -81,7 +82,8 @@ class RepKaema extends Component
               return $q->where('bank', '=', $this->bank_no);})
             ->paginate(15, ['*'], 'NotOurPage'),
           'RepThere'=>main::
-          whereNotIn('acc', $ActiveAcc2)
+          where('Taj', '=', $this->TajNo)
+          ->whereNotIn('acc', $ActiveAcc2)
             ->when($this->bank_no!=0,function($q){
               return $q->where('bank', '=', $this->bank_no);})
 
