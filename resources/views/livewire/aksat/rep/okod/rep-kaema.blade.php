@@ -130,10 +130,11 @@
 
         <thead class="font-size-12">
         <tr>
-          <th width="20%"  > رقم العقد </th>
-          <th width="24%"  >رقم الحساب</th>
+          <th width="14%"  > رقم العقد </th>
+          <th width="20%"  >رقم الحساب</th>
           <th   > الاسم </th>
-          <th width="16%">القسط</th>
+          <th width="16%">تاريخ العقد</th>
+          <th width="14%">القسط</th>
         </tr>
         </thead>
         <tbody id="addRow" class="addRow">
@@ -144,7 +145,7 @@
               <td > {{ $item->no }} </td>
               <td > {{ $item->acc }} </td>
               <td >  {{ $item->name }} </td>
-
+              <td >  {{ $item->sul_date }} </td>
               <td >{{ number_format($item->kst,2, '.', '') }}  </td>
             </tr>
           @endforeach
