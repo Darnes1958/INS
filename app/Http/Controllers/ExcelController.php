@@ -77,15 +77,16 @@ class ExcelController extends Controller
 
 
     if (Auth::user()->company=='BokreahAli') {
-      
+
       if ($TajNo == 3) {
-        DB::connection(Auth()->user()->company)->statement(DB::raw("update Kaema set bankcode='061'  where bankcode is null"));
+        DB::connection(Auth()->user()->company)->statement(DB::raw("update Kaema set bankcode='061',bank=61  where Taj='$TajNo'"));
+
       } else {
-        DB::connection(Auth()->user()->company)->statement(DB::raw("update Kaema set bankcode='069'  where bankcode is null"));
+        DB::connection(Auth()->user()->company)->statement(DB::raw("update Kaema set bankcode='069',bank=69  where Taj='$TajNo'"));
       }
     }
 
-    DB::connection(Auth()->user()->company)->statement( DB::raw("update Kaema set bank=bank_no from bank where bank_tajmeeh='$TajNo' and bankcode=bank_code") );
+  if (Auth::user()->bank!='BokreahAli')  DB::connection(Auth()->user()->company)->statement( DB::raw("update Kaema set bank=bank_no from bank where bank_tajmeeh='$TajNo' and bankcode=bank_code") );
     DB::connection(Auth()->user()->company)->statement( DB::raw("update Kaema set Kaema.no=main.no,MainOrArc=1 from main where main.bank=Kaema.bank and main.acc=kaema.acc") );
     DB::connection(Auth()->user()->company)->statement( DB::raw("update Kaema set Kaema.no=mainarc.no,MainOrArc=2
              from mainarc where  mainarc.bank=Kaema.bank and mainarc.acc=kaema.acc and Kaema.no is null") );

@@ -24,17 +24,7 @@ class KaemaModelImport implements ToModel, WithHeadingRow
       || !isset($row['sul_date'])) {
       return null;
     }
-     if (Auth::user()->company=='BokreahAli')
-    $rec= KaemaModel::on(auth()->user()->company)->create(
-      [
-        'name' => $row['name'],
-        'acc' => $row['acc'],
-        'kst' => $row['kst'],
-        'sul_date' => Date::excelToDateTimeObject($row['sul_date']),
 
-
-      ]
-    );
      else
        $rec= KaemaModel::on(auth()->user()->company)->create(
          [
