@@ -76,11 +76,14 @@ class ExcelController extends Controller
     DB::connection(Auth()->user()->company)->statement( DB::raw("update Kaema set Taj='$TajNo' where Taj is null") );
 
 
-    if (Auth::user()->company=='BokreahAli')
-      if ($TajNo==3)
-        DB::connection(Auth()->user()->company)->statement( DB::raw("update Kaema set bankcode='061'  where bankcode is null") );
-      else
-        DB::connection(Auth()->user()->company)->statement( DB::raw("update Kaema set bankcode='069'  where bankcode is null") );
+    if (Auth::user()->company=='BokreahAli') {
+      DB::connection(Auth()->user()->company)->statement(DB::raw("update Kaema set bankcode=null  "));
+      if ($TajNo == 3) {
+        DB::connection(Auth()->user()->company)->statement(DB::raw("update Kaema set bankcode='061'  where bankcode is null"));
+      } else {
+        DB::connection(Auth()->user()->company)->statement(DB::raw("update Kaema set bankcode='069'  where bankcode is null"));
+      }
+    }
 
     DB::connection(Auth()->user()->company)->statement( DB::raw("update Kaema set bank=bank_no from bank where bank_tajmeeh='$TajNo' and bankcode=bank_code") );
     DB::connection(Auth()->user()->company)->statement( DB::raw("update Kaema set Kaema.no=main.no,MainOrArc=1 from main where main.bank=Kaema.bank and main.acc=kaema.acc") );
