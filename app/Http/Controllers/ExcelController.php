@@ -47,7 +47,7 @@ class ExcelController extends Controller
         else
             Excel::import(new MahjozaModelImport2(), $filename);
         MahjozaModel::on(Auth()->user()->company)->update(['Taj'=>$TajNo,])
-        ->where('Taj',null);
+        ->where('Taj','=',null);
       if (Auth::user()->company=='BokrahAli')
         if ($TajNo==3)
          DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set bankcode='061' where bankcode is null") );
@@ -71,7 +71,7 @@ class ExcelController extends Controller
     else
       Excel::import(new KaemaModel2(), $filename);
     KaemaModel::on(Auth()->user()->company)->update(['Taj'=>$TajNo,])
-      ->where('Taj',null);
+      ->where('Taj','=',null);
 
     if (Auth::user()->company=='BokrahAli')
       if ($TajNo==3)
