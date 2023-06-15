@@ -46,14 +46,13 @@ class ExcelController extends Controller
             Excel::import(new MahjozaModelImport(), $filename);
         else
             Excel::import(new MahjozaModelImport2(), $filename);
-        MahjozaModel::on(Auth()->user()->company)->update([
-            'Taj'=>$TajNo,
-        ]);
+        MahjozaModel::on(Auth()->user()->company)->update(['Taj'=>$TajNo,])
+        ->where('Taj',null);
       if (Auth::user()->company=='BokrahAli')
         if ($TajNo==3)
-         DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set bankcode='061' ") );
+         DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set bankcode='061' where bankcode is null") );
         else
-         DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set bankcode='069' ") );
+         DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set bankcode='069'  where bankcode is null") );
       else
         DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set bankcode=substring(acc,1,3) ") );
       DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set bank=bank_no from bank where bank_tajmeeh='$TajNo' and bankcode=bank_code") );
@@ -71,15 +70,14 @@ class ExcelController extends Controller
       Excel::import(new KaemaModelImport(), $filename);
     else
       Excel::import(new KaemaModel2(), $filename);
-    KaemaModel::on(Auth()->user()->company)->update([
-      'Taj'=>$TajNo,
-    ]);
+    KaemaModel::on(Auth()->user()->company)->update(['Taj'=>$TajNo,])
+      ->where('Taj',null);
 
     if (Auth::user()->company=='BokrahAli')
       if ($TajNo==3)
-        DB::connection(Auth()->user()->company)->statement( DB::raw("update Kaema set bankcode='061' ") );
+        DB::connection(Auth()->user()->company)->statement( DB::raw("update Kaema set bankcode='061'  where bankcode is null") );
       else
-        DB::connection(Auth()->user()->company)->statement( DB::raw("update Kaema set bankcode='069' ") );
+        DB::connection(Auth()->user()->company)->statement( DB::raw("update Kaema set bankcode='069'  where bankcode is null") );
 
     DB::connection(Auth()->user()->company)->statement( DB::raw("update Kaema set bank=bank_no from bank where bank_tajmeeh='$TajNo' and bankcode=bank_code") );
     DB::connection(Auth()->user()->company)->statement( DB::raw("update Kaema set Kaema.no=main.no,MainOrArc=1 from main where main.bank=Kaema.bank and main.acc=kaema.acc") );
