@@ -77,7 +77,7 @@ class ExcelController extends Controller
 
 
     if (Auth::user()->company=='BokreahAli') {
-      DB::connection(Auth()->user()->company)->statement(DB::raw("update Kaema set bankcode=null  "));
+      
       if ($TajNo == 3) {
         DB::connection(Auth()->user()->company)->statement(DB::raw("update Kaema set bankcode='061'  where bankcode is null"));
       } else {
