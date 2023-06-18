@@ -26,6 +26,15 @@
           </div>
 
         </div>
+          <div class="col-md-2 ">
+
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input"   type="checkbox" wire:model="TypeChk"  >
+                      <label class="form-check-me " style="font-size: 9pt;">تصنيف معين</label>
+                  </div>
+
+
+          </div>
         <div x-show="$wire.PlaceChk && ! $wire.TotChk" class="col-md-3 ">
 
           <input  wire:model="place_no"  wire:keydown.enter="ChkPlaceAndGo" type="number" class=" form-control "
@@ -43,6 +52,18 @@
                 <label class="form-check-label" >صالة</label>
             </div>
         </div>
+
+          <div x-show="$wire.TypeChk " class="col-md-3 ">
+
+              <input  wire:model="type_no"  wire:keydown.enter="ChkTypeAndGo" type="number" class=" form-control "
+                      id="type_no"   autofocus >
+
+          </div>
+          <div  x-show="$wire.TypeChk " class="col-md-3" >
+
+              @livewire('stores.item-type-select')
+
+          </div>
         <div class="col-md-3 d-flex">
           @if(! $TotChk)
           @can('سعر الشراء')
@@ -178,6 +199,22 @@
       });
       window.livewire.on('place1-change-event',()=>{
           $('#Place_L1').select2({
+              closeOnSelect: true
+          });
+      });
+      $(document).ready(function ()
+      {
+          $('#Type_L').select2({
+              closeOnSelect: true
+          });
+          $('#Type_L').on('change', function (e) {
+              var data = $('#Type_L').select2("val");
+          @this.set('type_no', data);
+          @this.set('TheTypeListIsSelected', 1);
+          });
+      });
+      window.livewire.on('itemtype-change-event',()=>{
+          $('#Type_L').select2({
               closeOnSelect: true
           });
       });

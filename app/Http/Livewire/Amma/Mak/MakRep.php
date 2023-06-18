@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Amma\Mak;
 
 use App\Models\stores\halls_names;
+use App\Models\stores\item_type;
 use App\Models\stores\stores_names;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -19,14 +20,19 @@ class MakRep extends Component
   public $RepChk=true;
   public $withzero=1;
 
+    public $type_no=0;
+    public $type_name;
   public $place_no=0;
+
   public $place_name;
   public $place_type=0;
   public $Table='Makazen';
   public $PlaceChk=false;
+  public $TypeChk=false;
   public $TotChk=false;
   public $PlaceGeted=false;
   public $ThePlaceListIsSelected;
+    public $TheTypeListIsSelected;
 
   public $orderColumn = "item_no";
   public $sortOrder = "asc";
@@ -51,6 +57,10 @@ class MakRep extends Component
     $this->ThePlaceListIsSelected=0;
     $this->ChkPlaceAndGo();
   }
+    public function updatedTheTypeListIsSelected(){
+        $this->TheTypeListIsSelected=0;
+        $this->ChkTypeAndGo();
+    }
   public function ChkPlaceAndGo(){
 
 
@@ -70,6 +80,17 @@ class MakRep extends Component
       } else $this->dispatchBrowserEvent('mmsg','هذا الرقم غير مخزون');
     }
   }
+    public function ChkTypeAndGo(){
+
+        if ($this->type_no!=null) {
+                $result =item_type::on(Auth()->user()->company)->where('type_no',$this->type_no)->first();
+            if ($result) {
+              $this->type_name=$result->type_name;
+
+            } else $this->dispatchBrowserEvent('mmsg','هذا الرقم غير مخزون');
+        }
+    }
+
   public function updatingSearch()
   {
     $this->resetPage();
@@ -106,6 +127,8 @@ class MakRep extends Component
               return $q->where('raseed','!=', 0) ;     })
             ->when( ! $this->RepChk,function ($q) {
               return $q->where('place_ras','!=', 0) ;     })
+            ->when(  $this->TypeChk,function ($q) {
+                  return $q->where('item_type',$this->type_no) ;     })
             ->where('item_name', 'like', '%'.$this->search.'%' )
             ->orderBy('item_type','asc')
             ->orderby($this->orderColumn,$this->sortOrder)
