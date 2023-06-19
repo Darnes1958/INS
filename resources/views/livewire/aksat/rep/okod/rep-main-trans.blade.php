@@ -2,8 +2,8 @@
 <div class=" gy-1 my-1" style="border:1px solid lightgray;background: white;">
    @livewire('tools.my-table',
     ['TableName' => $post,
-    'ColNames' =>['ser','kst_date','ksm_date','kst','ksm'],
-    'ColHeader' =>['ت','ت . الاستحقاق','ت . الخصم','القسط','الخصم'],
+    'ColNames' =>['ser','kst_date','ksm_date','kst','ksm','ksm_type_name'],
+    'ColHeader' =>['ت','ت . الاستحقاق','ت . الخصم','القسط','الخصم','طريقة الدفع'],
     'pagno'=>15,
     'haswhereequel' => true,
     'whereequelfield' => 'no',

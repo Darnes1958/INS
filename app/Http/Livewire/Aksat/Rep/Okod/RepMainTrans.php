@@ -6,7 +6,7 @@ use Livewire\Component;
 
 class RepMainTrans extends Component
 {
-    public $post='kst_trans';
+    public $post='kst_tran_view';
     public $no;
 
     protected $listeners = [
