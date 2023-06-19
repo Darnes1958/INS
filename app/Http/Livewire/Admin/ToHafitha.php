@@ -33,10 +33,10 @@ class ToHafitha extends Component
         if (Auth::user()->company=='BokreahAli')
         {
           if ($this->TajNo==3)
-            $bank_no='061';
+            $bank_no='61';
 
           else
-            $bank_no='069';
+            $bank_no='95';
 
         }
         else {
