@@ -30,18 +30,29 @@ class ToHafitha extends Component
       foreach ($FromExcel as $item) {
           $acc=$item->acc;
           $bankcode=Str::substr($acc, 0, 3);
-          if ( bank::on(Auth()->user()->company)
-               ->where('bank_tajmeeh',$this->TajNo)
-               ->where('bank_code',$bankcode)
-               ->exists() )
-              $bank_no=bank::on(Auth()->user()->company)
-                  ->where('bank_tajmeeh',$this->TajNo)
-                  ->where('bank_code',$bankcode)
-                  ->first()->bank_no;
-          else  {
-              $this->dispatchBrowserEvent('mmsg', 'كود المصرف '.$bankcode.' غير موجود ');
-              return false;
+        if (Auth::user()->company=='BokreahAli')
+        {
+          if ($this->TajNo==3)
+            $bank_no='061';
+
+          else
+            $bank_no='069';
+
+        }
+        else {
+          if (bank::on(Auth()->user()->company)
+            ->where('bank_tajmeeh', $this->TajNo)
+            ->where('bank_code', $bankcode)
+            ->exists()) {
+            $bank_no = bank::on(Auth()->user()->company)
+              ->where('bank_tajmeeh', $this->TajNo)
+              ->where('bank_code', $bankcode)
+              ->first()->bank_no;
+          } else {
+            $this->dispatchBrowserEvent('mmsg', 'كود المصرف '.$bankcode.' غير موجود ');
+            return false;
           };
+        }
 
           $no=main::on(Auth()->user()->company)
               ->where('bank',$bank_no)

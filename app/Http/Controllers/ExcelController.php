@@ -54,7 +54,8 @@ class ExcelController extends Controller
         if ($TajNo==3)
          DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set bankcode='061' where bankcode is null") );
         else
-         DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set bankcode='069'  where bankcode is null") );}
+         DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set bankcode='069'  where bankcode is null") );
+      }
       else
         DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set bankcode=substring(acc,1,3) ") );
       DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set bank=bank_no from bank where bank_tajmeeh='$TajNo' and bankcode=bank_code") );
