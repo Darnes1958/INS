@@ -33,10 +33,8 @@ class TajComp extends Component
     if ($this->TajNo!=null) {
       $result = BankTajmeehy::on(Auth()->user()->company)->where('TajNo',$this->TajNo)->first();
       if ($result) {
-
         $this->TajName=$result->TajName;
         $this->emitTo($this->Sender,'TakeTajNo',$this->TajNo);
-
         $this->emitTo('admin.taj-kaema-select','TakeTajNo',$this->TajNo);
         $this->emitTo('bank.bank-select','TakeTaj',$this->TajNo);
       } else {$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون');}

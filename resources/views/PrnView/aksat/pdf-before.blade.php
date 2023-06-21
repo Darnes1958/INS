@@ -4,11 +4,17 @@
 
   <div  >
 
+    @if($ByTajmeehy=='bank')
     <div >
       <label style="font-size: 10pt;">{{$bank_name}}</label>
       <label style="font-size: 12pt;margin-right: 12px;" >المصرف : </label>
     </div>
-
+    @else
+      <div >
+        <label style="font-size: 10pt;">{{$TajName}}</label>
+        <label style="font-size: 12pt;margin-right: 12px;" >المصرف التجميعي: </label>
+      </div>
+    @endif
 
     <table  width="100%"   align="right" >
       @if($Not_pay)

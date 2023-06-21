@@ -65,23 +65,30 @@ class RepAksatController extends Controller
       ->join('late','main.no','=','late.no')
       ->selectRaw('acc,name,sul_date,sul,kst_count,sul_pay,raseed,main.kst,main.no,round((sul_pay/kst),0) pay_count,late,
                                late*main.kst kst_late')
+      ->when($request->ByTajmeehy=='Bank',function ($q){
+        return $q->where('bank',\request()->bank_no);
+      })
+      ->when($request->ByTajmeehy=='Taj',function ($q){
+        return $q->whereIn('bank', function($q){
+          $q->select('bank_no')->from('bank')->where('bank_tajmeeh',\request()->TajNo);});
+      })
 
       ->when($request->Not_pay,function($q){
         return $q->where([
-          ['bank', '=', \request()->bank_no],
+
           ['sul_pay',0],
           ['late', '>', 0],
           ['kst','!=',0],]);})
       ->when( ! $request->Not_pay,function ($q) {
         return $q->where([
-          ['bank', '=', \request()->bank_no],
+
           ['late', '>', 0],
           ['kst','!=',0],]);})
       ->get(15);
 
 
     $reportHtml = view('PrnView.aksat.pdf-before',
-      ['res'=>$RepTable,'cus'=>$cus,'bank_name'=>$request->bank_name,'month'=>$request->month,'RepDate'=>$RepDate,'Not_pay'=>$request->Not_pay])->render();
+      ['res'=>$RepTable,'cus'=>$cus,'bank_name'=>$request->bank_name,'TajName'=>$request->TajName,'ByTajmeehy'=>$request->ByTajmeehy,'month'=>$request->month,'RepDate'=>$RepDate,'Not_pay'=>$request->Not_pay])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 
