@@ -19,37 +19,43 @@
     </div>
 
     <div  class="col-md-2 ">
-      <a  href="{{route('pdfitemtran',['item_no'=>$item_no,'item_name'=>$item_name,'tran_date'=>$tran_date])}}"
+      <a  href="{{route('pdfitemksmtran',['item_no'=>$item_no,'item_name'=>$item_name,'tran_date'=>$tran_date])}}"
           class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
     </div>
   </div>
 
-  <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
+  <table style="width:80%" class="table table-sm table-bordered table-striped table-light  "   >
     <thead class="font-size-12">
     <tr>
       <th style="width: 12%">رقم العقد</th>
       <th style="width: 12%">رقم الحساب</th>
-      <th style="width: 12%">التاريخ</th>
       <th >الإسم</th>
+      <th style="width: 12%">التاريخ</th>
       <th style="width: 10%">القسط</th>
-      <th style="width: 12%">السعر</th>
-      <th style="width: 12%">المجموع</th>
-      <th style="width: 12%">طريقة الدفع</th>
+      <th style="width: 10%">البيان</th>
     </tr>
     </thead>
     <tbody id="addRow" class="addRow">
     @foreach($RepTable as $key=> $item)
       <tr class="font-size-12">
-        <td> {{ $item->order_type }} </td>
-        <td> {{ $item->order_no }} </td>
-        <td> {{ $item->order_date }} </td>
-        <td> {{ $item->jeha_name }} </td>
-        <td> {{ $item->quant }} </td>
-        <td> {{ $item->price }} </td>
-        <td> {{ $item->sub_tot }} </td>
-        <td> {{ $item->type_name }} </td>
+        <td> {{ $item->no }} </td>
+        <td> {{ $item->acc }} </td>
+        <td> {{ $item->name }} </td>
+        <td> {{ $item->ksm_date }} </td>
+        <td> {{ $item->ksm }} </td>
+        <td> {{ $item->MainOrArc }} </td>
       </tr>
+
     @endforeach
+    <tr class="font-size-12 ">
+      <td>  </td>
+      <td>  </td>
+      <td>  </td>
+
+      <td style="font-weight: bold"> الإجمالي </td>
+      <td style="font-weight: bold"> {{ number_format($SumKsm,2, '.', ',') }} </td>
+      <td>  </td>
+    </tr>
     </tbody>
   </table>
   {{ $RepTable->links('custom-pagination-links-view') }}

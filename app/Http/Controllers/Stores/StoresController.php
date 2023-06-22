@@ -62,6 +62,46 @@ class StoresController extends Controller
     $pdf = PDF::loadHTML($reportHtml);
     return $pdf->download('report.pdf');
   }
+  function PdfItemKsmTran(Request $request){
+    $RepDate=date('Y-m-d');
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+
+    $first=DB::connection(Auth()->user()->company)->table('main')
+      ->join('kst_trans','main.no','=','kst_trans.no')
+      ->join('sell_tran','main.order_no','=','sell_tran.order_no')
+      ->selectRaw('main.no,acc,name,ksm_date,ksm,\'قائم\'as MainOrArc' )
+      ->where('item_no',$request->item_no)
+      ->where('ksm_date','>=',$request->tran_date)
+      ->where('kst_trans.ksm','!=',null)
+      ->where('kst_trans.ksm','!=',0);
+
+    $second=DB::connection(Auth()->user()->company)->table('mainarc')
+      ->join('transarc','mainarc.no','=','transarc.no')
+      ->join('sell_tran','mainarc.order_no','=','sell_tran.order_no')
+      ->selectRaw('mainarc.no,acc,name,ksm_date,ksm,\'أرشيف\'as MainOrArc')
+      ->where('item_no',$request->item_no)
+      ->where('ksm_date','>=',$request->tran_date)
+      ->where('transarc.ksm','!=',null)
+      ->where('transarc.ksm','!=',0)
+      ->unionAll($first)
+      ->orderBy('ksm_date')
+      ->get();
+    $res=$second;
+    $SumKsm=$second->sum('ksm');
+
+
+    $reportHtml = view('PrnView.amma.pdf-item-ksm-tran',
+      ['RepTable'=>$res,'cus'=>$cus,'item_name'=>$request->item_name,'tran_date'=>$request->tran_date,'SumKsm'=>$SumKsm])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('report.pdf');
+  }
   function RepMakPdf(Request $request){
 
     $RepDate=date('Y-m-d');

@@ -212,6 +212,7 @@
                         <li><a href="{{route('repamma','itemrep')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن صنف</a></li>
                         <li><a href="{{route('repamma','RepItemTran')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن حركة صنف</a></li>
                         <li><a href="{{route('repamma','RepItemStoresTran')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0"> تقرير عن حركة  المخزون لصنف</a></li>
+                        <li><a href="{{route('repamma','RepItemKsmTran')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0"> تقرير عن حركة  الأقساط لصنف</a></li>
 
                     </ul>
                 </div>

@@ -25,6 +25,11 @@
         @livewire('stores.rep-item-stores-tran')
       </div>
     @endif
+    @if ($rep=='RepItemKsmTran')
+      <div class=" themed-grid-col px-1">
+        @livewire('stores.rep-item-ksm-tran')
+      </div>
+    @endif
     @if ($rep=='RepKlasa')
       <div class=" themed-grid-col px-1">
         @livewire('amma.klasa')
