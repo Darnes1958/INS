@@ -32,7 +32,9 @@
       <th style="width: 12%">التاريخ</th>
       <th >الإسم</th>
       <th style="width: 10%">القسط</th>
+      @can('سعر الشراء')
       <th style="width: 12%">السعر</th>
+      @endcan
       <th style="width: 12%">المجموع</th>
       <th style="width: 12%">طريقة الدفع</th>
     </tr>
@@ -45,7 +47,9 @@
         <td> {{ $item->order_date }} </td>
         <td> {{ $item->jeha_name }} </td>
         <td> {{ $item->quant }} </td>
+        @can('سعر الشراء')
         <td> {{ $item->price }} </td>
+        @endcan
         <td> {{ $item->sub_tot }} </td>
         <td> {{ $item->type_name }} </td>
       </tr>
