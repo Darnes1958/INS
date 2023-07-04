@@ -31,7 +31,7 @@ class FromExcel extends Component
   }
   public function Take(){
       FromExcelModel::on(Auth()->user()->company)->truncate();
-      $this->filename='c:\Excel\\'.Auth()->user()->company.'.xlsx';
+      $this->filename='c:\Excel\\'.$this->BankRadio.'\\'.Auth()->user()->company.'.xlsx';
 
       $this->ShowDo=true;
 
