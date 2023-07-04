@@ -7,10 +7,12 @@ use App\Models\OverTar\stop_kst;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class InpStop2 extends Component
 {
-
+  use WithPagination;
+  protected $paginationTheme = 'bootstrap';
 
    public $OpenDetail=false;
    public $bankno;

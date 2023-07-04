@@ -102,7 +102,7 @@ public function SaveStops(){
              ->whereNotIn('no',$stoplist)
 
              ->orderBy('no','asc')
-             ->paginate(15)
+             ->paginate(15),
     ]);
 
     }
