@@ -54,7 +54,9 @@ class EditMainData extends Component
   public $BankGet=false;
   public $EditMe;
   public $DeleteMe;
+  public $DeleteMeAfter;
   public $DeleteBtn=false;
+  public $DeleteAfterBtn=false;
 
   public $TheBankNoListIsSelectd;
   public $ThePlaceNoListIsSelectd;
@@ -85,7 +87,8 @@ class EditMainData extends Component
     $this->place=$res['place'];
 
     if ($this->EditMe) $this->OrderGet=true;
-    else {$this->OrderGet=false;$this->DeleteBtn=true;}
+    if ($this->DeleteMe) {$this->OrderGet=false;$this->DeleteBtn=true;}
+    if ($this->DeleteMeAfter) {$this->OrderGet=false;$this->DeleteAfterBtn=True;}
     $this->OrderShow=true;
 
 
@@ -217,6 +220,57 @@ class EditMainData extends Component
       $this->kstcount='';$this->notes='';$this->ref_no='';$this->chk_in='';
       $this->OrderGet=false;
       $this->DeleteBtn=false;
+      $this->OrderShow=false;
+
+      $this->emit('OpenTable');
+
+    } catch (\Exception $e) {
+      DB::connection(Auth()->user()->company)->rollback();
+
+      $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
+    }
+  }
+  public function DeleteContAfter(){
+    $this->validate();
+
+    DB::connection('other')->beginTransaction();
+    try {
+      tar_kst::on(Auth()->user()->company)->where('no',$this->no)->delete();
+      over_kst::on(Auth()->user()->company)->where('no',$this->no)->delete();
+      stop_kst::on(Auth()->user()->company)->where('no',$this->no)->delete();
+      tar_kst_before::on(Auth()->user()->company)->where('no',$this->no)->delete();
+
+      $select = main::where('no',$this->no)->select('no','name','bank','acc','sul_date','sul_type','sul_tot','dofa','sul',
+        'kst','kst_count','sul_pay','raseed','order_no','jeha','place','notes','chk_in','chk_out','last_order','ref_no','emp','inp_date');
+      $bindings = $select->getBindings();
+      $insertQuery = 'INSERT into main_deleted (no,name,bank,acc,sul_date,sul_type,sul_tot,dofa,sul,kst,kst_count,sul_pay,raseed,order_no,
+                                               jeha,place,notes,chk_in,chk_out,last_order,ref_no,emp,inp_date) '. $select->toSql();
+      DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
+
+      $select = kst_trans::on(Auth()->user()->company)->where('no',$this->no)->select('ser','no','kst_date','ksm_type','chk_no','kst','ksm_date','ksm','h_no','emp','kst_notes','inp_date');
+      $bindings = $select->getBindings();
+      $insertQuery = 'INSERT into kst_trans_deleted (ser,no,kst_date,ksm_type,chk_no,kst,ksm_date,ksm,h_no,emp,kst_notes,inp_date) '. $select->toSql();
+      DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
+
+      $select = main_items::where('no',$this->no)->select('no','item_no');
+      $bindings = $select->getBindings();
+      $insertQuery = 'INSERT into main_items_deleted (no,item_no) '. $select->toSql();
+      DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
+
+      main_items::where('no',$this->no)->delete();
+      kst_trans::on(Auth()->user()->company)->where('no',$this->no)->delete();
+      main::on(Auth()->user()->company)->where('no',$this->no)->delete();
+
+      Operations::insert(['Proce'=>'عقد','Oper'=>'الغاء بعد التعاقد','no'=>$this->no,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
+
+      DB::connection(Auth()->user()->company)->commit();
+      $this->no=''; $this->orderno='';$this->name='';$this->bankno='';$this->acc='';$this->place='';
+      $this->sul='';$this->sul_tot='';$this->dofa='';$this->kst='';
+      $this->kstcount='';$this->notes='';$this->ref_no='';$this->chk_in='';
+      $this->OrderGet=false;
+      $this->DeleteBtn=false;
+      $this->DeleteAfterBtn=false;
+      $this->OrderShow=false;
 
       $this->emit('OpenTable');
 
@@ -227,9 +281,10 @@ class EditMainData extends Component
     }
   }
 
-    public function mount($edit,$del){
+    public function mount($edit,$del,$del_after){
      $this->EditMe=$edit;
      $this->DeleteMe=$del;
+     $this->DeleteMeAfter=$del_after;
 
     }
     public function render()

@@ -114,7 +114,13 @@ class HafInputHeader extends Component
         {
           $wrong=DB::connection(Auth()->user()->company)->table('wrong_kst')->max('wrong_no')+1;
           DB::connection(Auth()->user()->company)->table('wrong_kst')->insert([
-            'wrong_no'=>$no,'name'=>$name,'bank'=>$bank,'acc'=>$acc,'kst'=>$kst,'tar_date'=>$ksm_date,'morahel'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
+            'wrong_no'=>$wrong,'name'=>$name,'bank'=>$bank,'acc'=>$acc,'kst'=>$kst,'tar_date'=>$ksm_date,'morahel'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
+        }
+        if ($item->kst_type==6)
+        {
+          $wrong_after=DB::connection(Auth()->user()->company)->table('wrong_kst')->max('wrong_no')+1;
+          DB::connection(Auth()->user()->company)->table('wrong_kst')->insert([
+           'no'=>$no, 'wrong_no'=>$wrong_after,'name'=>$name,'bank'=>$bank,'acc'=>$acc,'kst'=>$kst,'tar_date'=>$ksm_date,'morahel'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
         }
         $this->HafProgress++;
 
@@ -342,7 +348,7 @@ public function FillHead($res){
   $this->hafitha=$res->hafitha_no;
   $this->hafitha_date=$res->hafitha_date;
   $this->hafitha_tot=number_format($res->hafitha_tot,2, '.', '');
-  $this->hafitha_enter=number_format($res->kst_morahel+$res->kst_half_over+$res->kst_over+$res->kst_wrong,2, '.', '');
+  $this->hafitha_enter=number_format($res->kst_morahel+$res->kst_half_over+$res->kst_over+$res->kst_wrong+$res->kst_wrong_after,2, '.', '');
   $this->hafitha_differ=number_format($this->hafitha_tot-$this->hafitha_enter,2, '.', '');
 
   $this->HafHeadDetail=DB::connection(Auth()->user()->company)

@@ -7,6 +7,7 @@ namespace App\Http\Livewire\Haf;
 use App\Models\aksat\main;
 use App\Models\aksat\hafitha;
 use App\Models\aksat\hafitha_tran;
+use App\Models\aksat\main_deleted;
 use App\Models\aksat\MainArc;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -167,9 +168,19 @@ class HafInputDetail extends Component
               $this->no=$res->no;
               $this->ChkNoAndGo();
           } else {
-              $this->emit('ParamToWrong', $this->hafitha, $this->acc, $this->ksm_date);
-              $this->dispatchBrowserEvent('kstwrong');
+              $res=main_deleted::where('bank',$this->bank)->where('acc',$this->acc)->first();
+              if ($res) {
+                session()->flash('message', 'عقد ملغي');
+                $this->emit('ParamToWrong', $this->hafitha, $this->acc, $this->ksm_date, $res->no, $res->name,$res->kst);
+                $this->OpenWrongAfter();
+              }
+              else {
+                $this->emit('ParamToWrong', $this->hafitha, $this->acc, $this->ksm_date);
+                $this->dispatchBrowserEvent('kstwrong');
+              }
           }
+
+
       }
 
     }
@@ -226,13 +237,17 @@ class HafInputDetail extends Component
         $sumover1=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',2)->sum('kst');
         $sumover2=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',5)->sum('kst');
         $sumover3=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',3)->sum('baky');
+        $sumwrong=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',4)->sum('kst');
+        $sumwrong_after=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',6)->sum('kst');
+        if ($sumwrong==null) {$sumwrong=0;}
+        if ($sumwrong_after==null) {$sumwrong_after=0;}
         if ($sumover1==null) {$sumover1=0;}
         if ($sumover2==null) {$sumover2=0;}
         if ($sumover3==null) {$sumover3=0;}
         $sumover=$sumover1+$sumover2+$sumover3;
         $sumhalfover=hafitha_tran::where('hafitha',$this->hafitha)->where('kst_type',3)->sum('kst');
          DB::connection(Auth()->user()->company)->table('hafitha')->where('hafitha_no',$this->hafitha)->update([
-           'kst_morahel'=>$summorahel,'kst_over'=>$sumover,'kst_half_over'=>$sumhalfover,
+           'kst_morahel'=>$summorahel,'kst_over'=>$sumover,'kst_half_over'=>$sumhalfover,'kst_wrong'=>$sumwrong,'kst_wrong_after'=>$sumwrong_after,
          ]);
 
        DB::connection(Auth()->user()->company)->commit();
@@ -253,6 +268,10 @@ info($e);
   }
   public function OpenWrong(){
     $this->emit('ParamToWrong',$this->hafitha,$this->acc,$this->ksm_date);
+    $this->dispatchBrowserEvent('OpenWrongModal');
+  }
+  public function OpenWrongAfter(){
+
     $this->dispatchBrowserEvent('OpenWrongModal');
   }
   public function CloseWrong(){

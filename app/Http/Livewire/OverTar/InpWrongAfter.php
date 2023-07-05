@@ -2,13 +2,12 @@
 
 namespace App\Http\Livewire\OverTar;
 
-use App\Models\aksat\main_deleted;
 use App\Models\bank\bank;
 use App\Models\OverTar\wrong_Kst;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class InpWrong extends Component
+class InpWrongAfter extends Component
 {
   public $bankno;
   public $tar_date;
@@ -16,7 +15,6 @@ class InpWrong extends Component
   public $kst;
   public $acc;
   public $name;
-  public $no=null;
   public $BankGet=false;
   public $TheBankListIsSelectd;
 
@@ -37,19 +35,6 @@ class InpWrong extends Component
         $this->emit('goto','acc');
       }}
   }
-  public function ChkAcc(){
-
-    if ( $this->acc!=null) {
-      $result = main_deleted::where('bank',$this->bankno)->where('acc',$this->acc)->first();
-      if ($result) {
-        $this->name=$result->name;
-        $this->no=$result->no;
-        $this->kst=$result->kst;
-        session()->flash('message', 'عقد ملغي  ');
-        $this->emit('goto','kst');
-      } else $this->no=null;
-    }
-  }
   public function SaveWrong(){
 
     $wrong_no=wrong_Kst::on(Auth()->user()->company)->max('wrong_no')+1;
@@ -62,9 +47,7 @@ class InpWrong extends Component
       'tar_date'=>$this->tar_date,
       'morahel'=>0,
       'emp'=>Auth::user()->empno,
-      'no'=>$this->no,
     ]);
-    $this->no=null;
     $this->kst='';
     $this->emit('goto','acc');
   }
@@ -82,11 +65,10 @@ class InpWrong extends Component
     'ksm_date.required' => 'تاريخ خطأ',
   ];
  public function mount(){
-   $this->no=null;
     $this->tar_date=date('Y-m-d');
  }
     public function render()
     {
-        return view('livewire.over-tar.inp-wrong');
+        return view('livewire.over-tar.inp-wrong-after');
     }
 }

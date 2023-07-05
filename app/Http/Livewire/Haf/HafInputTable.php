@@ -91,9 +91,11 @@ class HafInputTable extends Component
       $sumhalfover=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',3)->sum('kst');
       $sumwrong=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',4)->sum('kst');
       if ($sumwrong==null) {$sumwrong=0;}
+      $sumwrong_after=hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->where('kst_type',6)->sum('kst');
+      if ($sumwrong_after==null) {$sumwrong_after=0;}
 
       DB::connection(Auth()->user()->company)->table('hafitha')->where('hafitha_no',$this->hafitha)->update([
-        'kst_morahel'=>$summorahel,'kst_over'=>$sumover,'kst_half_over'=>$sumhalfover,'kst_wrong'=>$sumwrong,
+        'kst_morahel'=>$summorahel,'kst_over'=>$sumover,'kst_half_over'=>$sumhalfover,'kst_wrong'=>$sumwrong,'kst_wrong_after'=>$sumwrong_after,
       ]);
 
       DB::connection(Auth()->user()->company)->commit();

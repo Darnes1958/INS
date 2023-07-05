@@ -46,6 +46,7 @@
             </div>
         </div>
     </div>
+
         @if (session()->has('message'))
         <div class="d-inline-flex align-items-center mt-2 mb-0" style="height: 20px;">
             <div style="height: 20px; width: 50%">

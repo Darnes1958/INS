@@ -24,15 +24,8 @@
   </div>
   <div class="col-md-5 mb-2" >
     <label  for="acc" class="form-label-me">رقم الحساب</label>
-    <input  x-bind:disabled="!$wire.BankGet" wire:model="acc" wire:keydown.enter="ChkAcc"
+    <input  x-bind:disabled="!$wire.BankGet" wire:model="acc" wire:keydown.enter="$emit('goto','name')"
             class="form-control"  name="acc" type="text"  id="acc" >
-    <div>
-      @if (session()->has('message'))
-        <div class="alert alert-danger">
-          {{ session('message') }}
-        </div>
-      @endif
-    </div>
   </div>
   <div class="col-md-7 mb-2" >
     <label  for="name" class="form-label-me">الاسم</label>

@@ -112,6 +112,12 @@
              class=" btn btn-outline-danger  waves-effect waves-light   "
              wire:click.prevent="DeleteCont"   value="الغاء العقد" />
     </div>
+    <div x-show="$wire.DeleteMeAfter" class="my-3 align-center justify-content-center "  style="display: flex">
+
+      <input x-bind:disabled="!$wire.DeleteAfterBtn"  type="button"  id="DeleteAfterBtn"
+             class=" btn btn-outline-primary  waves-effect waves-light   "
+             wire:click.prevent="DeleteContAfter"   value="الغاء العقد" />
+    </div>
   </div>
 
 </div>

@@ -12,10 +12,13 @@
         </div>
         <div class="col-md-8 themed-grid-col ">
           @if ($EditDel==1)
-           @livewire('aksat.edit-main-data',['edit'=>true,'del'=>false])
+           @livewire('aksat.edit-main-data',['edit'=>true,'del'=>false,'del_after'=>false])
           @endif
           @if ($EditDel==2)
-              @livewire('aksat.edit-main-data',['edit'=>false,'del'=>true])
+              @livewire('aksat.edit-main-data',['edit'=>false,'del'=>true,'del_after'=>false])
+          @endif
+          @if ($EditDel==3)
+              @livewire('aksat.edit-main-data',['edit'=>false,'del'=>false,'del_after'=>true])
           @endif
 
         </div>

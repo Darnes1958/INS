@@ -1,7 +1,12 @@
-<div>
+<div x-data>
+  <div class="text-center " >
+    <h2 x-bind:hidden="!$wire.MainDeleted" class="text-danger">عقد ملغي رقم </h2>
+    <h2 class="text-primary">{{$no}}</h2>
+  </div>
+
   <div >
     <label for="wrongname" class="form-label">الاسم</label>
-    <input wire:model="wrongname" wire:keydown.enter="$emit('goto','wrongkst')" class="form-control" type="text"  id="wrongname" >
+    <input wire:model="wrongname" x-bind:disabled="$wire.MainDeleted" wire:keydown.enter="$emit('goto','wrongkst')" class="form-control" type="text"  id="wrongname" >
   </div>
   <div  >
     <label  for="wrongkst" class="form-label">القسط</label>
