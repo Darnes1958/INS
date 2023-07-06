@@ -76,7 +76,7 @@ class ToHafitha extends Component
                   ]);
               } else
               {
-                $res=main_deleted::where('bank',$this->bank)->where('acc',$this->acc)->first();
+                $res=main_deleted::where('bank',$bank_no)->where('acc',$acc)->first();
                 if ($res) FromExcelModel::on(Auth()->user()->company)->where('acc', $acc)->update([
                   'bank' => $bank_no,
                   'no'=>0,
@@ -150,9 +150,9 @@ class ToHafitha extends Component
         $Data4=FromExcelModel::on(Auth()->user()->company)
           ->where('MainArcWrong','=',3)
           ->get();
-        for ($i=0;$i<count($Data3);$i++) {
-          FromExcelModel::on(Auth()->user()->company)->find($Data3[$i]->id)->update([
-            'kst'=>$Data3[$i]->ksm,'kst_type'=>6,'baky'=>0,]) ;}
+        for ($i=0;$i<count($Data4);$i++) {
+          FromExcelModel::on(Auth()->user()->company)->find($Data4[$i]->id)->update([
+            'kst'=>$Data4[$i]->ksm,'kst_type'=>6,'baky'=>0,]) ;}
 
     }
 
@@ -183,13 +183,13 @@ class ToHafitha extends Component
               'hafitha_no'=> $haf,
               'bank'=> $bank->bank,
               'hafitha_date'=>date('Y-m-d'),
-              'hafitha_tot'=>$summorahel+$sumover+$sumhalfover+$sumwrong,
+              'hafitha_tot'=>$summorahel+$sumover+$sumhalfover+$sumwrong+$sumwrong_after,
               'hafitha_state'=>0,
               'kst_morahel'=>$summorahel,
               'kst_over'=>$sumover,
               'kst_half_over'=>$sumhalfover,
               'kst_wrong'=>$sumwrong,
-              'kst_wrong_after'=>$sumwrong,
+              'kst_wrong_after'=>$sumwrong_after,
           ]);
           DB::connection(Auth()->user()->company)->table('pages')->insert([
               'hafitha'=>$haf,
