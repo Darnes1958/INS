@@ -33,6 +33,10 @@ class RepAksatController extends Controller
     function RepMainAll (){
         return view('backend.aksat.rep.rep-main-all');
     }
+  function RepMainDel (){
+    return view('backend.aksat.rep.rep-main-del');
+  }
+
   function RepOkod ($rep){
 
     return view('backend.aksat.rep.rep-okod',compact('rep'));

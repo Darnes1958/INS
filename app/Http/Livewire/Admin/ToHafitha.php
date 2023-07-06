@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin;
 
 use App\Models\aksat\hafitha;
 use App\Models\aksat\main;
+use App\Models\aksat\main_deleted;
 use App\Models\aksat\MainArc;
 use App\Models\bank\bank;
 use App\Models\excel\FromExcelModel;
@@ -74,7 +75,15 @@ class ToHafitha extends Component
                       'MainArcWrong'=>2,
                   ]);
               } else
-              {FromExcelModel::on(Auth()->user()->company)->where('acc', $acc)->update([
+              {
+                $res=main_deleted::where('bank',$this->bank)->where('acc',$this->acc)->first();
+                if ($res) FromExcelModel::on(Auth()->user()->company)->where('acc', $acc)->update([
+                  'bank' => $bank_no,
+                  'no'=>0,
+                  'MainArcWrong'=>3,
+                ]);
+                else
+                FromExcelModel::on(Auth()->user()->company)->where('acc', $acc)->update([
                   'bank' => $bank_no,
                   'no'=>0,
                   'MainArcWrong'=>0,
@@ -138,6 +147,12 @@ class ToHafitha extends Component
         for ($i=0;$i<count($Data3);$i++) {
                 FromExcelModel::on(Auth()->user()->company)->find($Data3[$i]->id)->update([
                     'kst'=>$Data3[$i]->ksm,'kst_type'=>4,'baky'=>0,]) ;}
+        $Data4=FromExcelModel::on(Auth()->user()->company)
+          ->where('MainArcWrong','=',3)
+          ->get();
+        for ($i=0;$i<count($Data3);$i++) {
+          FromExcelModel::on(Auth()->user()->company)->find($Data3[$i]->id)->update([
+            'kst'=>$Data3[$i]->ksm,'kst_type'=>6,'baky'=>0,]) ;}
 
     }
 
@@ -159,8 +174,10 @@ class ToHafitha extends Component
           $sumover=$sumover1+$sumover2+$sumover3;
           $sumhalfover=FromExcelModel::on(Auth()->user()->company)->where('bank',$bank->bank)->where('kst_type',3)->sum('kst');
           $sumwrong=FromExcelModel::on(Auth()->user()->company)->where('bank',$bank->bank)->where('kst_type',4)->sum('kst');
+          $sumwrong_after=FromExcelModel::on(Auth()->user()->company)->where('bank',$bank->bank)->where('kst_type',6)->sum('kst');
           if ($sumhalfover==null) {$sumhalfover=0;}
           if ($sumwrong==null) {$sumwrong=0;}
+          if ($sumwrong_after==null) {$sumwrong_after=0;}
           $haf=hafitha::on(Auth()->user()->company)->max('hafitha_no')+1;
           DB::connection(Auth()->user()->company)->table('hafitha')->insert([
               'hafitha_no'=> $haf,
@@ -172,12 +189,13 @@ class ToHafitha extends Component
               'kst_over'=>$sumover,
               'kst_half_over'=>$sumhalfover,
               'kst_wrong'=>$sumwrong,
+              'kst_wrong_after'=>$sumwrong,
           ]);
           DB::connection(Auth()->user()->company)->table('pages')->insert([
               'hafitha'=>$haf,
               'page_no'=>1,
-              'page_tot'=>$summorahel+$sumover+$sumhalfover+$sumwrong,
-              'page_enter'=>$summorahel+$sumover+$sumhalfover+$sumwrong,
+              'page_tot'=>$summorahel+$sumover+$sumhalfover+$sumwrong+$sumwrong_after,
+              'page_enter'=>$summorahel+$sumover+$sumhalfover+$sumwrong+$sumwrong_after,
               'page_differ'=>0,
           ]);
           $NoList=FromExcelModel::on(Auth()->user()->company)

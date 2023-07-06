@@ -170,6 +170,7 @@
                         <li><a href="{{route('repmain.all')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن عقد</a></li>
                         <li><a href="{{route('repmain.arc')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن عقد من الأرشيف</a></li>
                         <li><a href="{{route('repmainall')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">جميع العقود لزبون</a></li>
+                        <li><a href="{{route('repmain.del')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن عقد ملغي</a></li>
                         <li><a href="{{route('rep.okod','mosdada')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">العقود المسددة</a></li>
                         <li><a href="{{route('rep.okod','kamla')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">العقود الخاملة</a></li>
                         <li><a href="{{route('rep.okod','before')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تجهيز كشف المصرف</a></li>
@@ -195,6 +196,7 @@
                         <li><a href="{{route('rep.okod','ratiosum')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">اجمالي الفروع بالعمولات</a></li>
                        <li><a href="{{route('rep.okod','bankone')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">كشف تقصيلي بالمصرف</a></li>
                        <li><a href="{{route('banksinput','repbankratio')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0"> عمولات المصارف</a></li>
+                        <li><a href="{{route('rep.okod','bankkstcount')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">عدد الأقساط المتبقية</a></li>
                         <li><a href="{{route('rep.okod','kaema')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">العقود القائمة بالمصارف</a></li>
                         <li><a href="{{route('rep.okod','mahjoza')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">الأقساط المحجوزة</a></li>
                     </ul>

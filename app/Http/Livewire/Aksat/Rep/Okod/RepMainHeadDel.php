@@ -3,13 +3,14 @@
 namespace App\Http\Livewire\Aksat\Rep\Okod;
 
 use App\Models\aksat\main;
+use App\Models\aksat\main_deleted;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class RepMainHead extends Component
+class RepMainHeadDel extends Component
 {
  use WithPagination;
  protected $paginationTheme = 'bootstrap';
@@ -19,7 +20,7 @@ class RepMainHead extends Component
  public $IsSearch=true;
  public $bankno=0;
  public $TheBankListIsSelectd;
- public $who='aksat.rep.okod.rep-main-data';
+ public $who='aksat.rep.okod.rep-main-data-del';
 
  protected $listeners = ['OpenTable',];
 
@@ -49,12 +50,12 @@ class RepMainHead extends Component
     $this->acc='';
 
     if ($this->no!=null) {
-        $result = main::on(Auth()->user()->company)->where('no',$this->no)->first();
+        $result = main_deleted::on(Auth()->user()->company)->where('no',$this->no)->first();
         if ($result) {
             $this->CloseTable();
             $this->acc=$result->acc;
             $this->emitTo($this->who,'GotoDetail',$result);
-            $this->emitTo('aksat.rep.okod.rep-main-trans','GotoTrans',$this->no);
+            $this->emitTo('aksat.rep.okod.rep-main-trans-del','GotoTrans',$this->no);
             $this->emit('GetWhereEquelValue2',$result->order_no);
 
         }
@@ -63,8 +64,8 @@ class RepMainHead extends Component
     public function render()
     {
 
-        return view('livewire.aksat.rep.okod.rep-main-head',[
-            'TableList' => DB::connection(Auth()->user()->company)->table('main')
+        return view('livewire.aksat.rep.okod.rep-main-head-del',[
+            'TableList' => DB::connection(Auth()->user()->company)->table('main_deleted')
                 ->select('no','acc', 'name','sul','kst')
                 ->when(($this->bankno==null||$this->bankno==0),function ($q) {
                     return $q->where('name', 'like', '%'.$this->search.'%')
