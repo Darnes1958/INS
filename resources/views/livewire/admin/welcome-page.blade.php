@@ -21,6 +21,14 @@
                       (!empty($admindata->profile_image))? url('upload/admin_images/'.$admindata->profile_image):
                       url('upload/no_image.jpg')}}" alt="Card image cap">
     </div>
+    <div class="col-md-12">
+      <br>
+     <h2 class="text-danger"> تحديثات جديدة :</h2>
+      <h4 class="text-primary">تم إضافة "عقود ملغية" وهي في حال تم التعاقد مع الزبون وتسليم الاجراءات للمصرف ثم طلب الزبون الغاء العقد</h4>
+      <h4 class="text-primary">وعند ورود الاقساط عن طريق الحافظة او فردي سستتعرف المنظومة علي صاحب الحساب وتقوم باللازم</h4>
+      <h4 class="text-primary">في بند "عقود" قم باختيار "الغاء عقد بعد التعاقد" وقم بالغاء العقد  </h4>
+      <h4 class="text-primary">في بند " تقاير عقود" يمكنك الاستفسار عن طريق "تقرير عن عقد ملغي"  </h4>
+    </div>
       @role('admin')
 
       <div x-data class="row ">
