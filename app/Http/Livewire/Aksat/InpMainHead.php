@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Aksat;
 
 use App\Models\aksat\kst_trans;
 use App\Models\aksat\main;
+use App\Models\aksat\main_deleted;
 use App\Models\aksat\main_items;
 use App\Models\aksat\MainArc;
 use App\Models\aksat\place;
@@ -171,8 +172,11 @@ class InpMainHead extends Component
    if ($this->no){
     $res=main::on(Auth()->user()->company)->find($this->no);
     if ($res){$this->dispatchBrowserEvent('mmsg', 'هذا الرقم مخزون مسبقا');
-      $this->emit('goto','no');}
-    else {$this->emit('goto','sul_date');};}
+      $this->emit('goto','no');return;}
+    $res=main_deleted::on(Auth()->user()->company)->find($this->no);
+    if ($res){$this->dispatchBrowserEvent('mmsg', 'هذا الرقم مخزون مسبقا في العقود الملغية بعد التعاقد');
+           $this->emit('goto','no');return;}
+    $this->emit('goto','sul_date');}
   }
   public function ChkOrderAndGo(){
     $this->IsSave=false;
@@ -288,7 +292,7 @@ class InpMainHead extends Component
             $q->select('order_no')->from('MainRes');
           });
       })],
-      'no' =>['required','integer','gt:0','unique:other.main,no','unique:other.MainArc,no'],
+      'no' =>['required','integer','gt:0','unique:other.main,no','unique:other.MainArc,no','unique:other.main_deleted,no'],
       'sul_date' => ['required','date'],
       'bankno' =>['required','integer','gt:0','exists:other.bank,bank_no'],
       'place' =>['required','integer','gt:0','exists:other.place,place_no'],
