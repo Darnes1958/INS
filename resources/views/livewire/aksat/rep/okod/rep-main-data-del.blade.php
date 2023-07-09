@@ -95,11 +95,11 @@
 
     @livewire('tools.my-table2',
     ['TableName' => $mainitems,
-    'ColNames' =>['item_no','item_name','quant','price','sub_tot'],
-    'ColHeader' =>['رقم الصنف','اسم الصنف','الكمية','السعر','المجموع'],
+    'ColNames' =>['item_no','item_name'],
+    'ColHeader' =>['رقم الصنف','اسم الصنف'],
     'pagno'=>5,
     'haswhereequel' => true,
-    'whereequelfield' => 'order_no',
+    'whereequelfield' => 'no',
     'whereequelvalue' => 0,
     ])
     <div  class="d-inline-flex align-items-center">

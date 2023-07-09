@@ -49,7 +49,7 @@ class RepMainData extends Component
     public $libyana='';
     public $mdar='';
 
-    public $mainitems='rep_sell_tran';
+    public $mainitems='rep_sell_tran_del';
     public $OverKst=0;
     public $TarKst=0;
     public $ArcMain=0;
