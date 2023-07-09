@@ -56,7 +56,7 @@ class RepMainHeadDel extends Component
             $this->acc=$result->acc;
             $this->emitTo($this->who,'GotoDetail',$result);
             $this->emitTo('aksat.rep.okod.rep-main-trans-del','GotoTrans',$this->no);
-            $this->emit('GetWhereEquelValue2',$result->order_no);
+            $this->emit('GetWhereEquelValue2',$this->no);
 
         }
     }
