@@ -120,6 +120,7 @@ Route::controller(RepAksatController::class)->group(function (){
   route::get('/repMain/del', 'RepMainDel')->name('repmain.del')->middleware('auth') ;
   route::get('/rep/okod/{rep}', 'RepOkod')->name('rep.okod')->middleware('auth') ;
   route::get('/pdfmain/{no}', 'PdfMain')->name('pdfmain') ;
+  route::get('/pdfmaintobank/{no}', 'PdfMainToBank')->name('pdfmaintobank') ;
   route::get('/pdfbanksum/{RepChk?}/{date1?}/{date2?}', 'PdfBankSum')->name('pdfbanksum') ;
   route::get('/pdfplacesum/{RepChk?}/{date1?}/{date2?}', 'PdfPlaceSum')->name('pdfplacesum') ;
   route::get('/pdfhafmini/{hafitha?}/{rep_type?}/{DisRadio?}', 'PdfHafMini')->name('pdfhafmini') ;

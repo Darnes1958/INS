@@ -71,6 +71,11 @@
      <div class="col-md-2">
        <a  href="{{route('pdfmain',$no)}}" class="btn btn-success waves-effect waves-light "><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
      </div>
+     @if(\Illuminate\Support\Facades\Auth::user()->company=='Malah')
+     <div class="col-md-2">
+       <a  href="{{route('pdfmaintobank',$no)}}" class="btn btn-success waves-effect waves-light "><i class="fa fa-print"> &nbsp;&nbsp;طباعة نموذج&nbsp;&nbsp;</i></a>
+     </div>
+     @endif
 
      @unlessrole('info')
      @if (\App\Models\LarSetting::first()->ArcBtn=='rep')
