@@ -68,17 +68,7 @@
         <textarea x-show="$wire.notes!='' && $wire.notes!=null && $wire.notes!='0'"  wire:model="notes"  class="form-control"  style="width: 80% " id="notes" readonly></textarea>
     </div>
    <div class="row">
-     <div class="col-md-2">
-       <a  href="{{route('pdfmain',$no)}}" class="btn btn-success waves-effect waves-light "><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
-     </div>
 
-     @unlessrole('info')
-     @if (\App\Models\LarSetting::first()->ArcBtn=='rep')
-      <div class="col-md-3 " >
-        <a wire:click="Archive" class="btn btn-info waves-effect waves-light mx-10"><i class="fa fa-archive"> &nbsp;&nbsp;نقل للأرشيف&nbsp;&nbsp;</i></a>
-      </div>
-     @endif
-     @endunlessrole
      <div class="col-md-6">
       <div class="row">
         <div class="col-md-4">

@@ -276,7 +276,7 @@ class EditMainData extends Component
 
     } catch (\Exception $e) {
       DB::connection(Auth()->user()->company)->rollback();
-
+info($e);
       $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
     }
   }
