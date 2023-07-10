@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Imports\FromExcelImport;
+use App\Imports\FromExcelImportS;
 use App\Imports\FromExcelImportT;
 use App\Imports\FromExcel2Import;
 use App\Imports\KaemaModelImport;
@@ -28,8 +29,11 @@ class ExcelController extends Controller
 
     if ($request->BankRadio=='wahda')
      Excel::import(new FromExcelImport, $filename);
-    else
+    if ($request->BankRadio=='tejary')
      Excel::import(new FromExcelImportT, $filename);
+    if ($request->BankRadio=='sahary')
+      Excel::import(new FromExcelImportS, $filename);
+
     FromExcelModel::on(Auth()->user()->company)->update([
         'hafitha_tajmeehy'=>$TajNo,
     ]);
