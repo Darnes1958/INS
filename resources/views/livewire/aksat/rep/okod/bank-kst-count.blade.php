@@ -8,7 +8,7 @@
       </div>
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" wire:model="RepRadio" name="inlineRadioOptions" id="inlineRadio2" value="ByPlace">
-        <label class="form-check-label" for="inlineRadio2">بالفروع والمخزن</label>
+        <label class="form-check-label" for="inlineRadio2">بالفروع والمخازن</label>
       </div>
     </div>
 
@@ -92,7 +92,7 @@
         <th>اجمالي العقود</th>
         <th>المسدد</th>
         <th>المتبقي</th>
-        <th class="text-primary">عدد الأقساط المخصومة</th>
+        <th class="text-success">عدد الأقساط المخصومة</th>
         <th class="text-primary">عدد الأقساط المتبقية</th>
       </tr>
       </thead>
@@ -110,7 +110,7 @@
             <td> {{ $item->sumsul }} </td>
             <td> {{ $item->sumpay }} </td>
             <td> {{ $item->sumraseed }} </td>
-            <td class="text-primary"> {{ $item->kst_count }} </td>
+            <td class="text-success"> {{ $item->kst_count }} </td>
             <td class="text-primary"> {{ $item->kst_count_not }} </td>
           </tr>
 
