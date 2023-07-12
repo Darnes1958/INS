@@ -3,6 +3,9 @@
 namespace App\Http\Livewire\Aksat\Rep\Okod;
 
 use App\Models\aksat\main;
+use App\Models\aksat\main_kst_count;
+use App\Models\aksat\main_sells_bank_view;
+use App\Models\aksat\main_view;
 use App\Models\bank\rep_banks;
 use App\Models\OverTar\over_kst;
 use Carbon\Carbon;
@@ -20,6 +23,7 @@ class BankKstCount extends Component
   public $date1;
   public $date2;
   public $RepChk=false;
+  public $RepRadio='ByBank';
 
   public function updatingSearch()
   {
@@ -39,6 +43,16 @@ class BankKstCount extends Component
       'ppay'=>main::on(Auth()->user()->company)->sum('sul_pay'),
       'rraseed'=>main::on(Auth()->user()->company)->sum('raseed'),
       'ccount'=>main::on(Auth()->user()->company)->count(),
+
+
+      'PlaceTable'=>main_kst_count::on(Auth()->user()->company)
+
+        ->selectRaw('place_no,place_name,bank, bank_name, COUNT(*) AS WCOUNT, SUM(sul) AS sumsul, SUM(sul_pay) AS sumpay,
+                            SUM(raseed) AS sumraseed,sum(kst_count) as kst_count,sum(kst_count_not) as kst_count_not ')
+        ->groupBy('place_no','place_name','bank','bank_name')
+        ->orderBy('place_no')
+
+        ->paginate(15),
       'RepTable'=>DB::connection(Auth()->user()->company)->table('main_view')
       ->selectRaw('bank, bank_name, COUNT(*) AS WCOUNT, SUM(sul) AS sumsul, SUM(sul_pay) AS sumpay,
                             SUM(raseed) AS sumraseed,
@@ -49,8 +63,11 @@ class BankKstCount extends Component
                  ')
       ->groupBy('bank','bank_name')
       ->orderby('bank')
-      ->paginate(14),
+
+      ->paginate(15, ['*'], 'ByPlaceTable'),
 
     ]);
+
+
   }
 }
