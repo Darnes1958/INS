@@ -33,6 +33,8 @@ class ExcelController extends Controller
      Excel::import(new FromExcelImportT, $filename);
     if ($request->BankRadio=='sahary')
       Excel::import(new FromExcelImportS, $filename);
+    if ($request->BankRadio=='jomhoria')
+      Excel::import(new FromExcelImportS, $filename);
 
     FromExcelModel::on(Auth()->user()->company)->update([
         'hafitha_tajmeehy'=>$TajNo,

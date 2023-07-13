@@ -19,6 +19,10 @@
               <input class="form-check-input" type="radio" wire:model="BankRadio" name="inlineRadioOptions" id="inlineRadio3" value="sahary">
               <label class="form-check-label" for="inlineRadio2">الصحاري</label>
             </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" wire:model="BankRadio" name="inlineRadioOptions" id="inlineRadio4" value="jomhoria">
+              <label class="form-check-label" for="inlineRadio2">الجمهورية</label>
+            </div>
           </div>
        <div class="col-md-2">
          <button  wire:click="Take" class="btn btn-outline-success border-0  ">Prepere</button>
