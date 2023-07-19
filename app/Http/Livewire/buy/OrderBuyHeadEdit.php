@@ -146,7 +146,7 @@ class OrderBuyHeadEdit extends Component
   }
   public function DoDelete(){
 
-info('here1');
+
     $this->Good=true;
     $res=buy_tran::on(Auth()->user()->company)->where('order_no',$this->orderno)->get();
     foreach ($res as $item){
@@ -158,7 +158,7 @@ info('here1');
       }
     }
     if ($this->Good){
-        info('here2');
+
     DB::connection(Auth()->user()->company)->beginTransaction();
     try {
       buy_tran::on(Auth()->user()->company)->where('order_no',$this->orderno)->delete();

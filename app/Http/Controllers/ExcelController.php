@@ -9,6 +9,7 @@ use App\Imports\FromExcelImportS;
 use App\Imports\FromExcelImportT;
 use App\Imports\FromExcel2Import;
 use App\Imports\KaemaModelImport;
+use App\Imports\KaemaModelImportT;
 use App\Imports\MahjozaModelImport;
 use App\Models\excel\FromExcelModel;
 use App\Models\excel\FromExcel2Model;
@@ -78,7 +79,7 @@ class ExcelController extends Controller
     if ($request->BankRadio=='wahda')
       Excel::import(new KaemaModelImport(), $filename);
     else
-      Excel::import(new KaemaModel2(), $filename);
+      Excel::import(new KaemaModelImportT(), $filename);
 
     DB::connection(Auth()->user()->company)->statement( DB::raw("update Kaema set Taj='$TajNo' where Taj is null") );
 
