@@ -33,7 +33,7 @@ class KaemaModelImport implements ToModel, WithHeadingRow
            'kst' => $row['kst'],
            'sul_date' => Date::excelToDateTimeObject($row['sul_date']),
            'bankcode' => $row['bankcode'],
-
+           'no_bank' => $row['no_bank'],
          ]
        );
 

@@ -37,10 +37,11 @@
 
         <thead class="font-size-12">
         <tr>
-          <th width="24%" class="sort  text-primary" wire:click="sortOrder('acc')"> رقم الحساب {!! $sortLink !!}</th>
+          <th width="20%" class="sort  text-primary" wire:click="sortOrder('acc')"> رقم الحساب {!! $sortLink !!}</th>
           <th  class="sort  text-primary" wire:click="sortOrder('name')"> الاسم {!! $sortLink !!}</th>
-          <th width="20%" class="sort  text-primary" wire:click="sortOrder('sul_date')"> تاريخ الصلاحية {!! $sortLink !!}</th>
-          <th width="16%">القسط</th>
+          <th width="16%" class="sort  text-primary" wire:click="sortOrder('sul_date')"> تاريخ الصلاحية {!! $sortLink !!}</th>
+          <th width="14%">القسط</th>
+          <th width="20%">رقم عقد المصرف</th>
         </tr>
         </thead>
         <tbody id="addRow" class="addRow">
@@ -52,6 +53,7 @@
               <td >  {{ $item->name }} </td>
               <td > {{ $item->sul_date }} </td>
               <td >{{ number_format($item->kst,2, '.', '') }}  </td>
+              <td > {{ $item->no_bank }} </td>
             </tr>
           @endforeach
         @endif
