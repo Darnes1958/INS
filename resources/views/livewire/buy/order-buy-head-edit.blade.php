@@ -89,10 +89,13 @@
                 closeOnSelect: true
             });
         });
+
         window.addEventListener('dodelete',function(e){
+
             MyConfirm.fire({
             }).then((result) => {
                 if (result.isConfirmed) {
+
                     Livewire.emit('DoDelete');
                 }
             })

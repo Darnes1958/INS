@@ -295,7 +295,7 @@ class OrderBuyTableEdit extends Component
 
         }
             $this->TheDelete=$value;
-      $this->dispatchBrowserEvent('dodelete');
+      $this->dispatchBrowserEvent('doitemdelete');
     }
     public function DoItemDelete(){
 

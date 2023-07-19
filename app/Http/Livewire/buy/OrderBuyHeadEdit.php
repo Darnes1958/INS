@@ -146,7 +146,7 @@ class OrderBuyHeadEdit extends Component
   }
   public function DoDelete(){
 
-
+info('here1');
     $this->Good=true;
     $res=buy_tran::on(Auth()->user()->company)->where('order_no',$this->orderno)->get();
     foreach ($res as $item){
@@ -158,6 +158,7 @@ class OrderBuyHeadEdit extends Component
       }
     }
     if ($this->Good){
+        info('here2');
     DB::connection(Auth()->user()->company)->beginTransaction();
     try {
       buy_tran::on(Auth()->user()->company)->where('order_no',$this->orderno)->delete();
@@ -171,7 +172,8 @@ class OrderBuyHeadEdit extends Component
       $this->emitSelf('mounthead');
     } catch (\Exception $e) {
       DB::connection(Auth()->user()->company)->rollback();
-
+        $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
+info($e);
     }}
 
   }

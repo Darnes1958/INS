@@ -95,7 +95,7 @@
 
 @push('scripts')
     <script type="text/javascript">
-        window.addEventListener('dodelete',function(e){
+        window.addEventListener('doitemdelete',function(e){
             MyConfirm.fire({
             }).then((result) => {
                 if (result.isConfirmed) {
