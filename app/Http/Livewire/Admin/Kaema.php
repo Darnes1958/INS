@@ -27,7 +27,7 @@ class Kaema extends Component
   }
   public function Take(){
     if ($this->WithDel)
-      KaemaModel::on(Auth()->user()->company)->truncate();
+      KaemaModel::on(Auth()->user()->company)->where('Taj',$this->TajNo)->delete();
     $this->filename='c:\Excel\Kaema\\'.Auth()->user()->company.'.xlsx';
 
     $this->ShowDo=true;
