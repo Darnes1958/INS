@@ -9,6 +9,7 @@ use App\Models\buy\buys;
 use App\Models\jeha\jeha;
 use App\Models\Operations;
 use App\Models\stores\items;
+use App\Models\stores\stores;
 use App\Models\trans\trans;
 use Carbon\Carbon;
 use Illuminate\Console\View\Components\Alert;
@@ -41,7 +42,7 @@ class OrderBuyTableEdit extends Component
 
    protected $listeners = [
         'putdata','gotonext','ChkIfDataExist','HeadBtnClick','mounttable',
-       'GetOrderData','DoDelete','open','TakeChargeAll',
+       'GetOrderData','DoItemDelete','open','TakeChargeAll',
     ];
    public function mounttable(){
        $this->mount();
@@ -286,11 +287,18 @@ class OrderBuyTableEdit extends Component
             $this->tot = number_format($this->tot1 - $this->ksm,2, '.', '');
 
     }
-    public function removeitem($value)    {
+    public function removeitem($value,$item,$quant)    {
+        $st_raseed=stores::where('st_no',$this->st_no)->where('item_no',$item)->first();
+        if ($st_raseed && $quant>$st_raseed->raseed){
+            $this->dispatchBrowserEvent('mmsg', 'الصنف رقم :  '.$item.'  سيصبح رصيده فالمخزن اقل من الصفر');
+            return false;
+
+        }
             $this->TheDelete=$value;
       $this->dispatchBrowserEvent('dodelete');
     }
-    public function DoDelete(){
+    public function DoItemDelete(){
+
       unset($this->orderdetail[$this->TheDelete]);
       array_values($this->orderdetail);
       $this->tot1 = number_format(array_sum(array_column($this->orderdetail, 'subtot')),2, '.', '');
