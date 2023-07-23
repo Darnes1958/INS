@@ -382,7 +382,7 @@ class RepAksatController extends Controller
 
     $reportHtml = view('PrnView.aksat.pdf-stop-one',
       ['cus'=>$cus,'bank_name'=>$taj->TajName,'name'=>$request->name,'acc'=>$request->acc,
-        'kst'=>$request->kst,'comp_name'=>$company->CompName,'CompMan'=>$company->CompMan,'TajAcc'=>$taj->TajAcc])->render();
+        'kst'=>$request->kst,'comp_name'=>$company->CompName,'CompMan'=>$company->CompMan,'TajAcc'=>$taj->TajAcc,'stop_date'=>$request->stop_date])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 

@@ -43,6 +43,13 @@
   </div>
 
     <br>
+
+    <div style="position: fixed; right: 80px; font-size: 14pt;">
+      <br>
+      <label >اعتباراً من تاريخ {{$item->stop_date}}</label>
+    </div>
+    <br>
+
   <div style="position: fixed; right: 80px; font-size: 14pt;">
 
     <br>
