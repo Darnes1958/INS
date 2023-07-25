@@ -124,7 +124,7 @@
 
           </div>
           <div class="col-md-4">
-            <a href="{{route('pdfkaemaNotThere',['TajNo'=>$TajNo])}}"
+            <a href="{{route('pdfkaemaNotThere',['TajNo'=>$TajNo,'bank_no'=>$bank_no])}}"
                class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
           </div>
 

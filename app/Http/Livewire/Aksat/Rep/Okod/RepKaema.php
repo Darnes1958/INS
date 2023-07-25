@@ -64,17 +64,15 @@ class RepKaema extends Component
 
         return view('livewire.aksat.rep.okod.rep-kaema',[
           'RepTable'=>KaemaModel::
-          where('Taj', '=', $this->TajNo)
-          ->Where(function($query) {
+            where('Taj', '=', $this->TajNo)
+            ->Where(function($query) {
             $query->where('name', 'like', '%'.$this->search.'%')
               ->orwhere('acc', 'like', '%'.$this->search.'%');})
-
             ->orderby($this->orderColumn,$this->sortOrder)
             ->paginate(15),
           'RepOur'=>KaemaModel::
             whereIn('bank',$ActiveBank)
             ->whereNotIn('acc', $ActiveAcc)
-
             ->Where(function($query) {
               $query->where('name', 'like', '%'.$this->search.'%')
                 ->orwhere('acc', 'like', '%'.$this->search.'%');})
@@ -82,8 +80,8 @@ class RepKaema extends Component
               return $q->where('bank', '=', $this->bank_no);})
             ->paginate(15, ['*'], 'NotOurPage'),
           'RepThere'=>main::
-          whereIn('bank',$ActiveBank)
-          ->whereNotIn('acc', $ActiveAcc2)
+            whereIn('bank',$ActiveBank)
+            ->whereNotIn('acc', $ActiveAcc2)
             ->when($this->bank_no!=0,function($q){
               return $q->where('bank', '=', $this->bank_no);})
 
