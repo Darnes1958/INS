@@ -215,7 +215,7 @@ class RepAksatController extends Controller
     if ($bank_no!=0) $bank_name=bank::where('bank_no',$bank_no)->first()->bank_name;
     else $bank_name=null;
 
-    $reportHtml = view('PrnView.aksat.pdf-kaemaNotOur',
+    $reportHtml = view('PrnView.aksat.pdf-kaemaNotThere',
       ['res'=>$res,'cus'=>$cus,'TajName'=>$TajName,'RepDate'=>$RepDate,'bank_no'=>$bank_no,'bank_name'=>$bank_name])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
