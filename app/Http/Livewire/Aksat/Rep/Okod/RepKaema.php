@@ -59,8 +59,8 @@ class RepKaema extends Component
     public function render()
     {
       $ActiveBank = DB::connection(Auth::user()->company)->table('bank')->select('bank_no')->where('bank_tajmeeh', $this->TajNo);
-      $ActiveAcc = DB::connection(Auth::user()->company)-> table('main')->select('Acc')->whereIn('bank', $ActiveBank);
-      $ActiveAcc2 = DB::connection(Auth::user()->company)-> table('Kaema')->select('Acc')->whereIn('bank', $ActiveBank);
+      $ActiveAcc = DB::connection(Auth::user()->company)-> table('main')->select('acc')->whereIn('bank', $ActiveBank);
+      $ActiveAcc2 = DB::connection(Auth::user()->company)-> table('Kaema')->select('acc')->whereIn('bank', $ActiveBank);
 
         return view('livewire.aksat.rep.okod.rep-kaema',[
           'RepTable'=>KaemaModel::
@@ -79,7 +79,23 @@ class RepKaema extends Component
             ->when($this->bank_no!=0,function($q){
               return $q->where('bank', '=', $this->bank_no);})
             ->paginate(15, ['*'], 'NotOurPage'),
+
+          'RepThere2' => DB::connection(Auth::user()->company)->table("main")->select('*')
+            ->when($this->bank_no!=0,function($q){
+              return $q->where('bank', '=', $this->bank_no);})
+            ->whereNotIn('acc',function($query){
+              $query->select('acc')->from('kaema')
+                ->whereIn('bank',function ($q){
+                  $q->select('bank_no')->from('bank')->where('bank_tajmeeh', $this->TajNo);
+                });
+            })
+            ->Where(function($query) {
+              $query->where('name', 'like', '%'.$this->search.'%')
+                ->orwhere('acc', 'like', '%'.$this->search.'%');})
+            ->paginate(15, ['*'], 'NotTherePage2'),
+
           'RepThere'=>main::
+
             whereIn('bank',$ActiveBank)
             ->whereNotIn('acc', $ActiveAcc2)
             ->when($this->bank_no!=0,function($q){

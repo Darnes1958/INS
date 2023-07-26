@@ -140,9 +140,9 @@
         </tr>
         </thead>
         <tbody id="addRow" class="addRow">
-        @if ($RepThere )
+        @if ($RepThere2 )
 
-          @foreach($RepThere as $key=>$item)
+          @foreach($RepThere2 as $key=>$item)
             <tr class="font-size-12">
               <td > {{ $item->no }} </td>
               <td > {{ $item->acc }} </td>
@@ -155,8 +155,8 @@
         </tbody>
       </table>
 
-      @if ($RepThere )
-        {{ $RepThere->links() }}
+      @if ($RepThere2)
+        {{ $RepThere2->links() }}
       @endif
 
     </div>
