@@ -12,6 +12,37 @@
       </div>
     </div>
 
+    @if( $RepRadio=='ByPlace')
+    <div class="col-md-9">
+      <div x-data class="row ">
+        <div class="col-md-2 ">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input"  name="placechk" type="checkbox" wire:model="PlaceChk"  >
+              <label class="form-check-me " style="font-size: 9pt;">مكان تخزين معين</label>
+            </div>
+        </div>
+
+        <div x-show="$wire.PlaceChk" class="col-md-3 ">
+
+          <input  wire:model="place_no"  wire:keydown.enter="ChkPlaceAndGo" type="number" class=" form-control "
+                  id="place_no"   autofocus >
+          <div class="form-check form-check-inline">
+            <input class="form-check-input"  name="placechk" type="radio" wire:model="place_type" value="0" >
+            <label class="form-check-label" >مخزن</label>
+          </div>
+        </div>
+        <div  x-show="$wire.PlaceChk" class="col-md-3" >
+
+          @livewire('stores.store-select3',['table'=>$Table])
+          <div class="form-check form-check-inline">
+            <input class="form-check-input"  name="placechk" type="radio" wire:model="place_type" value="1" >
+            <label class="form-check-label" >صالة</label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    @endif
 
 
 
@@ -97,10 +128,7 @@
       </tr>
       </thead>
       <tbody id="addRow" class="addRow">
-
       @if ($PlaceTable )
-
-
         @foreach($PlaceTable as $key=>$item)
           <tr class="font-size-12">
             <td> {{ $key+1}} </td>
@@ -113,11 +141,7 @@
             <td class="text-success"> {{ $item->kst_count }} </td>
             <td class="text-primary"> {{ $item->kst_count_not }} </td>
           </tr>
-
         @endforeach
-
-
-
       </tbody>
       @endif
     </table>
@@ -137,6 +161,24 @@
               confirmButtonText:  e.detail,
           })
       });
+      $(document).ready(function ()
+      {
+          $('#Place_L3').select2({
+              closeOnSelect: true
+          });
+          $('#Place_L3').on('change', function (e) {
+              var data = $('#Place_L3').select2("val");
+              alert(data);
+          @this.set('place_no', data);
+          @this.set('ThePlaceListIsSelected', 1);
+          });
+      });
+      window.livewire.on('place3-change-event',()=>{
+          $('#Place_L3').select2({
+              closeOnSelect: true
+          });
+      });
+
   </script>
 @endpush
 
