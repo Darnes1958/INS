@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Exls;
 use App\Exports\BankoneXls;
 use App\Exports\KhamlaXls;
 use App\Exports\KlasaXls;
+use App\Exports\RepMakXls;
 use App\Http\Controllers\Controller;
 use App\Models\stores\RepMakzoon;
 use Illuminate\Http\Request;
