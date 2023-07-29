@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Exls;
 use App\Exports\BankoneXls;
 use App\Exports\KhamlaXls;
 use App\Exports\KlasaXls;
+use App\Exports\NotThereXls;
 use App\Exports\RepMakXls;
 use App\Http\Controllers\Controller;
 use App\Models\stores\RepMakzoon;
@@ -25,6 +26,10 @@ class ExController extends Controller
     public function MosdadaEX($bank,$baky)
     {
         return Excel::download(new MosdadaXls($bank,$baky), 'Mosdada.xlsx');
+    }
+    public function NotThereEX($bank_no,$TajNo)
+    {
+        return Excel::download(new NotThereXls($bank_no,$TajNo), 'NotThere.xlsx');
     }
     public function KhamlaEX($bank,$baky)
     {

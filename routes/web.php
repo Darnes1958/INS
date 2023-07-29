@@ -39,6 +39,7 @@ Route::controller(ExController::class)->group(function () {
     Route::get('khamlaex/{bank?},{months?}', 'KhamlaEx')->name('khamlaex');
     Route::get('repmakex/{place_type?},{place_no?},{withzero?}', 'RepMakEx')->name('repmakex');
     Route::get('klasaex/{date1?},{date2?}', 'KlasaEx')->name('klasaex');
+    Route::get('notthereex/{bank_no?},{TajNo?}', 'NotThereEx')->name('notthereex');
 
 });
 Route::controller(EmailPdf::class)->group(function () {
