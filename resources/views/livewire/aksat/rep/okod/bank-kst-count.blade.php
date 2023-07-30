@@ -12,17 +12,17 @@
       </div>
     </div>
 
-    @if( $RepRadio=='ByPlace')
-    <div class="col-md-9">
-      <div x-data class="row ">
-        <div class="col-md-2 ">
+
+    <div   class="col-md-9">
+      <div class="row ">
+        <div x-show="$wire.RepRadio=='ByPlace'" class="col-md-2 ">
             <div class="form-check form-check-inline">
               <input class="form-check-input"  name="placechk" type="checkbox" wire:model="PlaceChk"  >
               <label class="form-check-me " style="font-size: 9pt;">مكان تخزين معين</label>
             </div>
         </div>
 
-        <div x-show="$wire.PlaceChk" class="col-md-3 ">
+        <div x-show="$wire.PlaceChk && $wire.RepRadio=='ByPlace'" class="col-md-3 ">
 
           <input  wire:model="place_no"  wire:keydown.enter="ChkPlaceAndGo" type="number" class=" form-control "
                   id="place_no"   autofocus >
@@ -31,7 +31,7 @@
             <label class="form-check-label" >مخزن</label>
           </div>
         </div>
-        <div  x-show="$wire.PlaceChk" class="col-md-3" >
+        <div  x-show="$wire.PlaceChk && $wire.RepRadio=='ByPlace'" class="col-md-3" >
 
           @livewire('stores.store-select3',['table'=>$Table])
           <div class="form-check form-check-inline">
@@ -39,10 +39,16 @@
             <label class="form-check-label" >صالة</label>
           </div>
         </div>
+        <div x-show="$wire.PlaceChk && $wire.RepRadio=='ByPlace' && $wire.place_no!=0" class="col-md-2">
+
+            <a  href="{{route('pdfplacekstcount',['place_name'=>$place_name])}}"
+                class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
+
+        </div>
 
       </div>
     </div>
-    @endif
+
 
 
 
@@ -88,8 +94,6 @@
         <td style="font-weight: bold"> {{ number_format($sul,2, '.', ',') }} </td>
         <td style="font-weight: bold"> {{ number_format($pay,2, '.', ',') }} </td>
         <td style="font-weight: bold"> {{ number_format($raseed,2, '.', ',') }} </td>
-
-
       </tr>
 
       <tr style="background: #9dc1d3;">
@@ -142,6 +146,17 @@
             <td class="text-primary"> {{ $item->kst_count_not }} </td>
           </tr>
         @endforeach
+        <tr class="font-size-12 font-weight-bold">
+          <td>  </td>
+          <td>  </td>
+          <td>  </td>
+          <td style="font-weight: bold"> {{ $PlaceTableSum->WCOUNT }} </td>
+          <td style="font-weight: bold"> {{ $PlaceTableSum->sumsul }} </td>
+          <td style="font-weight: bold"> {{ $PlaceTableSum->sumpay }} </td>
+          <td style="font-weight: bold"> {{ $PlaceTableSum->sumraseed }} </td>
+          <td style="font-weight: bold" class="text-success"> {{ $PlaceTableSum->kst_count }} </td>
+          <td style="font-weight: bold" class="text-primary"> {{ $PlaceTableSum->kst_count_not }} </td>
+        </tr>
       </tbody>
       @endif
     </table>
@@ -168,7 +183,7 @@
           });
           $('#Place_L3').on('change', function (e) {
               var data = $('#Place_L3').select2("val");
-              alert(data);
+
           @this.set('place_no', data);
           @this.set('ThePlaceListIsSelected', 1);
           });

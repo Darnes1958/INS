@@ -138,6 +138,7 @@ Route::controller(RepAksatController::class)->group(function (){
   route::get('/pdfbankone/{bank_no?}/{column?}/{sort?}', 'PdfBankOne')->name('pdfbankone') ;
   route::get('/pdfkaemaNotOur/{TajNo?}/{bank_no?}', 'PdfKaemaNotOur')->name('pdfkaemaNotOur') ;
   route::get('/pdfkaemaNotThere/{TajNo?}/{bank_no?}', 'PdfKaemaNotThere')->name('pdfkaemaNotThere') ;
+  route::get('/pdfplacekstcount/{place_name}', 'PdfPlaceKstCount')->name('pdfplacekstcount') ;
 });
 Route::controller(RepAmaaController::class)->group(function (){
   route::get('/repamma/{rep}', 'RepAmma')->name('repamma')->middleware('auth');

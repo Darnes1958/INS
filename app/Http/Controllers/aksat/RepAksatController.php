@@ -7,6 +7,7 @@ use App\Models\aksat\hafitha;
 use App\Models\aksat\ksm_type;
 use App\Models\aksat\kst_type;
 use App\Models\aksat\main;
+use App\Models\aksat\main_kst_count;
 use App\Models\bank\bank;
 use App\Models\bank\BankTajmeehy;
 use App\Models\bank\Companies;
@@ -49,6 +50,62 @@ class RepAksatController extends Controller
     $reportHtml = view('PrnView.aksat.pdf-chk',
       ['cus'=>$cus,'bank_name'=>$request->bank_name,'name'=>$request->name,'RepDate'=>$RepDate
         ,'acc'=>$request->acc,'chk_count'=>$request->chk_count,'wdate'=>$request->wdate])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('report.pdf');
+
+  }
+  function PdfPlaceKstCount( $place_name){
+
+    $RepDate=date('Y-m-d');
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+    $PlaceTable=main_kst_count::on(Auth()->user()->company)
+
+      ->selectRaw('place_no,place_name,bank, bank_name, COUNT(*) AS WCOUNT, SUM(sul) AS sumsul, SUM(sul_pay) AS sumpay,
+                            SUM(raseed) AS sumraseed,sum(kst_count) as kst_count,sum(kst_count_not) as kst_count_not ')
+
+      ->where('place_name','=', $place_name)
+      ->groupBy('place_no','place_name','bank','bank_name')
+      ->orderBy('place_no')->get();
+
+    $PlaceTableSum=main_kst_count::on(Auth()->user()->company)
+      ->selectRaw('place_name , COUNT(*) AS WCOUNT, SUM(sul) AS sumsul, SUM(sul_pay) AS sumpay,
+                            SUM(raseed) AS sumraseed,sum(kst_count) as kst_count,sum(kst_count_not) as kst_count_not ')
+      ->where('place_name','=', $place_name)
+      ->groupBy('place_name')->first();
+
+    $reportHtml = view('PrnView.aksat.pdf-place-kst-count',
+      ['res'=>$PlaceTable,'PlaceTableSum'=>$PlaceTableSum,'cus'=>$cus,'place_name'=>$place_name,'RepDate'=>$RepDate])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('report.pdf');
+
+    $RepDate=date('Y-m-d');
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+    $PlaceTable=main_kst_count::on(Auth()->user()->company)
+
+        ->selectRaw('place_no,place_name,bank, bank_name, COUNT(*) AS WCOUNT, SUM(sul) AS sumsul, SUM(sul_pay) AS sumpay,
+                            SUM(raseed) AS sumraseed,sum(kst_count) as kst_count,sum(kst_count_not) as kst_count_not ')
+
+          ->where('place_name','=', $place_name)
+        ->groupBy('place_no','place_name','bank','bank_name')
+        ->orderBy('place_no')->get();
+    $reportHtml = view('PrnView.aksat.pdf-place-kst-count',
+      ['res'=>$PlaceTable,'cus'=>$cus,'place_name'=>$place_name,'RepDate'=>$RepDate])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 

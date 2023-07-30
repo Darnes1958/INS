@@ -26,7 +26,7 @@ class BankKstCount extends Component
   public $date2;
   public $RepChk=false;
   public $RepRadio='ByBank';
-  public $place_name;
+  public $place_name=' ';
   public $place_type=0;
 
   public $place_no=0;
@@ -41,20 +41,23 @@ class BankKstCount extends Component
     $this->resetPage();
   }
   public function updatedThePlaceListIsSelected(){
-    info('updated');
+
     $this->ThePlaceListIsSelected=0;
     $this->ChkPlaceAndGo();
   }
   public function updatingPlacetype()
   {
     $this->place_no=0;
-    $this->resetPage();
+
+
     if ($this->place_type==1) $this->Table='Makazen';
     if ($this->place_type==0) $this->Table='Salat';
     $this->emitTo('stores.store-select3','ResetYou',$this->Table);
   }
+
   public function updatingPlaceChk()
   {
+
     if ($this->PlaceChk) $this->emitTo('stores.store-select3','ResetYou',$this->Table);
   }
 
@@ -86,7 +89,7 @@ class BankKstCount extends Component
   }
   public function render()
   {
-
+if ($this->RepRadio=='ByPlace' ) info('ByPlace');
     return view('livewire.aksat.rep.okod.bank-kst-count',[
       'ssul'=>main::on(Auth()->user()->company)->sum('sul'),
       'ppay'=>main::on(Auth()->user()->company)->sum('sul_pay'),
@@ -104,6 +107,14 @@ class BankKstCount extends Component
         ->orderBy('place_no')
 
         ->paginate(15),
+      'PlaceTableSum'=>main_kst_count::on(Auth()->user()->company)
+        ->selectRaw('place_name , COUNT(*) AS WCOUNT, SUM(sul) AS sumsul, SUM(sul_pay) AS sumpay,
+                            SUM(raseed) AS sumraseed,sum(kst_count) as kst_count,sum(kst_count_not) as kst_count_not ')
+        ->when($this->place_no !=0,function ($q) {
+          return $q->where('place_name','=', $this->place_name) ;     })
+        ->groupBy('place_name')
+        ->first(),
+
       'RepTable'=>DB::connection(Auth()->user()->company)->table('main_view')
       ->selectRaw('bank, bank_name, COUNT(*) AS WCOUNT, SUM(sul) AS sumsul, SUM(sul_pay) AS sumpay,
                             SUM(raseed) AS sumraseed,
