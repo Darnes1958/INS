@@ -21,14 +21,27 @@
                       (!empty($admindata->profile_image))? url('upload/admin_images/'.$admindata->profile_image):
                       url('upload/no_image.jpg')}}" alt="Card image cap">
     </div>
+    @if(\App\Models\Lines::first()->line1!==null)
     <div class="col-md-12">
       <br>
       <br>
      <h2 class="text-danger"> تحديثات جديدة :</h2>
-      <h4 class="text-primary">تم إضافة تقرير يبين عدد الاٌقساط المتبقية (المخصومة والغير مخصومة) علي المصارف</h4>
-      <h4 class="text-primary">في بند "تقرير مصارف" قم باختيار "عدد الأقساط المتبقية"   </h4>
+      <h4 class="text-primary">{{\App\Models\Lines::first()->line1}}</h4>
+      @if(\App\Models\Lines::first()->line2!==null)
+      <h4 class="text-primary">{{\App\Models\Lines::first()->line2}}</h4>
+      @endif
+      @if(\App\Models\Lines::first()->line3!==null)
+        <h4 class="text-primary">{{\App\Models\Lines::first()->line3}}</h4>
+      @endif
+      @if(\App\Models\Lines::first()->line4!==null)
+        <h4 class="text-primary">{{\App\Models\Lines::first()->line4}}</h4>
+      @endif
+      @if(\App\Models\Lines::first()->line5!==null)
+        <h4 class="text-primary">{{\App\Models\Lines::first()->line5}}</h4>
+      @endif
 
     </div>
+    @endif
       @role('admin')
 
       <div x-data class="row ">
