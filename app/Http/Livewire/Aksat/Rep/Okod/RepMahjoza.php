@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Aksat\Rep\Okod;
 
+use App\Http\Livewire\Admin\Mahjoza;
 use App\Models\aksat\main;
+use App\Models\aksat\main_view;
 use App\Models\excel\KaemaModel;
 use App\Models\excel\MahjozaModel;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +22,7 @@ class RepMahjoza extends Component
   public $orderColumn = "acc";
   public $sortOrder = "asc";
   public $sortLink = '<i class="sorticon fas fa-angle-up"></i>';
-
+  public $RepRadio='Yes';
 
   public function sortOrder($columnName=""){
     $caretOrder = "up";
@@ -60,7 +62,13 @@ class RepMahjoza extends Component
           ->where('name', 'like', '%'.$this->search.'%')
             ->orderby($this->orderColumn,$this->sortOrder)
             ->paginate(15),
-
+          'RepNot'=>main_view::whereIn('bank',function ($q){
+            $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$this->TajNo);
+          })
+          ->whereNotIn('acc',function ($q){
+            $q->select('acc')->from('Mahjoza')->where('Taj',$this->TajNo);
+          })
+            ->paginate(15, ['*'], 'Not'),
         ]);
     }
 }
