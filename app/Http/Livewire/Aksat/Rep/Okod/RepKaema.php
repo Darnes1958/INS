@@ -24,6 +24,8 @@ class RepKaema extends Component
   public $sortLink = '<i class="sorticon fas fa-angle-up"></i>';
   public $RepRadio='Our';
 
+
+
   public function sortOrder($columnName=""){
     $caretOrder = "up";
     if($this->sortOrder == 'asc'){
@@ -56,11 +58,17 @@ class RepKaema extends Component
     $this->bank_name=bank::on(Auth()->user()->company)->where('bank_no',$this->bank_no)->first()->bank_name;
 
   }
+  public function mount(){
+
+
+  }
     public function render()
     {
       $ActiveBank = DB::connection(Auth::user()->company)->table('bank')->select('bank_no')->where('bank_tajmeeh', $this->TajNo);
       $ActiveAcc = DB::connection(Auth::user()->company)-> table('main')->select('acc')->whereIn('bank', $ActiveBank);
       $ActiveAcc2 = DB::connection(Auth::user()->company)-> table('Kaema')->select('acc')->whereIn('bank', $ActiveBank);
+
+
 
         return view('livewire.aksat.rep.okod.rep-kaema',[
           'RepTable'=>KaemaModel::

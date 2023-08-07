@@ -144,6 +144,7 @@
           <th width="14%">تاريخ العقد</th>
 
           <th width="10%">القسط</th>
+      
         </tr>
         </thead>
         <tbody id="addRow" class="addRow">
@@ -157,6 +158,7 @@
               <td >  {{ $item->sul_date }} </td>
 
               <td >{{ number_format($item->kst,2, '.', '') }}  </td>
+
             </tr>
           @endforeach
         @endif
