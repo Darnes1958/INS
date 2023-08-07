@@ -68,10 +68,11 @@
 
             <thead class="font-size-12">
             <tr>
-              <th width="10%"  > رقم العقد </th>
-              <th width="18%"  >رقم الحساب</th>
-              <th   > الاسم </th>
-              <th width="14%">تاريخ العقد</th>
+              <th width="10%" class="sort  text-primary" wire:click="sortOrder2('no')"> رقم العقد {!! $sortLink !!}</th>
+              <th width="16%" class="sort  text-primary" wire:click="sortOrder2('acc')"> رقم الحساب {!! $sortLink !!}</th>
+              <th  class="sort  text-primary" wire:click="sortOrder2('name')"> الاسم {!! $sortLink !!}</th>
+              <th width="14%" class="sort  text-primary" wire:click="sortOrder2('sul_date')"> تاريخ العقد {!! $sortLink !!}</th>
+
 
               <th width="10%">القسط</th>
             </tr>

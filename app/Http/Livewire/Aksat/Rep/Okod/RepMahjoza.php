@@ -20,6 +20,8 @@ class RepMahjoza extends Component
   public $search;
 
   public $orderColumn = "acc";
+  public $orderColumn2 = "acc";
+
   public $sortOrder = "asc";
   public $sortLink = '<i class="sorticon fas fa-angle-up"></i>';
   public $RepRadio='Yes';
@@ -36,6 +38,20 @@ class RepMahjoza extends Component
     $this->sortLink = '<i class="sorticon fas fa-angle-'.$caretOrder.'"></i>';
 
     $this->orderColumn = $columnName;
+
+  }
+  public function sortOrder2($columnName=""){
+    $caretOrder = "up";
+    if($this->sortOrder == 'asc'){
+      $this->sortOrder = 'desc';
+      $caretOrder = "down";
+    }else{
+      $this->sortOrder = 'asc';
+      $caretOrder = "up";
+    }
+    $this->sortLink = '<i class="sorticon fas fa-angle-'.$caretOrder.'"></i>';
+
+    $this->orderColumn2 = $columnName;
 
   }
 
@@ -68,6 +84,8 @@ class RepMahjoza extends Component
           ->whereNotIn('acc',function ($q){
             $q->select('acc')->from('Mahjoza')->where('Taj',$this->TajNo);
           })
+            ->where('name', 'like', '%'.$this->search.'%')
+            ->orderby($this->orderColumn2,$this->sortOrder)
             ->paginate(15, ['*'], 'Not'),
         ]);
     }
