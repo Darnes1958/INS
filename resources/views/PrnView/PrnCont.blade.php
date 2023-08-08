@@ -45,6 +45,7 @@
           counter-reset: pageplus1 1;
           direction: rtl;
           font-family: Amiri ;
+          border: 1px;
       }
 
       #header {
@@ -110,20 +111,14 @@
       .page-break {
           page-break-after: always;
       }
-
+      #mainlabel  {
+          display:inline-block;border-style: dotted;border-top: none;border-right: none;border-left: none;padding-left: 4px;padding-right: 4px;text-align: center;
+      }
   </style>
 </head>
-<body  >
-<div class="header">
- <div>
-  <label style="font-size: 20pt; margin-right: 12px;margin-bottom: 0;margin-top: 0;padding: 0;" >{{$cus->CompanyName}}</label>
- </div>
- <div >
-  <label style="font-size: 16pt; margin-right: 12px;margin-bottom: 0;margin-top: 0;padding: 0;">{{$cus->CompanyNameSuffix}}</label>
- </div>
-</div>
-<br>
-<div>
+<body style="border-style: solid;border-width: 2px;border-color: #bf800c;" >
+
+<div >
 
   @yield('mainrep')
 

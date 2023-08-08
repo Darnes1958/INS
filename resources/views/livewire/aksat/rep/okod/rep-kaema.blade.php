@@ -144,7 +144,7 @@
           <th width="14%">تاريخ العقد</th>
 
           <th width="10%">القسط</th>
-      
+
         </tr>
         </thead>
         <tbody id="addRow" class="addRow">

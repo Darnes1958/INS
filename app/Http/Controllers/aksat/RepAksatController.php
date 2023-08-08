@@ -5,6 +5,7 @@ namespace App\Http\Controllers\aksat;
 use App\Http\Controllers\Controller;
 use App\Models\aksat\hafitha;
 use App\Models\aksat\ksm_type;
+use App\Models\aksat\kst_trans;
 use App\Models\aksat\kst_type;
 use App\Models\aksat\main;
 use App\Models\aksat\main_kst_count;
@@ -19,6 +20,7 @@ use App\Models\excel\MahjozaModel;
 use App\Models\sell\rep_sell_tran;
 use ArPHP\I18N\Arabic;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -508,7 +510,36 @@ class RepAksatController extends Controller
     return $pdf->download('report.pdf');
 
   }
+  function PdfMainCont($no){
 
+    $RepDate=date('Y-m-d');
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+    $res=DB::connection(Auth()->user()->company)->table('main_view')
+      ->where('no',  $no)
+      ->first();
+    $mindate=kst_trans::where('no',$no)->min('kst_date');
+
+    $mdate=Carbon::parse($mindate) ;
+    $mmdate=$mdate->month.'-'.$mdate->year;
+
+    $maxdate=kst_trans::where('no',$no)->max('kst_date');
+    $xdate=Carbon::parse($maxdate) ;
+    $xxdate=$xdate->month.'-'.$xdate->year;
+
+    $reportHtml = view('PrnView.aksat.Pdf-main-Cont',
+      ['res'=>$res,'mindate'=>$mmdate,'maxdate'=>$xxdate,'cus'=>$cus])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('report.pdf');
+
+  }
   function PdfMainToBank($no){
 
     $RepDate=date('Y-m-d');
