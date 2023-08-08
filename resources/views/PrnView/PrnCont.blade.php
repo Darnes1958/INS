@@ -112,7 +112,11 @@
           page-break-after: always;
       }
       #mainlabel  {
-          display:inline-block;border-style: dotted;border-top: none;border-right: none;border-left: none;padding-left: 4px;padding-right: 4px;text-align: center;
+          display:inline-block;border-style: dotted;border-top: none;border-right: none;
+          border-left: none;padding-left: 4px;padding-right: 4px;text-align: center;
+      }
+      #mainlabel2  {
+          display:inline-block; height: 20px;
       }
   </style>
 </head>

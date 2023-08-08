@@ -517,8 +517,17 @@ class RepAksatController extends Controller
     $res=DB::connection(Auth()->user()->company)->table('main_view')
       ->where('no',  $no)
       ->first();
-    $mindate=kst_trans::where('no',$no)->min('kst_date');
 
+    $items=rep_sell_tran::where('order_no',$res->order_no)->get();
+    $item_name='';
+    foreach($items as $item) {
+     $item_name=$item_name.' / '.$item->item_name;}
+
+    $taj=bank::where('bank_no',$res->bank)->first()->bank_tajmeeh;
+    $tajacc=BankTajmeehy::where('TajNo',$taj)->first()->TajAcc;
+
+
+    $mindate=kst_trans::where('no',$no)->min('kst_date');
     $mdate=Carbon::parse($mindate) ;
     $mmdate=$mdate->month.'-'.$mdate->year;
 
@@ -527,7 +536,7 @@ class RepAksatController extends Controller
     $xxdate=$xdate->month.'-'.$xdate->year;
 
     $reportHtml = view('PrnView.aksat.Pdf-main-Cont',
-      ['res'=>$res,'mindate'=>$mmdate,'maxdate'=>$xxdate,'cus'=>$cus])->render();
+      ['res'=>$res,'mindate'=>$mmdate,'maxdate'=>$xxdate,'cus'=>$cus,'TajAcc'=>$tajacc,'item_name'=>$item_name])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 
