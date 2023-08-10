@@ -21,6 +21,7 @@ class StopTable extends Component
     public $wrec_no;
     public $Proc;
     public $mychecked=[];
+    public $baky=0;
 
     protected $listeners = [
         'TakeNo','closeandrefresh','TakeBankNo','TakeDate'
@@ -98,7 +99,7 @@ public function SaveStops(){
             ->paginate(10),
          'TableList2'=>DB::connection(Auth()->user()->company)->table('main')
              ->where('bank',$this->bank)
-             ->where('raseed','<=',0)
+             ->where('raseed','<=',$this->baky)
              ->whereNotIn('no',$stoplist)
 
              ->orderBy('no','asc')

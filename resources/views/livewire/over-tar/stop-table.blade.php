@@ -27,6 +27,10 @@
 </div>
 
     <div class="col-md-6 my-1">
+        <div class=" d-inline-flex ">
+            <label for="baky" class="form-label mx-0 text-right " style="width: 30%; ">الباقي</label>
+            <input wire:model="baky" class="form-control mx-0 text-center" type="number"  min="-10" max="50"  id="baky" style="width: 70%; ">
+        </div>
     <table class="table table-sm table-bordered table-striped table-light " width="100%"   >
         <thead class="font-size-12">
         <tr>
