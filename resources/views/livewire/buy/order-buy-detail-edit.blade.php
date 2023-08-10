@@ -59,7 +59,7 @@
             <label for="quant" class="form-label-me " >الكمية</label>
             <input x-bind:disabled="!$wire.DetailOpen || !$wire.ItemGeted"
                    wire:model="quant" wire:keydown.enter="ChkQuantAndGo"
-                   class="form-control " type="number" min="1" oninput="validity.valid||(value='');" value="1" id="quant"  style="text-align: center" >
+                   class="form-control " type="number" min="1"  value="1" id="quant"  style="text-align: center" >
             @error('quant') <span class="error">{{ $message }}</span> @enderror
       </div>
       <div class="col-6 ">
@@ -70,7 +70,7 @@
             <label for="price" class="form-label-me">السعر</label>
             <input x-bind:disabled="!$wire.DetailOpen || !$wire.ItemGeted" wire:model="price"
                    wire:keydown.enter="ChkPriceAndGo"
-                   class="form-control" name="price" type="number"  min="1" oninput="validity.valid||(value='');"
+                   class="form-control" name="price" type="number"
                    id="price"  style="text-align: center" >
           <br>
           @error('price') <span class="error">{{ $message }}</span> @enderror
