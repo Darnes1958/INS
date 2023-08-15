@@ -44,6 +44,11 @@
           @livewire('aksat.rep.okod.wrong')
         </div>
       @endif
+      @if ($rep=='aksatdeffer')
+        <div class=" themed-grid-col px-1">
+          @livewire('aksat.rep.okod.aksat-deffer')
+        </div>
+      @endif
 
       @if ($rep=='stop')
         <div class=" themed-grid-col px-1">
