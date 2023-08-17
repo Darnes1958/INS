@@ -14,6 +14,7 @@ use App\Models\OverTar\over_kst_a;
 use App\Models\OverTar\stop_kst;
 use App\Models\OverTar\tar_kst;
 use App\Models\OverTar\tar_kst_before;
+use App\Models\OverTar\wrong_Kst;
 use App\Models\sell\rep_sell_tran;
 use App\Models\sell\sell_tran;
 use App\Models\sell\sells;
@@ -67,6 +68,8 @@ class InpMainHead extends Component
   public $last_cont_text;
 
   public $IsSave=false;
+  public $WrongFound=false;
+  public $WrongKst='Yes';
 
   public function OpenPlace(){
 
@@ -165,6 +168,9 @@ class InpMainHead extends Component
       if ($res && $this->jeha != $res->jeha) {
         session()->flash('message', 'انتبه .. هذا الحساب لنفس المصرف مخزون لزبون اخر .. ورقمه ( '.$res->jeha.')');
       }
+      $wrong=wrong_Kst::where('bank',$this->bankno)->where('acc',$this->acc)->where('morahel',0)->first();
+      if ($wrong) $this->WrongFound=True;
+      else $this->WrongFound=False;
       $this->emit('goto', 'place');
     }
   }
@@ -352,12 +358,25 @@ class InpMainHead extends Component
               ]);
               $date = date('Y-m-d', strtotime($date . "+1 month"));
           }
-
+        if ($this->WrongFound && $this->WrongKst=='Yes')
+        {
+          $wrong=wrong_Kst::where('bank',$this->bankno)->where('acc',$this->acc)->where('morahel',0)->get();
+          foreach ($wrong as $item){
+            $ser=kst_trans::where('no',$this->no)->where('ksm',0)->min('ser');
+            kst_trans::where('no',$this->no)->where('ser',$ser)->update([
+              'ksm'=>$item->kst,
+              'ksm_date'=>$item->tar_date,
+             
+              'inp_date'=>date('Y-m-d'),
+              'emp'=>auth::user()->empno,]);
+          }
+        }
         DB::connection(Auth()->user()->company)->commit();
           if ($this->OrderChanged){
               $this->OrderChanged=false;
               $this->dispatchBrowserEvent('mmsg', 'تم تغيير رقم العقد وتخرينه بالرقم : '.$this->no);
           }
+          $this->WrongFound=false;
         $this->no=''; $this->orderno='';$this->name='';$this->bankno='';$this->acc='';$this->place='';
         $this->sul='';$this->sul_tot='';$this->dofa='';$this->kst='';
         $this->kstcount='';$this->notes='';$this->ref_no='';$this->chk_in='';

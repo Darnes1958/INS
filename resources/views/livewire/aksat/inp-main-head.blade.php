@@ -115,7 +115,20 @@
             class="form-control"  name="acc" type="text"  id="acc" >
     @error('acc') <span class="error">{{ $message }}</span> @enderror
   </div>
-  <div class="col-md-7 mb-2" >
+
+    <div class="col-md-5 mb-2" x-show="$wire.WrongFound">
+      <label class="text-warning">توجد أقساط بالخطأ لهذا الحساب هل ترغب في ضمها للعقد</label>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" wire:model="WrongKst"  name="inlineRadioOptions" id="inlineRadio1" value="Yes">
+        <label class="form-check-label" for="inlineRadio1">نعم</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" wire:model="WrongKst"  name="inlineRadioOptions" id="inlineRadio2" value="No">
+        <label class="form-check-label" for="inlineRadio2">لا</label>
+      </div>
+    </div>
+
+  <div class="col-md-12 mb-2" >
     <div>
       @if (session()->has('message'))
         <div class="alert alert-danger">

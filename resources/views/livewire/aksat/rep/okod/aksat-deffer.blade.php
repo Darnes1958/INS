@@ -14,7 +14,7 @@
       <input wire:model="search" class="form-control mx-0 text-center" type="search"   placeholder="ابحث هنا .......">
     </div>
 
-    
+
 
   </div>
 
