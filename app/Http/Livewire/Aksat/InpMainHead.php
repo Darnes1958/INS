@@ -360,15 +360,16 @@ class InpMainHead extends Component
           }
         if ($this->WrongFound && $this->WrongKst=='Yes')
         {
-          $wrong=wrong_Kst::where('bank',$this->bankno)->where('acc',$this->acc)->where('morahel',0)->get();
+          $wrong=wrong_Kst::where('bank',$this->bankno)->where('acc',$this->acc)->where('morahel',0)->orderBy('tar_date')->get();
           foreach ($wrong as $item){
             $ser=kst_trans::where('no',$this->no)->where('ksm',0)->min('ser');
             kst_trans::where('no',$this->no)->where('ser',$ser)->update([
               'ksm'=>$item->kst,
               'ksm_date'=>$item->tar_date,
-             
+
               'inp_date'=>date('Y-m-d'),
               'emp'=>auth::user()->empno,]);
+            wrong_Kst::where('wrong_no',$item->wrong_no)->update(['morahel'=>1]);
           }
         }
         DB::connection(Auth()->user()->company)->commit();
