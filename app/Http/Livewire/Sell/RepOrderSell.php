@@ -35,6 +35,7 @@ class RepOrderSell extends Component
   public $cash;
   public $not_cash;
   public $notes;
+  public $rebh;
 
   public $TheOrderListSelected;
 
@@ -67,6 +68,7 @@ class RepOrderSell extends Component
     $this->place_name='';
     $this->type_name='';
     $this->jeha_name='';
+    $this->rebh='';
 
   }
   public function ChkOrderNoAndGo(){
@@ -88,6 +90,7 @@ class RepOrderSell extends Component
       $this->cash=$res->cash;
       $this->not_cash=$res->not_cash;
       $this->notes=$res->notes;
+      $this->rebh=$res->rebh;
 
       $this->jeha_name=jeha::on(Auth()->user()->company)->find($this->jeha_no)->jeha_name;
       if ($this->place_type==1){ $this->place_name=stores_names::on(Auth()->user()->company)->find($this->place_no)->st_name;}

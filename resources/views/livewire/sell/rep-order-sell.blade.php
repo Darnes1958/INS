@@ -150,6 +150,9 @@
         <th>اسم الصنف </th>
         <th width="10%">الكمية</th>
         <th width="15%">السعر </th>
+        @role('admin')
+        <th width="15%">الربح </th>
+        @endrole
         <th width="18%">المجموع</th>
 
       </tr>
@@ -162,9 +165,23 @@
           <td > {{ $item['item_name'] }} </td>
           <td style=" text-align: center"> {{ $item['quant'] }} </td>
           <td> {{ $item['price'] }} </td>
+          @role('admin')
+          <td> {{ $item['rebh'] }} </td>
+          @endrole
           <td> {{ $item['sub_tot'] }}</td>
         </tr>
       @endforeach
+      <tr style="background: #9dc1d3">
+        <th width="15%"></th>
+        <th>الإجمالــــــي </th>
+        <th width="10%"></th>
+        <th width="15%"></th>
+        @role('admin')
+        <th width="15%"> {{$rebh}}</th>
+        @endrole
+        <th width="18%">{{$tot}}</th>
+
+      </tr>
       </tbody>
       <tbody>
     </table><br>
