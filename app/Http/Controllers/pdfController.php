@@ -168,4 +168,31 @@ $comp=Auth()->user()->company;
       //  return $pdf->download('mosdada.pdf');
 
     }
+  public function PdfDeffer(Request $request){
+
+    $RepDate=date('Y-m-d');
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+    $res=DB::connection(Auth()->user()->company)->table('kst_deffer_view')
+
+      ->where('bank', '=', $request->bank_no)
+      ->where('deffer', '>', $request->deffer)
+      ->orderBy('no')
+      ->orderBy('ksm_date')
+      ->get();
+
+    $reportHtml = view('PrnView.aksat.pdf-deffer',
+      ['pdfdetail'=>$res,'cus'=>$cus,'bank_name'=>$request->bank_name,'RepDate'=>$RepDate])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('report.pdf');
+
+
+  }
 }

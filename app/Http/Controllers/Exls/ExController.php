@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Exls;
 
 use App\Exports\BankoneXls;
+use App\Exports\DefferXls;
 use App\Exports\KhamlaXls;
 use App\Exports\KlasaXls;
 use App\Exports\NotThereXls;
@@ -27,6 +28,10 @@ class ExController extends Controller
     {
         return Excel::download(new MosdadaXls($bank,$baky), 'Mosdada.xlsx');
     }
+  public function DefferEX($bank,$deffer)
+  {
+    return Excel::download(new DefferXls($bank,$deffer), 'Deffer.xlsx');
+  }
     public function NotThereEX($bank_no,$TajNo)
     {
         return Excel::download(new NotThereXls($bank_no,$TajNo), 'NotThere.xlsx');
