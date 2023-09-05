@@ -33,6 +33,9 @@ class RepAksatController extends Controller
   function RepMainArc (){
     return view('backend.aksat.rep.rep-main-arc');
   }
+  function RepMainArc2 (){
+    return view('backend.aksat.rep.rep-main-arc2');
+  }
     function RepMainAll (){
         return view('backend.aksat.rep.rep-main-all');
     }

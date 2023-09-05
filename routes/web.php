@@ -120,6 +120,7 @@ Route::controller(RepAksatController::class)->group(function (){
   route::get('/repMain/all', 'RepMain')->name('repmain.all')->middleware('auth');
   route::get('/repMainall', 'RepMainAll')->name('repmainall')->middleware('auth');
   route::get('/repMain/arc', 'RepMainArc')->name('repmain.arc')->middleware('auth') ;
+  route::get('/repMain/arc2', 'RepMainArc2')->name('repmain.arc2')->middleware('auth') ;
   route::get('/repMain/del', 'RepMainDel')->name('repmain.del')->middleware('auth') ;
   route::get('/rep/okod/{rep}', 'RepOkod')->name('rep.okod')->middleware('auth') ;
   route::get('/pdfmain/{no}', 'PdfMain')->name('pdfmain') ;

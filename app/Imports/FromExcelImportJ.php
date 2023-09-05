@@ -26,7 +26,7 @@ class FromExcelImportJ implements ToModel, WithHeadingRow
         'name' => $row['name'],
         'acc' => $row['acc'],
         'ksm' => $row['ksm'],
-        'ksm_date' => Date::excelToDateTimeObject($row['ksm_date']),
+        'ksm_date' =>Date::excelToDateTimeObject($row['ksm_date']),
         'bank' => 0,
         'hafitha_tajmeehy' => 0,
         'h_no' => 1,

@@ -169,6 +169,9 @@
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="{{route('repmain.all')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن عقد</a></li>
                         <li><a href="{{route('repmain.arc')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن عقد من الأرشيف</a></li>
+                        @if($company=='Daibany')
+                        <li><a href="{{route('repmain.arc2')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن عقد من أرشيف الأرشيف</a></li>
+                        @endif
                         <li><a href="{{route('repmainall')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">جميع العقود لزبون</a></li>
                         <li><a href="{{route('repmain.del')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن عقد ملغي</a></li>
                         <li><a href="{{route('rep.okod','mosdada')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">العقود المسددة</a></li>
