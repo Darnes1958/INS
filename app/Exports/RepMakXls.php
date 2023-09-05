@@ -147,7 +147,7 @@ class RepMakXls  implements FromCollection,WithMapping, WithHeadings,
         return $q->where('place_no','=', $this->place_no) ;     })
        ->when($this->place_no!=0,function ($q) {
         return $q->where('place_type','=', $this->place_type) ;     })
-        ->where('place_type',$this->place_type)
+
        ->when($this->WithZero==0 , function($q){
         return $q->where('raseed','!=',0);
         })

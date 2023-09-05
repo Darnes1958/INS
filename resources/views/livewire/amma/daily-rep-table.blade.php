@@ -95,6 +95,57 @@
         </tbody>
       </table>
     @endif
+      @if ($TableName=='rep_sell_tran' )
+        <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
+          <thead class="font-size-12">
+          <tr>
+
+            <th width="12%">نقطة البيع</th>
+
+            <th width="8%">رقم الفاتورة</th>
+            <th width="8%">رقم الصنف</th>
+            <th >اسم الصنف</th>
+            <th width="8%">الكمية</th>
+            @can('سعر الشراء')
+            <th width="8%">سعر الشراء</th>
+            @endcan
+              @can('سعر الشراء')
+            <th width="8%">سعر التكلفة</th>
+            @endcan()
+            <th width="8%">سعر البيع</th>
+            <th width="8%">الإجمالي</th>
+          @can('سعر الشراء')
+            <th width="8%">الربح</th>
+          @endcan
+
+          </tr>
+          </thead>
+          <tbody id="addRow" class="addRow">
+          @foreach($TableList as $item)
+            <tr class="font-size-12">
+
+              <td > {{ $item->place_name }} </td>
+
+              <td > {{ $item->order_no }} </td>
+              <td > {{ $item->item_no }} </td>
+              <td > {{ $item->item_name }} </td>
+              <td> {{ $item->quant }} </td>
+              @can('سعر الشراء')
+              <td> {{ $item->price_buy }} </td>
+              @endcan
+                @can('سعر الشراء')
+              <td> {{ $item->price_cost }} </td>
+                @endcan
+              <td> {{ $item->price }} </td>
+              <td> {{ $item->sub_tot }} </td>
+                  @can('سعر الشراء')
+              <td> {{ $item->rebh }} </td>
+                  @endcan
+            </tr>
+          @endforeach
+          </tbody>
+        </table>
+      @endif
         @if ($TableName=='tran_view' )
             <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
                 <thead class="font-size-12">

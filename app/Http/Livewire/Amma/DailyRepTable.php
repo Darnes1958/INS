@@ -96,6 +96,36 @@ class DailyRepTable extends Component
             ->paginate(15)
           ,'TableName'=>$this->TableName]);
 
+      if ($this->TableName=='rep_sell_tran')
+        return view('livewire.amma.daily-rep-table',[
+          'TableList'=>DB::connection(Auth()->user()->company)->table('rep_sell_tran')
+            ->join('sells_view','rep_sell_tran.order_no','sells_view.order_no')
+            ->join('pass',$this->TableName.'.emp','=','pass.emp_no')
+            ->join('place_view', function ($join) {
+              $join->on('sells_view.place_no', '=', 'place_view.place_no')
+                ->on('sells_view.sell_type', '=', 'place_view.place_type');
+            })
+            ->select($this->TableName.'.*','pass.emp_name','place_view.place_name','price_buy','price_cost')
+            ->when($this->ByChk,function ($q){
+              $q->where([
+                ['emp',$this->By],
+                [$this->InpDate,$this->DateVal],
+                [$this->SearchField1, 'like', '%'.$this->search.'%'],
+              ]);
+            })
+            ->when(!$this->ByChk,function ($q){
+              $q->where([
+
+                [$this->InpDate,$this->DateVal],
+                [$this->SearchField1, 'like', '%'.$this->search.'%'],
+              ]);
+            })
+            ->orderBy('place_name')
+            ->orderBy('order_no')
+
+            ->paginate(15)
+          ,'TableName'=>$this->TableName]);
+
       return view('livewire.amma.daily-rep-table',[
         'TableList'=>DB::connection(Auth()->user()->company)->table($this->TableName)
           ->join('pass',$this->TableName.'.emp','=','pass.emp_no')

@@ -17,6 +17,10 @@
             <input class="form-check-input" type="radio" wire:model="RepRadio"  value="sells_view">
             <label class="form-check-label" >مبيعات</label>
         </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" wire:model="RepRadio"  value="rep_sell_tran">
+        <label class="form-check-label" >اصناف</label>
+      </div>
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" wire:model="RepRadio"   value="tran_view">
             <label class="form-check-label" >ايصالات</label>

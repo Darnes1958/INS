@@ -32,6 +32,7 @@ class DailyRep extends Component
         if ($this->RepRadio=='tar_buy_view') {$this->RepSearch1='item_name';$this->RepDate='created_at';}
         if ($this->RepRadio=='buys_view') {$this->RepSearch1='jeha_name';$this->RepDate='order_date_input';}
         if ($this->RepRadio=='sells_view') {$this->RepSearch1='jeha_name';$this->RepDate='order_date_input';}
+        if ($this->RepRadio=='rep_sell_tran') {$this->RepSearch1='item_name';$this->RepDate='order_date';}
         if ($this->RepRadio=='tran_view') {$this->RepSearch1='jeha_name';$this->RepDate='inp_date';}
         if ($this->RepRadio=='main_view') {$this->RepSearch1='name';$this->RepDate='inp_date';}
 
