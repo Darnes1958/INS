@@ -80,7 +80,7 @@
      </div>
      @endif
      <div x-show="$wire.IsMosdad && !$wire.IsStop" class="col-md-2">
-       <a  wire:click="DoStop" class="btn btn-warning waves-effect waves-light "><i class="fa fa-minus-circle"> &nbsp;&nbsp;ايقاف الخصم&nbsp;&nbsp;</i></a>
+       <a  wire:click="Stop" class="btn btn-warning waves-effect waves-light "><i class="fa fa-minus-circle"> &nbsp;&nbsp;ايقاف الخصم&nbsp;&nbsp;</i></a>
 
      </div>
      <div x-show="$wire.IsStop" class="col-md-2">
@@ -209,6 +209,15 @@
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     Livewire.emit('DoArch');
+                }
+            })
+        });
+        window.addEventListener('stop',function(e){
+            MyConfirm.fire({
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Livewire.emit('DoStop');
                 }
             })
         });

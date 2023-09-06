@@ -71,7 +71,7 @@ class RepMainData extends Component
     public $kst_raseed;
 
     protected $listeners = [
-        'GotoDetail','DoArch','refreshme'=>'$refresh'
+        'GotoDetail','DoArch','refreshme'=>'$refresh','DoStop'
     ];
 
     public function Archive(){
@@ -226,6 +226,11 @@ class RepMainData extends Component
       }
 
     }
+  public function Stop(){
+
+
+    $this->dispatchBrowserEvent('stop');
+  }
   public function DoStop(){
     stop_kst::on(Auth()->user()->company)->insert([
       'no'=>$this->no,'name'=>$this->name,'bank'=>$this->bank,'acc'=>$this->acc,
