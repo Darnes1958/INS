@@ -12,6 +12,7 @@ use App\Models\bank\bank;
 use App\Models\excel\MahjozaModel;
 use App\Models\jeha\jeha;
 use App\Models\OverTar\over_kst;
+use App\Models\OverTar\stop_kst;
 use App\Models\OverTar\tar_kst;
 use App\Models\sell\sells;
 use App\Models\stores\halls_names;
@@ -62,6 +63,11 @@ class RepMainData extends Component
     public $HasChk=false;
     public $HasArc=false;
 
+    public $IsMosdad=false;
+    public $IsStop=false;
+    public $TajNo=0;
+    public $stop_date;
+
     public $kst_raseed;
 
     protected $listeners = [
@@ -107,6 +113,8 @@ class RepMainData extends Component
         $this->HasChk=false;
         $this->HasOver=false;
         $this->HasTar=false;
+        $this->IsStop=false;
+        $this->IsMosdad=false;
         $this->no=0;
         $this->acc='';
         $this->name='';
@@ -165,6 +173,8 @@ class RepMainData extends Component
       $this->HasChk=false;
       $this->HasOver=false;
       $this->HasTar=false;
+      $this->IsStop=false;
+      $this->IsMosdad=false;
       $this->no=$res['no'];
       $this->acc=$res['acc'];
       $this->name=$res['name'];
@@ -200,6 +210,13 @@ class RepMainData extends Component
       $this->ArcMain=MainArc::on(Auth()->user()->company)->where('jeha',$this->jeha)->count();
       $this->ChkTasleem=chk_tasleem::on(Auth()->user()->company)->where('no',$this->no)->count();
 
+      $this->IsMosdad=$this->raseed==0;
+      $this->IsStop=stop_kst::where('no',$this->no)->exists();
+      if ($this->IsStop) {
+        $this->TajNo=bank::where('bank_no',$this->bank)->first()->bank_tajmeeh;
+        $this->stop_date=stop_kst::where('no',$this->no)->first()->stop_date;
+      }
+
       if ($this->raseed<=0) $this->kst_raseed=0;
       else {
         if ($this->raseed<=$this->kst) $this->kst_raseed=1;
@@ -209,6 +226,15 @@ class RepMainData extends Component
       }
 
     }
+  public function DoStop(){
+    stop_kst::on(Auth()->user()->company)->insert([
+      'no'=>$this->no,'name'=>$this->name,'bank'=>$this->bank,'acc'=>$this->acc,
+      'stop_type'=>1,'stop_date'=>date('Y-m-d'),'letters'=>0,'emp'=>auth::user()->empno,
+    ]);
+    $this->TajNo=bank::where('bank_no',$this->bank)->first()->bank_tajmeeh;
+    $this->stop_date=date('Y-m-d');
+    $this->IsStop=True;
+  }
   public function CloseArc(){
     $this->dispatchBrowserEvent('CloseArcModal');
   }

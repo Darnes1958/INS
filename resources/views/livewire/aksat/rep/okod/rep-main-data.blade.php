@@ -79,6 +79,17 @@
        <a  href="{{route('pdfmaintobank',$no)}}" class="btn btn-success waves-effect waves-light "><i class="fa fa-print"> &nbsp;&nbsp;طباعة نموذج&nbsp;&nbsp;</i></a>
      </div>
      @endif
+     <div x-show="$wire.IsMosdad && !$wire.IsStop" class="col-md-2">
+       <a  wire:click="DoStop" class="btn btn-warning waves-effect waves-light "><i class="fa fa-minus-circle"> &nbsp;&nbsp;ايقاف الخصم&nbsp;&nbsp;</i></a>
+
+     </div>
+     <div x-show="$wire.IsStop" class="col-md-2">
+
+       <a  href="{{route('pdfstopone',['name'=>$name,'bank_tajmeeh'=>$TajNo ,
+                                              'acc'=>$acc,'kst'=>$kst,'stop_date'=>$stop_date])}}"
+           class="btn btn-primary waves-effect waves-light "><i class="fa fa-print"> &nbsp;&nbsp;طباعة إيقاف&nbsp;&nbsp;</i></a>
+     </div>
+
 
      @unlessrole('info')
      @if (\App\Models\LarSetting::first()->ArcBtn=='rep')
