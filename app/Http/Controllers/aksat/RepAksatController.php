@@ -17,6 +17,7 @@ use App\Models\bank\rep_banks;
 use App\Models\Customers;
 use App\Models\excel\KaemaModel;
 use App\Models\excel\MahjozaModel;
+use App\Models\jeha\jeha;
 use App\Models\sell\rep_sell_tran;
 use ArPHP\I18N\Arabic;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -577,8 +578,10 @@ class RepAksatController extends Controller
     $xdate=Carbon::parse($maxdate) ;
     $xxdate=$xdate->month.'-'.$xdate->year;
 
+    $jeha=jeha::where('jeha_no',$res->jeha)->first();
+
     $reportHtml = view('PrnView.aksat.Pdf-main-Cont2',
-      ['res'=>$res,'mindate'=>$mmdate,'maxdate'=>$xxdate,'cus'=>$cus,'TajAcc'=>$tajacc,'item_name'=>$item_name])->render();
+      ['res'=>$res,'mindate'=>$mmdate,'maxdate'=>$xxdate,'cus'=>$cus,'TajAcc'=>$tajacc,'item_name'=>$item_name,'jeha'=>$jeha])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 

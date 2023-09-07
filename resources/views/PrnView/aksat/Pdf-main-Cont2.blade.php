@@ -48,34 +48,41 @@
     <label  style="display:inline-block;padding-right: 4px;">علي أن يبدا الإستقطاع من شهر </label>
 </div>
 <div style="text-align: right;font-size: 11pt;">
-    <label  style="display:inline-block;padding-right: 4px;">علي أن يتحمل الزبون أتعاب المصرف</label>
-    <label  id="mainlabel" style="width: 160px;">{{$res->bank_name}}</label>
+
+    <label  id="mainlabel" style="width: 300px;">{{$res->bank_name}}</label>
     <label  style="display:inline-block;">مصرف </label>
-    <label  id="mainlabel" style="width: 110px;">{{$res->acc}}</label>
+    <label  id="mainlabel" style="width: 160px;">{{$res->acc}}</label>
     <label  style="display:inline-block;padding-right: 4px;">وذلك لحساب الشركة الجاري رقم </label>
 </div>
-
+        <div style="text-align: right;font-size: 11pt;">
+            <label  style="display:inline-block;padding-right: 4px;">علي أن يتحمل الزبون أتعاب المصرف</label>
+        </div>
 
 
 <div style="text-align: right;font-size: 14pt;color: #bf800c">
     <label  > ثانياً بيانات تعبأ من قبل الزبون </label>
 </div>
+        <div style="text-align: right;font-size: 11pt;">
+
+            <label  id="mainlabel" style="width: 160px;">{{$jeha->others}}</label>
+            <label  style="display:inline-block;">بطاقة شخصية رقم </label>
+            <label  id="mainlabel" style="width: 300px;">{{$res->name}}</label>
+            <label  style="display:inline-block;padding-right: 4px;">انا الموقع أدناه </label>
+        </div>
 <div style="text-align: right;font-size: 11pt;">
-    <label  id="mainlabel" style="width: 140px;">{{$res->bank_name}}</label>
+    <label  id="mainlabel" style="width: 120px;">{{$res->kst}}</label>
+    <label  style="display:inline-block;">باستقطاع مبلغ وقدره </label>
+    <label  id="mainlabel" style="width: 360px;">{{$res->bank_name}}</label>
     <label  style="display:inline-block;padding-right: 4px;">اخول مصرف  </label>
-    <label  id="mainlabel" style="width: 90px;"></label>
-    <label  style="display:inline-block;">بطاقة شخصية رقم </label>
-    <label  id="mainlabel" style="width: 180px;">{{$res->name}}</label>
-    <label  style="display:inline-block;padding-right: 4px;">انا الموقع أدناه </label>
+
 </div>
 <div style="text-align: right;font-size: 11pt;">
-    <label  id="mainlabel" style="width: 110px;">{{$TajAcc}}</label>
+    <label  id="mainlabel" style="width: 200px;">{{$TajAcc}}</label>
     <label  style="display:inline-block;">لصالح الحساب الخاص بالشركة رقم  </label>
-    <label  id="mainlabel" style="width: 110px;">{{$res->acc}}</label>
+    <label  id="mainlabel" style="width: 200px;">{{$res->acc}}</label>
 
     <label  style="display:inline-block;">من حسابي رقم </label>
-    <label  id="mainlabel" style="width: 70px;">{{$res->kst}}</label>
-    <label  style="display:inline-block;">باستقطاع مبلغ وقدره </label>
+
 
 </div>
 
@@ -96,30 +103,34 @@
 </div>
 
 <div style="text-align: right;font-size: 11pt;">
+    <label  id="mainlabel" style="width: 280px;"></label>
+    <label  style="display:inline-block;padding-right: 4px;"> التوقيع </label>
     <label  id="mainlabel" style="width: 300px;">{{$res->name}}</label>
     <label  style="display:inline-block;padding-right: 4px;"> الإسم </label>
 </div>
+        <div style="text-align: right;font-size: 11pt;">
+           @if($jeha->mdar) <label  id="mainlabel" style="width: 300px;">{{$jeha->mdar}}</label>
+            @else <label  id="mainlabel" style="width: 300px;"></label>
+           @endif
 
+            <label  style="display:inline-block;padding-right: 4px;"> مدار </label>
+               @if($jeha->libyana) <label  id="mainlabel" style="width: 300px;">{{$jeha->libyana}}</label>
+               @else <label  id="mainlabel" style="width: 300px;"></label>
+               @endif
+
+            <label  style="display:inline-block;padding-right: 4px;"> لبيانا </label>
+        </div>
 
 <div style="text-align: right;font-size: 11pt;">
     <label  id="mainlabel" style="width: 270px;">{{$res->place_name}}</label>
     <label  style="display:inline-block;padding-right: 4px;"> جهة العمل </label>
 </div>
+
+
+
 <div style="text-align: right;font-size: 11pt;">
-    <label  id="mainlabel" style="width: 300px;"></label>
-    <label  style="display:inline-block;padding-right: 4px;"> لبيانا </label>
-</div>
-<div style="text-align: right;font-size: 11pt;">
-    <label  id="mainlabel" style="width: 300px;"></label>
-    <label  style="display:inline-block;padding-right: 4px;"> مدار </label>
-</div>
-<div style="text-align: right;font-size: 11pt;">
-    <label  id="mainlabel" style="width: 300px;"></label>
-    <label  style="display:inline-block;padding-right: 4px;"> التوقيع </label>
-</div>
-<div style="text-align: right;font-size: 11pt;">
-    <label  id="mainlabel" style="width: 300px;"></label>
-    <label  style="display:inline-block;padding-right: 4px;"> ملاحظات </label>
+    <label  id="mainlabel" style="width: 600px;"></label>
+    <label  style="display:inline-block;padding-right: 4px;"> ملاحظات /  </label>
 </div>
 
 <div style="text-align: right;font-size: 14pt;color: #bf800c">
