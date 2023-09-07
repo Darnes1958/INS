@@ -60,13 +60,25 @@
       <textarea x-show="$wire.notes!='' && $wire.notes!=null && $wire.notes!='0'"  wire:model="notes"  class="form-control"  style="width: 80% " id="notes" readonly></textarea>
     </div>
 
+   <div class="row">
+     <div x-show="$wire.IsMosdad && !$wire.IsStop" class="col-md-2">
+       <a  wire:click="Stop" class="btn btn-warning waves-effect waves-light "><i class="fa fa-minus-circle"> &nbsp;&nbsp;ايقاف الخصم&nbsp;&nbsp;</i></a>
 
-     @unlessrole('info')
-   @if (\App\Models\LarSetting::first()->ArcBtn=='rep')
-     <div  >
-       <a wire:click="Retrieve" class="btn btn-info waves-effect waves-light mx-10"><i class="fa fa-archive"> &nbsp;&nbsp;استرجاع&nbsp;&nbsp;</i></a>
      </div>
-   @endif
+     <div x-show="$wire.IsStop" class="col-md-2">
+
+       <a  href="{{route('pdfstopone',['name'=>$name,'bank_tajmeeh'=>$TajNo ,
+                                                'acc'=>$acc,'kst'=>$kst,'stop_date'=>$stop_date])}}"
+           class="btn btn-primary waves-effect waves-light "><i class="fa fa-print"> &nbsp;&nbsp;طباعة إيقاف&nbsp;&nbsp;</i></a>
+     </div>
+
+       @unlessrole('info')
+     @if (\App\Models\LarSetting::first()->ArcBtn=='rep')
+       <div  class="col-md-3 ">
+         <a wire:click="Retrieve" class="btn btn-info waves-effect waves-light mx-10"><i class="fa fa-archive"> &nbsp;&nbsp;استرجاع&nbsp;&nbsp;</i></a>
+       </div>
+     @endif
+   </div>
      @endunlessrole
 
 
@@ -160,7 +172,15 @@
                 }
             })
         });
-
+        window.addEventListener('stop',function(e){
+            MyConfirm.fire({
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Livewire.emit('DoStop');
+                }
+            })
+        });
         window.addEventListener('mmsg',function(e){
             MyMsg.fire({
                 confirmButtonText:  e.detail,

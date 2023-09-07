@@ -228,7 +228,6 @@ class RepMainData extends Component
     }
   public function Stop(){
 
-
     $this->dispatchBrowserEvent('stop');
   }
   public function DoStop(){
