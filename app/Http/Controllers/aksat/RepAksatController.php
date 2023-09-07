@@ -552,6 +552,45 @@ class RepAksatController extends Controller
     return $pdf->download('report.pdf');
 
   }
+  function PdfMainCont2($no){
+
+    $RepDate=date('Y-m-d');
+    $cus=Customers::where('Company',Auth::user()->company)->first();
+    $res=DB::connection(Auth()->user()->company)->table('main_view')
+      ->where('no',  $no)
+      ->first();
+
+    $items=rep_sell_tran::where('order_no',$res->order_no)->get();
+    $item_name='';
+    foreach($items as $item) {
+      $item_name=$item_name.' / '.$item->item_name;}
+
+    $taj=bank::where('bank_no',$res->bank)->first()->bank_tajmeeh;
+    $tajacc=BankTajmeehy::where('TajNo',$taj)->first()->TajAcc;
+
+
+    $mindate=kst_trans::where('no',$no)->min('kst_date');
+    $mdate=Carbon::parse($mindate) ;
+    $mmdate=$mdate->month.'-'.$mdate->year;
+
+    $maxdate=kst_trans::where('no',$no)->max('kst_date');
+    $xdate=Carbon::parse($maxdate) ;
+    $xxdate=$xdate->month.'-'.$xdate->year;
+
+    $reportHtml = view('PrnView.aksat.Pdf-main-Cont2',
+      ['res'=>$res,'mindate'=>$mmdate,'maxdate'=>$xxdate,'cus'=>$cus,'TajAcc'=>$tajacc,'item_name'=>$item_name])->render();
+    $arabic = new Arabic();
+    $p = $arabic->arIdentify($reportHtml);
+
+    for ($i = count($p)-1; $i >= 0; $i-=2) {
+      $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+      $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+    }
+
+    $pdf = PDF::loadHTML($reportHtml);
+    return $pdf->download('report.pdf');
+
+  }
   function PdfMainToBank($no){
 
     $RepDate=date('Y-m-d');
