@@ -69,7 +69,7 @@
      @livewire('admin.rep-company')
      @livewire('admin.rep-users')
      @livewire('admin.manage-roles')
-     @livewire('admin.rep-old-roles')
+
      @livewire('admin.rep-roles')
      @livewire('admin.kaema')
      @livewire('admin.mahjoza')

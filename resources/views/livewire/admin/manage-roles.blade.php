@@ -2,11 +2,7 @@
     <div class="card my-0">
         <div class="card-header" style="height: 28px;">Add Roles</div>
         <div class="card-body py-0">
-            <select  wire:model="newRole"  id="role_id" class="form-control  form-select " style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"    >
-                @foreach($roleTable as $s)
-                    <option value="{{ $s->role_root_name }}">{{ $s->role_root_name }}</option>
-                @endforeach
-            </select>
+            
             <div class="row ">
                 <div class="col-md-3 p-0 mx-2">
                 <label  class=" col-form-label ">Role Name</label>
@@ -26,11 +22,7 @@
     <div class="card my-0">
         <div class="card-header" style="height: 28px;">Add Permission</div>
         <div class="card-body py-0">
-            <select  wire:model="newPermission"  id="permission_id" class="form-control  form-select " style="vertical-align: middle ;font-size: 12px;height: 26px;padding-bottom:0;padding-top: 0;"    >
-                @foreach($permissionTable as $s)
-                    <option value="{{ $s->role }}">{{ $s->role }}</option>
-                @endforeach
-            </select>
+
             <div class="row ">
                 <div class="col-md-3 p-0 mx-2">
                     <label  class=" col-form-label ">Permission</label>
