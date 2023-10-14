@@ -15,7 +15,7 @@
 </div>
 
 <div style="text-align: center;font-size: 14pt;">
-    <label  > {{$cus->CompanyName}} </label>
+    <label  > {{$company->CompName}} </label>
 </div>
 <div style="text-align: center;font-size: 14pt;">
     <label  > {{$cus->CompanyNameSuffix}} </label>

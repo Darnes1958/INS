@@ -2,7 +2,7 @@
     <div class="card my-0">
         <div class="card-header" style="height: 28px;">Add Roles</div>
         <div class="card-body py-0">
-            
+
             <div class="row ">
                 <div class="col-md-3 p-0 mx-2">
                 <label  class=" col-form-label ">Role Name</label>
