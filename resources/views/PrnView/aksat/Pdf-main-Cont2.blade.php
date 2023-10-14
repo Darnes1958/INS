@@ -4,13 +4,16 @@
     <div style="position: relative;">
 <div >
    <div style="text-align: left;display: inline-flex;position: fixed">
-       <label style="padding-left: 4px;" > {{$res->no}} </label>
-       <label style="padding-left: 4px;"> رقم العقد </label>
+       <label style="padding-left: 4px;" > {{$res->sul_date}} </label>
+       <label style="padding-left: 4px;"> تاريخ العقد </label>
 
    </div>
-   <div style="display: inline-flex;">
-       <label style="text-align: center;font-size: 16pt;padding-right: 300px;" > عقد بيع لأجل </label>
-   </div>
+    <div style="text-align: right;display: inline-flex;position: absolute;right: 0">
+        <label style="padding-left: 4px;" > {{$res->no}} </label>
+        <label style="padding-left: 4px;"> رقم العقد </label>
+
+    </div>
+
 
 </div>
 
@@ -20,6 +23,9 @@
 <div style="text-align: center;font-size: 14pt;">
     <label  > {{$cus->CompanyNameSuffix}} </label>
 </div>
+        <div style="display: inline-flex;">
+            <label style="text-align: center;font-size: 16pt;padding-right: 300px;" > عقد بيع لأجل </label>
+        </div>
 <div style="text-align: right;font-size: 14pt;color: #bf800c">
     <label  > أولا بيانات تعبأ من قبل المحل </label>
 </div>
@@ -52,7 +58,7 @@
     <label  id="mainlabel" style="width: 300px;">{{$res->bank_name}}</label>
     <label  style="display:inline-block;">مصرف </label>
     <label  id="mainlabel" style="width: 160px;">{{$res->acc}}</label>
-    <label  style="display:inline-block;padding-right: 4px;">وذلك لحساب الشركة الجاري رقم </label>
+    <label  style="display:inline-block;padding-right: 4px;">وذلك لحساب الشركة التجميعي رقم </label>
 </div>
         <div style="text-align: right;font-size: 11pt;">
             <label  style="display:inline-block;padding-right: 4px;">علي أن يتحمل الزبون أتعاب المصرف</label>
@@ -164,14 +170,24 @@
 </div>
 
 
+      <div style="position: absolute;bottom: 50px;
+       right: 40px;font-size: 14pt;color: #bf800c" >
+            <label  id="mainlabel" style="width: 200px;"></label>
 
+        </div>
+        <div style="position: absolute;
+  bottom: 50px;
+  left: 40px;font-size: 14pt;color: #bf800c">
+            <label  id="mainlabel" style="width: 200px;"></label>
+        </div>
    <div style="position: absolute;bottom: 60px;
-       right: 40px;font-size: 14pt;color: #bf800c"" >
+       right: 80px;font-size: 14pt;color: #bf800c" >
+
        <label  > إعتماد المصرف </label>
    </div>
     <div style="position: absolute;
   bottom: 60px;
-  left: 40px;font-size: 14pt;color: #bf800c"">
+  left: 80px;font-size: 14pt;color: #bf800c">
         <label   > إعتماد الشركة </label>
     </div>
 
