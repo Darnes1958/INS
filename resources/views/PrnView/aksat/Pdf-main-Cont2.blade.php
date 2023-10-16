@@ -57,7 +57,7 @@
 
     <label  id="mainlabel" style="width: 300px;">{{$res->bank_name}}</label>
     <label  style="display:inline-block;">مصرف </label>
-    <label  id="mainlabel" style="width: 160px;">{{$res->acc}}</label>
+    <label  id="mainlabel" style="width: 160px;">{{$TajAcc}}</label>
     <label  style="display:inline-block;padding-right: 4px;">وذلك لحساب الشركة التجميعي رقم </label>
 </div>
         <div style="text-align: right;font-size: 11pt;">
