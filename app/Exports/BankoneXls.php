@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\bank\bank;
+use App\Models\bank\BankTajmeehy;
 use App\Models\bank\rep_bank;
 use App\Models\Customers;
 use Illuminate\Support\Facades\Auth;
@@ -21,18 +22,25 @@ class BankoneXls implements FromCollection,WithMapping, WithHeadings,
     WithEvents,WithColumnWidths,WithStyles,WithColumnFormatting
 {
     public $bank;
-
+    public $ByTajmeehy;
+    public $TajNo;
     public $rowcount;
     public $sul;
     public $sul_pay;
     public $raseed;
     public $kst;
+    public $name;
     /**
      * @return array
      */
-    public function __construct(int $bank)
+    public function __construct(string $ByTjmeehy,int $TajNo, int $bank)
     {
         $this->bank = $bank;
+        $this->ByTajmeehy=$ByTjmeehy;
+        $this->TajNo=$TajNo;
+        if ($this->ByTajmeehy=='Bank')
+            $this->name=bank::find($this->bank)->bank_name;
+        else $this->name=BankTajmeehy::where('TajNo',$this->TajNo)->first()->TajName;
 
     }
     public function registerEvents(): array
@@ -144,7 +152,7 @@ class BankoneXls implements FromCollection,WithMapping, WithHeadings,
             [$cus->CompanyName],
             [$cus->CompanyNameSuffix],
             [' '],
-            ['المصرف',bank::find($this->bank)->bank_name],
+            ['المصرف',$this->name],
             [''],
             [''],
             [''],
@@ -153,18 +161,30 @@ class BankoneXls implements FromCollection,WithMapping, WithHeadings,
     }
     public function collection()
     {
-        info('yes');
+        if ($this->ByTajmeehy=='Bank')
         $res=rep_bank::where('bank', '=', $this->bank)
-
             ->selectRaw('sum(kst) as kst,count(*) as count,sum(sul) as sul,sum(sul_pay) as sul_pay,sum(raseed) raseed')->first();
+        if ($this->ByTajmeehy=='Taj')
+            $res=rep_bank::whereIn('bank', function($q){
+                $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$this->TajNo);})
+                ->selectRaw('sum(kst) as kst,count(*) as count,sum(sul) as sul,sum(sul_pay) as sul_pay,sum(raseed) raseed')->first();
+
         $this->rowcount=$res->count;
         $this->kst=$res->kst;
         $this->sul=$res->sul;
         $this->sul_pay=$res->sul_pay;
         $this->raseed=$res->raseed;
-       return rep_bank::on(Auth()->user()->company)->
+        if ($this->ByTajmeehy=='Bank')
+        return rep_bank::on(Auth()->user()->company)->
         where('bank', '=', $this->bank)
             ->orderby('acc')
            ->get();
+        if ($this->ByTajmeehy=='Taj')
+            return rep_bank::on(Auth()->user()->company)->
+            whereIn('bank', function($q){
+                $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$this->TajNo);})
+                ->orderby('acc')
+                ->get();
+
     }
 }

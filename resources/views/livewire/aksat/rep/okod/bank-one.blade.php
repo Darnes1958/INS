@@ -1,21 +1,36 @@
 <div>
-  <div   class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
-    <div class="col-md-5">
-      @livewire('aksat.rep.bank-comp',
-      ['sender' => 'aksat.rep.okod.bank-one',])
-    </div>
+  <div  x-data class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
+      <div x-show="$wire.ByTajmeehy=='Bank'" class="col-md-5">
+          @livewire('aksat.rep.bank-comp',
+          ['sender' => 'aksat.rep.okod.bank-one',])
+      </div>
+      <div x-show="$wire.ByTajmeehy=='Taj'" class="col-md-5">
+          @livewire('aksat.rep.taj-comp',
+          ['sender' => 'aksat.rep.okod.bank-one',])
+      </div>
+
     <div class="col-md-3 my-2 ">
       <input wire:model="search"  type="search"   placeholder="ابحث هنا .......">
     </div>
     <div class="col-md-4 my-2 ">
       <a  href="{{route('pdfbankone',['bank_no'=>$bank_no,'column'=>$orderColumn,'sort'=>$sortOrder])}}"
           class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
-       <a  href="{{route('bankoneex',['bank'=>$bank_no])}}"
-            class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-file-excel"> &nbsp;&nbsp;إكسل&nbsp;&nbsp;</i></a>
+      <a  href="{{route('bankoneex',['ByTjmeehy'=>$ByTajmeehy,'TajNo'=>$TajNo,'bank'=>$bank_no])}}"
+          class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-file-excel"> &nbsp;&nbsp;إكسل&nbsp;&nbsp;</i></a>
     </div>
 
   </div>
 
+    <div class="col-md-3">
+        <div class="form-check form-check-inline my-1 mx-1">
+            <input class="form-check-input" type="radio" wire:model="ByTajmeehy"  name="inlineRadioOptions" id="inlineRadio1" value="Bank">
+            <label class="form-check-label" for="inlineRadio1">بفروع المصارف</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" wire:model="ByTajmeehy" name="inlineRadioOptions" id="inlineRadio2" value="Taj">
+            <label class="form-check-label" for="inlineRadio2">بالتجميعي</label>
+        </div>
+    </div>
 
   <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
     <thead class="font-size-12">

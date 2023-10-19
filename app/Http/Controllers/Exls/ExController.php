@@ -18,11 +18,11 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ExController extends Controller
 {
-    public function BankoneEX($bank)
+    public function BankoneEX($by,$taj,$bank)
     {
 
 
-        return Excel::download(new BankoneXls($bank), 'BankOne.xlsx');
+        return Excel::download(new BankoneXls($by,$taj,$bank), 'BankOne.xlsx');
     }
     public function MosdadaEX($bank,$baky)
     {

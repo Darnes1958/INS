@@ -71,7 +71,7 @@ class Before extends Component
 
     $this->TajNo=$tajno;
     $this->TajName=BankTajmeehy::on(Auth::user()->company)->find($this->TajNo)->TajName;
-    info($this->TajNo);
+
     $this->resetPage();
 
   }
@@ -95,14 +95,14 @@ class Before extends Component
       DB::connection(Auth()->user()->company)->table('late')->delete();
       if ($this->ByTajmeehy=='Taj')
       DB::connection(Auth()->user()->company)->statement( 'insert into late select main.no,count(*) late,:emp
-                            from main,kst_trans where main.no=kst_trans.no and bank in (select bank_no from bank where bank_tajmeeh=:Taj) and (ksm=0 or ksm is null) 
-                                  and kst_date<=:wdate                
+                            from main,kst_trans where main.no=kst_trans.no and bank in (select bank_no from bank where bank_tajmeeh=:Taj) and (ksm=0 or ksm is null)
+                                  and kst_date<=:wdate
                                   group by main.no  ',
                             array('Taj'=> $this->TajNo,'emp'=>Auth::user()->empno,'wdate'=>$date ));
       else
         DB::connection(Auth()->user()->company)->statement( 'insert into late select main.no,count(*) late,:emp
-                            from main,kst_trans where main.no=kst_trans.no and bank=:bank and (ksm=0 or ksm is null) 
-                                  and kst_date<=:wdate                
+                            from main,kst_trans where main.no=kst_trans.no and bank=:bank and (ksm=0 or ksm is null)
+                                  and kst_date<=:wdate
                                   group by main.no  ',
           array('bank'=> $this->bank_no,'emp'=>Auth::user()->empno,'wdate'=>$date ));
 
