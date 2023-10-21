@@ -568,6 +568,7 @@ class RepAksatController extends Controller
 
     $taj=bank::where('bank_no',$res->bank)->first()->bank_tajmeeh;
     $tajacc=BankTajmeehy::where('TajNo',$taj)->first()->TajAcc;
+    $tajname=BankTajmeehy::where('TajNo',$taj)->first()->TajName;
     $CompNo=BankTajmeehy::where('TajNo',$taj)->first()->CompNo;;
     $company=Companies::where('CompNo',$CompNo)->first();
 
@@ -583,7 +584,7 @@ class RepAksatController extends Controller
     $jeha=jeha::where('jeha_no',$res->jeha)->first();
 
     $reportHtml = view('PrnView.aksat.Pdf-main-Cont2',
-      ['res'=>$res,'mindate'=>$mmdate,'maxdate'=>$xxdate,'company'=>$company,'cus'=>$cus,'TajAcc'=>$tajacc,'item_name'=>$item_name,'jeha'=>$jeha])->render();
+      ['tajname'=>$tajname,'res'=>$res,'mindate'=>$mmdate,'maxdate'=>$xxdate,'company'=>$company,'cus'=>$cus,'TajAcc'=>$tajacc,'item_name'=>$item_name,'jeha'=>$jeha])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 

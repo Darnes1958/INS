@@ -174,11 +174,13 @@ class BankoneXls implements FromCollection,WithMapping, WithHeadings,
         $this->sul=$res->sul;
         $this->sul_pay=$res->sul_pay;
         $this->raseed=$res->raseed;
+
         if ($this->ByTajmeehy=='Bank')
         return rep_bank::on(Auth()->user()->company)->
         where('bank', '=', $this->bank)
             ->orderby('acc')
            ->get();
+
         if ($this->ByTajmeehy=='Taj')
             return rep_bank::on(Auth()->user()->company)->
             whereIn('bank', function($q){

@@ -32,7 +32,7 @@
 
 <div  style="text-align: right;font-size: 11pt;">
     <label  style="display:inline-block;">نرجو منكم إستقطاع الأقساط الشهرية المترتبة علي</label>
-    <label id="mainlabel" style="width: 350px;">{{$res->bank_name}}</label>
+    <label id="mainlabel" style="width: 350px;">{{$tajname}}</label>
     <label  style="display:inline-block;padding-right: 4px;">الإخوة مصرف / </label>
 </div>
 <div style="text-align: right;font-size: 11pt;">
@@ -55,7 +55,7 @@
 </div>
 <div style="text-align: right;font-size: 11pt;">
 
-    <label  id="mainlabel" style="width: 300px;">{{$res->bank_name}}</label>
+    <label  id="mainlabel" style="width: 300px;">{{$tajname}}</label>
     <label  style="display:inline-block;">مصرف </label>
     <label  id="mainlabel" style="width: 160px;">{{$TajAcc}}</label>
     <label  style="display:inline-block;padding-right: 4px;">وذلك لحساب الشركة التجميعي رقم </label>
@@ -78,7 +78,7 @@
 <div style="text-align: right;font-size: 11pt;">
     <label  id="mainlabel" style="width: 120px;">{{$res->kst}}</label>
     <label  style="display:inline-block;">باستقطاع مبلغ وقدره </label>
-    <label  id="mainlabel" style="width: 360px;">{{$res->bank_name}}</label>
+    <label  id="mainlabel" style="width: 360px;">{{$tajname}}</label>
     <label  style="display:inline-block;padding-right: 4px;">اخول مصرف  </label>
 
 </div>
