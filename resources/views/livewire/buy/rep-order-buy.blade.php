@@ -195,7 +195,7 @@
                       @endif
                       <td> {{ $item['price_input'] }} </td>
                       <td> {{ $item['price'] }} </td>
-                      <td> {{ $item['sub_tot'] }}</td>
+                      <td> {{ number_format($item['sub_tot'], 3, '.', '') }}</td>
                       <td> {{ $item['sub_cost'] }}</td>
                   </tr>
               @endforeach

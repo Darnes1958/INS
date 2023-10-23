@@ -166,7 +166,7 @@ class OrderSellDetailEdit extends Component
 
         return [
 
-            'quant' =>   ['required','integer','gt:0'],
+            'quant' =>   ['required','numeric','gt:0'],
             'price' =>   ['required','numeric'  ,'gt:0'],
         ];
     }

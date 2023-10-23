@@ -20,7 +20,7 @@
                 <td > {{ $item['item_name'] }} </td>
                 <td> {{ $item['quant'] }} </td>
                 <td> {{ $item['price'] }} </td>
-                <td> <input value="{{ $item['subtot'] }}" type="text"
+                <td> <input value="{{ number_format($item['subtot'], 2, '.', '') }}" type="text"
                              class="form-control estimated_amount" readonly style="background-color: #ddd;" ></td>
                 <td style="padding-top: 2px;padding-bottom: 2px; ">
                     <i wire:click.prevent="edititem({{$key}})" class="btn btn-outline-primary btn-sm fa fa-edit editable-input" style="margin-left: 2px;"></i>

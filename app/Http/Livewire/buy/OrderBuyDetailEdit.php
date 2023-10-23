@@ -133,7 +133,7 @@ class OrderBuyDetailEdit extends Component
         Config::set('database.connections.other.database', Auth::user()->company);
         return [
             'item' => ['required','integer','gt:0', 'exists:other.items,item_no'],
-            'quant' =>   ['required','integer','gt:0'],
+            'quant' =>   ['required','numeric','gt:0'],
             'price' =>   ['required','numeric'  ,'gt:0'],
         ];
     }

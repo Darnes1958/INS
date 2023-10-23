@@ -168,7 +168,7 @@
           @role('admin')
           <td> {{ $item['rebh'] }} </td>
           @endrole
-          <td> {{ $item['sub_tot'] }}</td>
+          <td> {{ number_format($item['sub_tot'], 3, '.', '')  }}</td>
         </tr>
       @endforeach
       <tr style="background: #9dc1d3">
