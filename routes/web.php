@@ -80,6 +80,8 @@ Route::controller(AdminController::class)->group(function (){
   route::get('/manager', 'ManagerPage')->name('manager')->middleware('auth') ;
   route::get('/oper', 'RepOper')->name('oper')->middleware('auth') ;
   route::get('/SeeWelcomePage', 'SeeWelcomePage')->name('SeeWelcomePage')->middleware('auth') ;
+  route::get('/custransinp', 'CusTransInp')->name('custransinp')->middleware('auth');
+  route::get('/custransrep', 'CusTransRep')->name('custransrep')->middleware('auth');
 });
 Route::controller(AKsatController::class)->group(function (){
   route::get('/kst/input', 'InpKst')->name('kst.input')->middleware('auth') ;
@@ -149,6 +151,8 @@ Route::controller(RepAmaaController::class)->group(function (){
   route::get('/repamma/{rep}', 'RepAmma')->name('repamma')->middleware('auth');
   route::get('/pdfklasa/{date1?}/{date2?}', 'PdfKlasa')->name('pdfklasa') ;
   route::get('/pdfklasamail/{company}', 'PdfKlasaMail')->name('pdfklasamail') ;
+
+
 });
 
 Route::controller(CustomerController::class)->group(function (){

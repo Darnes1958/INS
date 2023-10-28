@@ -338,5 +338,18 @@
                     @endcan
 
                 @endrole
+                    @if($id==1)
+                        <li class="mb-1">
+                            <button class="font-size-14 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#Cus-collapse" aria-expanded="false">
+                                &nbsp <i class="fa  fas fa-list-ul" aria-hidden="true"></i>&nbsp شئون الشركات</button>
+                            <div class="collapse" id="Cus-collapse">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li><a href="{{route('custransinp')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">استلام مبالغ</a></li>
+                                    <li><a href="{{route('custransrep')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقارير</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    @endif
+
         </ul>
     </div>

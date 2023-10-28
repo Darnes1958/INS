@@ -8,6 +8,17 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 class AdminController extends Controller
 {
+    public function CusTransInp (){
+
+        return view('backend.Amma.CusTransInp');
+
+    }
+    public function CusTransRep (){
+
+        return view('backend.Amma.CusTransRep');
+
+    }
+
   public function ManagerPage (){
 
     return view('backend.manager');
