@@ -21,10 +21,15 @@ class RepCusTrans extends Component
     public $ValType;
     public $RepRadio=0;
     public $RepRadio2=1;
+    public $RepRadio3=0;
     public function selectItem($cusno,$valtype){
         $this->CusNo=$cusno;
         $this->ValType=$valtype;
     }
+  public function selectItem2($cusno){
+    $this->CusNo=$cusno;
+
+  }
     public function mount(){
         $this->TransDate=Carbon::now()->firstOfYear()->format('Y-m-d');
         $this->date1=Carbon::now()->firstOfYear()->format('Y-m-d');
@@ -38,17 +43,35 @@ class RepCusTrans extends Component
                 ->join('CusValType', 'CusTrans.ValType', '=', 'CusValType.ValTypeNo')
                 ->whereBetween('TransDate',[$this->date1,$this->date2])
                 ->when($this->RepRadio!=0,function($q){
-                    return $q->where('ValType',$this->RepRadio);
-                })
+                    return $q->where('ValType',$this->RepRadio);})
                 ->selectRaw('Company,CompanyName,CusTrans.CusNo,
-                SUM(ValNext) AS ValNext, SUM(Val) AS Val, ValType,ValTypeName
-')
+                SUM(ValNext) AS ValNext, SUM(Val) AS Val, ValType,ValTypeName')
                 ->groupby('Company','CompanyName','CusNo','ValType','ValTypeName')
                 ->paginate(15,['*'],'RepSum'),
-            'RepCusTrans'=>CusTrans::where('CusNo',$this->CusNo)->
-                when($this->RepRadio2==1,function($q){
-                    return $q->where('ValType',$this->ValType);
-            })->paginate(15),
+
+          'RepCusTrans'=>CusTrans::where('CusNo',$this->CusNo)->
+          when($this->RepRadio2==1,function($q){
+            return $q->where('ValType',$this->ValType);
+          })->paginate(15),
+
+          'RepCusAll'=>DB::table('Customers')
+            ->join('CusTrans', 'Customers.id', '=', 'CusTrans.CusNo')
+            ->whereBetween('TransDate',[$this->date1,$this->date2])
+            ->selectRaw('Company,CompanyName,CusTrans.CusNo,
+                SUM(ValNext) AS ValNext, SUM(Val) AS Val')
+            ->groupby('Company','CompanyName','CusNo')
+            ->paginate(15,['*'],'RepSumAll'),
+
+          'RepCusAllDetail'=>DB::table('Customers')
+            ->join('CusTrans', 'Customers.id', '=', 'CusTrans.CusNo')
+            ->join('CusValType', 'CusTrans.ValType', '=', 'CusValType.ValTypeNo')
+            ->whereBetween('TransDate',[$this->date1,$this->date2])
+            ->where('CusNo',$this->CusNo)
+            ->selectRaw('Company,CompanyName,CusTrans.CusNo,
+                SUM(ValNext) AS ValNext, SUM(Val) AS Val, ValType,ValTypeName')
+            ->groupby('Company','CompanyName','CusNo','ValType','ValTypeName')
+            ->paginate(15,['*'],'RepSum'),
+
         ]);
     }
 }
