@@ -78,6 +78,13 @@ class CusTransInp extends Component
          CusTrans::insert(['CusNo' => $this->CusNo, 'ValType' => $this->ValType, 'Val' => $this->Val,
              'TransDate' => $this->TransDate, 'DateNext' => $this->DateNext, 'ValNext' => $this->ValNext,
              'Notes' => $this->Notes]);
+         $date=Carbon::parse($this->TransDate);
+         if ($this->ValType==1) $this->TransDate=$date->addMonth()->format('Y-m-d');
+         if ($this->ValType==2) $this->TransDate=$date->addMonth(3)->format('Y-m-d');
+         $date=Carbon::parse($this->DateNext);
+       if ($this->ValType==1) $this->DateNext=$date->addMonth()->format('Y-m-d');
+       if ($this->ValType==2) $this->DateNext=$date->addMonth(3)->format('Y-m-d');
+
      }
      else
      {
@@ -86,7 +93,7 @@ class CusTransInp extends Component
              'TransDate' => $this->TransDate, 'DateNext' => $this->DateNext, 'ValNext' => $this->ValNext,
              'Notes' => $this->Notes]);
      }
-     $this->ClearData();
+
      $this->emit('gotonext','Val');
 
     }
@@ -96,7 +103,7 @@ class CusTransInp extends Component
         $res=CusTrans::where('id',$this->TranId)->first();
         $ValType=$res->ValType;
         $max=0;
-     
+
 
         CusTrans::where('id',$this->TranId)->delete();
 
