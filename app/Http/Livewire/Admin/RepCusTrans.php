@@ -60,7 +60,7 @@ class RepCusTrans extends Component
               ->when($this->RepRadio!=0,function($q){
                   return $q->where('ValType',$this->RepRadio);})
             ->selectRaw('Company,CompanyName,CusTrans.CusNo,
-                SUM(ValNext) AS ValNext, SUM(Val) AS Val')
+                SUM(dbo.ret_valnext(Customers.id)) AS ValNext, SUM(Val) AS Val')
             ->groupby('Company','CompanyName','CusNo')
             ->paginate(15,['*'],'RepSumAll'),
 
