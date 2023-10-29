@@ -74,7 +74,7 @@ class CusTransInp extends Component
     public function Save(){
      $this->validate();
      if (!$this->UpdateMod) {
-         CusTrans::where('CusNo', $this->CusNo)->update(['last' => 0]);
+         CusTrans::where('CusNo', $this->CusNo)->where('ValType',$this->ValType)->update(['last' => 0]);
          CusTrans::insert(['CusNo' => $this->CusNo, 'ValType' => $this->ValType, 'Val' => $this->Val,
              'TransDate' => $this->TransDate, 'DateNext' => $this->DateNext, 'ValNext' => $this->ValNext,
              'Notes' => $this->Notes]);
@@ -93,7 +93,18 @@ class CusTransInp extends Component
     public function CloseDeleteDialog(){$this->dispatchBrowserEvent('CloseMyDelete');}
     public function delete(){
         $this->CloseDeleteDialog();
+        $res=CusTrans::where('id',$this->TranId)->first();
+        $ValType=$res->ValType;
+        $max=0;
+     
+
         CusTrans::where('id',$this->TranId)->delete();
+
+      if ($res->Last==1)
+        $max = CusTrans::where('CusNo', $res->CusNo)->where('ValType', $ValType)->max('id');
+
+        CusTrans::where('id', $max)->update(['Last' => 1]);
+
 
         $this->render();
     }
