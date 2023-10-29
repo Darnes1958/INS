@@ -57,8 +57,7 @@ class RepCusTrans extends Component
           'RepCusAll'=>DB::table('Customers')
             ->join('CusTrans', 'Customers.id', '=', 'CusTrans.CusNo')
             ->whereBetween('TransDate',[$this->date1,$this->date2])
-            ->when($this->RepRadio!=0,function($q){
-              return $q->where('ValType',$this->RepRadio);})
+
             ->where('last',1)
             ->selectRaw('Company,CompanyName,CusTrans.CusNo,
                 SUM(ValNext) AS ValNext, SUM(Val) AS Val')
@@ -69,8 +68,7 @@ class RepCusTrans extends Component
             ->join('CusTrans', 'Customers.id', '=', 'CusTrans.CusNo')
             ->join('CusValType', 'CusTrans.ValType', '=', 'CusValType.ValTypeNo')
             ->whereBetween('TransDate',[$this->date1,$this->date2])
-            ->when($this->RepRadio!=0,function($q){
-              return $q->where('ValType',$this->RepRadio);})
+            
             ->where('CusNo',$this->CusNo)
             ->where('last',1)
             ->selectRaw('Company,CompanyName,CusTrans.CusNo,
