@@ -41,6 +41,12 @@ class ExcelController extends Controller
         'hafitha_tajmeehy'=>$TajNo,
     ]);
 
+    if (Auth::user()->company=='Boshlak')
+    {
+        FromExcelModel::on(Auth()->user()->company)->
+            update([ 'ksm' => DB::raw('ksm-(.05*ksm)') ]);
+
+    }
 
     return redirect('/home')->with('success', 'All good!');
   }
