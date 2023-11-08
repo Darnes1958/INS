@@ -14,9 +14,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Jenssegers\Agent\Agent;
+use DateTime;
 
 class AdminPage extends Component
 {
+public kst_trans $KstTrans;
+protected $rules = [
+ 'KstTrans.kst'=>'required',
+ 'KstTrans.kst_date'=>'required',
+];
 public $text;
 
 
@@ -31,13 +37,37 @@ public $ThedatabaseListIsSelectd;
     $this->redirect('/home');
   }
   public function BuyPrice(){
-      $res=main::all();
-      foreach ($res as $item){
-          $trans=kst_trans::where('no',$item->no)->orderby('wrec_no')->get();
-          $i=0;
-          foreach ($trans as $ser) {$i+=1;kst_trans::where('wrec_no',$ser->wrec_no)->update(['ser'=>$i]);}
-      }
+      $mains=main::all();
+      foreach($mains as $main) {
+        $sul_date=$main->sul_date;
+        $kstcount=$main->kst_count;
+        $kst=$main->kst;
+        $no=$main->no;
+          $day = date('d', strtotime($sul_date));
+          $month = date('m', strtotime($sul_date));
+          $year = date('Y', strtotime($sul_date));
+          $date = $year . $month . '28';
+          $date = DateTime::createFromFormat('Ymd', $date);
+          $date = $date->format('Y-m-d');
+          if ($day > 24) {
+              $date = date('Y-m-d', strtotime($date . "+1 month"));
+          }
+          $kst_trans= kst_trans::where('no',$no)->orderBy('ser','asc')->get();
+          foreach ($kst_trans as $trans){
+           $this->KstTrans=$trans;
 
+           info($this->KstTrans);
+           $this->KstTrans->kst=$kst;
+           $this->KstTrans->kst_date=$date;
+              $this->validate();
+           info($this->KstTrans);
+
+           $this->KstTrans->save();
+           $date = date('Y-m-d', strtotime($date . "+1 month"));
+          }
+
+
+      }
 
   }
   protected function FalseAll(){

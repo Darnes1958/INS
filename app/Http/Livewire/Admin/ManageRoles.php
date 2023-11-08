@@ -97,15 +97,7 @@ class ManageRoles extends Component
         $existrole = DB::table('useradmin.dbo.roles')->select('name');
         $existpermission = DB::table('useradmin.dbo.permissions')->select('name');
         return view('livewire.admin.manage-roles',
-            ['roleTable' => DB::connection(Auth()->user()->company)->table('sys_roots')
-                ->whereNotIn('role_root_name', $existrole)
-                ->get(),
-             'permissionTable' => DB::connection(Auth()->user()->company)->table('sys_roles')
-                 ->whereNotIn('role', $existpermission)
-                 ->orderBy('role_root')
-                 ->orderBy('role_ser')
-
-                 ->get(),
+            [
              'role2Table' =>Role::all(),
 
              'per2Table' =>Permission::orderby('id')->get() ,
