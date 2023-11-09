@@ -22,4 +22,8 @@ class OrderSellController extends Controller
   function OrderSellRep (){
     return view('backend.sell.rep_sell_order');
   }
+  function OrderSellRepARc (){
+    return view('backend.sell.rep_sell_order_arc');
+  }
+
 }

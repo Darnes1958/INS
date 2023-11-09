@@ -225,7 +225,7 @@ class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping
 
         $second=DB::connection(Auth()->user()->company)->table('main_view')
           ->selectraw('no,name,sul_date,sul,sul_pay,raseed,kst,kst_count,bank_name,acc,order_no,null as ksm_date')
-         
+
           ->where([
             ['bank', '=', $this->bank],
             ['sul_pay',0],

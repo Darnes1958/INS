@@ -64,7 +64,7 @@ Route::controller(ExcelController::class)->group(function (){
 
 Route::controller(pdfController::class)->group(function (){
     route::get('/reporderbuypdf/{order_no?}/{jeha_name?}/{place_name?}', 'RepOrderPdf')->name('reporderbuypdf') ;
-    route::get('/repordersellpdf/{order_no?}/{jeha_name?}/{place_name?}', 'RepOrderSellPdf')->name('repordersellpdf') ;
+    route::get('/repordersellpdf/{order_no?}/{jeha_name?}/{place_name?}/{RepType?}', 'RepOrderSellPdf')->name('repordersellpdf') ;
     route::get('/pdfmosdada/{bank_no?}/{baky?}/{bank_name?}', 'PdfMosdada')->name('pdfmosdada') ;
     route::get('/pdfdeffer/{bank_no?}/{deffer?}/{bank_name?}', 'PdfDeffer')->name('pdfdeffer') ;
     route::get('/dobackup', 'DoBackup')->name('dobackup') ;
@@ -197,6 +197,7 @@ Route::controller(OrderSellController::class)->group(function (){
      route::get('/order_sell/add/{price_type}','OrderSell')->name('order_sell.add')->middleware('auth');
      route::get('/order_sell/edit','OrderSellEdit')->name('order_sell.edit')->middleware('auth');
      route::get('/order_sell/rep','OrderSellRep')->name('order_sell.rep')->middleware('auth');
+     route::get('/order_sell_arc/rep','OrderSellRepArc')->name('order_sell_arc.rep')->middleware('auth');
 });
 Route::controller(StoresController::class)->group(function (){
   route::get('/stores/add/{from_to}','StoresAdd')->name('stores.add')->middleware('auth');

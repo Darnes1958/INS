@@ -4,7 +4,7 @@
   <div   class="row g-2 " style="border:1px solid lightgray;background: white;">
     @if( ! $DoNotShowOrder)
     <div class="col-md-12" >
-      @livewire('sell.sell-select')
+      @livewire('sell.sell-select-arc')
     </div>
     @endif
     <div class="col-md-7">
@@ -136,7 +136,7 @@
       </div>
     </div>
     <a  href="{{route('repordersellpdf',
-         ['order_no'=>$order_no,'jeha_name'=>$jeha_name,'place_name'=>$place_name,'RepType'=>'NotArc'])}}"
+         ['order_no'=>$order_no,'jeha_name'=>$jeha_name,'place_name'=>$place_name,'RepType'=>'Arc'])}}"
         class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
   </div>
 </div>
@@ -224,7 +224,7 @@
           @this.set('TheOrderListSelected',1);
           });
       });
-      window.livewire.on('sell-change-event',()=>{
+      window.livewire.on('sell-arc-change-event',()=>{
           $('#Sell_L').select2({
               closeOnSelect: true
           });

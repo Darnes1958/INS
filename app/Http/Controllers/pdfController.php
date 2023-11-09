@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Arc\Arc_rep_sell_tran;
+use App\Models\Arc\Arc_Sells;
 use App\Models\buy\buys;
 use App\Models\buy\rep_buy_tran;
 use App\Models\Customers;
@@ -106,13 +108,22 @@ $comp=Auth()->user()->company;
   }
   function RepOrderSellPdf(Request $request){
     $order_no=$request->order_no;
-    $res=sells::on(Auth()->user()->company)->where('order_no',$order_no)->first();
+    if ($request->RepType=='NotArc')
+     $res=sells::on(Auth()->user()->company)->where('order_no',$order_no)->first();
+    else
+      $res=Arc_Sells::where('order_no',$order_no)->first();
     if ($order_no==null || $order_no==0 || !$res) return(false);
     $cus=Customers::where('Company',Auth::user()->company)->first();
     $jeha_name=$request->jeha_name;
     $place_name=$request->place_name;
-    $orderdetail=rep_sell_tran::on(Auth()->user()->company)->where('order_no',$order_no)->get();
-    $res=sells::on(Auth()->user()->company)->where('order_no',$order_no)->first();
+    if ($request->RepType=='NotArc') {
+      $orderdetail = rep_sell_tran::on(Auth()->user()->company)->where('order_no', $order_no)->get();
+      $res=sells::on(Auth()->user()->company)->where('order_no',$order_no)->first();
+    }
+    else {
+      $orderdetail = Arc_rep_sell_tran::where('order_no', $order_no)->get();
+      $res=Arc_Sells::where('order_no',$order_no)->first();
+    }
 
 
     //  return view('PrnView.buy.rep-order-buy',compact('orderdetail','res'));

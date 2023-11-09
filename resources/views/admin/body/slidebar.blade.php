@@ -241,6 +241,12 @@
                         @can('فاتورة مبيعات')
                         <li><a href="{{route('order_sell.rep')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">فاتورة مبيعات</a></li>
                             @endcan
+                        @if($company=='Daibany')
+                            @can('فاتورة مبيعات')
+                                <li><a href="{{route('order_sell_arc.rep')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">فاتورة مبيعات من الارشيف</a></li>
+                            @endcan
+                        @endif
+
                        @can('فاتورة مشتريات')
                        <li><a href="{{route('order_buy.rep')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">فاتورة مشتريات</a></li>
                        @endcan
