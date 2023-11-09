@@ -11,7 +11,8 @@
 
 
   <table  width="100%"   align="right" >
-    <caption style="font-size: 12pt; margin: 8px;">{{'كشف بالعقود الخاملة لمدة '.$months.'  شهور .. بتاريخ '.$RepDate }} </caption>
+   @if($RepRadio=='RepAll') <caption style="font-size: 12pt; margin: 8px;">{{'كشف بالعقود الخاملة لمدة '.$months.'  شهور .. بتاريخ '.$RepDate }} </caption>@endif
+   @if($RepRadio=='RepSome') <caption style="font-size: 12pt; margin: 8px;">{{'كشف بالعقود الخاملة لمدة '.$months.'  شهور .. بتاريخ '.$RepDate.'  (لم تسدد بعد)' }} </caption>@endif
     <thead style=" font-family: DejaVu Sans, sans-serif; margin-top: 8px;" >
     <tr  style="background: #9dc1d3;" >
       <th style="width: 8%">ت.أخر قسط</th>

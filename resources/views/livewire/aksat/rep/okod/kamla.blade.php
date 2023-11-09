@@ -24,10 +24,10 @@
     </div>
     <div class="col-md-4 d-flex">
 
-        <a  href="{{route('pdfkamla',['bank_no'=>$bank_no,'months'=>$months,'bank_name'=>$bank_name])}}"
+        <a  href="{{route('pdfkamla',['bank_no'=>$bank_no,'months'=>$months,'bank_name'=>$bank_name,'RepRadio'=>$RepRadio])}}"
             class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
 
-        <a  href="{{route('khamlaex',['bank'=>$bank_no,'months'=>$months])}}"
+        <a  href="{{route('khamlaex',['bank'=>$bank_no,'months'=>$months,'RepRadio'=>$RepRadio])}}"
                 class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-file-excel"> &nbsp;&nbsp;إكسل&nbsp;&nbsp;</i></a>
 
     </div>

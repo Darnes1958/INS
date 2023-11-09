@@ -37,7 +37,7 @@ Route::controller(ExController::class)->group(function () {
     Route::get('bankoneex/{ByTjmeehy?},{TajNo?},{bank?}', 'BankoneEx')->name('bankoneex');
     Route::get('mosdadaex/{bank?},{baky?}', 'MosdadaEx')->name('mosdadaex');
     Route::get('defferex/{bank?},{deffer?}', 'DefferEx')->name('defferex');
-    Route::get('khamlaex/{bank?},{months?}', 'KhamlaEx')->name('khamlaex');
+    Route::get('khamlaex/{bank?},{months?},{RepRadio?}', 'KhamlaEx')->name('khamlaex');
     Route::get('repmakex/{place_type?},{place_no?},{withzero?}', 'RepMakEx')->name('repmakex');
     Route::get('klasaex/{date1?},{date2?}', 'KlasaEx')->name('klasaex');
     Route::get('notthereex/{bank_no?},{TajNo?}', 'NotThereEx')->name('notthereex');
@@ -133,7 +133,7 @@ Route::controller(RepAksatController::class)->group(function (){
   route::get('/pdfplacesum/{RepChk?}/{date1?}/{date2?}', 'PdfPlaceSum')->name('pdfplacesum') ;
   route::get('/pdfhafmini/{hafitha?}/{rep_type?}/{DisRadio?}', 'PdfHafMini')->name('pdfhafmini') ;
   route::get('/pdfwrong/{bank_no?}/{wrong_date1?}/{wrong_date2?}/{bank_name?}', 'PdfWrong')->name('pdfwrong') ;
-  route::get('/pdfkamla/{bank_no?}/{months?}/{bank_name?}', 'PdfKamla')->name('pdfkamla') ;
+  route::get('/pdfkamla/{bank_no?}/{months?}/{bank_name?}/{RepRadio?}', 'PdfKamla')->name('pdfkamla') ;
   route::get('/pdfstop/{bank_no?}/{stop_date1?}/{stop_date2?}/{bank_name?}', 'PdfStop')->name('pdfstop') ;
   route::get('/pdfstoponeall/{bank_no?}/{stop_date1?}/{stop_date2?}/{bank_name?}', 'PdfStopOneAll')->name('pdfstoponeall') ;
   route::get('/pdfstopone/{name?}/{bank_tajmeeh?}/{acc?}/{kst?}', 'PdfStopOne')->name('pdfstopone') ;

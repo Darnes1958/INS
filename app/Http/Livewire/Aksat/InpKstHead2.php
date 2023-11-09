@@ -28,6 +28,7 @@ class InpKstHead2 extends Component
 
   public $TheBankListIsSelectd;
   public $TheNoListIsSelectd;
+  public $TheAccListIsSelectd;
 
   public $The_ser;
 
@@ -45,6 +46,10 @@ class InpKstHead2 extends Component
   public function updatedTheBankListIsSelectd(){
     $this->TheBankListIsSelectd=0;
     $this->ChkBankAndGo();
+  }
+  public function updatedTheAccListIsSelectd(){
+    $this->TheAccListIsSelectd=0;
+    $this->ChkAccAndGo();
   }
   public function updatedTheNoListIsSelectd(){
 
@@ -166,17 +171,22 @@ public function Go(){
 
     $result = main::where('acc',$this->acc)->get();
     if (count($result)!=0) {
+
         if (count($result)>1){
           $this->emit('GotoManyAcc',$this->acc);
           $this->dispatchBrowserEvent('OpenKstManyModal');}
         else {
+
           $result = main::where('acc',$this->acc)->first();
           $this->bankno=$result->bank;
           $this->bankname=bank::find($this->bankno)->bank_name;
           $this->name=$result->name;
           $this->no=$result->no;
+          $orderno=$result->order_no;
 
           $this->emit('NoAtUpdate',$result);
+          $this->emit('nofound',$result,$this->Ksm_type);
+          $this->emit('GotoKstDetail',$this->no,$orderno);
           $this->emitTo('aksat.inp-kst-detail','kstdetail_goto','ksm_date');
         }
       } }

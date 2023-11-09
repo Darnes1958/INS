@@ -170,7 +170,7 @@ function ResetKstDetail (){
 
           $this->ResetKstDetail();
           $this->emitTo('tools.my-table','refreshComponent');
-          $this->emit('ksthead_goto','no');
+          $this->emit('ksthead_goto','acc');
 
 
         } catch (\Exception $e) {

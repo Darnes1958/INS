@@ -36,9 +36,9 @@ class ExController extends Controller
     {
         return Excel::download(new NotThereXls($bank_no,$TajNo), 'NotThere.xlsx');
     }
-    public function KhamlaEX($bank,$baky)
+    public function KhamlaEX($bank,$baky,$repradio)
     {
-        return Excel::download(new KhamlaXls($bank,$baky), 'Khamla.xlsx');
+        return Excel::download(new KhamlaXls($bank,$baky,$repradio), 'Khamla.xlsx');
     }
   public function RepMakEX($place_type,$place_no,$withzero)
   {

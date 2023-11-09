@@ -30,6 +30,7 @@ class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping
  {
     public $bank;
     public $months;
+    public $RepRadio;
     public $rowcount;
     public $sul;
     public $sul_pay;
@@ -39,10 +40,11 @@ class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping
     /**
      * @return array
      */
-    public function __construct(int $bank,int $months)
+    public function __construct(int $bank,int $months,string $repradio)
     {
         $this->bank = $bank;
         $this->months = $months;
+        $this->RepRadio = $repradio;
     }
     public function registerEvents(): array
     {
@@ -68,7 +70,11 @@ class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping
                 $event->sheet->getDelegate()->getStyle('J')
                     ->getAlignment()
                     ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->setCellValue('D6', 'كشف بالعقود الخاملة لمدة '.$this->months.'  شهور .. بتاريخ '.date('Y-m-d'));
+                if ($this->RepRadio=='RepAll')
+                 $event->sheet->setCellValue('D6', 'كشف بالعقود الخاملة لمدة '.$this->months.'  شهور .. بتاريخ '.date('Y-m-d'));
+                if ($this->RepRadio=='RepSome')
+                 $event->sheet->setCellValue('D6', 'كشف بالعقود الخاملة لمدة '.$this->months.'  شهور .. بتاريخ '.date('Y-m-d').'  (لم تسدد بعد)');
+
                 $event->sheet->setCellValue('B'.$this->rowcount+9, 'الإجمالي');
                 $event->sheet->setCellValue('E'.$this->rowcount+9, $this->sul);
                 $event->sheet->setCellValue('H'.$this->rowcount+9, $this->sul_pay);
@@ -182,39 +188,58 @@ class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping
                             where  sul_pay=0 and  main.no<>0 and DATEDIFF(month,sul_date,getdate())>=:months and bank=:bank ',
             array('bank'=> $this->bank,'emp'=>Auth::user()->empno,'months'=>$this->months ));
 
-        $first=DB::connection(Auth()->user()->company)->table('main_trans_view2')
-            ->selectRaw('no,name,sul_date,sul,sul_pay,raseed,kst,kst_count,bank_name,acc,order_no,max(ksm_date) as ksm_date')
-            ->where([
-                ['bank', '=', $this->bank],
-                ['sul_pay','!=',0],
-                ])
+      if ($this->RepRadio=='RepAll') {
+        $first = DB::connection(Auth()->user()->company)->table('main_trans_view2')
 
-            ->whereExists(function ($query) {
-                $query->select(DB::raw(1))
-                    ->from('late')
-                    ->whereColumn('main_trans_view2.no', 'late.no')
-                    ->where('emp',Auth::user()->empno);
-            })
-            ->groupBy('no','name','sul_date','sul','sul_pay','raseed','kst','kst_count','bank_name','acc','order_no');
+          ->selectRaw('no,name,sul_date,sul,sul_pay,raseed,kst,kst_count,bank_name,acc,order_no,max(ksm_date) as ksm_date')
+          ->where([
+            ['bank', '=', $this->bank],
+            ['sul_pay', '!=', 0],
+          ])
+          ->whereExists(function ($query) {
+            $query->select(DB::raw(1))
+              ->from('late')
+              ->whereColumn('main_trans_view2.no', 'late.no')
+              ->where('emp', Auth::user()->empno);
+          })
+          ->groupBy('no', 'name', 'sul_date', 'sul', 'sul_pay', 'raseed', 'kst', 'kst_count', 'bank_name', 'acc',
+            'order_no');
+
+        $second = DB::connection(Auth()->user()->company)->table('main_view')
+          ->selectraw('no,name,sul_date,sul,sul_pay,raseed,kst,kst_count,bank_name,acc,order_no,null as ksm_date')
+          ->where([
+            ['bank', '=', $this->bank],
+            ['sul_pay', 0],
+          ])
+          ->whereExists(function ($query) {
+            $query->select(DB::raw(1))
+              ->from('late')
+              ->whereColumn('main_view.no', 'late.no')
+              ->where('emp', Auth::user()->empno);
+          })
+          ->union($first)
+          ->orderby('no')
+          ->get();
+      }
+      if ($this->RepRadio=='RepSome'){
 
         $second=DB::connection(Auth()->user()->company)->table('main_view')
-            ->selectraw('no,name,sul_date,sul,sul_pay,raseed,kst,kst_count,bank_name,acc,order_no,null as ksm_date')
-            ->where([
-                ['bank', '=', $this->bank],
-                ['sul_pay',0],
-                ])
+          ->selectraw('no,name,sul_date,sul,sul_pay,raseed,kst,kst_count,bank_name,acc,order_no,null as ksm_date')
+         
+          ->where([
+            ['bank', '=', $this->bank],
+            ['sul_pay',0],
+          ])
+          ->whereExists(function ($query) {
+            $query->select(DB::raw(1))
+              ->from('late')
+              ->whereColumn('main_view.no', 'late.no')
+              ->where('emp',Auth::user()->empno);
+          })
 
-            ->whereExists(function ($query) {
-                $query->select(DB::raw(1))
-                    ->from('late')
-                    ->whereColumn('main_view.no', 'late.no')
-                    ->where('emp',Auth::user()->empno);
-            })
-            ->union($first)
-            ->orderby('no')
-            ->get();
+          ->get();
 
-
+      }
         $this->rowcount=$second->count();
         $this->sul=$second->sum('sul');
         $this->sul_pay=$second->sum('sul_pay');

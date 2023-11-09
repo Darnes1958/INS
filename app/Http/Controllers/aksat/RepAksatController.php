@@ -172,34 +172,56 @@ class RepAksatController extends Controller
 
     $RepDate=date('Y-m-d');
     $cus=Customers::where('Company',Auth::user()->company)->first();
-    $first=DB::connection(Auth()->user()->company)->table('main_trans_view2')
-      ->selectRaw('no,name,sul_date,sul,sul_pay,raseed,kst,bank_name,acc,order_no,max(ksm_date) as ksm_date')
-      ->where([
-        ['bank', '=', $request->bank_no],
-        ['sul_pay','!=',0],])
-      ->whereExists(function ($query) {
-        $query->select(DB::raw(1))
-          ->from('late')
-          ->whereColumn('main_trans_view2.no', 'late.no')
-          ->where('emp',Auth::user()->empno);
-      })
-      ->groupBy('no','name','sul_date','sul','sul_pay','raseed','kst','bank_name','acc','order_no');
-    $second=DB::connection(Auth()->user()->company)->table('main_view')
-      ->selectraw('no,name,sul_date,sul,sul_pay,raseed,kst,bank_name,acc,order_no,null as ksm_date')
-      ->where([
-        ['bank', '=', $request->bank_no],
-        ['sul_pay',0],])
-      ->whereExists(function ($query) {
-        $query->select(DB::raw(1))
-          ->from('late')
-          ->whereColumn('main_view.no', 'late.no')
-          ->where('emp',Auth::user()->empno);
-      })
-      ->union($first)
-      ->get();
+    if ($request->RepRadio=='RepAll') {
+      $first = DB::connection(Auth()->user()->company)->table('main_trans_view2')
+        ->selectRaw('no,name,sul_date,sul,sul_pay,raseed,kst,bank_name,acc,order_no,max(ksm_date) as ksm_date')
+        ->where([
+          ['bank', '=', $request->bank_no],
+          ['sul_pay', '!=', 0],
+        ])
+        ->whereExists(function ($query) {
+          $query->select(DB::raw(1))
+            ->from('late')
+            ->whereColumn('main_trans_view2.no', 'late.no')
+            ->where('emp', Auth::user()->empno);
+        })
+        ->groupBy('no', 'name', 'sul_date', 'sul', 'sul_pay', 'raseed', 'kst', 'bank_name', 'acc', 'order_no');
+      $second = DB::connection(Auth()->user()->company)->table('main_view')
+        ->selectraw('no,name,sul_date,sul,sul_pay,raseed,kst,bank_name,acc,order_no,null as ksm_date')
+        ->where([
+          ['bank', '=', $request->bank_no],
+          ['sul_pay', 0],
+        ])
+        ->whereExists(function ($query) {
+          $query->select(DB::raw(1))
+            ->from('late')
+            ->whereColumn('main_view.no', 'late.no')
+            ->where('emp', Auth::user()->empno);
+        })
+        ->union($first)
+        ->get();
+    }
+    if ($request->RepRadio=='RepSome'){
+
+      $second=DB::connection(Auth()->user()->company)->table('main_view')
+          ->selectraw('no,name,sul_date,sul,sul_pay,raseed,kst,bank_name,acc,order_no,null as ksm_date')
+          ->where([
+            ['bank', '=', $request->bank_no],
+            ['sul_pay',0],
+            ])
+          ->whereExists(function ($query) {
+            $query->select(DB::raw(1))
+              ->from('late')
+              ->whereColumn('main_view.no', 'late.no')
+              ->where('emp',Auth::user()->empno);
+          })
+
+          ->get();
+
+    }
 
     $reportHtml = view('PrnView.aksat.pdf-kamla',
-      ['res'=>$second,'cus'=>$cus,'bank_name'=>$request->bank_name,'months'=>$request->months,'RepDate'=>$RepDate])->render();
+      ['res'=>$second,'cus'=>$cus,'bank_name'=>$request->bank_name,'months'=>$request->months,'RepDate'=>$RepDate,'RepRadio'=>$request->RepRadio])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 

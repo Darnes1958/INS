@@ -19,7 +19,7 @@ class MyTable2 extends Component
   ];
 
   public function GetWhereEquelValue2($ID){
-    info($ID);
+
     $this->WhereEquelValue=$ID;
 
   }

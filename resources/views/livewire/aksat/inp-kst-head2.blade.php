@@ -33,7 +33,8 @@
      <div class="col-md-5 mb-2" >
       <label  for="acc" class="form-label-me">رقم الحساب</label>
       <input   wire:model="acc" wire:keydown.enter="ChkAccAndGo"
-             class="form-control"  name="acc" type="text"  id="acc" >
+             class="form-control"  name="acc" type="text"  id="acc" autofocus>
+       @error('acc') <span class="error">{{ $message }}</span> @enderror
     </div>
     <div class="col-md-7 mb-2">
       <div>
@@ -58,6 +59,11 @@
       </div>
 
     </div>
+
+    <div>
+      @livewire('aksat.name-select')
+    </div>
+
      <div   class="col-md-7" >
       <label   class="form-label-me">.</label>
        <div>
@@ -115,7 +121,22 @@
               closeOnSelect: true
           });
       });
-
+      $(document).ready(function ()
+      {
+          $('#Acc_L').select2({
+              closeOnSelect: true
+          });
+          $('#Acc_L').on('change', function (e) {
+              var data = $('#Acc_L').select2("val");
+          @this.set('acc', data);
+          @this.set('TheAccListIsSelectd', 1);
+          });
+      });
+      window.livewire.on('bank-change-event',()=>{
+          $('#Bank_L').select2({
+              closeOnSelect: true
+          });
+      });
       $(document).ready(function ()
       {
           $('#Main_L_All').select2({
