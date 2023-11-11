@@ -26,7 +26,13 @@
         <input class="form-check-input" type="radio" wire:model="RepRadio" name="inlineRadioOptions" id="inlineRadio2" value="NotGeted">
         <label class="form-check-label" for="inlineRadio2">الغير محصلة</label>
       </div>
+
     </div>
+      <div class="col-md-2 my-2 mx-0 d-inline-flex ">
+          <label for="baky" class="form-label mx-0 text-right " style="width: 30%; ">الباقي</label>
+          <input wire:model="baky" class="form-control mx-0 text-center" type="number"  min="-10" max="50"  id="baky" style="width: 70%; ">
+      </div>
+
      <div  class="col-md-2 my-2 ">
     <a  href="{{route('pdfksm',['bank_no'=>$bank_no,'rep_date1'=>$rep_date1,'rep_date2'=>$rep_date2,'bank_name'=>$bank_name,'RepRadio'=>$RepRadio])}}"
           class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>

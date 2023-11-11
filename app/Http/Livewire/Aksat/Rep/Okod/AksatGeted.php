@@ -17,6 +17,7 @@ class AksatGeted extends Component
   public $search;
   public $date1,$date2,$rep_date1,$rep_date2;
   public $RepRadio='Geted';
+  public $baky=0;
 
 
   public $orderColumn = "no";
@@ -113,7 +114,10 @@ class AksatGeted extends Component
           ->join('kst_trans','main.no','=','kst_trans.no')
           ->selectRaw('main.no,name,sul_date,acc,sul,sul_pay,raseed,kst_count,main.kst,max(ksm_date) as ksm_date')
           ->whereNotBetween('kst_trans.ksm_date',[$this->rep_date1,$this->rep_date2])
-          ->where('raseed','>',0)
+          ->when($this->baky,function($q){
+              $q->where('raseed','>',$this->baky);
+          })
+
           ->where('main.bank', '=', $this->bank_no)
           ->groupBy('main.no','name','sul_date','acc','sul','sul_pay','raseed','kst_count','main.kst')
           ->orderby($this->orderColumn,$this->sortOrder)
