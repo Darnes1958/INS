@@ -194,6 +194,7 @@
         window.addEventListener('OpenMiniModal', event => {
             $("#ModalMini").modal('show');
         })
+
     </script>
   <script type="text/javascript">
 

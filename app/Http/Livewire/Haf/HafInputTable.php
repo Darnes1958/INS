@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Haf;
 
 use App\Models\aksat\hafitha_tran;
+use App\Models\aksat\ManyNo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -16,8 +17,10 @@ class HafInputTable extends Component
   protected $paginationTheme = 'bootstrap';
 
   protected $listeners = [
-    'TakeHafithaTable','DoDelete','CloseUpdate','DoNotWrite','refreshHafInputTable' => '$refresh',
+    'TakeHafithaTable','DoDelete','CloseUpdate',
+      'CloseManyNoModal','DoNotWrite','refreshHafInputTable' => '$refresh',
   ];
+  public $HaveManyNo=0;
   public $hafitha=0;
 
   public $NoToAction;
@@ -27,7 +30,17 @@ class HafInputTable extends Component
   public $DisRadio='DisAll';
   public $index='ser_in_hafitha';
 
-  public function DoIndex($index){
+    public function OpenManyNo() {
+
+
+        $this->emitTo('haf.haf-many-no','TakeHafNo',$this->hafitha);
+
+        $this->dispatchBrowserEvent('OpenManyNoModal');
+
+    }
+
+
+    public function DoIndex($index){
       $this->index=$index;
   }
 
@@ -42,6 +55,9 @@ class HafInputTable extends Component
 
     public function CloseUpdate(){
         $this->dispatchBrowserEvent('CloseUpdateModal');
+    }
+    public function CloseManyNoModal(){
+        $this->dispatchBrowserEvent('CloseManyNoModal');
     }
 
     public function SelectItem($no,$acc,$ser,$action){
@@ -112,8 +128,9 @@ class HafInputTable extends Component
   }
   public function render()
     {
-
+     $this->HaveManyNo=ManyNo::where('h_no',$this->hafitha)->count();
     return view('livewire.haf.haf-input-table',[
+        'ManyNo'=>ManyNo::where('h_no',$this->hafitha)->paginate(10),
         'HafithaTable' =>DB::connection(Auth()->user()->company)
             ->table('hafitha_tran_view')
             ->when($this->search || $this->DisRadio=='DisAll', function($q)  {

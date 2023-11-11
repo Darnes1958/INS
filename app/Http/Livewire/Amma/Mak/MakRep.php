@@ -20,8 +20,8 @@ class MakRep extends Component
   public $RepChk=true;
   public $withzero=1;
 
-    public $type_no=0;
-    public $type_name;
+  public $type_no=0;
+  public $type_name;
   public $place_no=0;
 
   public $place_name;

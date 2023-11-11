@@ -6,6 +6,7 @@ use App\Models\aksat\hafitha;
 use App\Models\aksat\main;
 use App\Models\aksat\main_deleted;
 use App\Models\aksat\MainArc;
+use App\Models\aksat\ManyNo;
 use App\Models\bank\bank;
 use App\Models\excel\FromExcelModel;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,7 @@ class ToHafitha extends Component
       $this->TajNo=$FromExcel[0]->hafitha_tajmeehy;
       foreach ($FromExcel as $item) {
           $acc=$item->acc;
+          $ksm=$item->ksm;
           $bankcode=Str::substr($acc, 0, 3);
         if (Auth::user()->company=='BokreahAli')
         {
@@ -41,8 +43,7 @@ class ToHafitha extends Component
 
         }
         else {
-          if (bank::on(Auth()->user()->company)
-            ->where('bank_tajmeeh', $this->TajNo)
+          if (bank::where('bank_tajmeeh', $this->TajNo)
             ->where('bank_code', $bankcode)
             ->exists()) {
             $bank_no = bank::on(Auth()->user()->company)
@@ -55,13 +56,24 @@ class ToHafitha extends Component
           };
         }
 
-          $no=main::on(Auth()->user()->company)
-              ->where('bank',$bank_no)
-              ->where('acc',$acc)->first();
+          $recNo=main::where('bank',$bank_no)
+              ->where('acc',$acc)->get();
+          if (count($recNo)>0) $no=$recNo[0]->no;
+          else $no=null;
+          if ($no)
+           if (count($recNo)>1) 
+            foreach ($recNo as $oneNo){
+                if  ($oneNo->kst==$ksm) $no=$oneNo->no;
+                if (!ManyNo::where('no',$oneNo->no)->exists())
+                   ManyNo::insert(['no'=>$oneNo->no,'acc'=>$acc,'kst'=>$oneNo->kst,
+                            'h_no'=>0,'bank'=>$oneNo->bank]);
+
+            }
+
           if ($no) {
-              FromExcelModel::on(Auth()->user()->company)->where('acc', $acc)->update([
+              FromExcelModel::where('acc', $acc)->where('id',$item->id)->update([
                   'bank' => $bank_no,
-                  'no'=>$no->no,
+                  'no'=>$no,
                   'MainArcWrong'=>1,
               ]);
           } else {
@@ -97,14 +109,16 @@ class ToHafitha extends Component
 
 
   public function Do(){
+    ManyNo::truncate();
     $this->FromExcel=FromExcelModel::on(Auth()->user()->company)->get();
     if (!$this->FillNoBankMainArc($this->FromExcel)) return false;
+
     $this->Do2();
 
   }
     public function Do2(){
-        $Data=FromExcelModel::on(Auth()->user()->company)
-            ->join('main','FromExcel.no','=','main.no')
+        $Data=FromExcelModel::
+            join('main','FromExcel.no','=','main.no')
             ->select('id','FromExcel.no','FromExcel.ksm','raseed')
             ->where('MainArcWrong','=',1)
             ->orderBy('no')
@@ -112,46 +126,40 @@ class ToHafitha extends Component
         $PrevNo=0;
         for ($i=0;$i<count($Data);$i++) {
             $id = $Data[$i]->id;
-            $MainArc = $Data[$i]->MainArcWrong;
             $no = $Data[$i]->no;
             $ksm = $Data[$i]->ksm;
             $raseed = $Data[$i]->raseed;
 
             if ($PrevNo != $no) {$sumkst = 0;$PrevNo = $no;}
             $sumkst += $ksm;
+
             if ($raseed >= $sumkst) {
                     FromExcelModel::on(Auth()->user()->company)->find($id)->update([
                         'kst' => $ksm, 'kst_type' => 1, 'baky' => 0,]);
                 }
             else {
                 if (($sumkst - $raseed) < $ksm) {
-                    FromExcelModel::on(Auth()->user()->company)->find($id)->update([
+                    FromExcelModel::find($id)->update([
                         'kst' => $ksm-($sumkst - $raseed), 'kst_type' => 3, 'baky' => $sumkst - $raseed,]);
                  }
                 else {
-                    FromExcelModel::on(Auth()->user()->company)->find($id)->update([
+                    FromExcelModel::find($id)->update([
                         'kst' => $ksm, 'kst_type' => 2, 'baky' => 0,]);
                 }
             }
         }
-        $Data2=FromExcelModel::on(Auth()->user()->company)
-            ->where('MainArcWrong','=',2)
-            ->get();
+        $Data2=FromExcelModel::where('MainArcWrong','=',2)->get();
         for ($i=0;$i<count($Data2);$i++) {
-           FromExcelModel::on(Auth()->user()->company)->find($Data2[$i]->id)->update([
+           FromExcelModel::find($Data2[$i]->id)->update([
               'kst'=>$Data2[$i]->ksm,'kst_type'=>5,'baky'=>0,]) ;}
 
-        $Data3=FromExcelModel::on(Auth()->user()->company)
-            ->where('MainArcWrong','=',0)
-            ->get();
+        $Data3=FromExcelModel::where('MainArcWrong','=',0)->get();
         for ($i=0;$i<count($Data3);$i++) {
-                FromExcelModel::on(Auth()->user()->company)->find($Data3[$i]->id)->update([
+                FromExcelModel::find($Data3[$i]->id)->update([
                     'kst'=>$Data3[$i]->ksm,'kst_type'=>4,'baky'=>0,]) ;}
-        $Data4=FromExcelModel::on(Auth()->user()->company)
-          ->where('MainArcWrong','=',3)
-          ->get();
+        $Data4=FromExcelModel::where('MainArcWrong','=',3)->get();
         for ($i=0;$i<count($Data4);$i++) {
-          FromExcelModel::on(Auth()->user()->company)->find($Data4[$i]->id)->update([
+          FromExcelModel::find($Data4[$i]->id)->update([
             'kst'=>$Data4[$i]->ksm,'kst_type'=>6,'baky'=>0,]) ;}
 
     }
@@ -179,6 +187,9 @@ class ToHafitha extends Component
           if ($sumwrong==null) {$sumwrong=0;}
           if ($sumwrong_after==null) {$sumwrong_after=0;}
           $haf=hafitha::on(Auth()->user()->company)->max('hafitha_no')+1;
+
+          $affected = ManyNo::where('bank',$bank->bank)->update(array('h_no' => $haf));
+
           DB::connection(Auth()->user()->company)->table('hafitha')->insert([
               'hafitha_no'=> $haf,
               'bank'=> $bank->bank,

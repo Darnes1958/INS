@@ -110,9 +110,9 @@ class StoresController extends Controller
     $place_no=$request->place_no;
     $res=RepMakzoon::
       when($request->place_no!=0,function ($q) use ($place_no){
-      return $q->where('place_no','=', $place_no) ;     })
+       return $q->where('place_no','=', $place_no) ;     })
       ->when($request->place_no!=0,function  ($q )  use ($place_type) {
-        return $q->where('place_type','=', $place_type) ;     })
+       return $q->where('place_type','=', $place_type) ;     })
       ->where('place_type',$place_type)
       ->orderBy('item_type','asc')
       ->orderBy('item_no','asc')

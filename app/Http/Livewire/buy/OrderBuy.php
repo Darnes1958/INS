@@ -498,6 +498,7 @@ class OrderBuy extends Component
       $this->st_nol=$res->st_no;
       $this->st_name=stores_names::find($this->st_no)->st_name;
       $this->jeha_no=$res->jeha;
+
       $this->jeha_name=jeha::find($this->jeha_no)->jeha_name;
       $this->jeha_type='2';
       $this->Charge_Tot=0;

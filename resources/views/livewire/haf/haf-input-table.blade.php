@@ -1,16 +1,36 @@
-<div>
+<div x-data>
+
+    <div class="modal fade" id="ModalManyNo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button wire:click="CloseManyNoModal" type="button" class="btn-close" ></button>
+                    <h1 class="modal-title text-info fs-5 w-100" id="exampleModalLabel">تعديل الإزدواجية في أرقام العقود</h1>
+                </div>
+                <div class="modal-body">
+                    @livewire('haf.haf-many-no')
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="form-check form-check-inline">
         <input wire:model="search"  type="search"  style="margin: 5px;" placeholder="ابحث هنا .......">
     </div>
     <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" wire:model="DisRadio"
               name="inlineRadioOptions" id="inlineRadio1" value="DisAll">
-        <label class="form-check-label" for="inlineRadio1">عرض الكل</label>
+        <label class="form-check-label" for="inlineRadio1">الكل</label>
     </div>
     <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" wire:model="DisRadio"
                name="inlineRadioOptions" id="inlineRadio2" value="DisMe">
-        <label class="form-check-label" for="inlineRadio2">عرض ادخالاتي فقط</label>
+        <label class="form-check-label" for="inlineRadio2">ادخالاتي فقط</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <button x-show="$wire.HaveManyNo != 0"
+                wire:click.prevent="OpenManyNo"
+                class="border-0 text-danger"
+                type="search"  style="margin: 5px;" > ({{$HaveManyNo}})ازدواجية</button>
     </div>
 
       <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
@@ -99,6 +119,13 @@
     window.addEventListener('OpenUpdateModal', event => {
         $("#ModalUpdate").modal('show');
     })
+    window.addEventListener('CloseManyNoModal', event => {
+        $("#ModalManyNo").modal('hide');
+    })
+    window.addEventListener('OpenManyNoModal', event => {
+        $("#ModalManyNo").modal('show');
+    })
+
 </script>
 
 @endpush
