@@ -61,7 +61,7 @@ class ToHafitha extends Component
           if (count($recNo)>0) $no=$recNo[0]->no;
           else $no=null;
           if ($no)
-           if (count($recNo)>1) 
+           if (count($recNo)>1)
             foreach ($recNo as $oneNo){
                 if  ($oneNo->kst==$ksm) $no=$oneNo->no;
                 if (!ManyNo::where('no',$oneNo->no)->exists())
