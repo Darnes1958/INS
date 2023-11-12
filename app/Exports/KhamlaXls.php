@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\aksat\main_view;
 use App\Models\bank\bank;
+use App\Models\bank\BankTajmeehy;
 use App\Models\Customers;
 
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +29,10 @@ use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping, WithHeadings,
                             WithEvents,WithColumnWidths,WithStyles,WithColumnFormatting,WithCustomValueBinder
  {
-    public $bank;
+    public $bank_name;
+    public $ByTajmeehy;
+    public $TajNo;
+    public $bank_no;
     public $months;
     public $RepRadio;
     public $rowcount;
@@ -40,11 +44,14 @@ class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping
     /**
      * @return array
      */
-    public function __construct(int $bank,int $months,string $repradio)
+    public function __construct(string $ByTajmeehy,int $TajNo,int $bank,int $months,string $repradio,string $bank_name)
     {
-        $this->bank = $bank;
+        $this->ByTajmeehy=$ByTajmeehy;
+        $this->TajNo=$TajNo;
+        $this->bank_no = $bank;
         $this->months = $months;
         $this->RepRadio = $repradio;
+        $this->bank_name = $bank_name;
     }
     public function registerEvents(): array
     {
@@ -169,7 +176,7 @@ class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping
             [$cus->CompanyName],
             [$cus->CompanyNameSuffix],
             [' '],
-            ['المصرف',bank::find($this->bank)->bank_name],
+            ['المصرف',$this->bank_name],
             [''],
             [''],
             [''],
@@ -179,23 +186,46 @@ class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping
 
     public function collection()
     {
+
         DB::connection(Auth()->user()->company)->table('late')->delete();
-        DB::connection(Auth()->user()->company)->statement( 'insert into late select main.no,DATEDIFF(month,max(ksm_date),getdate()),:emp
+        if ($this->ByTajmeehy=='Bank')
+            DB::connection(Auth()->user()->company)->statement( 'insert into late select main.no,DATEDIFF(month,max(ksm_date),getdate()),:emp
                             from main,kst_trans where main.no=kst_trans.no and (SUL_PAY)<(SUL-1) and main.no<>0 and sul_pay<>0
                             and bank=:bank group by main.no having DATEDIFF(month,max(ksm_date),getdate())>=:months ',
-            array('bank'=> $this->bank,'emp'=>Auth::user()->empno,'months'=>$this->months ));
-        DB::connection(Auth()->user()->company)->statement('insert into late select main.no,DATEDIFF(month,sul_date,getdate()),:emp from main
+                array('bank'=> $this->bank_no,'emp'=>Auth::user()->empno,'months'=>$this->months ));
+        if ($this->ByTajmeehy=='Taj')
+            DB::connection(Auth()->user()->company)->statement( 'insert into late select main.no,DATEDIFF(month,max(ksm_date),getdate()),:emp
+                        from main,kst_trans where main.no=kst_trans.no and (SUL_PAY)<(SUL-1) and main.no<>0 and sul_pay<>0
+                        and bank in (select bank_no from bank where bank_tajmeeh=:taj)
+                        group by main.no having DATEDIFF(month,max(ksm_date),getdate())>=:months ',
+                array('taj'=> $this->TajNo,'emp'=>Auth::user()->empno,'months'=>$this->months ));
+
+
+
+        if ($this->ByTajmeehy=='Bank')
+            DB::connection(Auth()->user()->company)->statement('insert into late select main.no,DATEDIFF(month,sul_date,getdate()),:emp from main
                             where  sul_pay=0 and  main.no<>0 and DATEDIFF(month,sul_date,getdate())>=:months and bank=:bank ',
-            array('bank'=> $this->bank,'emp'=>Auth::user()->empno,'months'=>$this->months ));
+                array('bank'=> $this->bank_no,'emp'=>Auth::user()->empno,'months'=>$this->months ));
+
+        if ($this->ByTajmeehy=='Taj')
+            DB::connection(Auth()->user()->company)->statement('insert into late select main.no,DATEDIFF(month,sul_date,getdate()),:emp from main
+                    where  sul_pay=0 and  main.no<>0 and DATEDIFF(month,sul_date,getdate())>=:months
+                    and bank in (select bank_no from bank where bank_tajmeeh=:taj) ',
+                array('taj'=> $this->TajNo,'emp'=>Auth::user()->empno,'months'=>$this->months ));
 
       if ($this->RepRadio=='RepAll') {
         $first = DB::connection(Auth()->user()->company)->table('main_trans_view2')
 
           ->selectRaw('no,name,sul_date,sul,sul_pay,raseed,kst,kst_count,bank_name,acc,order_no,max(ksm_date) as ksm_date')
-          ->where([
-            ['bank', '=', $this->bank],
-            ['sul_pay', '!=', 0],
-          ])
+            ->when($this->ByTajmeehy=='Bank',function($q){
+                $q->where('bank', '=', $this->bank_no);
+            })
+            ->when($this->ByTajmeehy=='Taj',function($q){
+                $q-> whereIn('bank', function($q){
+                    $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$this->TajNo);});
+            })
+            ->where('sul_pay','!=',0)
+
           ->whereExists(function ($query) {
             $query->select(DB::raw(1))
               ->from('late')
@@ -207,10 +237,14 @@ class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping
 
         $second = DB::connection(Auth()->user()->company)->table('main_view')
           ->selectraw('no,name,sul_date,sul,sul_pay,raseed,kst,kst_count,bank_name,acc,order_no,null as ksm_date')
-          ->where([
-            ['bank', '=', $this->bank],
-            ['sul_pay', 0],
-          ])
+            ->when($this->ByTajmeehy=='Bank',function($q){
+                $q->where('bank', '=', $this->bank_no);
+            })
+            ->when($this->ByTajmeehy=='Taj',function($q){
+                $q-> whereIn('bank', function($q){
+                    $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$this->TajNo);});
+            })
+            ->where('sul_pay','=',0)
           ->whereExists(function ($query) {
             $query->select(DB::raw(1))
               ->from('late')
@@ -226,10 +260,14 @@ class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping
         $second=DB::connection(Auth()->user()->company)->table('main_view')
           ->selectraw('no,name,sul_date,sul,sul_pay,raseed,kst,kst_count,bank_name,acc,order_no,null as ksm_date')
 
-          ->where([
-            ['bank', '=', $this->bank],
-            ['sul_pay',0],
-          ])
+            ->when($this->ByTajmeehy=='Bank',function($q){
+                $q->where('bank', '=', $this->bank_no);
+            })
+            ->when($this->ByTajmeehy=='Taj',function($q){
+                $q-> whereIn('bank', function($q){
+                    $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$this->TajNo);});
+            })
+            ->where('sul_pay','=',0)
           ->whereExists(function ($query) {
             $query->select(DB::raw(1))
               ->from('late')

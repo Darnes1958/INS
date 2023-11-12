@@ -175,10 +175,12 @@ class RepAksatController extends Controller
     if ($request->RepRadio=='RepAll') {
       $first = DB::connection(Auth()->user()->company)->table('main_trans_view2')
         ->selectRaw('no,name,sul_date,sul,sul_pay,raseed,kst,bank_name,acc,order_no,max(ksm_date) as ksm_date')
-        ->where([
-          ['bank', '=', $request->bank_no],
-          ['sul_pay', '!=', 0],
-        ])
+          ->when($request->ByTajmeehy=='Taj',function($q) use ($request) {
+              $q-> whereIn('bank', function($q) use ($request) {
+                  $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$request->TajNo);});
+          })
+          ->where('sul_pay','!=',0)
+
         ->whereExists(function ($query) {
           $query->select(DB::raw(1))
             ->from('late')
@@ -188,10 +190,12 @@ class RepAksatController extends Controller
         ->groupBy('no', 'name', 'sul_date', 'sul', 'sul_pay', 'raseed', 'kst', 'bank_name', 'acc', 'order_no');
       $second = DB::connection(Auth()->user()->company)->table('main_view')
         ->selectraw('no,name,sul_date,sul,sul_pay,raseed,kst,bank_name,acc,order_no,null as ksm_date')
-        ->where([
-          ['bank', '=', $request->bank_no],
-          ['sul_pay', 0],
-        ])
+          ->when($request->ByTajmeehy=='Taj',function($q) use ($request) {
+              $q-> whereIn('bank', function($q) use ($request) {
+                  $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$request->TajNo);});
+          })
+          ->where('sul_pay','=',0)
+
         ->whereExists(function ($query) {
           $query->select(DB::raw(1))
             ->from('late')
@@ -205,10 +209,11 @@ class RepAksatController extends Controller
 
       $second=DB::connection(Auth()->user()->company)->table('main_view')
           ->selectraw('no,name,sul_date,sul,sul_pay,raseed,kst,bank_name,acc,order_no,null as ksm_date')
-          ->where([
-            ['bank', '=', $request->bank_no],
-            ['sul_pay',0],
-            ])
+          ->when($request->ByTajmeehy=='Taj',function($q) use ($request) {
+              $q-> whereIn('bank', function($q) use ($request) {
+                  $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$request->TajNo);});
+          })
+          ->where('sul_pay','=',0)
           ->whereExists(function ($query) {
             $query->select(DB::raw(1))
               ->from('late')
@@ -220,7 +225,9 @@ class RepAksatController extends Controller
 
     }
 
-    $reportHtml = view('PrnView.aksat.pdf-kamla',
+
+
+      $reportHtml = view('PrnView.aksat.pdf-kamla',
       ['res'=>$second,'cus'=>$cus,'bank_name'=>$request->bank_name,'months'=>$request->months,'RepDate'=>$RepDate,'RepRadio'=>$request->RepRadio])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
