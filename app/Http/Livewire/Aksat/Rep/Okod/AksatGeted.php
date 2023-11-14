@@ -113,7 +113,12 @@ class AksatGeted extends Component
         'NotGetedTable'=>DB::connection(Auth()->user()->company)->table('main')
           ->join('kst_trans','main.no','=','kst_trans.no')
           ->selectRaw('main.no,name,sul_date,acc,sul,sul_pay,raseed,kst_count,main.kst,max(ksm_date) as ksm_date')
-          ->whereNotBetween('kst_trans.ksm_date',[$this->rep_date1,$this->rep_date2])
+          ->whereNotIn('main.no',function($query){
+                $query->select('no')->from('kst_trans')
+                    ->where('main.bank', '=', $this->bank_no)
+                    ->where('ksm','!=',0)
+                    ->whereBetween('kst_trans.ksm_date',[$this->rep_date1,$this->rep_date2]);
+            })
           ->when($this->baky,function($q){
               $q->where('raseed','>',$this->baky);
           })
