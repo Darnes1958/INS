@@ -34,7 +34,7 @@ class InpKstDetail extends Component
   public $OpenKstDetail;
 
   protected $listeners = [
-    'nofound','NoAtUpdate','bankfound','GoResetKstDetail','TakeKsmType'
+    'nofound','NoAtUpdate','bankfound','GoResetKstDetail','TakeKsmType','refreshComponent' => '$refresh',
   ];
   public function TakeKsmType($ksm_type){
     $this->Ksm_type=$ksm_type;

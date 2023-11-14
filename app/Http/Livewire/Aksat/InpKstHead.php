@@ -52,7 +52,7 @@ class InpKstHead extends Component
     $this->ChkNoAndGo();
   }
   protected $listeners = [
-    'Go','Take_ManyAcc_No','Ksthead_goto','DeleteTheKst','GetTheId'
+    'Go','Take_ManyAcc_No','Ksthead_goto','DeleteTheKst','GetTheId','refreshComponent' => '$refresh',
   ];
 
   public function GetTheId($id){
