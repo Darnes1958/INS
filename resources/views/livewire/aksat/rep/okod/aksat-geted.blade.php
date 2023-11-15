@@ -34,7 +34,7 @@
       </div>
 
      <div  class="col-md-2 my-2 ">
-    <a  href="{{route('pdfksm',['bank_no'=>$bank_no,'rep_date1'=>$rep_date1,'rep_date2'=>$rep_date2,'bank_name'=>$bank_name,'RepRadio'=>$RepRadio])}}"
+    <a  href="{{route('pdfksm',['bank_no'=>$bank_no,'rep_date1'=>$rep_date1,'rep_date2'=>$rep_date2,'bank_name'=>$bank_name,'RepRadio'=>$RepRadio,'baky'=>$baky])}}"
           class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
    </div>
   </div>

@@ -414,8 +414,15 @@ class RepAksatController extends Controller
       $res=DB::connection(Auth()->user()->company)->table('main')
       ->join('kst_trans','main.no','=','kst_trans.no')
       ->selectRaw('main.no,name,sul_date,acc,sul,sul_pay,raseed,kst_count,main.kst,max(ksm_date) as ksm_date')
-      ->whereNotBetween('kst_trans.ksm_date',[$request->rep_date1,$request->rep_date2])
-      ->where('raseed','>',0)
+      ->whereNotIn('main.no',function($query) use ($request){
+              $query->select('no')->from('kst_trans')
+                  ->where('main.bank', '=', $request->bank_no)
+                  ->where('ksm','!=',0)
+                  ->whereBetween('kst_trans.ksm_date',[$request->rep_date1,$request->rep_date2]);
+          })
+
+
+      ->where('raseed','>',$request->baky)
       ->where('main.bank', '=', $request->bank_no)
       ->groupBy('main.no','name','sul_date','acc','sul','sul_pay','raseed','kst_count','main.kst')
       ->orderby('no')
