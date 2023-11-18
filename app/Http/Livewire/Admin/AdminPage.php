@@ -36,7 +36,33 @@ public $ThedatabaseListIsSelectd;
     $this->emitTo('admin.empno-select','comp',$this->database);
     $this->redirect('/home');
   }
-  public function BuyPrice(){
+  public function PublicFun(){
+     $res=kst_trans::orderBy('no','asc')->orderBy('kst_date','asc')->get();
+     $no=-1;
+     $ser=0;
+     foreach ($res as $item) {
+         if ($item->no==$no){
+             $ser++;
+         }else {
+             $no=$item->no;
+             $ser=1;
+         }
+         $month = date('m', strtotime($item->kst_date));
+         $year = date('Y', strtotime($item->kst_date));
+         $date = $year . $month . '28';
+         $date = DateTime::createFromFormat('Ymd', $date);
+         $date = $date->format('Y-m-d');
+
+         kst_trans::where('wrec_no',$item->wrec_no)->update([
+             'ser'=>$ser,'kst_date'=>$date,
+         ]);
+
+
+     }
+
+
+  }
+  public function OtherFun(){
       $mains=main::all();
       foreach($mains as $main) {
         $sul_date=$main->sul_date;

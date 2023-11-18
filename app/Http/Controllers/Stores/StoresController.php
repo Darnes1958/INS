@@ -113,6 +113,10 @@ class StoresController extends Controller
        return $q->where('place_no','=', $place_no) ;     })
       ->when($request->place_no!=0,function  ($q )  use ($place_type) {
        return $q->where('place_type','=', $place_type) ;     })
+        ->when( $request->withzero==0,function ($q) {
+            return $q->where('raseed','!=', 0) ;     })
+        ->when( $request->withzero==0,function ($q) {
+            return $q->where('place_ras','!=', 0) ;     })
       ->where('place_type',$place_type)
       ->orderBy('item_type','asc')
       ->orderBy('item_no','asc')
@@ -150,6 +154,10 @@ class StoresController extends Controller
             ->when($request->withzero==0,function ($q){
                 return $q->where('raseed','!=',0);
             })
+            ->when( $request->withzero==0,function ($q) {
+                return $q->where('raseed','!=', 0) ;     })
+            ->when( $request->withzero==0,function ($q) {
+                return $q->where('place_ras','!=', 0) ;     })
             ->where('place_type',$place_type)
             ->orderBy('item_type','asc')
             ->orderBy('item_no','asc')

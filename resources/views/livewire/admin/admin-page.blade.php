@@ -41,10 +41,10 @@
              <a  href="{{route('sendmail')}}"
                  class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;send email&nbsp;&nbsp;</i></a>
          </div>
-       <button  wire:click="BuyPrice" class="col-md-1 mx-1 btn btn-danger fas fa fa-file-excel">
-             buy price
+       <button  wire:click="PublicFun" class="col-md-1 mx-1 btn btn-danger fas fa fa-file-excel">
+             Public Fun
        </button>
-         <div wire:loading wire:target="BuyPrice">
+         <div wire:loading wire:target="PublicFun">
              Please Wait...
          </div>
 

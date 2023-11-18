@@ -12,6 +12,8 @@
       });
     @endphp
 
+  @if(count($filter)>1)
+
     <table style="border-collapse:collapse;"  >
 
       <caption>{{$type_name}}</caption>
@@ -38,8 +40,8 @@
       @endforeach
       </tbody>
     </table>
-
-    @endforeach
+   @endif
+  @endforeach
   </div>
 @endsection
 
