@@ -4,9 +4,11 @@ namespace App\Http\Livewire\Aksat\Rep\Okod;
 
 use App\Models\aksat\kst_tran_view_a;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class RepMainTransArc extends Component
 {
+    use WithPagination;
     public $post='transarc';
     public $no;
 
