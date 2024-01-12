@@ -49,7 +49,7 @@ class RepMainData extends Component
     public $notes;
     public $libyana='';
     public $mdar='';
-
+    public $by='';
     public $mainitems='rep_sell_tran';
     public $OverKst=0;
     public $TarKst=0;
@@ -191,6 +191,7 @@ class RepMainData extends Component
       $this->chk_out=$res['chk_out'];
       $this->notes=$res['notes'];
       $this->bank=$res['bank'];
+      $this->by=DB::connection(Auth::user()->company)->table('PASS')->where('EMP_NO',$res['emp'])->first()->EMP_NAME;
       $this->bank_name=bank::on(Auth()->user()->company)->find($this->bank)->bank_name;
       $this->place=$res['place'];
       $this->place_name=place::on(Auth()->user()->company)->find($this->place)->place_name;

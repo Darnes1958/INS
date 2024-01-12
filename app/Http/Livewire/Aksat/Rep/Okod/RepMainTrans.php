@@ -24,6 +24,8 @@ class RepMainTrans extends Component
     public function render()
     {
         return view('livewire.aksat.rep.okod.rep-main-trans',[
-          'TableList'=>kst_tran_view::where('no',$this->no)->orderBy('ser','asc')->paginate(15)]);
+          'TableList'=>kst_tran_view::join('PASS','emp','EMP_NO')
+            ->select('kst_tran_view.*','EMP_NAME')
+            ->where('no',$this->no)->orderBy('ser','asc')->paginate(15)]);
     }
 }

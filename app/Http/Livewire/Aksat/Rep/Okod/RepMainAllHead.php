@@ -25,7 +25,7 @@ class RepMainAllHead extends Component
  public $jeha_no;
  public $TheBankListIsSelectd;
 
- public $isEmpty = '',$ShowSearch=false;
+ public $isEmpty = '',   $ShowSearch=false;
 
     public function updatingSearch()
     {
