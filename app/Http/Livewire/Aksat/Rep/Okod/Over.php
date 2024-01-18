@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Aksat\Rep\Okod;
 
 
 use App\Models\bank\bank;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -82,11 +83,16 @@ class Over extends Component
         return view('livewire.aksat.rep.okod.over',[
           'RepTable'=>DB::connection(Auth()->user()->company)->table($this->Table)
             ->join('bank',$this->Table.'.bank','=','bank.bank_no')
-            ->select('wrec_no','acc','name','bank_name','tar_date','kst')
+            ->select('no','wrec_no','acc','name','bank_name','tar_date','kst')
             ->whereBetween('tar_date',[$this->over_date1,$this->over_date2])
             ->where('bank', '=', $this->bank_no)
             ->where('letters',$this->letters)
-            ->where('name', 'like', '%'.$this->search.'%')
+            ->Where(function (Builder $query) {
+              $query->where('name', 'like', '%'.$this->search.'%')
+                ->orwhere('acc', 'like', '%'.$this->search.'%')
+                ->orwhere('no', 'like', '%'.$this->search.'%');
+            })
+
             ->paginate(15)
         ]);
     }

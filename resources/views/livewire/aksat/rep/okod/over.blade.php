@@ -55,6 +55,7 @@
     <thead class="font-size-12">
     <tr>
       <th width="7%">رقم ألي</th>
+      <th width="7%">رقم العقد</th>
       <th width="12%">رقم الحساب</th>
       <th width="16%">الاسم</th>
       <th width="8%">تاريخ القسط</th>
@@ -67,6 +68,7 @@
       @foreach($RepTable as $key=>$item)
         <tr class="font-size-12">
           <td > {{ $item->wrec_no }} </td>
+          <td> {{ $item->no }} </td>
           <td> {{ $item->acc }} </td>
           <td> {{ $item->name }} </td>
           <td> {{ $item->tar_date }} </td>

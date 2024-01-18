@@ -2,8 +2,9 @@
  <div x-data class="row gy-1 my-1" style="border:1px solid lightgray;background: white;">
    <div class="d-inline-flex align-items-center">
      <label for="name" class="form-label align-right" style="width: 20% ">رقم الزبون</label>
-     <input  wire:model="jeha" type="text" class="form-control " id="name" readonly style="width: 20%" >
-     <input  wire:model="name" type="text" class="form-control " id="name" readonly style="width: 60%;margin-right: 4px;" >
+     <input  wire:model="jeha" type="text" class="form-control " id="name" readonly style="width: 15%" >
+     <input  wire:model="name" type="text" class="form-control " id="name" readonly style="width: 40%;margin-right: 4px;" >
+     <label for="name" class="form-label align-center text-primary" style="width: 25%;padding: 2pt;">{{$ref_no}}</label>
    </div>
    <div class="d-inline-flex align-items-center">
      <label for="bank_name" class="form-label align-right" style="width: 20% ">المصرف</label>
@@ -104,27 +105,39 @@
      @endif
      @endunlessrole
      <div class="col-md-6">
-      <div class="row">
-        <div class="col-md-4">
-          <label  class="form-label my-0" >أقساط محجوزة</label>
-          <input wire:model="aksat_tot" type="text" class="form-control"   readonly>
+       <div class="row">
+            <div class="col-md-4">
+              <label  class="form-label my-0" >أقساط محجوزة</label>
+              <input wire:model="aksat_tot" type="text" class="form-control"   readonly>
 
-        </div>
-        <div class="col-md-3">
-          <label  class="form-label my-0" >عددها</label>
-          <input wire:model="aksat_count" type="text" class="form-control"   readonly>
+            </div>
+            <div class="col-md-3">
+              <label  class="form-label my-0" >عددها</label>
+              <input wire:model="aksat_count" type="text" class="form-control"   readonly>
 
-        </div>
-        <div class="col-md-5">
-          <label  class="form-label my-0" >تاريخ أخر مرتب</label>
-          <input wire:model="sal_date" type="text" class="form-control text-center text-danger"   readonly>
+            </div>
+            <div class="col-md-5">
+              <label  class="form-label my-0" >تاريخ أخر مرتب</label>
+              <input wire:model="sal_date" type="text" class="form-control text-center text-danger"   readonly>
 
-        </div>
+            </div>
 
-      </div>
-
-
+          </div>
      </div>
+
+       <div class="col-md-6">
+           <div class="row">
+               <div class="col-md-4">
+               </div>
+
+               <div class="col-md-5">
+                   <label  class="form-label my-0" >قيمة من عقد سابق</label>
+                   <input wire:model="last_tot" type="text" class="form-control text-center"   readonly>
+               </div>
+
+           </div>
+       </div>
+
    </div>
 
     @livewire('tools.my-table2',

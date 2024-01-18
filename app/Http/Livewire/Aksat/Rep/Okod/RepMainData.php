@@ -8,6 +8,7 @@ use App\Models\aksat\kst_trans;
 use App\Models\aksat\main;
 use App\Models\aksat\MainArc;
 use App\Models\aksat\place;
+use App\Models\aksat\TransArc;
 use App\Models\bank\bank;
 use App\Models\excel\MahjozaModel;
 use App\Models\jeha\jeha;
@@ -28,6 +29,8 @@ class RepMainData extends Component
   use WithPagination;
   protected $paginationTheme = 'bootstrap';
     public $no=0;
+    public $ref_no='';
+    public $last_tot=0;
     public $acc;
     public $name;
     public $bank;
@@ -176,6 +179,21 @@ class RepMainData extends Component
       $this->IsStop=false;
       $this->IsMosdad=false;
       $this->no=$res['no'];
+      if ($res['last_order'] && $res['last_order']!=0){
+        $rec=MainArc::where('order_no',$res['last_order'])->first();
+
+        if ($rec) {
+          $ser=TransArc::where('no',$rec->no)->where('ksm','!=',0)->where('kst_notes','!=',null)->max('ser');
+          $this->last_tot=TransArc::where('no',$rec->no)->where('ser',$ser)->first()->ksm;
+
+        }
+        else $this->last_tot=0;
+      }
+      else $this->last_tot=0;
+
+      if ($res['ref_no'])
+       $this->ref_no='الإشاري : '.$res['ref_no'];
+      else $this->ref_no='';
       $this->acc=$res['acc'];
       $this->name=$res['name'];
       $this->order_no=$res['order_no'];
