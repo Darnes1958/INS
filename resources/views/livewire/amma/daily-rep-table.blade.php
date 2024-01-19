@@ -114,8 +114,9 @@
             @endcan()
             <th width="8%">سعر البيع</th>
             <th width="8%">الإجمالي</th>
-          @can('سعر الشراء')
+              @role('admin')
             <th width="8%">الربح</th>
+              @endrole
           @endcan
 
           </tr>
@@ -138,9 +139,9 @@
                 @endcan
               <td> {{ $item->price }} </td>
               <td> {{ $item->sub_tot }} </td>
-                  @can('سعر الشراء')
+                @role('admin')
               <td> {{ $item->rebh }} </td>
-                  @endcan
+                @endrole
             </tr>
           @endforeach
           </tbody>

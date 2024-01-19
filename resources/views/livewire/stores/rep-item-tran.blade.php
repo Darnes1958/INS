@@ -27,11 +27,11 @@
   <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
     <thead class="font-size-12">
     <tr>
-      <th style="width: 12%">رقم العقد</th>
-      <th style="width: 12%">رقم الحساب</th>
+      <th style="width: 12%">البيان</th>
+      <th style="width: 12%">رقم الفاتورة</th>
       <th style="width: 12%">التاريخ</th>
-      <th >الإسم</th>
-      <th style="width: 10%">القسط</th>
+      <th >الاسم</th>
+      <th style="width: 10%">الكمية</th>
       @can('سعر الشراء')
       <th style="width: 12%">السعر</th>
       @endcan
