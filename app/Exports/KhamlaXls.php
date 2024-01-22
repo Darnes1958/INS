@@ -59,7 +59,7 @@ class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping
 
             AfterSheet::class => function(AfterSheet $event)  {
                 $event->sheet
-                    ->getStyle('A8:J8')
+                    ->getStyle('A8:K8')
                     ->getFill()
                     ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                     ->getStartColor()
@@ -77,6 +77,10 @@ class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping
                 $event->sheet->getDelegate()->getStyle('J')
                     ->getAlignment()
                     ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+              $event->sheet->getDelegate()->getStyle('K')
+                ->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
                 if ($this->RepRadio=='RepAll')
                  $event->sheet->setCellValue('D6', 'كشف بالعقود الخاملة لمدة '.$this->months.'  شهور .. بتاريخ '.date('Y-m-d'));
                 if ($this->RepRadio=='RepSome')
@@ -138,7 +142,8 @@ class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping
             'F' => 14,
             'H' => 14,
             'I' => 14,
-            'j' => 20,
+            'J' => 14,
+          'K' => 20,
         ];
     }
 
@@ -156,6 +161,9 @@ class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping
    */
     public function map($main_view): array
     {
+      if ($main_view->raseed<=$main_view->kst) $kst_raseed=1;
+      else
+        $kst_raseed=ceil($main_view->raseed/$main_view->kst);
         return [
             $main_view->no,
             $main_view->acc,
@@ -166,6 +174,7 @@ class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping
             $main_view->kst,
             $main_view->sul_pay,
             $main_view->raseed,
+            $kst_raseed,
             $main_view->ksm_date,
         ];
     }
@@ -180,7 +189,7 @@ class KhamlaXls extends DefaultValueBinder implements FromCollection,WithMapping
             [''],
             [''],
             [''],
-            ['رقم العقد','رقم الحساب','الاسم','تاريخ العقد','اجمالي التقسيط','عدد الأقساط','القسط','المسدد','المطلوب','تاريخ أخر قسط سدد'],
+            ['رقم العقد','رقم الحساب','الاسم','تاريخ العقد','اجمالي التقسيط','عدد الأقساط','القسط','المسدد','المطلوب','عدد المتبقية','تاريخ أخر قسط سدد'],
         ];
     }
 

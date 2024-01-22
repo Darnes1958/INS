@@ -117,7 +117,7 @@
               @role('admin')
             <th width="8%">الربح</th>
               @endrole
-          @endcan
+
 
           </tr>
           </thead>

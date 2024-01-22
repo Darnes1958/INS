@@ -62,6 +62,7 @@
       <th width="8%">القسط</th>
       <th width="8%">المسدد</th>
       <th width="8">المطلوب</th>
+      <th width="8">ع.المتبقية</th>
       <th width="10%" class="sort  text-primary" wire:click="sortOrder('ksm_date')"> تاريخ أخر قسط سدد {!! $sortLink !!}</th>
     </tr>
     </thead>
@@ -69,6 +70,12 @@
     @if ($RepTable )
       @php $sumkst=0;$sumraseed=0;$sumsul_pay=0;$sumsul=0; @endphp
       @foreach($RepTable as $key=>$item)
+          @php
+              {{ if ($item->raseed<=$item->kst) $kst_raseed=1;
+              else
+                $kst_raseed=ceil($item->raseed/$item->kst);
+                }}
+          @endphp
         <tr class="font-size-12">
           <td > {{ $key+1 }} </td>
           <td > {{ $item->no }} </td>
@@ -79,6 +86,7 @@
           <td> {{ $item->kst }} </td>
           <td> {{ $item->sul_pay }} </td>
           <td> {{ $item->raseed }} </td>
+          <td> {{ $kst_raseed }} </td>
           <td> {{ $item->ksm_date }} </td>
         </tr>
         @php $sumkst+=$item->kst;$sumraseed+=$item->raseed;$sumsul_pay+=$item->sul_pay;$sumsul+=$item->sul; @endphp
