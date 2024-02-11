@@ -34,6 +34,14 @@
             @error('order_date') <span class="error">{{ $message }}</span> @enderror
         </div>
 
+        <div class="col-md-6">
+            <label  for="order_no" class="form-label-me ">تعديل رقم الفاتورة</label>
+            <input wire:model="newOrder_no"  wire:keydown.enter="updOrder_no"  type="text" class=" form-control "
+                   id="newOrder_no" >
+        </div>
+        <div class="col-md-6">
+        </div>
+
         <div class="col-md-12">
             <label  for="order_no" class="form-label-me ">{{$PlaceLabel}}</label>
             <input wire:model="st_name"   class="form-control" readonly    type="text"   >
@@ -136,7 +144,6 @@
         window.addEventListener('OpenModal', event => {
             $("#ModalForm").modal('show');
         })
-
 
     </script>
     <script>

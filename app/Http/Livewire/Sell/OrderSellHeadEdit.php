@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Sell;
 
 use App\Models\aksat\main;
+use App\Models\aksat\MainArc;
 use App\Models\Operations;
 use App\Models\others\price_type;
 use App\Models\sell\sell_tran;
@@ -12,6 +13,7 @@ use App\Models\stores\halls_names;
 use App\Models\stores\items;
 use App\Models\stores\stores;
 use App\Models\stores\stores_names;
+use App\Models\trans\trans;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -22,6 +24,7 @@ use Livewire\Component;
 class OrderSellHeadEdit extends Component
 {
     public $order_no;
+    public $newOrder_no='';
     public $order_date;
     public $jeha_no;
 
@@ -54,6 +57,25 @@ class OrderSellHeadEdit extends Component
     'mounthead','DoDelete',
   ];
 
+  public function updOrder_no(){
+      if (!$this->newOrder_no) return;
+      $sell=sells::find($this->newOrder_no);
+      if ($sell) {
+          $this->dispatchBrowserEvent('mmsg', 'هذا الرقم  مخزون لفاتورة اخري');
+          return;
+      }
+
+      sells::find($this->order_no)->update(['order_no'=>$this->newOrder_no]);
+
+      main::where('order_no',$this->order_no)->update(['order_no'=>$this->newOrder_no]);
+      MainArc::where('order_no',$this->order_no)->update(['order_no'=>$this->newOrder_no]);
+      trans::where('order_no',$this->order_no)->where('tran_who',3)->update(['order_no'=>$this->newOrder_no]);
+      $this->order_no=$this->newOrder_no;
+      $this->newOrder_no='';
+
+      $this->ChkOrderNoAndGo();
+      $this->emit('gotonext', 'orderno');
+  }
   public function updatedTheOrderListSelected(){
     $this->TheOrderListSelected=0;
     $this->ChkOrderNoANdGo();
@@ -67,8 +89,6 @@ class OrderSellHeadEdit extends Component
     $this->validate();
     $this->HeadOpen=false;
     $this->HeadDataOpen=true;
-
-
     $this->emitTo('sell.order-sell-detail-edit','TakeParam',$this->order_no,$this->stno);
     $this->emitTo('sell.order-sell-detail-edit','mountdetail',$this->PlaceType,$this->stno,$this->st_name);
   }
