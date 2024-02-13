@@ -83,6 +83,8 @@
                     <th>رقم العقد</th>
                     <th>اجمالي العقد</th>
                     <th>القسط</th>
+                    <th>الفائض</th>
+                    <th>الترجيع</th>
                     <th>البيان</th>
                 </tr>
                 </thead>
@@ -92,6 +94,8 @@
                         <td > <a wire:click="selectItem({{ $item->no }},'{{$item->MainOrArc}}')" href="#">{{$item->no}}</a>
                         <td > <a wire:click="selectItem({{ $item->no }},'{{$item->MainOrArc}}')" href="#">{{$item->sul_tot}}</a>
                         <td > <a wire:click="selectItem({{ $item->no }},'{{$item->MainOrArc}}')" href="#" >{{$item->kst}}</a>
+                        <td > <a wire:click="selectItem({{ $item->no }},'{{$item->MainOrArc}}')" href="#" >{{$item->over_count}}</a>
+                        <td > <a wire:click="selectItem({{ $item->no }},'{{$item->MainOrArc}}')" href="#" >{{$item->tar_count}}</a>
                         <td > <a wire:click="selectItem({{ $item->no }},'{{$item->MainOrArc}}')" href="#" >{{$item->MainOrArc}}</a>
                     </tr>
                 @endforeach

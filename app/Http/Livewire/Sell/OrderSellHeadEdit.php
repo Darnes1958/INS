@@ -79,7 +79,6 @@ class OrderSellHeadEdit extends Component
   public function updatedTheOrderListSelected(){
     $this->TheOrderListSelected=0;
     $this->ChkOrderNoANdGo();
-
   }
   public function updatedOrderno(){
     $this->OrderNoFound=false;
@@ -95,7 +94,6 @@ class OrderSellHeadEdit extends Component
   public function ChkOrderNoAndGo(){
     if ($this->order_no) {
       $this->emit('mounttable');
-
       $res = sells::on(Auth()->user()->company)->find($this->order_no);
       if ($res) {
         $this->jeha_no=$res->jeha;
