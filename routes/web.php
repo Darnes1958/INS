@@ -146,6 +146,7 @@ Route::controller(RepAksatController::class)->group(function (){
   route::get('/pdfkaemaNotOur/{TajNo?}/{bank_no?}', 'PdfKaemaNotOur')->name('pdfkaemaNotOur') ;
   route::get('/pdfkaemaNotThere/{TajNo?}/{bank_no?}/{mychecked?}', 'PdfKaemaNotThere')->name('pdfkaemaNotThere') ;
   route::get('/pdfplacekstcount/{place_name}', 'PdfPlaceKstCount')->name('pdfplacekstcount') ;
+  route::get('/pdfmahjoza/{TajNo}', 'PdfMahjoza')->name('pdfmahjoza') ;
 });
 Route::controller(RepAmaaController::class)->group(function (){
   route::get('/repamma/{rep}', 'RepAmma')->name('repamma')->middleware('auth');

@@ -9,6 +9,7 @@ use App\Models\aksat\kst_trans;
 use App\Models\aksat\kst_type;
 use App\Models\aksat\main;
 use App\Models\aksat\main_kst_count;
+use App\Models\aksat\main_view;
 use App\Models\bank\bank;
 use App\Models\bank\BankTajmeehy;
 use App\Models\bank\Companies;
@@ -68,6 +69,34 @@ class RepAksatController extends Controller
     return $pdf->download('report.pdf');
 
   }
+    function PdfMahjoza($TajNo){
+
+        $RepDate=date('Y-m-d');
+        $cus=Customers::where('Company',Auth::user()->company)->first();
+        $bank_name=BankTajmeehy::find($TajNo)->TajName;
+        $res=main_view::whereIn('bank',function ($q) use ($TajNo){
+            $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$TajNo);
+        })
+            ->whereNotIn('acc',function ($q) use ($TajNo){
+                $q->select('acc')->from('Mahjoza')->where('Taj',$TajNo);
+            })
+        ->get();
+
+        $reportHtml = view('PrnView.aksat.pdf-mahjoza',
+            ['cus'=>$cus,'bank_name'=>$bank_name,'date'=>$RepDate
+                ,'res'=>$res])->render();
+        $arabic = new Arabic();
+        $p = $arabic->arIdentify($reportHtml);
+
+        for ($i = count($p)-1; $i >= 0; $i-=2) {
+            $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+            $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+        }
+
+        $pdf = PDF::loadHTML($reportHtml);
+        return $pdf->download('report.pdf');
+
+    }
   function PdfPlaceKstCount( $place_name){
 
     $RepDate=date('Y-m-d');
