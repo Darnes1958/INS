@@ -184,7 +184,8 @@ class RepMainData extends Component
 
         if ($rec) {
           $ser=TransArc::where('no',$rec->no)->where('ksm','!=',0)->where('kst_notes','!=',null)->max('ser');
-          $this->last_tot=TransArc::where('no',$rec->no)->where('ser',$ser)->first()->ksm;
+          if ($ser) $this->last_tot=TransArc::where('no',$rec->no)->where('ser',$ser)->first()->ksm;
+          else $this->last_tot=0;
 
         }
         else $this->last_tot=0;
