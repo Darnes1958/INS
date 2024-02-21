@@ -16,7 +16,7 @@ class RepMahjoza extends Component
 {
   use WithPagination;
   protected $paginationTheme = 'bootstrap';
-  public $TajNo;
+  public $TajNo=0;
   public $search;
 
   public $orderColumn = "acc";

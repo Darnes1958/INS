@@ -92,6 +92,7 @@ class RepMainAllHead extends Component
         $items = $items instanceof Collection ? $items : Collection::make($items);
         return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
+
     public function render()
     {
         $page = 1;
@@ -116,13 +117,21 @@ class RepMainAllHead extends Component
             $this->isEmpty = __('Nothings Found.');
         }
         $first= DB::connection(Auth()->user()->company)->table('main')
-        ->selectRaw('no,sul_tot, kst,\'قائم\' as MainOrArc')
-        ->where('jeha',$this->jeha_no);
+            ->selectRaw('no,sul_tot,kst,
+            (select isnull(count(*),0) from over_kst where main.no=over_kst.no) over_count,
+            (select isnull(count(*),0) from tar_kst where main.no=tar_kst.no) tar_count,\'قائم\' as MainOrArc')
+            ->where('jeha',$this->jeha_no);
+
+
         $second =DB::connection(Auth()->user()->company)->table('MainArc')
-        ->selectRaw('no,sul_tot, kst,\'أرشيف\' as MainOrArc')
-        ->where('jeha',$this->jeha_no)
+
+            ->selectRaw('no,sul_tot,kst,
+            (select isnull(count(*),0) from over_kst_a where MainArc.no=over_kst_a.no) over_count,
+            (select isnull(count(*),0) from tar_kst where MainArc.no=tar_kst.no) tar_count,\'أرشيف\' as MainOrArc')
+            ->where('jeha',$this->jeha_no)
         ->union($first)
         ->get();
+
         $data = $this->paginate($second);
         return view('livewire.aksat.rep.okod.rep-main-all-head',[
             'TableList' =>$data,

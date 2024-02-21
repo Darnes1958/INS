@@ -19,6 +19,10 @@
       </div>
     </div>
 
+  <div x-show="$wire.RepRadio=='Not'" class="col-md-1 ">
+      <a  href="{{route('pdfmahjoza',['TajNo'=>$TajNo,])}}"
+          class="btn btn-success waves-effect waves-light"><i class="fa fa-print"></i></a>
+  </div>
   </div>
 
 
