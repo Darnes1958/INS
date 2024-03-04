@@ -38,10 +38,10 @@ class ToHafitha extends Component
           if ($this->TajNo==3)
             $bank_no='61';
 
-            if ($this->TajNo==7)
-            $bank_no='95';
+          if ($this->TajNo==7)
+             $bank_no='95';
 
-            if ($this->TajNo==11)
+          if ($this->TajNo==11)
                 $bank_no='100';
 
         }
