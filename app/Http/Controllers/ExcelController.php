@@ -66,8 +66,11 @@ class ExcelController extends Controller
       {
         if ($TajNo==3)
          DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set bankcode='061' where bankcode is null") );
-        else
+        if ($TajNo==7)
          DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set bankcode='069'  where bankcode is null") );
+        if ($TajNo==11)
+              DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set bankcode='032'  where bankcode is null") );
+
       }
       else
         DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set bankcode=substring(acc,1,3) ") );
@@ -92,12 +95,15 @@ class ExcelController extends Controller
 
     if (Auth::user()->company=='BokreahAli') {
 
-      if ($TajNo == 3) {
+      if ($TajNo == 3)
         DB::connection(Auth()->user()->company)->statement(DB::raw("update Kaema set bankcode='061',bank=61  where Taj='$TajNo'"));
 
-      } else {
+      if ($TajNo == 7)
         DB::connection(Auth()->user()->company)->statement(DB::raw("update Kaema set bankcode='069',bank=69  where Taj='$TajNo'"));
-      }
+
+      if ($TajNo == 11)
+            DB::connection(Auth()->user()->company)->statement(DB::raw("update Kaema set bankcode='032',bank=32  where Taj='$TajNo'"));
+
     }
 
   if (Auth::user()->bank!='BokreahAli')  DB::connection(Auth()->user()->company)

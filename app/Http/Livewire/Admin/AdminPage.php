@@ -82,11 +82,11 @@ public $ThedatabaseListIsSelectd;
           foreach ($kst_trans as $trans){
            $this->KstTrans=$trans;
 
-           info($this->KstTrans);
+
            $this->KstTrans->kst=$kst;
            $this->KstTrans->kst_date=$date;
               $this->validate();
-           info($this->KstTrans);
+
 
            $this->KstTrans->save();
            $date = date('Y-m-d', strtotime($date . "+1 month"));
