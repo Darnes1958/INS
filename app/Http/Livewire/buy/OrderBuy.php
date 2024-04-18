@@ -12,6 +12,7 @@ use App\Models\buy\charges_buy_work;
 use App\Models\buy\rep_buy_tran;
 use App\Models\jeha\jeha;
 use App\Models\stores\halls_names;
+use App\Models\stores\item_price_sell;
 use App\Models\stores\items;
 use App\Models\stores\store_exp;
 use App\Models\stores\stores_names;
@@ -67,11 +68,31 @@ class OrderBuy extends Component
     public $xcharge_open=false;
     public $OpenSave=false;
 
+    public $price_nakdy;
+    public $price_tak;
+
   protected $listeners = [
     'openTable','DoDelete'
   ];
 
+    public function UpdNakdy(){
+      if (!$this->item_no) return;
+      if (!$this->price_nakdy || $this->price_nakdy<=0) return;
+        items::find($this->item_no)->update(['price_sell'=>$this->price_nakdy]);
+      $res=item_price_sell::where('item_no',$this->item_no)->where('price_type',1)->first();
+        if ($res) {$res->price=$this->price_nakdy;$res->save();}
+      else item_price_sell::create(['item_no'=>$this->item_no,'price_type'=>1,'price'=>$this->price_nakdy]);
+        $this->emit('gotonext','price_tak');
+    }
+    public function UpdTak(){
+        if (!$this->item_no) return;
+        if (!$this->price_tak || $this->price_tak<=0) return;
 
+        $res=item_price_sell::where('item_no',$this->item_no)->where('price_type',2)->first();
+        if ($res) {$res->price=$this->price_tak;$res->save();}
+        else item_price_sell::create(['item_no'=>$this->item_no,'price_type'=>2,'price'=>$this->price_tak]);
+        $this->emit('gotonext','quant');
+    }
 
     public function updated($field)
     {
@@ -173,6 +194,12 @@ class OrderBuy extends Component
         $this->price=number_format($result->price_buy, 2, '.', '')  ;
         $this->raseed= $result->raseed;
         $this->st_raseed=0;
+
+        $this->price_nakdy=$result->price_sell;
+        $item_price_sell=item_price_sell::where('item_no',$this->item_no)->where('price_type',2)->first();
+        if ($item_price_sell) $this->price_tak=$item_price_sell->price;
+        else $this->price_tak=0;
+
         for ($i=0;$i<count($result->iteminstore);$i++)
         { if($result->iteminstore[$i]->st_no==$this->st_no){$this->st_raseed=$result->iteminstore[$i]->raseed;}}
 
@@ -183,6 +210,7 @@ class OrderBuy extends Component
         }
         if ($res)  $this->price=$res->price;
         $this->ItemGeted=true;
+
 
         $this->emit('gotonext','quant');
         return true;

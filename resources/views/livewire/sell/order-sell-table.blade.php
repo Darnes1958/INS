@@ -84,11 +84,14 @@
     <!-- End Hide Add Customer Form -->
 
 
-    <div class="form-group" >
-
-        <button wire:click.prevent="store()"
-
-                class="btn btn-info" id="storeButton">تخزين الفاتورة</button>
+    <div class="form-group row" >
+        <div class="col-md-2">
+        <button wire:click.prevent="store()"     class="btn btn-info" id="storeButton">تخزين الفاتورة</button>
+        </div>
+        <div  class="col-md-4">
+            <input class="form-check-input" name="orderPrint" type="checkbox" wire:model="printOrder"  >
+            <label class="form-check-label" for="orderPrint">طباعة الفاتورة بعد التخزين</label>
+        </div>
 
         @if (session()->has('message'))
             <div class="alert alert-success">

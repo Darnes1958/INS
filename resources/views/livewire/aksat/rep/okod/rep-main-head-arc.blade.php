@@ -10,11 +10,15 @@
                 <button wire:click="$emit('CloseOkodArc')"  type="button" class="btn btn-outline-danger btn-sm far fa-window-close" ></button>
             </div>
             @else
-                <div class="col-md-12">
+                <div class="col-md-8">
                     <input  wire:model="search" wire:click="OpenTable" placeholder="عقد , حساب , زبون , فاتورة ... "  class="form-control"   type="text"  >
                 </div>
+                <div   class="col-md-4" >
 
-                @endrole
+                    @livewire('bank.bank-select')
+                </div>
+
+            @endrole
         </div>
         <div x-show="$wire.IsSearch">
             <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
@@ -64,6 +68,24 @@
     </script>
 
     <script>
+
+        $(document).ready(function ()
+        {
+            $('#Bank_L').select2({
+                closeOnSelect: true
+            });
+            $('#Bank_L').on('change', function (e) {
+                var data = $('#Bank_L').select2("val");
+            @this.set('bankno', data);
+            @this.set('TheBankListIsSelectd', 1);
+            });
+        });
+        window.livewire.on('bank-change-event',()=>{
+            $('#Bank_L').select2({
+                closeOnSelect: true
+            });
+        });
+
 
 
         $(document).ready(function ()

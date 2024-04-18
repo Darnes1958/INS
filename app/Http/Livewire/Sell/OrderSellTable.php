@@ -2,11 +2,20 @@
 
 namespace App\Http\Livewire\Sell;
 
+use App\Models\Arc\Arc_rep_sell_tran;
+use App\Models\Arc\Arc_Sells;
+use App\Models\Customers;
+use App\Models\jeha\jeha;
+use App\Models\sell\rep_sell_tran;
 use App\Models\sell\sells;
+use App\Models\stores\halls_names;
 use App\Models\stores\items;
 use App\Models\stores\store_exp;
 use App\Models\stores\stores;
+use App\Models\stores\stores_names;
 use App\Models\trans\trans;
+use ArPHP\I18N\Arabic;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +41,7 @@ class OrderSellTable extends Component
     public $ToSal;
     public $ToSal_L;
     public $OrderChanged=false;
+    public $printOrder=true;
 
     public $IsSave=false;
 
@@ -41,6 +51,7 @@ class OrderSellTable extends Component
     public function mounttable(){
         $this->mount();
     }
+
 
 
   public function store(){
@@ -165,9 +176,38 @@ class OrderSellTable extends Component
                 $this->emit('mounttable');
                 $this->emit('dismountdetail');
                 $this->emit('mounthead');
+
+                if ($this->printOrder) {
+                    $res=sells::where('order_no',$this->order_no)->first();
+                    $cus=Customers::where('Company',Auth::user()->company)->first();
+                    $jeha_name=jeha::find($this->jeha_no)->jeha_name;
+                    if ($res->sell_type==1){ $place_name=stores_names::find($res->place_no)->st_name;}
+                    if ($res->sell_type==2){ $place_name=halls_names::find($res->place_no)->hall_name;}
+
+                    $orderdetail = rep_sell_tran::where('order_no', $this->order_no)->get();
+
+                    $reportHtml = view('PrnView.sell.rep-order-sell',
+                        ['orderdetail'=>$orderdetail,'res'=>$res,'cus'=>$cus,'jeha_name'=>$jeha_name,'place_name'=>$place_name])->render();
+                    $arabic = new Arabic();
+                    $p = $arabic->arIdentify($reportHtml);
+
+                    for ($i = count($p)-1; $i >= 0; $i-=2) {
+                        $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+                        $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+                    }
+                    $pdf = PDF::loadHTML($reportHtml);
+
+                    return response()->streamDownload(function () use($pdf) {
+                        echo  $pdf->stream();
+                    }, 'report.pdf');
+
+
+
+                }
+
               } else {DB::connection(Auth()->user()->company)->rollback();}
             } catch (\Exception $e) {
-              //info($e);
+              info($e);
                 DB::connection(Auth()->user()->company)->rollback();
                 $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
             }

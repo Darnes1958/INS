@@ -162,6 +162,20 @@
              <input wire:model="st_raseed" class="form-control " name="st_raseed" type="text" readonly
                     id="st_raseed"   >
          </div>
+         <div class="col-6">
+             <label for="price_nakdy" class="form-label-me">تعديل البيع نقدي</label>
+             <input wire:model="price_nakdy" wire:keydown.enter="UpdNakdy" class="form-control"  type="number"
+                    id="price_nakdy"  style="text-align: center"  x-bind:disabled="!$wire.ItemGeted">
+             <br>
+             @error('price_nakdy') <span class="error">{{ $message }}</span> @enderror
+         </div>
+         <div class="col-6">
+             <label for="price_tak" class="form-label-me">تعديل البيع بالتقسيط</label>
+             <input wire:model="price_tak" wire:keydown.enter="UpdTak" class="form-control"  type="number"
+                    id="price_tak"  style="text-align: center"  x-bind:disabled="!$wire.ItemGeted">
+             <br>
+             @error('price_tak') <span class="error">{{ $message }}</span> @enderror
+         </div>
      </div>
      <!-- End Detail -->
  </div>
@@ -325,6 +339,9 @@
 
             if (postid=='madfooh') {  $("#madfooh").focus();  $("#madfooh").select();};
             if (postid=='ksm') {  $("#ksm").focus();  $("#ksm").select();};
+
+            if (postid=='price_nakdy') {  $("#price_nakdy").focus();  $("#price_nakdy").select();};
+            if (postid=='price_tak') {  $("#price_tak").focus();  $("#price_tak").select();};
 
 
         })

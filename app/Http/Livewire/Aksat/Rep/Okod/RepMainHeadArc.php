@@ -18,6 +18,14 @@ class RepMainHeadArc extends Component
  public $acc;
  public $search='';
  public $IsSearch=true;
+    public $bankno=0;
+    public $TheBankListIsSelectd;
+
+
+    public function updatedTheBankListIsSelectd(){
+        $this->TheBankListIsSelectd=0;
+        $this->emitTo('bank.bank-select','TakeBankNo',$this->bankno);
+    }
 
  public function updatingSearch()
   {
@@ -55,12 +63,23 @@ class RepMainHeadArc extends Component
     {
         return view('livewire.aksat.rep.okod.rep-main-head-arc',[
             'TableList' => DB::connection(Auth()->user()->company)->table('MainArc')
-                ->select('no','acc', 'name','sul','kst')
-                ->where('name', 'like', '%'.$this->search.'%')
-                ->orwhere('acc', 'like', '%'.$this->search.'%')
-                ->orwhere('no', 'like', '%'.$this->search.'%')
-                ->orwhere('jeha', 'like', '%'.$this->search.'%')
-                ->orwhere('order_no', 'like', '%'.$this->search.'%')
+
+                ->when(($this->bankno==null||$this->bankno==0),function ($q) {
+                    return $q->where('name', 'like', '%'.$this->search.'%')
+                        ->orwhere('acc', 'like', '%'.$this->search.'%')
+                        ->orwhere('no', 'like', '%'.$this->search.'%')
+                        ->orwhere('jeha', 'like', '%'.$this->search.'%')
+                        ->orwhere('order_no', 'like', '%'.$this->search.'%') ;     })
+                ->when($this->bankno!=0,function ($q) {
+                    return $q->where('bank',$this->bankno)
+                        ->Where(function($query) {
+                            $query->where('name', 'like', '%'.$this->search.'%')
+                                ->orwhere('acc', 'like', '%'.$this->search.'%')
+                                ->orwhere('no', 'like', '%'.$this->search.'%')
+                                ->orwhere('jeha', 'like', '%'.$this->search.'%')
+                                ->orwhere('order_no', 'like', '%'.$this->search.'%');}) ;
+                })
+
                 ->paginate(5)
     ]);
     }

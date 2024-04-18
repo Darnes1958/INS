@@ -182,6 +182,8 @@
         <input wire:model="st_raseed" class="form-control " name="st_raseed" type="text" readonly
                id="st_raseed"   >
     </div>
+
+
 </div>
 </div>
 
