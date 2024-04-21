@@ -56,11 +56,11 @@
           <td >{{$item->Val  }}   </td>
           <td >{{$item->Notes  }}   </td>
           <td  style="padding-top: 2px;padding-bottom: 2px; ">
-            <i wire:click="selectItem({{ $item->id }},{{$item->Val}},'{{$item->Notes}}','update')"
+            <i wire:click="selectItem({{ $item->id }},{{$item->Val}},'update')"
                class="btn btn-outline-primary btn-sm fa fa-edit editable-input" style="margin-left: 2px;"></i>
           </td>
           <td  style="padding-top: 2px;padding-bottom: 2px; ">
-            <i wire:click="selectItem({{ $item->id }},{{$item->Val}},'{{$item->Notes}}','delete')"
+            <i wire:click="selectItem({{ $item->id }},{{$item->Val}},'delete')"
                class="btn btn-outline-danger btn-sm fa fa-times "></i>
           </td>
         </tr>

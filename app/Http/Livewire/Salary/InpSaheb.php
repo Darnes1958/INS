@@ -49,10 +49,10 @@ class InpSaheb extends Component
   public function updated(){
     $this->IsSave=false;
   }
-  public function selectItem($transid,$val,$notes,$action){
+  public function selectItem($transid,$val,$action){
     $this->TransId=$transid;
     $this->Val=$val;
-    $this->Notes=$notes;
+    $this->Notes=SalaryTrans::find($transid)->Notes;
 
     if ($action=='delete') {$this->dispatchBrowserEvent('OpenMyDelete');}
     if ($action=='update') {$this->IsModify=True;$this->emit('gotonext','Val');}

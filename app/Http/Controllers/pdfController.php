@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\aksat\main;
+use App\Models\aksat\MainArc;
 use App\Models\Arc\Arc_rep_sell_tran;
 use App\Models\Arc\Arc_Sells;
+use App\Models\bank\bank;
 use App\Models\buy\buys;
 use App\Models\buy\rep_buy_tran;
 use App\Models\Customers;
 use App\Models\jeha\jeha;
+use App\Models\sell\price_type;
 use App\Models\sell\rep_sell_tran;
 use App\Models\sell\sells;
 use App\Models\stores\stores_names;
@@ -108,11 +112,25 @@ $comp=Auth()->user()->company;
   }
   function RepOrderSellPdf(Request $request){
     $order_no=$request->order_no;
+    $bank_name=null;
     if ($request->RepType=='NotArc')
-     $res=sells::on(Auth()->user()->company)->where('order_no',$order_no)->first();
+    {
+        $res=sells::on(Auth()->user()->company)->where('order_no',$order_no)->first();
+        if ($res)
+        {
+            if ($res->price_type=2)
+                $sul=main::where('order_no',$res->order_no)->first();
+            if (!$sul)  $sul=MainArc::where('order_no',$res->order_no)->first();
+            if ($sul) $bank_name=bank::find($sul->bank)->bank_name;
+            info($bank_name);
+        }
+    }
     else
       $res=Arc_Sells::where('order_no',$order_no)->first();
     if ($order_no==null || $order_no==0 || !$res) return(false);
+
+    $type_name=price_type::find($res->price_type)->type_name;
+
     $cus=Customers::where('Company',Auth::user()->company)->first();
     $jeha_name=$request->jeha_name;
     $place_name=$request->place_name;
@@ -126,14 +144,9 @@ $comp=Auth()->user()->company;
     }
 
 
-    //  return view('PrnView.buy.rep-order-buy',compact('orderdetail','res'));
-    //   $pdf = Pdf::loadView('PrnView.buy.rep-order-buy',
-    //     ['orderdetail'=>$orderdetail,'res'=>$res,'cus'=>$cus,'jeha_name'=>$jeha_name,'place_name'=>$place_name]);
-
-    // return $pdf->download('invoice.pdf');
-
     $reportHtml = view('PrnView.sell.rep-order-sell',
-      ['orderdetail'=>$orderdetail,'res'=>$res,'cus'=>$cus,'jeha_name'=>$jeha_name,'place_name'=>$place_name])->render();
+      ['orderdetail'=>$orderdetail,'res'=>$res,'cus'=>$cus,'jeha_name'=>$jeha_name,'place_name'=>$place_name,
+          'type_name'=>$type_name,'bank_name'=>$bank_name])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 

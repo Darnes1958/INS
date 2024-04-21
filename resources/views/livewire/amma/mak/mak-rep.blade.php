@@ -96,6 +96,7 @@
       <th style="width: 8%" class="sort text-primary" wire:click="sortOrder('item_no')" > رقم الصنف {!! $sortLink !!}</th>
       <th  class="sort  text-primary" wire:click="sortOrder('item_name')"> اسم الصنف {!! $sortLink !!}</th>
       @can('سعر الشراء')
+      <th style="width: 9%">سعر الشراء</th>
       <th style="width: 9%">سعر التكلفة</th>
       @endcan
       <th style="width: 9%">سعر البيع نقداً</th>
@@ -113,6 +114,7 @@
           <td> {{ $item->item_no }} </td>
           <td> {{ $item->item_name }} </td>
           @can('سعر الشراء')
+          <td> {{ $item->price_buy }} </td>
           <td> {{ $item->price_cost }} </td>
           @endcan
           <td> {{ $item->price_sell }} </td>
