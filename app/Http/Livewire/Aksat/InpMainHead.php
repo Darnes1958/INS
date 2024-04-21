@@ -169,6 +169,7 @@ class InpMainHead extends Component
         session()->flash('message', 'انتبه .. هذا الحساب لنفس المصرف مخزون لزبون اخر .. ورقمه ( '.$res->jeha.')');
       }
       $wrong=wrong_Kst::where('bank',$this->bankno)->where('acc',$this->acc)->where('morahel',0)->first();
+
       if ($wrong) $this->WrongFound=True;
       else $this->WrongFound=False;
       $this->emit('goto', 'place');
@@ -360,7 +361,9 @@ class InpMainHead extends Component
           }
         if ($this->WrongFound && $this->WrongKst=='Yes')
         {
+
           $wrong=wrong_Kst::where('bank',$this->bankno)->where('acc',$this->acc)->where('morahel',0)->orderBy('tar_date')->get();
+          $sum=0;
           foreach ($wrong as $item){
             $ser=kst_trans::where('no',$this->no)->where('ksm',0)->min('ser');
             kst_trans::where('no',$this->no)->where('ser',$ser)->update([
@@ -369,8 +372,14 @@ class InpMainHead extends Component
 
               'inp_date'=>date('Y-m-d'),
               'emp'=>auth::user()->empno,]);
+            $sum+=$item->kst;
             wrong_Kst::where('wrong_no',$item->wrong_no)->update(['morahel'=>1]);
           }
+          $main=main::find($this->no);
+          $main->sul_pay=$sum;
+          $main->raseed=$main->sul_tot-$sum;
+          $main->save();
+
         }
         DB::connection(Auth()->user()->company)->commit();
           if ($this->OrderChanged){
