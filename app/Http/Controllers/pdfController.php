@@ -118,18 +118,20 @@ $comp=Auth()->user()->company;
         $res=sells::on(Auth()->user()->company)->where('order_no',$order_no)->first();
         if ($res)
         {
-            if ($res->price_type=2)
+            if ($res->price_type==2) {
                 $sul=main::where('order_no',$res->order_no)->first();
-            if (!$sul)  $sul=MainArc::where('order_no',$res->order_no)->first();
-            if ($sul) $bank_name=bank::find($sul->bank)->bank_name;
-            info($bank_name);
+                if (!$sul)  $sul=MainArc::where('order_no',$res->order_no)->first();
+                if ($sul) $bank_name=bank::find($sul->bank)->bank_name;}
+
         }
     }
     else
       $res=Arc_Sells::where('order_no',$order_no)->first();
     if ($order_no==null || $order_no==0 || !$res) return(false);
 
+
     $type_name=price_type::find($res->price_type)->type_name;
+
 
     $cus=Customers::where('Company',Auth::user()->company)->first();
     $jeha_name=$request->jeha_name;
