@@ -80,11 +80,11 @@ class WelcomePage extends Component
             ->groupByRaw('month(sul_date)')->get();
         $kstcount=kst_trans::selectRaw('month(ksm_date) month,count(*) count')
             ->WhereYear('ksm_date',$year)
-            ->WhereYear('ksm','!=',0)
+            ->Where('ksm','!=',0)
             ->groupByRaw('month(ksm_date)')->get();
         $ksttot=kst_trans::selectRaw('month(ksm_date) month,round(sum(ksm),0) tot')
             ->WhereYear('ksm_date',$year)
-            ->WhereYear('ksm','!=',0)
+            ->Where('ksm','!=',0)
             ->groupByRaw('month(ksm_date)')->get();
         $rebhtot=sells::selectRaw('month(order_date) month,round(sum(rebh),0) tot')
           ->WhereYear('order_date',$year)
