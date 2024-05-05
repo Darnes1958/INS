@@ -114,6 +114,9 @@ class PlaceSum extends Component
                             SUM(raseed) AS sumraseed, SUM(dofa) AS sumdofa, SUM(sul_tot) AS sumsul_tot')
             ->where('sells.sell_type',$this->PlaceType)
             ->where('sells.place_no',$this->PlaceNo)
+            ->when($this->RepChk,function ($q){
+                $q->whereBetween('sul_date',[$this->date1,$this->date2]);
+            })
             ->groupBy('bank','bank_name')
             ->orderby('bank')
             ->paginate(14, ['*'], 'BankPage'),

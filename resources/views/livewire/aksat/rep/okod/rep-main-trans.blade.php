@@ -5,12 +5,13 @@
         <thead class="thead-dark font-size-12">
         <tr>
             <th width="5%">ت</th>
-            <th width="20%">ت.الاستحقاق</th>
-            <th width="20">ت.الخصم</th>
-            <th width="10%">القسط</th>
-            <th width="10%">الخصم</th>
-            <th width="15%">طريقة الدفع</th>
-            <th width="20%">بواسطة</th>
+            <th width="16%">ت.الاستحقاق</th>
+            <th width="16">ت.الخصم</th>
+            <th width="8%">القسط</th>
+            <th width="8%">الخصم</th>
+            <th width="10%">طريقة الدفع</th>
+            <th width="14%">بواسطة</th>
+            <th width="24%">ملاحظات</th>
         </tr>
         </thead>
         <tbody id="addRow" class="addRow">
@@ -23,6 +24,7 @@
             <td> {{ $item->ksm }} </td>
             <td> {{ $item->ksm_type_name }} </td>
             <td> {{ $item->EMP_NAME }} </td>
+            <td> {{ $item->kst_notes }} </td>
         </tr>
         @endforeach
         </tbody>

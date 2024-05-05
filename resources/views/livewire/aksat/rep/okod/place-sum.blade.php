@@ -40,9 +40,11 @@
 
     @if ($RepTable )
       @if ($RepChk)
+          @php $count=0;$sul=0;$pay=0;$raseed=0;  @endphp
       @foreach($RepTable2 as $key=>$item)
         <tr class="font-size-12">
-          <td> {{ $item->place_name }}  </td>
+            <td><a wire:click="selectItem({{ $item->sell_type }},{{ $item->place_no }},'{{ $item->place_name }}')" href="#">{{ $item->place_name }}</a>  </td>
+
           <td> {{  number_format($item->WCOUNT,0, '.', ',') }} </td>
           <td> {{  number_format($item->sumsul,0, '.', ',') }} </td>
           <td> {{  number_format($item->sumpay,0, '.', ',') }} </td>

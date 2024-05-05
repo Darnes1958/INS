@@ -231,7 +231,9 @@ class AddSupp extends Component
           'JehaTable'=>jeha::where('jeha_type',$this->jeha_type)
              ->where(function ($q){
                $q->where('jeha_name', 'like', '%'.$this->search.'%')
-                 ->orwhere('jeha_no', 'like', '%'.$this->search.'%');
+                 ->orwhere('jeha_no', 'like', '%'.$this->search.'%')
+                 ->orwhere('others', 'like', '%'.$this->search.'%')
+               ;
              })
 
               ->when(!Auth::user()->can('عميل خاص'),function($q){
