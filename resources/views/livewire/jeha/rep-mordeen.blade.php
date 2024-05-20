@@ -1,5 +1,5 @@
 
-<div  >
+<div x-data >
 
 
  <div class="row">
@@ -101,6 +101,8 @@
       {{ $RepTable->links() }}
     </div>
    <div class="col-md-6">
+       <a   wire:click="toExcl" x-show="$wire.jeha_no!=0"
+           class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-file-excel"> &nbsp;&nbsp;إكسل&nbsp;&nbsp;</i></a>
      <table class="table table-sm table-bordered table-striped  " width="100%"  id="mytable3" >
        <caption class="font-size-18 caption-top text-center p-0" style="color: #0a53be">{{$jeha_name}}</caption>
        <thead class="font-size-12 bg-primary text-white">

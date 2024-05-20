@@ -2,12 +2,14 @@
 
 namespace App\Http\Livewire\Jeha;
 
+use App\Exports\MordTran;
 use App\Models\jeha\jeha;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RepMordeen extends Component
 {
@@ -53,6 +55,9 @@ class RepMordeen extends Component
 
     }
   }
+    public function toExcl(){
+        return Excel::download(new MordTran($this->jeha_no), 'Mordeen.xlsx');
+    }
     public function render()
     {
 
