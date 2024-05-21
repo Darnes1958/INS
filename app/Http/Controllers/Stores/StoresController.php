@@ -24,6 +24,9 @@ class StoresController extends Controller
     function ItemPrices(){
         return view('backend.stores.item-prices');
     }
+    function ItemDamage(){
+        return view('backend.stores.item-damage');
+    }
   function RepPerPdf(Request $request){
 
     $RepDate=date('Y-m-d');
