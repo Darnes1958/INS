@@ -107,18 +107,22 @@ class ItemDamage extends Component
             store_exp::where('item_no', $this->itemno2)->update(['item_no' => $this->itemno]);
             DB::connection(Auth()->user()->company)->table('store_imp')->where('item_no', $this->itemno2)->update(['item_no' => $this->itemno]);
             $res=stores::where('item_no', $this->itemno2)->get();
+            $sum=items::find($this->itemno)->raseed;
             foreach ($res as $item){
                 $store=stores::where('item_no',$this->itemno)->where('st_no',$item->st_no)->first();
+                $sum+=$item->raseed;
                 if ($store) {
                     $q=$item->raseed+$store->raseed;
                     stores::where('item_no',$this->itemno)->where('st_no',$item->st_no)->update(['raseed'=>$q]);
                 }
                 else
                     stores::create(['item_no'=>$this->itemno,'st_no'=>$item->st_no,'raseed'=>$item->raseed]);
+
             }
             $res=halls::where('item_no', $this->itemno2)->get();
             foreach ($res as $item){
                 $store=halls::where('item_no',$this->itemno)->where('hall_no',$item->hall_no)->first();
+                $sum+=$item->raseed;
                 if ($store) {
                     $q=$item->raseed+$store->raseed;
                     halls::where('item_no',$this->itemno)->where('hall_no',$item->hall_no)->update(['raseed'=>$q]);
@@ -137,7 +141,7 @@ class ItemDamage extends Component
             DB::connection(Auth()->user()->company)->table('main_itemstemp')->where('item_no', $this->itemno2)->update(['item_no' => $this->itemno]);
 
             items::where('item_no', $this->itemno2)->delete();
-
+            items::where('item_no',$this->itemno)->update(['raseed'=>$sum]);
             $this->emit('RefreshSelectItem');
             $this->emit('RefreshSelectItem2');
 
