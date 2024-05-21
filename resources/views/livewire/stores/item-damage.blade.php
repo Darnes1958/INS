@@ -3,7 +3,8 @@
         <div class="row my-3 mx-1">
 
 
-            <div class="col-md-12" >
+            <div class="col-md-8" >
+                <label  class="form-label-me" >الصنف الأصلي</label>
                 @livewire('stores.item-select')
             </div>
 
@@ -66,6 +67,8 @@
 
 
             <div class="col-md-10" >
+                <label  class="form-label-me" >الصنف الذي سيتم ضمه للأصلي</label>
+
                 @livewire('stores.item-select2')
             </div>
             <div class="col-md-2" x-show="$wire.ItemGeted2 && $wire.ItemGeted">
