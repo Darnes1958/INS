@@ -37,6 +37,8 @@ class RepJehaTran extends Component
     public $DaenBefore;
     public $Mden;
     public $Daen;
+    public $sumBefore;
+    public $sumAfter;
     public $Raseed;
     protected $listeners = [
         'Take_Search_JehaNo',
@@ -152,6 +154,19 @@ class RepJehaTran extends Component
         $page = 1;
         $paginate = 15;
 
+        $this->sumBefore=collect(DB::connection(Auth()->user()->company)->
+        select('Select isnull(sum(mden),0) mden,isnull(sum(daen),0) daen from dbo.frep_jeha_tran (?) as result where order_date<?  '
+          ,array($this->jehano,$this->trandate)));
+        $this->MdenBefore=$this->sumBefore->first()->mden;
+        $this->DaenBefore=$this->sumBefore->first()->daen;
+
+      $this->sumAfter=collect(DB::connection(Auth()->user()->company)->
+      select('Select isnull(sum(mden),0) mden,isnull(sum(daen),0) daen from dbo.frep_jeha_tran (?) as result '
+        ,array($this->jehano,$this->trandate)));
+      $this->Mden=$this->sumAfter->first()->mden;
+      $this->Daen=$this->sumAfter->first()->daen;
+
+
 
         $collection = collect(DB::connection(Auth()->user()->company)->
         select('Select * from dbo.frep_jeha_tran (?) as result where order_date>=? order by order_date,order_no '
@@ -159,84 +174,14 @@ class RepJehaTran extends Component
 
         $data = $this->paginate($collection);
 
-        $this->MdenBefore=sells::on(Auth()->user()->company)->where('order_date','<',$this->trandate)
-          ->where('jeha',$this->jehano)->sum('tot');
-        $this->MdenBefore+=trans::on(Auth()->user()->company)->where('tran_date','<',$this->trandate)
-          ->where('jeha',$this->jehano)->where('imp_exp',2)->sum('val');
-
-        $this->DaenBefore=buys::on(Auth()->user()->company)->where('order_date','<',$this->trandate)
-          ->where('jeha',$this->jehano)->sum('tot');
-        $this->DaenBefore+=trans::on(Auth()->user()->company)->where('tran_date','<',$this->trandate)
-          ->where('jeha',$this->jehano)->where('imp_exp',1)->sum('val');
-        $this->DaenBefore+=main::on(Auth()->user()->company)
-          ->join('kst_trans','main.no','kst_trans.no')
-          ->where('ksm_date','<',$this->trandate)
-          ->where('jeha',$this->jehano)
-          ->where('ksm','!=',0)
-          ->sum('ksm');
-        $this->DaenBefore+=MainArc::on(Auth()->user()->company)
-          ->join('transarc','MainArc.no','TransArc.no')
-          ->where('ksm_date','<',$this->trandate)
-          ->where('jeha',$this->jehano)
-          ->where('ksm','!=',0)
-          ->sum('ksm');
-        $this->Daen+=main::on(Auth()->user()->company)
-          ->join('over_kst','main.no','over_kst.no')
-          ->where('tar_date','<',$this->trandate)
-          ->where('jeha',$this->jehano)
-          ->sum('over_kst.kst');
-        $this->Daen+=MainArc::on(Auth()->user()->company)
-          ->join('over_kst_a','MainArc.no','over_kst_a.no')
-          ->where('tar_date','<',$this->trandate)
-          ->where('jeha',$this->jehano)
-          ->sum('over_kst_a.kst');
-        $this->Mden+=main::on(Auth()->user()->company)
-          ->join('tar_kst','main.no','tar_kst.no')
-          ->where('tar_date','<',$this->trandate)
-          ->where('jeha',$this->jehano)
-          ->sum('tar_kst.kst');
-        $this->Mden+=MainArc::on(Auth()->user()->company)
-          ->join('tar_kst','MainArc.no','tar_kst.no')
-          ->where('tar_date','<',$this->trandate)
-          ->where('jeha',$this->jehano)
-          ->sum('tar_kst.kst');
 
 
-      $this->Mden=sells::on(Auth()->user()->company)->where('jeha',$this->jehano)->sum('tot');
-      $this->Mden+=trans::on(Auth()->user()->company)->where('jeha',$this->jehano)->where('imp_exp',2)->sum('val');
-
-      $this->Daen=buys::on(Auth()->user()->company)->where('jeha',$this->jehano)->sum('tot');
-      $this->Daen+=trans::on(Auth()->user()->company)->where('jeha',$this->jehano)->where('imp_exp',1)->sum('val');
-      $this->Daen+=main::on(Auth()->user()->company)
-        ->join('kst_trans','main.no','kst_trans.no')
-        ->where('jeha',$this->jehano)
-        ->where('ksm','!=',0)
-        ->sum('ksm');
-      $this->Daen+=MainArc::on(Auth()->user()->company)
-        ->join('transarc','MainArc.no','TransArc.no')
-        ->where('jeha',$this->jehano)
-        ->where('ksm','!=',0)
-        ->sum('ksm');
-
-      $this->Daen+=main::on(Auth()->user()->company)
-        ->join('over_kst','main.no','over_kst.no')
-        ->where('jeha',$this->jehano)
-        ->sum('over_kst.kst');
-      $this->Daen+=MainArc::on(Auth()->user()->company)
-        ->join('over_kst_a','MainArc.no','over_kst_a.no')
-        ->where('jeha',$this->jehano)
-        ->sum('over_kst_a.kst');
-      $this->Mden+=main::on(Auth()->user()->company)
-        ->join('tar_kst','main.no','tar_kst.no')
-        ->where('jeha',$this->jehano)
-        ->sum('tar_kst.kst');
-      $this->Mden+=MainArc::on(Auth()->user()->company)
-        ->join('tar_kst','MainArc.no','tar_kst.no')
-        ->where('jeha',$this->jehano)
-        ->sum('tar_kst.kst');
 
 
-        return view('livewire.jeha.rep-jeha-tran',['RepTable'=> $data]);
+
+
+
+        return view('livewire.jeha.rep-jeha-tran',['RepTable'=> $data,]);
 
     }
 }

@@ -35,10 +35,12 @@
         <input  wire:model="order_no" type="text" class="form-control" id="order_no" style="width: 30%" readonly>
     </div>
     <div class="d-inline-flex align-items-center">
-        <label for="sul_tot" class="form-label" style="width: 25%; ">إجمالي الفاتورة</label>
-        <input wire:model="sul_tot" type="text" class="form-control" name="sul_tot" style="width: 25%" readonly>
-        <label for="sul" class="form-label" style="width: 25% ">&nbsp;&nbsp;اجمالي التقسيط</label>
-        <input  wire:model="sul" type="text" class="form-control" id="sul" style="width: 25%" readonly>
+        <label for="sul_tot" class="form-label" style="width: 20%; ">إجمالي الفاتورة</label>
+        <input wire:model="sul_tot" type="text" class="form-control" name="sul_tot" style="width: 20%" readonly>
+        <label for="sul_tot" class="form-label" style="width: 10%; ">&nbsp;&nbsp;المدفوع</label>
+        <input wire:model="cash" type="text" class="form-control" name="cash" style="width: 15%" readonly>
+        <label for="sul" class="form-label" style="width: 15% ">&nbsp;&nbsp;اجمالي التقسيط</label>
+        <input  wire:model="sul" type="text" class="form-control" id="sul" style="width: 20%" readonly>
     </div>
     <div class="d-inline-flex align-items-center">
         <label for="sul_pay" class="form-label" style="width: 20% ">المسدد</label>

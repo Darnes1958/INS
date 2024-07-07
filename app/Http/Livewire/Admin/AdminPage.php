@@ -150,12 +150,10 @@ public $ThedatabaseListIsSelectd;
   }
   public function FromExcel2(){
     $this->FalseAll();
-
     $this->emitTo('admin.from-excel2','show',True);
   }
     public function LogUser(){
         $this->FalseAll();
-
         $this->emitTo('admin.rep-log-user','show',True);
     }
   public function Kaema(){

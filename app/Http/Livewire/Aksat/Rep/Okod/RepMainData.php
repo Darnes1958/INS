@@ -41,6 +41,7 @@ class RepMainData extends Component
     public $order_no;
     public $jeha=0;
     public $sul_tot;
+    public $cash;
     public $sul;
     public $sul_date;
     public $sul_pay;
@@ -219,6 +220,7 @@ class RepMainData extends Component
        $this->point_name=stores_names::where('st_no',$point->place_no)->first()->st_name;
       else
        $this->point_name=halls_names::where('hall_no',$point->place_no)->first()->hall_name;
+      $this->cash=$point->cash;
       $tel=jeha::on(Auth()->user()->company)->where('jeha_no',$this->jeha)->first();
        $this->libyana=$tel['libyana'];
        $this->mdar=$tel['mdar'];

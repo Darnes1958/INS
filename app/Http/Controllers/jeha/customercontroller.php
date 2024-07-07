@@ -168,8 +168,6 @@ class customercontroller extends Controller
         return redirect()->back()->with($notification);
     }
 
-
-
     function SearchCustomerall (Request $request)
     {
 
