@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Aksat\Rep\Okod;
 
+use App\Http\Traits\aksatTrait;
 use App\Models\aksat\main;
 use App\Models\aksat\MainArc;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,7 @@ use Livewire\WithPagination;
 class RepMainHeadArc extends Component
 {
  use WithPagination;
+ use aksatTrait;
  protected $paginationTheme = 'bootstrap';
  public $no;
  public $acc;
@@ -49,8 +51,10 @@ class RepMainHeadArc extends Component
     $this->acc='';
 
     if ($this->no!=null) {
-        $result = MainArc::on(Auth()->user()->company)->where('no',$this->no)->first();
+        $result = MainArc::where('no',$this->no)->first();
+        if ($result) {$result=$this->chkArcRaseed($result); }
         if ($result) {
+
             $this->acc=$result->acc;
             $this->emitTo('aksat.rep.okod.rep-main-data-arc','GotoDetail',$result);
             $this->emitTo('aksat.rep.okod.rep-main-trans-arc','GotoTrans',$this->no);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Aksat\Rep\Okod;
 
+use App\Http\Traits\aksatTrait;
 use App\Models\aksat\main;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -12,6 +13,7 @@ use Livewire\WithPagination;
 class RepMainHead extends Component
 {
  use WithPagination;
+ use aksatTrait;
  protected $paginationTheme = 'bootstrap';
  public $no;
  public $acc;
@@ -49,8 +51,11 @@ class RepMainHead extends Component
     $this->acc='';
 
     if ($this->no!=null) {
-        $result = main::on(Auth()->user()->company)->where('no',$this->no)->first();
+        $result = main::find($this->no);
         if ($result) {
+          info($result->sul_pay);
+            $this->chkRaseed($result);
+            info($result->sul_pay);
             $this->CloseTable();
             $this->acc=$result->acc;
             $this->emitTo($this->who,'GotoDetail',$result);
