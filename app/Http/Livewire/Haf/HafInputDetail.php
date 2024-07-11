@@ -4,11 +4,14 @@ namespace App\Http\Livewire\Haf;
 
 
 
+use App\Http\Traits\aksatTrait;
+use App\Models\aksat\kst_trans;
 use App\Models\aksat\main;
 use App\Models\aksat\hafitha;
 use App\Models\aksat\hafitha_tran;
 use App\Models\aksat\main_deleted;
 use App\Models\aksat\MainArc;
+use App\Models\aksat\TransArc;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +20,7 @@ use Livewire\Component;
 
 class HafInputDetail extends Component
 {
+    use aksatTrait;
     public $no;
     public $hafitha=0;
     public $bank=0;
@@ -78,14 +82,18 @@ class HafInputDetail extends Component
   public function ChkNoAndGo(){
 
     if ($this->no!=null) {
-      $result = main::on(Auth()->user()->company)->where('no',$this->no)-> first();
+      $result = main::where('no',$this->no)->first();
+
       if ($result) {
-        $ser=DB::connection(Auth()->user()->company)->table('kst_trans')
-          ->where('no',$this->no)
+
+        $this->chkRaseed($result);
+
+        $ser=kst_trans::
+            where('no',$this->no)
           ->where('ksm','!=',null)
           ->where('ksm','!=','0')->max('ser');
         if ($ser==null) {$kst=$result->kst; }
-        else {$res=DB::connection(Auth()->user()->company)->table('kst_trans')->where('no',$this->no)->where('ser',$ser)->first();
+        else {$res=kst_trans::where('no',$this->no)->where('ser',$ser)->first();
               $kst=$res->ksm; }
         $sumkst=hafitha_tran::select(DB::connection(Auth()->user()->company)->raw('sum(kst + baky) as total'))
                               ->where('hafitha',$this->hafitha)->where('no',$this->no)->first();
@@ -105,17 +113,19 @@ class HafInputDetail extends Component
       else
 
       {
-        $result = MainArc::on(Auth()->user()->company)->where('no',$this->no)->first();
+        $result = MainArc::where('no',$this->no)->first();
+        if ($result) {$result=$this->chkArcRaseed($result); }
         if ($result) {
+
           $this->kst_type=5;
-          $ser=DB::connection(Auth()->user()->company)->table('TransArc')
-            ->where('no',$this->no)
+          $ser=TransArc::
+            where('no',$this->no)
             ->where('ksm','!=',null)
             ->where('ksm','!=','0')->max('ser');
 
           if ($ser==null) {$kst=$result->kst;}
           else {
-            $res=DB::connection(Auth()->user()->company)->table('TransArc')->where('no',$this->no)->where('ser',$ser)->first();
+            $res=TransArc::where('no',$this->no)->where('ser',$ser)->first();
             $kst=$res->ksm;
           }
 
@@ -147,14 +157,13 @@ class HafInputDetail extends Component
         $this->emit('bankfound',$this->bank,'');
     }
     public function ChkAccAndGo(){
-
-      $result = main::on(Auth()->user()->company)->where('bank',$this->bank)->where('acc',$this->acc)->get();
+      $result = main::where('bank',$this->bank)->where('acc',$this->acc)->get();
       if (count($result)!=0) {
         if (count($result)>1){
           $this->emit('GotoManyAcc',$this->bank,$this->acc);
           $this->dispatchBrowserEvent('OpenKstManyModal');}
         else {
-          $result = main::on(Auth()->user()->company)->where('bank',$this->bank)->where('acc',$this->acc)->first();
+          $result = main::where('bank',$this->bank)->where('acc',$this->acc)->first();
           $this->name=$result->name;
           $this->no=$result->no;
           $this->ChkNoAndGo();
@@ -162,8 +171,7 @@ class HafInputDetail extends Component
       }
       else
       {
-          $res= mainarc::on(Auth()->user()->company)
-              ->where('bank',$this->bank)->where('acc',$this->acc)->first();
+          $res= mainarc::where('bank',$this->bank)->where('acc',$this->acc)->first();
           if ($res) {
               $this->no=$res->no;
               $this->ChkNoAndGo();
@@ -179,17 +187,14 @@ class HafInputDetail extends Component
                 $this->dispatchBrowserEvent('kstwrong');
               }
           }
-
-
       }
-
     }
     public function ChkKsm(){
       $this->validate();
       $baky=0;
       if ($this->kst_type==1)
-      { if ($this->SumKst+$this->kst>$this->raseed){
-          $baky=$this->SumKst+$this->kst-$this->raseed;
+      { if ($this->SumKst+$this->ksm>$this->raseed){
+          $baky=$this->SumKst+$this->ksm-$this->raseed;
           $this->kst_type=3; }
         }
       $this->StoreRec($baky);
@@ -201,9 +206,9 @@ class HafInputDetail extends Component
     function mount(){
       $this->ksm_date=date('Y-m-d');
     }
+
    public function Resetdetail(){
     $this->NoGeted=false;
-
     $this->name='';
     $this->sul_pay='';
     $this->sul='';
@@ -212,10 +217,8 @@ class HafInputDetail extends Component
     $this->sul_tot='';
     $this->raseed='';
     $this->kst_count='';
-
    }
    public function StoreRec($baky){
-
     $serinhafitha= hafitha_tran::on(Auth()->user()->company)->where('hafitha',$this->hafitha)->max('ser_in_hafitha')+1;
      DB::connection(Auth()->user()->company)->beginTransaction();
      try {
@@ -285,6 +288,7 @@ info($e);
   protected function rules()
   {
     return [
+       'ksm' => ['required','gt:0' ],
       'acc' => ['required','string',],
       'no' => ['required','integer','gt:0',],
       'ksm_date' =>['required','date'],

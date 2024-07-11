@@ -25,6 +25,8 @@
                         @can('ترجيع مشتريات')
                         <li><a href="{{route('tarbuy')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">ترجيع مشتريات (مردودات)</a></li>
                         @endcan
+
+
                     </ul>
                 </div>
             </li>
