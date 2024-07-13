@@ -17,7 +17,7 @@ class MyRole extends Seeder
      */
     public function run()
     {
-        $oldper=DB::connection('Daibany')->table('sys_roles')->get();
+        $oldper=DB::connection('Elmaleh')->table('sys_roles')->get();
         foreach ($oldper as $item) {
             if ( ! Permission::where('name',$item->role)->first())
                 Permission::create(['name' => $item->role]);
@@ -28,13 +28,13 @@ class MyRole extends Seeder
         if (  Role::where('name','SupperUser')->doesntExist()) Role::create(['name' => 'SupperUser']);
         if (  Role::where('name','info')->doesntExist()) Role::create(['name' => 'info']);
 
-        $oldrole=DB::connection('Daibany')->table('sys_roots')->get();
+        $oldrole=DB::connection('Elmaleh')->table('sys_roots')->get();
         foreach ($oldrole as $item) {
             if ( Role::where('name',$item->role_root_name)->doesntExist())
                  Role::create(['name'=>$item->role_root_name]);
             $role=Role::where('name',$item->role_root_name)->first();
             $oldId=$item->role_root_no;
-            $oldper=DB::connection('Daibany')->table('sys_roles')
+            $oldper=DB::connection('Elmaleh')->table('sys_roles')
                 ->where('role_root',$oldId)
                 ->orderBy('role_ser')
                 ->get();

@@ -11,7 +11,7 @@ use Livewire\Component;
 
 class EmpnoSelect extends Component
 {
-    public $Comp='Daibany';
+    public $Comp='Elmaleh';
     protected $listeners = ['comp'];
 
     public function comp($comp){
