@@ -68,9 +68,7 @@
      @livewire('admin.inp-company')
      @livewire('admin.rep-company')
      @livewire('admin.rep-users')
-     @livewire('admin.manage-roles')
 
-     @livewire('admin.rep-roles')
      @livewire('admin.kaema')
      @livewire('admin.mahjoza')
      @livewire('admin.from-excel')
