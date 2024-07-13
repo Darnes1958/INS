@@ -17,7 +17,7 @@
            @livewire('admin.welcome-page')
           @endif
           @if ($id==1)
-            @livewire('admin.welcome-page')
+            @livewire('admin.admin-page')
           @endif
         @endif
     @endrole
