@@ -28,6 +28,7 @@
                 <div style="width: 40px;height: 120px; padding-top: 20px; margin: auto;">
                     @auth
                         <a href="{{ url('/home') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">الصفحة الرئيسية</a>
+                        <a href="{{ url('/logout') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">خروج</a>
                     @else
                         <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline text-lg">دخول</a>
                     @endauth
