@@ -58,7 +58,9 @@ class FromExcel extends Component
     $endDate=FromExcelModel::max('ksm_date');
     $res=Dateofexcel::where('taj_id',$this->TajNo)
       ->whereBetween('date_begin',[$beginDate,$endDate])->first();
-    if ($res){
+    $res2=Dateofexcel::where('taj_id',$this->TajNo)
+      ->whereBetween('date_end',[$beginDate,$endDate])->first();
+    if ($res || $res2){
       FromExcelModel::truncate();
       $this->dispatchBrowserEvent('mmsg', 'يوجد تداخل في تاريخ الحافظة مع حافظة سابقة لنفس المصرف ');
       return false;
