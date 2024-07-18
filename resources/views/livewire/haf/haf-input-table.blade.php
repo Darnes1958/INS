@@ -37,11 +37,12 @@
         <thead class="font-size-12">
         <tr>
           <th width="6%"><a wire:click="DoIndex('ser_in_hafitha')" href="#">ت</a></th>
-          <th width="16%"><a wire:click="DoIndex('no')" href="#">رقم العقد</a></th>
-          <th width="18%"><a wire:click="DoIndex('acc')" href="#">رقم الحساب</a></th>
-          <th width="26%"><a wire:click="DoIndex('name')" href="#">الاسم</a></th>
-          <th width="10%">القسط</th>
-          <th width="10%">الباقي</th>
+          <th width="12%"><a wire:click="DoIndex('no')" href="#">رقم العقد</a></th>
+          <th width="16%"><a wire:click="DoIndex('acc')" href="#">رقم الحساب</a></th>
+          <th width="24%"><a wire:click="DoIndex('name')" href="#">الاسم</a></th>
+          <th width="12%">التاريخ</th>
+          <th width="8%">القسط</th>
+          <th width="8%">الباقي</th>
           <th width="8%">الحالة</th>
           <th width="8%">&nbsp;</th>
           <th width="8%">&nbsp;</th>
@@ -55,6 +56,7 @@
               <td > {{ $item->no }} </td>
               <td> {{ $item->acc }} </td>
               <td> {{ $item->name }} </td>
+              <td> {{ $item->ksm_date }} </td>
               <td> {{ $item->kst }} </td>
               <td> {{ $item->baky }} </td>
               @if($item->kst_type==5)
