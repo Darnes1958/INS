@@ -39,6 +39,7 @@
                 <tr style="background: #1c6ca1;color: white;text-align: center">
                     <th>من تاريخ</th>
                     <th>إلي تاريخ</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
