@@ -48,7 +48,7 @@
                         <td>{{$user->date_begin}}</td>
 
                         <td>{{$user->date_end}}</td>
-                        <i wire:click="Delete({{ $user->id }})" class="btn btn-outline-danger btn-sm fa fa-times "></i>
+                        <td> <i wire:click="Delete({{ $user->id }})" class="btn btn-outline-danger btn-sm fa fa-times "></i> </td>
 
                     </tr>
                 @endforeach
