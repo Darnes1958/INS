@@ -33,6 +33,10 @@ class FromExcel extends Component
 
     $this->Show=$show;
   }
+  public function Delete($id){
+      Dateofexcel::find($id)->delete();
+      $this->render();
+  }
   public function Do(){
 
     if ($this->BankRadio=='wahda')
