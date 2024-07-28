@@ -32,7 +32,10 @@ class ToHafitha extends Component
       foreach ($FromExcel as $item) {
           $acc=$item->acc;
           $ksm=$item->ksm;
-          $bankcode=Str::substr($acc, 0, 3);
+
+          if (Auth::user()->company=='Daibany' && $this->TajNo==50) $bankcode=Str::substr($acc, 0, 4);
+          else $bankcode=Str::substr($acc, 0, 3);
+
         if (Auth::user()->company=='BokreahAli')
         {
           if ($this->TajNo==3)
