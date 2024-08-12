@@ -36,7 +36,7 @@ Route::get('downzip', [ZipController::class, 'build'])->name('downzip');
 Route::controller(ExController::class)->group(function () {
     Route::get('bankoneex/{ByTjmeehy?},{TajNo?},{bank?}', 'BankoneEx')->name('bankoneex');
     Route::get('mosdadaex/{bank?},{baky?}', 'MosdadaEx')->name('mosdadaex');
-    Route::get('defferex/{bank?},{deffer?}', 'DefferEx')->name('defferex');
+    Route::get('defferex/{bank?},{deffer?},{By?},{TajNo?}', 'DefferEx')->name('defferex');
     Route::get('khamlaex/{ByTajmeehy?}/{TajNo?}/{bank?}/{months?}/{RepRadio?}/{bank_name?}', 'KhamlaEx')->name('khamlaex');
     Route::get('repmakex/{place_type?},{place_no?},{withzero?}', 'RepMakEx')->name('repmakex');
     Route::get('klasaex/{date1?},{date2?}', 'KlasaEx')->name('klasaex');
@@ -66,7 +66,7 @@ Route::controller(pdfController::class)->group(function (){
     route::get('/reporderbuypdf/{order_no?}/{jeha_name?}/{place_name?}', 'RepOrderPdf')->name('reporderbuypdf') ;
     route::get('/repordersellpdf/{order_no?}/{jeha_name?}/{place_name?}/{RepType?}', 'RepOrderSellPdf')->name('repordersellpdf') ;
     route::get('/pdfmosdada/{bank_no?}/{baky?}/{bank_name?}', 'PdfMosdada')->name('pdfmosdada') ;
-    route::get('/pdfdeffer/{bank_no?}/{deffer?}/{bank_name?}', 'PdfDeffer')->name('pdfdeffer') ;
+    route::get('/pdfdeffer/{bank_no?}/{deffer?}/{By?}/{TajNo?}', 'PdfDeffer')->name('pdfdeffer') ;
     route::get('/dobackup', 'DoBackup')->name('dobackup') ;
     route::get('/dodownload', 'DoDownload')->name('dodownload') ;
 

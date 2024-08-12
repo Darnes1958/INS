@@ -20,10 +20,10 @@
 
     <div  class="col-md-4 my-2 d-flex ">
 
-      <a  href="{{route('pdfdeffer',['bank_no'=>$bank_no,'deffer'=>$deffer,'bank_name'=>$bank_name])}}"
+      <a  href="{{route('pdfdeffer',['bank_no'=>$bank_no,'deffer'=>$deffer,'By'=>$ByTajmeehy,'TajNo'=>$TajNo])}}"
           class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
 
-      <a  href="{{route('defferex',['bank'=>$bank_no,'deffer'=>$deffer])}}"
+      <a  href="{{route('defferex',['bank'=>$bank_no,'deffer'=>$deffer,'By'=>$ByTajmeehy,'TajNo'=>$TajNo])}}"
           class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fa fa-print"> &nbsp;&nbsp;إكسل&nbsp;&nbsp;</i></a>
 
     </div>

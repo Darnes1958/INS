@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\aksat\kst_deffer_view;
 use App\Models\bank\bank;
+use App\Models\bank\BankTajmeehy;
 use App\Models\Customers;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -21,11 +22,25 @@ class DefferXls implements FromCollection,WithMapping, WithHeadings,
   WithEvents,WithColumnWidths,WithColumnFormatting,WithStyles
 {
   public $bank;
+  public $bank_name;
+  public $text;
   public $deffer;
-  public function __construct(int $bank,int $deffer)
+  public $By;
+  public $TajNo;
+  public function __construct(int $bank,int $deffer,string $By,int $TajNo)
   {
     $this->bank = $bank;
     $this->deffer = $deffer;
+    $this->By=$By;
+    $this->TajNo=$TajNo;
+    if ($this->By=='Taj') {
+      $this->bank_name=BankTajmeehy::find($this->TajNo)->TajName;
+      $this->text='التجميعي';
+    }
+    else {
+      $this->bank_name = bank::find($this->bank)->bank_name;
+      $this->text='المصرف';
+    }
   }
   /**
    * @return array
@@ -114,7 +129,7 @@ class DefferXls implements FromCollection,WithMapping, WithHeadings,
       [$cus->CompanyName],
       [$cus->CompanyNameSuffix],
       [' '],
-      ['المصرف',bank::find($this->bank)->bank_name],
+      [$this->text,$this->bank_name],
       [''],
       [''],
       [''],
@@ -125,7 +140,16 @@ class DefferXls implements FromCollection,WithMapping, WithHeadings,
     public function collection()
     {
 
-      return kst_deffer_view::where('bank', '=', $this->bank)
+
+
+      return kst_deffer_view::
+        when($this->By=='Bank',function ($q){
+          $q->where('bank', '=', $this->bank);
+        })
+        ->when($this->By=='Taj',function ($qq){
+          $qq->whereIn('bank', function($q){
+            $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$this->TajNo);});
+        })
         ->where('deffer', '>', $this->deffer)
         ->orderBy('no')
         ->orderBy('ksm_date')

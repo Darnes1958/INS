@@ -6,7 +6,9 @@
             <label style="font-size: 10pt;margin-right: 12px;">{{$who}}</label>
             <label style="font-size: 10pt;">{{$hafitha}}</label>
             <label style="font-size: 14pt;margin-right: 12px;" >حافظة رقم : </label>
+
             <label style="font-size: 10pt;">{{$bank_name}}</label>
+
             <label style="font-size: 14pt;margin-right: 12px;" >مصرف : </label>
             <label style="font-size: 16pt;">{{$kst_type_name}}</label>
         </div>

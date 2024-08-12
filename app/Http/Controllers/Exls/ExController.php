@@ -28,9 +28,9 @@ class ExController extends Controller
     {
         return Excel::download(new MosdadaXls($bank,$baky), 'Mosdada.xlsx');
     }
-  public function DefferEX($bank,$deffer)
+  public function DefferEX($bank,$deffer,$by,$TajNo)
   {
-    return Excel::download(new DefferXls($bank,$deffer), 'Deffer.xlsx');
+    return Excel::download(new DefferXls($bank,$deffer,$by,$TajNo), 'Deffer.xlsx');
   }
     public function NotThereEX($bank_no,$TajNo)
     {

@@ -8,7 +8,12 @@
 
     <div >
         <label style="font-size: 10pt;">{{$bank_name}}</label>
-        <label style="font-size: 14pt;margin-right: 12px;" >المصرف : </label>
+        @if($By=='Bank')
+            <label style="font-size: 14pt;margin-right: 12px;" >مصرف : </label>
+        @else
+            <label style="font-size: 14pt;margin-right: 12px;" >للمصرف التجميعي : </label>
+        @endif
+
     </div>
 
 <br>

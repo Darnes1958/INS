@@ -8,6 +8,7 @@ use App\Models\aksat\MainArc;
 use App\Models\Arc\Arc_rep_sell_tran;
 use App\Models\Arc\Arc_Sells;
 use App\Models\bank\bank;
+use App\Models\bank\BankTajmeehy;
 use App\Models\buy\buys;
 use App\Models\buy\rep_buy_tran;
 use App\Models\Customers;
@@ -199,15 +200,22 @@ $comp=Auth()->user()->company;
     $RepDate=date('Y-m-d');
     $cus=Customers::where('Company',Auth::user()->company)->first();
     $res=DB::connection(Auth()->user()->company)->table('kst_deffer_view')
-
-      ->where('bank', '=', $request->bank_no)
+      ->when($request->By=='Bank',function ($q) use($request){
+        $q->where('bank', '=', $request->bank_no);
+      })
+        ->when($request->By=='Taj',function ($qq) use($request){
+          $qq->whereIn('bank', function($q) use($request) {
+            $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$request->TajNo);});
+        })
       ->where('deffer', '>', $request->deffer)
       ->orderBy('no')
       ->orderBy('ksm_date')
       ->get();
+      if ($request->By=='Taj') $name=BankTajmeehy::find($request->TajNo)->TajName;
+      else $name=bank::find($request->bank_no)->bank_name;
 
     $reportHtml = view('PrnView.aksat.pdf-deffer',
-      ['pdfdetail'=>$res,'cus'=>$cus,'bank_name'=>$request->bank_name,'RepDate'=>$RepDate])->render();
+      ['pdfdetail'=>$res,'cus'=>$cus,'bank_name'=>$name,'RepDate'=>$RepDate,'By'=>$request->By])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 
