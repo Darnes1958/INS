@@ -11,19 +11,28 @@ class AksatDeffer extends Component
 {
   use WithPagination;
   protected $paginationTheme = 'bootstrap';
+  public $ByTajmeehy='Bank';
   public $bank_no=0;
   public $bank_name;
+  public $TajNo=0;
+  public $TajName;
+
   public $search;
   public $deffer=5;
   public $date1,$date2,$wrong_date1,$wrong_date2;
   protected $listeners = [
-    'TakeBank',
+    'TakeBank','TakeTajNo',
   ];
 
   public function TakeBank($bank_no){
 
     $this->bank_no=$bank_no;
     $this->bank_name=bank::on(Auth()->user()->company)->where('bank_no',$this->bank_no)->first()->bank_name;
+
+  }
+  public function TakeTajNo($tajno){
+
+    $this->TajNo=$tajno;
 
   }
   protected function rules()
@@ -80,8 +89,14 @@ class AksatDeffer extends Component
   {
     return view('livewire.aksat.rep.okod.aksat-deffer',[
       'RepTable'=>DB::connection(Auth()->user()->company)->table('kst_deffer_view')
+        ->when($this->ByTajmeehy=='Bank',function ($q){
+          $q->where('bank', '=', $this->bank_no);
+        })
+        ->when($this->ByTajmeehy=='Taj',function ($qq){
+         $qq->whereIn('bank', function($q){
+            $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$this->TajNo);});
+        })
 
-        ->where('bank', '=', $this->bank_no)
         ->where('deffer', '>', $this->deffer)
         ->where('name', 'like', '%'.$this->search.'%')
         ->orderBy('no')

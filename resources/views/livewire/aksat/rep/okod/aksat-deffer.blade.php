@@ -1,8 +1,12 @@
 <div>
-  <div  x-data
-        class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
-    <div class="col-md-4">
+  <div  x-data  class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
+
+    <div x-show="$wire.ByTajmeehy=='Bank'" class="col-md-4">
       @livewire('aksat.rep.bank-comp',
+      ['sender' => 'aksat.rep.okod.aksat-deffer',])
+    </div>
+    <div x-show="$wire.ByTajmeehy=='Taj'" class="col-md-4">
+      @livewire('aksat.rep.taj-comp',
       ['sender' => 'aksat.rep.okod.aksat-deffer',])
     </div>
 
@@ -26,7 +30,16 @@
 
   </div>
 
-
+  <div class="col-md-3">
+    <div class="form-check form-check-inline my-1 mx-1">
+      <input class="form-check-input" type="radio" wire:model="ByTajmeehy"  name="inlineRadioOptions" id="inlineRadio1" value="Bank">
+      <label class="form-check-label" for="inlineRadio1">بفروع المصارف</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" wire:model="ByTajmeehy" name="inlineRadioOptions" id="inlineRadio2" value="Taj">
+      <label class="form-check-label" for="inlineRadio2">بالتجميعي</label>
+    </div>
+  </div>
   <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
     <thead class="font-size-12">
     <tr>
