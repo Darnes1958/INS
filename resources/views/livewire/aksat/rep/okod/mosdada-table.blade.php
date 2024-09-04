@@ -1,11 +1,21 @@
 <div>
-  <div  x-data="{ open:@entangle('ShowTar'), progress: @entangle('ArcProgress'),count: @entangle('ArcCount')}"
+  <div  x-data="{ open:@entangle('ShowTar'), progress: @entangle('ArcProgress'),
+                  count: @entangle('ArcCount')}"
         class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
-    <div class="col-md-4">
-      @livewire('aksat.rep.bank-comp',
-      ['sender' => 'aksat.rep.okod.mosdada-table',])
-    </div>
-    <div class="col-md-2 my-2  ">
+
+
+      <div  x-show="$wire.ByTajmeehy=='Bank'" class="col-md-4">
+          @livewire('aksat.rep.bank-comp',
+          ['sender' => 'aksat.rep.okod.mosdada-table',])
+      </div>
+      <div x-show="$wire.ByTajmeehy=='Taj'" class="col-md-4">
+          @livewire('aksat.rep.taj-comp',
+          ['sender' => 'aksat.rep.okod.mosdada-table',])
+      </div>
+
+
+
+      <div class="col-md-2 my-2  ">
       <input wire:model="search" class="form-control mx-0 text-center" type="search"   placeholder="ابحث هنا .......">
     </div>
     <div class="col-md-2 my-2 mx-0 d-inline-flex ">
@@ -17,14 +27,24 @@
       <progress wire:loading wire:target="ArcTarheel" x-bind:max="count" x-bind:value="progress"></progress>
 
 
-      <a  href="{{route('pdfmosdada',['bank_no'=>$bank_no,'baky'=>$baky,'bank_name'=>$bank_name])}}"
+      <a  href="{{route('pdfmosdada',['ByTajmeehy'=>$ByTajmeehy,'TajNo'=>$TajNo,'bank_no'=>$bank_no,'baky'=>$baky,'bank_name'=>$bank_name])}}"
           class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
 
-          <a  href="{{route('mosdadaex',['bank'=>$bank_no,'baky'=>$baky])}}"
+          <a  href="{{route('mosdadaex',['ByTajmeehy'=>$ByTajmeehy,'TajNo'=>$TajNo,'bank'=>$bank_no,'baky'=>$baky,'bank_name'=>$bank_name])}}"
               class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fa fa-print"> &nbsp;&nbsp;إكسل&nbsp;&nbsp;</i></a>
 
   </div>
 
+      <div class="col-md-3">
+          <div class="form-check form-check-inline my-1 mx-1">
+              <input class="form-check-input" type="radio" wire:model="ByTajmeehy"  name="inlineRadioOptions2" id="inlineRadio11" value="Bank">
+              <label class="form-check-label" for="inlineRadio1">بفروع المصارف</label>
+          </div>
+          <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" wire:model="ByTajmeehy" name="inlineRadioOptions2" id="inlineRadio22" value="Taj">
+              <label class="form-check-label" for="inlineRadio2">بالتجميعي</label>
+          </div>
+      </div>
 
   <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
     <thead class="font-size-12">

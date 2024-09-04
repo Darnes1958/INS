@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Aksat\Rep\Okod;
 
 use App\Models\aksat\kst_trans;
 use App\Models\bank\bank;
+use App\Models\bank\BankTajmeehy;
 use App\Models\OverTar\over_kst;
 use App\Models\aksat\main;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,8 @@ use Livewire\WithPagination;
 class MosdadaTable extends Component
 {
   use WithPagination;
+    public $ByTajmeehy='Bank';
+    public $TajNo=0;
   protected $paginationTheme = 'bootstrap';
   public $bank_no=0;
   public $bank_name;
@@ -53,20 +56,34 @@ class MosdadaTable extends Component
   }
 
   protected $listeners = [
-    'TakeBank',
+      'TakeBank','TakeTajNo'
   ];
+    public function TakeBank($bank_no){
 
-  public function DoCheckAll(){
+        $this->bank_no=$bank_no;
+        $this->bank_name=bank::find($this->bank_no)->bank_name;
+        $this->ShowTar=main::where('bank',$bank_no)->where('raseed','<=',0)->count()>0;
+
+        $this->resetPage();
+
+    }
+    public function TakeTajNo($tajno){
+
+        $this->TajNo=$tajno;
+        $this->bank_name=BankTajmeehy::find($this->TajNo)->TajName;
+        $this->ShowTar=main::whereIn('bank', function($q){
+            $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$this->TajNo);})
+            ->where('raseed','<=',0)->count()>0;
+        $this->resetPage();
+
+    }
+
+
+    public function DoCheckAll(){
 
     $this->CheckAll=true;
   }
-  public function TakeBank($bank_no){
-    $this->bank_no=$bank_no;
-     $this->bank_name=bank::on(Auth()->user()->company)->where('bank_no',$this->bank_no)->first()->bank_name;
 
-    $this->ShowTar=main::on(Auth()->user()->company)->where('bank',$bank_no)->where('raseed','<=',0)->count()>0;
-
-  }
   public function ArcTarheel()
    {
      $this->ArcCount=count($this->mychecked);
@@ -92,7 +109,6 @@ class MosdadaTable extends Component
           $bindings = $select->getBindings();
           $insertQuery = 'INSERT into over_kst_a (no,name,bank,acc,kst,tar_type,tar_date,letters,emp,h_no,inp_date) '. $select->toSql();
           DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
-
           DB::connection(Auth()->user()->company)->table('over_kst')->where('no',$key)->delete();
           DB::connection(Auth()->user()->company)->table('kst_trans')->where('no',$key)->delete();
           DB::connection(Auth()->user()->company)->table('main')->where('no',$key)->delete();
@@ -122,14 +138,18 @@ class MosdadaTable extends Component
 
       return view('livewire.aksat.rep.okod.mosdada-table',[
           'RepTable'=>DB::connection(Auth()->user()->company)->table('main_view')
-              ->where([
-              ['bank', '=', $this->bank_no],
-              ['raseed','<=',$this->baky],
-              ['name', 'like', '%'.$this->search.'%'],])
-              ->orwhere([
-                ['bank', '=', $this->bank_no],
-                ['raseed','<=',$this->baky],
-                ['acc', 'like', '%'.$this->search.'%'],])
+              ->when($this->ByTajmeehy=='Bank',function($q){
+                  $q->where('bank', '=', $this->bank_no);
+              })
+              ->when($this->ByTajmeehy=='Taj',function($q){
+                  $q-> whereIn('bank', function($q){
+                      $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$this->TajNo);});
+              })
+              ->where('raseed','<=',$this->baky)
+              ->where(function ($q) {
+                  $q->where('name', 'like', '%'.$this->search.'%')
+                      ->orwhere('acc', 'like', '%'.$this->search.'%');
+              })
             ->orderby($this->orderColumn,$this->sortOrder)
             ->paginate(15)
         ]);

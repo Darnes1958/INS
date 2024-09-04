@@ -24,9 +24,9 @@ class ExController extends Controller
 
         return Excel::download(new BankoneXls($by,$taj,$bank), 'BankOne.xlsx');
     }
-    public function MosdadaEX($bank,$baky)
+    public function MosdadaEX($ByTajmeehy,$TajNo,$bank,$baky,$bank_name)
     {
-        return Excel::download(new MosdadaXls($bank,$baky), 'Mosdada.xlsx');
+        return Excel::download(new MosdadaXls($ByTajmeehy,$TajNo,$bank,$baky,$bank_name), 'Mosdada.xlsx');
     }
   public function DefferEX($bank,$deffer,$by,$TajNo)
   {

@@ -26,6 +26,9 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 class MosdadaXls implements FromCollection,WithMapping, WithHeadings,
                             WithEvents,WithColumnWidths,WithStyles,WithColumnFormatting
  {
+    public $bank_name;
+    public $ByTajmeehy;
+    public $TajNo;
     public $bank;
     public $baky;
     public $rowcount;
@@ -37,10 +40,13 @@ class MosdadaXls implements FromCollection,WithMapping, WithHeadings,
     /**
      * @return array
      */
-    public function __construct(int $bank,int $baky)
+    public function __construct(string $ByTajmeehy,int $TajNo,int $bank,int $baky,string $bank_name)
     {
+        $this->ByTajmeehy=$ByTajmeehy;
+        $this->TajNo=$TajNo;
         $this->bank = $bank;
         $this->baky = $baky;
+        $this->bank_name = $bank_name;
     }
     public function registerEvents(): array
     {
@@ -145,7 +151,7 @@ class MosdadaXls implements FromCollection,WithMapping, WithHeadings,
             [$cus->CompanyName],
             [$cus->CompanyNameSuffix],
             [' '],
-            ['المصرف',bank::find($this->bank)->bank_name],
+            ['المصرف',$this->bank_name],
             [''],
             [''],
             [''],
@@ -155,14 +161,29 @@ class MosdadaXls implements FromCollection,WithMapping, WithHeadings,
 
     public function collection()
     {
-        $res=main_view::where('bank', '=', $this->bank)
+        $res=main_view::
+            when($this->ByTajmeehy=='Bank',function($q){
+                $q->where('bank', '=', $this->bank);
+            })
+            ->when($this->ByTajmeehy=='Taj',function($q){
+                $q-> whereIn('bank', function($q){
+                    $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$this->TajNo);});
+            })
+
             ->where('raseed','<=',$this->baky)
             ->selectRaw('count(*) as count,sum(sul) as sul,sum(sul_pay) as sul_pay,sum(raseed) raseed')->first();
         $this->rowcount=$res->count;
         $this->sul=$res->sul;
         $this->sul_pay=$res->sul_pay;
         $this->raseed=$res->raseed;
-        return main_view::where('bank', '=', $this->bank)
+        return main_view::
+             when($this->ByTajmeehy=='Bank',function($q){
+                    $q->where('bank', '=', $this->bank);
+                })
+            ->when($this->ByTajmeehy=='Taj',function($q){
+                $q-> whereIn('bank', function($q){
+                    $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$this->TajNo);});
+            })
             ->where('raseed','<=',$this->baky)
             ->get();
     }

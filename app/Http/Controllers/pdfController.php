@@ -167,13 +167,25 @@ $comp=Auth()->user()->company;
         $RepDate=date('Y-m-d');
         $cus=Customers::where('Company',Auth::user()->company)->first();
         $res=DB::connection(Auth()->user()->company)->table('main_view')
-            ->where('bank',  $request->bank_no)
+            ->when($request->ByTajmeehy=='Bank',function($q) use($request){
+                $q->where('bank', '=', $request->bank_no);
+            })
+            ->when($request->ByTajmeehy=='Taj',function($q) use($request){
+                $q-> whereIn('bank', function($q)  use($request){
+                    $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$request->TajNo);});
+            })
             ->where('raseed','<=',$request->baky)
             ->get();
         $sum=DB::connection(Auth()->user()->company)->table('main')
             ->selectRaw('sum(sul_tot) as sul_tot,sum(dofa) as dofa,sum(sul) as sul,
              sum(sul_pay) as sul_pay,sum(raseed) as raseed')
-            ->where('bank',  $request->bank_no)
+            ->when($request->ByTajmeehy=='Bank',function($q) use($request){
+                $q->where('bank', '=', $request->bank_no);
+            })
+            ->when($request->ByTajmeehy=='Taj',function($q) use($request){
+                $q-> whereIn('bank', function($q)  use($request){
+                    $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$request->TajNo);});
+            })
             ->where('raseed','<=',$request->baky)
             ->first();
         $reportHtml = view('PrnView.aksat.pdf-mosdada',
