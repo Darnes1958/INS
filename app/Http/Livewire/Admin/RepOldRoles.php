@@ -38,9 +38,6 @@ class RepOldRoles extends Component
         $permission=$role->permissions;
 
         return view('livewire.admin.rep-old-roles',[
-        'RootTable'=>DB::connection('other')->table('sys_roots')->paginate(10),
-        'OldRoleTable'=>DB::connection('other')->table('sys_roles')
-            ->orderBy('role_root','asc')->paginate(10),
         'RolesTable'=>Role::paginate(10),
         'PermissionTable'=>Permission::paginate(10),
         'permission'=>$permission,
