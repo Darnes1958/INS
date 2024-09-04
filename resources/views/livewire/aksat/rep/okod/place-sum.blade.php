@@ -37,34 +37,31 @@
     </tr>
     </thead>
     <tbody id="addRow" class="addRow">
-
-    @if ($RepTable )
       @if ($RepChk)
-          @php $count=0;$sul=0;$pay=0;$raseed=0;  @endphp
-      @foreach($RepTable2 as $key=>$item)
-        <tr class="font-size-12">
-            <td><a wire:click="selectItem({{ $item->sell_type }},{{ $item->place_no }},'{{ $item->place_name }}')" href="#">{{ $item->place_name }}</a>  </td>
+                  @php $count=0;$sul=0;$pay=0;$raseed=0;  @endphp
+                  @foreach($RepTable2 as $key=>$item)
+                    <tr class="font-size-12">
+                        <td><a wire:click="selectItem('{{'main_view'}}',{{ $item->sell_type }},{{ $item->place_no }},'{{ $item->place_name }}')" href="#">{{ $item->place_name }}</a>  </td>
 
-          <td> {{  number_format($item->WCOUNT,0, '.', ',') }} </td>
-          <td> {{  number_format($item->sumsul,0, '.', ',') }} </td>
-          <td> {{  number_format($item->sumpay,0, '.', ',') }} </td>
-          <td> {{  number_format($item->sumraseed,0, '.', ',') }} </td>
-        </tr>
-        @php $count+=$item->WCOUNT;$sul+=$item->sumsul;$pay+=$item->sumpay;$raseed+=$item->sumraseed;
-             @endphp
-      @endforeach
+                      <td> {{  number_format($item->WCOUNT,0, '.', ',') }} </td>
+                      <td> {{  number_format($item->sumsul,0, '.', ',') }} </td>
+                      <td> {{  number_format($item->sumpay,0, '.', ',') }} </td>
+                      <td> {{  number_format($item->sumraseed,0, '.', ',') }} </td>
+                    </tr>
+                    @php $count+=$item->WCOUNT;$sul+=$item->sumsul;$pay+=$item->sumpay;$raseed+=$item->sumraseed;@endphp
+                  @endforeach
       @else
-        @foreach($RepTable as $key=>$item)
-          <tr class="font-size-12">
-            <td><a wire:click="selectItem({{ $item->sell_type }},{{ $item->place_no }},'{{ $item->place_name }}')" href="#">{{ $item->place_name }}</a>  </td>
-            <td> {{  number_format($item->WCOUNT,0, '.', ',') }} </td>
-            <td> {{  number_format($item->sumsul,0, '.', ',') }} </td>
-            <td> {{  number_format($item->sumpay,0, '.', ',') }} </td>
-            <td> {{  number_format($item->sumraseed,0, '.', ',') }} </td>
-          </tr>
-        @endforeach
+            @foreach($RepTable as $key=>$item)
+              <tr class="font-size-12">
+                <td><a wire:click="selectItem('{{'main_view'}}',{{ $item->sell_type }},{{ $item->place_no }},'{{ $item->place_name }}')" href="#">{{ $item->place_name }}</a>  </td>
+                <td> {{  number_format($item->WCOUNT,0, '.', ',') }} </td>
+                <td> {{  number_format($item->sumsul,0, '.', ',') }} </td>
+                <td> {{  number_format($item->sumpay,0, '.', ',') }} </td>
+                <td> {{  number_format($item->sumraseed,0, '.', ',') }} </td>
+              </tr>
+            @endforeach
       @endif
-    @endif
+
     </tbody>
       @if (! $RepChk)
       <tbody>
@@ -100,6 +97,74 @@
       {{ $RepTable->links() }}
     @endif
   @endif
+
+     <br>
+     <label>الارشيف</label>
+     <table class="table table-sm table-bordered table-striped table-light " width="100%"  >
+         <thead class="font-size-12">
+         <tr>
+             <th class="sort text-primary" wire:click="sortOrder('place_name')">نقطة البيع {!! $sortLink !!}</th>
+             <th class="sort text-primary" wire:click="sortOrder('WCOUNT')">عدد العقود {!! $sortLink !!}</th>
+             <th class="sort text-primary" wire:click="sortOrder('sumsul')">اجمالي العقود {!! $sortLink !!}</th>
+             <th class="sort text-primary" wire:click="sortOrder('sumpay')">المسدد {!! $sortLink !!}</th>
+             <th class="sort text-primary" wire:click="sortOrder('sumraseed')">المتبقي {!! $sortLink !!}</th>
+         </tr>
+         </thead>
+         <tbody id="addRow" class="addRow">
+         @if ($RepChk)
+
+             @foreach($RepTablearc2 as $key=>$item)
+                 <tr class="font-size-12">
+                     <td><a wire:click="selectItem('{{'main_view_a'}}',{{ $item->sell_type }},{{ $item->place_no }},'{{ $item->place_name }}')" href="#">{{ $item->place_name }}</a>  </td>
+
+                     <td> {{  number_format($item->WCOUNT,0, '.', ',') }} </td>
+                     <td> {{  number_format($item->sumsul,0, '.', ',') }} </td>
+                     <td> {{  number_format($item->sumpay,0, '.', ',') }} </td>
+                     <td> {{  number_format($item->sumraseed,0, '.', ',') }} </td>
+                 </tr>
+
+             @endforeach
+         @else
+             @foreach($RepTablearc as $key=>$item)
+                 <tr class="font-size-12">
+                     <td><a wire:click="selectItem('{{'main_view_a'}}',{{ $item->sell_type }},{{ $item->place_no }},'{{ $item->place_name }}')" href="#">{{ $item->place_name }}</a>  </td>
+                     <td> {{  number_format($item->WCOUNT,0, '.', ',') }} </td>
+                     <td> {{  number_format($item->sumsul,0, '.', ',') }} </td>
+                     <td> {{  number_format($item->sumpay,0, '.', ',') }} </td>
+                     <td> {{  number_format($item->sumraseed,0, '.', ',') }} </td>
+                 </tr>
+             @endforeach
+         @endif
+
+         </tbody>
+         @if (! $RepChk)
+             <tbody>
+             <tr style="background: #9dc1d3;">
+                 <td  style="text-align: center;"> الإجمــالي  </td>
+                 <td style="font-weight: bold"> {{ number_format($ccountarc,0, '.', ',') }} </td>
+                 <td style="font-weight: bold"> {{ number_format($ssularc,0, '.', ',') }} </td>
+                 <td style="font-weight: bold"> {{ number_format($ppayarc,0, '.', ',') }} </td>
+                 <td style="font-weight: bold"> {{ number_format($rraseedarc,0, '.', ',') }} </td>
+             </tr>
+             </tbody>
+         @else
+             <tbody>
+             <tr style="background: #9dc1d3;">
+                 <td  style="text-align: center;"> الإجمــالي  </td>
+                 <td style="font-weight: bold"> {{ number_format($Rccountarc,0, '.', ',') }} </td>
+                 <td style="font-weight: bold"> {{ number_format($Rssularc,0, '.', ',') }} </td>
+                 <td style="font-weight: bold"> {{ number_format($Rppayarc,0, '.', ',') }} </td>
+                 <td style="font-weight: bold"> {{ number_format($Rrraseedarc,0, '.', ',') }} </td>
+                 <td > </td>
+                 <td style="font-weight: bold">  </td>
+                 <td style="font-weight: bold">  </td>
+
+             </tr>
+             </tbody>
+         @endif
+     </table>
+
+
  </div>
 
  <div class="col-md-6">

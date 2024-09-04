@@ -5,6 +5,7 @@ namespace App\Http\Livewire\OverTar;
 use App\Models\bank\bank;
 use App\Models\OverTar\stop_kst;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -62,6 +63,7 @@ class InpStop2 extends Component
 
   protected function rules()
   {
+       Config::set('database.connections.other.database', Auth::user()->company);
     return [
       'stop_date' => ['required','date'],
       'bankno' => ['required','integer','gt:0', 'exists:other.bank,bank_no'],
