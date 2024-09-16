@@ -7,6 +7,7 @@ use App\Models\aksat\main;
 use App\Models\buy\buy_tran;
 use App\Models\buy\buys;
 use App\Models\Customers;
+use App\Models\OverTar\over_kst;
 use App\Models\stores\items;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -37,6 +38,11 @@ public $ThedatabaseListIsSelectd;
     $this->redirect('/home');
   }
   public function PublicFun(){
+        $this->KstranToOver();
+        return;
+  //    $this->EmptyKstranRecord();
+  //    return;
+
      $res=kst_trans::orderBy('no','asc')->orderBy('kst_date','asc')->get();
      $no=-1;
      $ser=0;
@@ -59,11 +65,9 @@ public $ThedatabaseListIsSelectd;
 
 
      }
-
-
   }
-  public function OtherFun(){
-      $mains=main::all();
+  public function EmptyKstranRecord(){
+      $mains=main::where('raseed','>',0)->get();
       foreach($mains as $main) {
         $sul_date=$main->sul_date;
         $kstcount=$main->kst_count;
@@ -79,23 +83,68 @@ public $ThedatabaseListIsSelectd;
               $date = date('Y-m-d', strtotime($date . "+1 month"));
           }
           $kst_trans= kst_trans::where('no',$no)->orderBy('ser','asc')->get();
-          foreach ($kst_trans as $trans){
-           $this->KstTrans=$trans;
+          $count=$kst_trans->count();
+          $max=$kst_trans->max('ser');
+          if ($count < $kstcount) {
+              $ser=$count+1;
+              if ($count!=0) $date=date('Y-m-d',
+                  strtotime($kst_trans->where('ser',$max)->first()->kst_date . "+1 month"));
+              for ($x = $ser; $x <= $kstcount; $x++){
+                  kst_trans::insert([
+                      'ser'=>$x,
+                      'no'=>$no,
+                      'kst_date'=>$date,
+                      'ksm_type'=>2,
+                      'chk_no'=>0,
+                      'kst'=>$kst,
+                      'ksm_date'=>null,
+                      'ksm'=>0,
+                      'emp'=>1,
+                      'h_no'=>0,
+                      'kst_notes'=>null,
+                      'inp_date'=>date('Y-m-d'),
+                  ]);
 
+                  $date = date('Y-m-d', strtotime($date . "+1 month"));
+              }
 
-           $this->KstTrans->kst=$kst;
-           $this->KstTrans->kst_date=$date;
-              $this->validate();
-
-
-           $this->KstTrans->save();
-           $date = date('Y-m-d', strtotime($date . "+1 month"));
           }
 
 
       }
 
   }
+    public function KstranToOver(){
+        $mains=main::where('raseed','<',0)->get();
+        foreach($mains as $main) {
+            $kst=$main->kst;
+            $no=$main->no;
+            $raseed=abs($main->raseed);
+            if ($main->raseed % $kst !=0) continue;
+            $kst_trans= kst_trans::where('no',$no)
+                ->where('ksm','!=',0)
+                ->where('ksm',$kst)
+                ->orderBy('ser','desc')->get();
+            foreach ($kst_trans as $kst) {
+                over_kst::insert([
+                    'no'=>$no,'name'=>$main->name,'bank'=>$main->bank,'acc'=>$main->acc,'kst'=>$kst->ksm,
+                    'tar_type'=>1,'tar_date'=>$kst->ksm_date,'letters'=>0,'emp'=>1,
+                    'h_no'=>0,'inp_date'=>$kst->ksm_date,
+                ]);
+                $raseed-=$kst->ksm;
+                $kst->ksm=0;
+                $kst->ksm_date=null;
+                $kst->kst_notes=null;
+                $kst->save();
+                if ($raseed==0) break;
+            }
+            $sul_pay=kst_trans::where('no',$main->no)->where('ksm','!=',null)->sum('ksm');
+            $main->sul_pay=$sul_pay;
+            $main->raseed=$main->sul-$sul_pay;
+            $main->save();
+        }
+
+    }
   protected function FalseAll(){
       $this->emitTo('admin.manage-roles','show',False);
       $this->emitTo('admin.inp-user','show',False);

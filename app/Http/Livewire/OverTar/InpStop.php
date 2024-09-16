@@ -8,8 +8,6 @@ use Livewire\Component;
 
 class InpStop extends Component
 {
-
-
    public $OpenDetail=false;
    public $bankno;
    public $acc;
