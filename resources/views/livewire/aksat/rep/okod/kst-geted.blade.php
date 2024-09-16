@@ -1,9 +1,13 @@
 <div x-data>
   <div  x-data  class="row gy-1 my-1" style="border:1px solid lightgray;background: white; " >
-    <div class="col-md-5">
-      @livewire('aksat.rep.bank-comp',
-      ['sender' => 'aksat.rep.okod.kst-geted',])
-    </div>
+      <div  x-show="$wire.ByTajmeehy=='Bank'" class="col-md-5">
+          @livewire('aksat.rep.bank-comp',
+          ['sender' => 'aksat.rep.okod.kst-geted',])
+      </div>
+      <div x-show="$wire.ByTajmeehy=='Taj'" class="col-md-5">
+          @livewire('aksat.rep.taj-comp',
+          ['sender' => 'aksat.rep.okod.kst-geted',])
+      </div>
     <div class="col-md-3 my-2 d-inline-flex ">
       <label  class="form-label mx-0 text-left " style="width: 30%; ">من تاريخ</label>
       <input wire:model="date1" wire:keydown.enter="Date1Chk"  class="form-control mr-0 text-center" type="date"  id="date1" style="width: 70%; ">
@@ -25,7 +29,19 @@
     <a  href="{{route('pdfwrong',['bank_no'=>$bank_no,'wrong_date1'=>$rep_date1,'wrong_date2'=>$rep_date2,'bank_name'=>$bank_name])}}"
           class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
    </div> -->
+      <div class="col-md-3">
+          <div class="form-check form-check-inline my-1 mx-1">
+              <input class="form-check-input" type="radio" wire:model="ByTajmeehy"  name="inlineRadioOptions2" id="inlineRadio11" value="Bank">
+              <label class="form-check-label" for="inlineRadio1">بفروع المصارف</label>
+          </div>
+          <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" wire:model="ByTajmeehy" name="inlineRadioOptions2" id="inlineRadio22" value="Taj">
+              <label class="form-check-label" for="inlineRadio2">بالتجميعي</label>
+          </div>
+      </div>
   </div>
+
+
 
 <div class="row">
   <div class="col-md-5">
