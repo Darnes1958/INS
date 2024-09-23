@@ -166,34 +166,39 @@
             @endcan
 
             <li class="border-top my-3"></li>
-            @can('عقود')
+
+
             <li class="mb-1">
                 <button class="font-size-14 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#repokod-collapse" aria-expanded="false">
                     &nbsp <i class="fa  fas fa-list-ul" aria-hidden="true"></i>&nbsp تقارير عقود</button>
                 <div class="collapse" id="repokod-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="{{route('repmain.all')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن عقد</a></li>
-                        <li><a href="{{route('repmain.arc')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن عقد من الأرشيف</a></li>
-                        @if($company=='Daibany')
-                        <li><a href="{{route('repmain.arc2')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن عقد من أرشيف الأرشيف</a></li>
-                        @endif
-                        <li><a href="{{route('repmainall')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">جميع العقود لزبون</a></li>
-                        <li><a href="{{route('repmain.del')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن عقد ملغي</a></li>
-                        <li><a href="{{route('rep.okod','mosdada')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">العقود المسددة</a></li>
-                        <li><a href="{{route('rep.okod','kamla')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">العقود الخاملة</a></li>
-                        <li><a href="{{route('rep.okod','before')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تجهيز كشف المصرف</a></li>
-                        <li><a href="{{route('rep.okod','aksatgeted')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">الاقساط المحصلة والغير محصلة</a></li>
-                        <li><a href="{{route('rep.okod','kstgeted')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">إجمالي الاقساط المحصلة</a></li>
-                        <li><a href="{{route('rep.okod','over')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">خصم بالفائض</a></li>
-                        <li><a href="{{route('rep.okod','tar')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">ترجيع أقساط</a></li>
-                        <li><a href="{{route('rep.okod','wrong')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">اقساط واردة بالخظأ</a></li>
-                        <li><a href="{{route('rep.okod','stop')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">إيقاف الخصم</a></li>
-                        <li><a href="{{route('rep.okod','haf')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">حوافظ</a></li>
-                        <li><a href="{{route('rep.okod','aksatdeffer')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">اقساط غير متطابقة</a></li>
+                        @canany(['عقود','استفسار عقود فقط'])
+                            <li><a href="{{route('repmain.all')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن عقد</a></li>
+                            <li><a href="{{route('repmain.arc')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن عقد من الأرشيف</a></li>
+                            @if($company=='Daibany')
+                            <li><a href="{{route('repmain.arc2')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن عقد من أرشيف الأرشيف</a></li>
+                            @endif
+                            <li><a href="{{route('repmainall')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">جميع العقود لزبون</a></li>
+                            <li><a href="{{route('repmain.del')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تقرير عن عقد ملغي</a></li>
+                        @endcanany
+                        @can('عقود')
+                            <li><a href="{{route('rep.okod','mosdada')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">العقود المسددة</a></li>
+                            <li><a href="{{route('rep.okod','kamla')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">العقود الخاملة</a></li>
+                            <li><a href="{{route('rep.okod','before')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تجهيز كشف المصرف</a></li>
+                            <li><a href="{{route('rep.okod','aksatgeted')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">الاقساط المحصلة والغير محصلة</a></li>
+                            <li><a href="{{route('rep.okod','kstgeted')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">إجمالي الاقساط المحصلة</a></li>
+                            <li><a href="{{route('rep.okod','over')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">خصم بالفائض</a></li>
+                            <li><a href="{{route('rep.okod','tar')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">ترجيع أقساط</a></li>
+                            <li><a href="{{route('rep.okod','wrong')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">اقساط واردة بالخظأ</a></li>
+                            <li><a href="{{route('rep.okod','stop')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">إيقاف الخصم</a></li>
+                            <li><a href="{{route('rep.okod','haf')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">حوافظ</a></li>
+                            <li><a href="{{route('rep.okod','aksatdeffer')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">اقساط غير متطابقة</a></li>
+                        @endcan
                     </ul>
                 </div>
             </li>
-            @endcan
+
             @can('مصارف')
             <li class="mb-1">
                 <button class="font-size-14 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#repbank-collapse" aria-expanded="false">

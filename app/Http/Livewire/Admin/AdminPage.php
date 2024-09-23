@@ -38,8 +38,9 @@ public $ThedatabaseListIsSelectd;
     $this->redirect('/home');
   }
   public function PublicFun(){
-        $this->KstranToOver();
-        return;
+      return ;
+      //  $this->KstranToOver();
+      //  return;
   //    $this->EmptyKstranRecord();
   //    return;
 
