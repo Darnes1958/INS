@@ -9,6 +9,7 @@ use App\Models\Arc\Arc_rep_sell_tran;
 use App\Models\Arc\Arc_Sells;
 use App\Models\bank\bank;
 use App\Models\bank\BankTajmeehy;
+use App\Models\buy\buy_tran;
 use App\Models\buy\buys;
 use App\Models\buy\rep_buy_tran;
 use App\Models\Customers;
@@ -16,6 +17,7 @@ use App\Models\jeha\jeha;
 use App\Models\sell\price_type;
 use App\Models\sell\rep_sell_tran;
 use App\Models\sell\sells;
+use App\Models\stores\items;
 use App\Models\stores\stores_names;
 use App\Models\Tar\tar_buy_view;
 use Illuminate\Http\Request;
@@ -111,6 +113,28 @@ $comp=Auth()->user()->company;
       return $pdf->download('invoice.pdf');
 
   }
+    function PrintNamePdf($order_no){
+        if ($order_no==null || $order_no==0 ) return(false);
+
+        $items=items::whereIn('item_no',buy_tran::where('order_no',$order_no)->pluck('item_no'))->get();
+
+
+
+
+        $reportHtml = view('PrnView.buy.PrnNames',
+            ['items'=>$items])->render();
+        $arabic = new Arabic();
+        $p = $arabic->arIdentify($reportHtml);
+
+        for ($i = count($p)-1; $i >= 0; $i-=2) {
+            $utf8ar = $arabic->utf8Glyphs(substr($reportHtml, $p[$i-1], $p[$i] - $p[$i-1]));
+            $reportHtml = substr_replace($reportHtml, $utf8ar, $p[$i-1], $p[$i] - $p[$i-1]);
+        }
+
+        $pdf = PDF::loadHTML($reportHtml);
+        return $pdf->download('invoice.pdf');
+
+    }
   function RepOrderSellPdf(Request $request){
     $order_no=$request->order_no;
     $bank_name=null;

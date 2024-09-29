@@ -136,6 +136,10 @@
          ['order_no'=>$orderno,'jeha_name'=>$jeha_name,'place_name'=>$place_name])}}"
          class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
 
+      <a  href="{{route('printnamepdf',
+         ['order_no'=>$orderno])}}"
+          class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة الاصناف&nbsp;&nbsp;</i></a>
+
   <!--  <div class="d-print-none">
       <div class="float-end">
         <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light"><i class="fa fa-print"></i></a>
