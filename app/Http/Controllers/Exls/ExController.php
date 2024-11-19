@@ -7,6 +7,7 @@ use App\Exports\DefferXls;
 use App\Exports\KhamlaXls;
 use App\Exports\KlasaXls;
 use App\Exports\NotThereXls;
+use App\Exports\Prnbuyitems;
 use App\Exports\RepMakXls;
 use App\Http\Controllers\Controller;
 use App\Models\stores\RepMakzoon;
@@ -18,6 +19,10 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ExController extends Controller
 {
+    public function PrnItemsEx($order_no)
+    {
+        return Excel::download(new Prnbuyitems($order_no), 'BankOne.xlsx');
+    }
     public function BankoneEX($by,$taj,$bank)
     {
 

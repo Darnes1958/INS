@@ -34,6 +34,7 @@ Auth::routes();
 Route::get('downzip', [ZipController::class, 'build'])->name('downzip');
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::controller(ExController::class)->group(function () {
+    Route::get('prnitemsex/{order_no}', 'PrnItemsEx')->name('prnitemsex');
     Route::get('bankoneex/{ByTjmeehy?},{TajNo?},{bank?}', 'BankoneEx')->name('bankoneex');
     Route::get('mosdadaex/{ByTajmeehy?}/{TajNo?}/{bank?},{baky?}/{bank_name?}', 'MosdadaEx')->name('mosdadaex');
     Route::get('defferex/{bank?},{deffer?},{By?},{TajNo?}', 'DefferEx')->name('defferex');

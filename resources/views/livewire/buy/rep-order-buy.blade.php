@@ -139,6 +139,9 @@
       <a  href="{{route('printnamepdf',
          ['order_no'=>$orderno])}}"
           class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة الاصناف&nbsp;&nbsp;</i></a>
+      <a  href="{{route('prnitemsex',
+         ['order_no'=>$orderno])}}"
+          class="btn btn-success waves-effect waves-light"><i > &nbsp;&nbsp;Exl&nbsp;&nbsp;</i></a>
 
   <!--  <div class="d-print-none">
       <div class="float-end">
