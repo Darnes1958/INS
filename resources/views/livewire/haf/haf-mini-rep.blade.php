@@ -32,13 +32,16 @@
                     <label   class="form-label  " style="color: blue">&nbsp;الاسم &nbsp;</label>
                     <input wire:model="name"   class=" form-control " readonly >
                 </div>
-                <div x-show="$wire.showbtn" class="col-md-6 my-2 py-3" >
+                @if($showbtn)
+                    <div  class="col-md-6 my-2 py-3" >
 
-                    <input type="button"  id="SaveAccBtn"
+                        <input type="button"  id="SaveAccBtn"
 
-                           class=" btn btn-outline-success  waves-effect waves-light "
-                           wire:click.prevent="SaveNewAcc"  value="تعديل رقم الحساب" />
-                </div>
+                               class=" btn btn-outline-success  waves-effect waves-light "
+                               wire:click.prevent="SaveNewAcc"  value="تعديل رقم الحساب" />
+                    </div>
+                @endif
+
             </div>
 
 
