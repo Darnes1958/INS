@@ -36,8 +36,10 @@ class HafMiniRep extends Component
     public $name;
     public $jeha;
     public $showbtn=false;
+    public $openacc=false;
 
     public function selectItem($acc){
+        $this->openacc=true;
       $this->acc=$acc;
     }
 
@@ -68,6 +70,7 @@ class HafMiniRep extends Component
     public function SaveNewAcc(){
         $this->TakeTheNo($this->NoToEdit,$this->OldAcc,$this->acc,$this->jeha);
         $this->showbtn=false;
+        $this->openacc=false;
     }
     public function TakeTheNo($no,$acc,$accToEdit,$jeha){
 
