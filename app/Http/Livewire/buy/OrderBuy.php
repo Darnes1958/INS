@@ -299,10 +299,6 @@ class OrderBuy extends Component
         'size' => 'هذا العميل ليس من الموردين',
         'order_date.required'=>'يجب ادخال تاريخ صحيح',
     ];
-
-
-
-
     public function OpenModal(){
         $this->emitTo('jeha.add-supp','WithJehaType',2);
         $this->dispatchBrowserEvent('OpenModal');

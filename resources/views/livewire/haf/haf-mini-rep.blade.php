@@ -1,4 +1,4 @@
-<div x-data="{ 'openacc': false }">
+<div x-data>
     <div class="form-check form-check-inline">
         <input wire:model="search"  type="search"  style="margin: 5px;" placeholder="ابحث هنا .......">
     </div>
@@ -16,33 +16,39 @@
         <a  href="{{route('pdfhafmini',['hafitha'=>$hafitha,'rep_type'=>$rep_type,'DisRadio'=>$DisRadio])}}"
             class="btn btn-outline-primary btn-sm fas fa-print"></a>
     </div>
-    <div  x-show="openacc"  class="my-2" style="border: solid 1px;">
-        <div class="row px-2">
-          <div class="col-md-6">
-              <label   class="form-label   " style="color: blue">&nbsp;ادخل رقم العقد &nbsp;</label>
-              <input wire:model="NoToEdit"  wire:keydown.Enter="ChkNoToEdit" type="number" class=" form-control "
-                     id="bank_no"   autofocus >
-          </div>
-            <div class="col-md-6 ">
-                <label   class="form-label   " style="color: blue">&nbsp;رقم الحساب &nbsp;</label>
-                <input wire:model="OldAcc"   class=" form-control " readonly >
-            </div>
-            <div class="col-md-6 my-2">
-                <label   class="form-label  " style="color: blue">&nbsp;الاسم &nbsp;</label>
-                <input wire:model="name"   class=" form-control " readonly >
-            </div>
-            <div x-show="$wire.showbtn" class="col-md-6 my-2 py-3" >
+    @if($openacc)
+        <div   class="my-2" style="border: solid 1px;">
+            <div class="row px-2">
+                <div class="col-md-6">
+                    <label   class="form-label   " style="color: blue">&nbsp;ادخل رقم العقد &nbsp;</label>
+                    <input wire:model="NoToEdit"  wire:keydown.Enter="ChkNoToEdit" type="number" class=" form-control "
+                           id="bank_no"   autofocus >
+                </div>
+                <div class="col-md-6 ">
+                    <label   class="form-label   " style="color: blue">&nbsp;رقم الحساب &nbsp;</label>
+                    <input wire:model="OldAcc"   class=" form-control " readonly >
+                </div>
+                <div class="col-md-6 my-2">
+                    <label   class="form-label  " style="color: blue">&nbsp;الاسم &nbsp;</label>
+                    <input wire:model="name"   class=" form-control " readonly >
+                </div>
+                @if($showbtn)
+                    <div  class="col-md-6 my-2 py-3" >
 
-              <input type="button"  id="SaveAccBtn"
+                        <input type="button"  id="SaveAccBtn"
 
-                     class=" btn btn-outline-success  waves-effect waves-light "
-                     wire:click.prevent="SaveNewAcc" @click="openacc = false" value="تعديل رقم الحساب" />
+                               class=" btn btn-outline-success  waves-effect waves-light "
+                               wire:click.prevent="SaveNewAcc"  value="تعديل رقم الحساب" />
+                    </div>
+                @endif
+
             </div>
+
+
+
         </div>
+    @endif
 
-
-
-    </div>
 
     <table class="table table-sm table-bordered table-striped table-light " width="100%"  id="mytable3" >
         <thead class="font-size-12">
@@ -65,7 +71,7 @@
                 <td > {{ $item->no }} </td>
                 <td> {{ $item->acc }} </td>
                 @if ($rep_type==4)
-                    <td ><i @click="openacc = true" class="btn btn-primary btn-sm fa fa-check-circle"
+                    <td ><i  class="btn btn-primary btn-sm fa fa-check-circle"
                         wire:click="selectItem('{{$item->acc}}')"></i></td>
                 @endif
                 <td> {{ $item->name }} </td>

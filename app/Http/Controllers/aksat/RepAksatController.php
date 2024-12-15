@@ -277,7 +277,19 @@ class RepAksatController extends Controller
     $res=rep_bank::where('bank', '=', $request->bank_no)
       ->orderby($request->column,$request->sort)
       ->get();
-    $bank_name=bank::find($request->bank_no)->bank_name;
+   if ($request->by=='Bank')  {
+       $res=rep_bank::where('bank', '=', $request->bank_no)
+           ->orderby($request->column,$request->sort)
+           ->get();
+       $bank_name=bank::find($request->bank_no)->bank_name;
+   }
+   else {
+       $res=rep_bank::whereIn('bank', function($q) use ($request) {
+           $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$request->TajNo);})
+           ->get();
+
+       $bank_name=BankTajmeehy::find($request->TajNo)->TajName;
+   }
     $reportHtml = view('PrnView.aksat.pdf-bankone',
       ['res'=>$res,'cus'=>$cus,'bank_name'=>$bank_name,'RepDate'=>$RepDate])->render();
     $arabic = new Arabic();

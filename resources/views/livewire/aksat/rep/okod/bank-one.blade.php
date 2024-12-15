@@ -13,7 +13,7 @@
       <input wire:model="search"  type="search"   placeholder="ابحث هنا .......">
     </div>
     <div class="col-md-4 my-2 ">
-      <a  href="{{route('pdfbankone',['bank_no'=>$bank_no,'column'=>$orderColumn,'sort'=>$sortOrder])}}"
+      <a  href="{{route('pdfbankone',['by'=>$ByTajmeehy,'TajNo'=>$TajNo,'bank_no'=>$bank_no,'column'=>$orderColumn,'sort'=>$sortOrder])}}"
           class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
       <a  href="{{route('bankoneex',['ByTjmeehy'=>$ByTajmeehy,'TajNo'=>$TajNo,'bank'=>$bank_no])}}"
           class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-file-excel"> &nbsp;&nbsp;إكسل&nbsp;&nbsp;</i></a>

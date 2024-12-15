@@ -85,10 +85,6 @@
         <label style="margin-right: 12px;">صدرت من : </label>
     </div>
     <div >
-        @if($bank_name)
-            <label >{{$bank_name}}</label>
-            <label style="margin-right: 30px;">المصرف : </label>
-        @endif
         <label >{{$type_name}}</label>
         <label style="margin-right: 12px;">طريقة الدفع : </label>
 
