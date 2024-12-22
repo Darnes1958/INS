@@ -326,11 +326,12 @@ class InpMainHead extends Component
           if (main::on(auth()->user()->company)->where('no',$this->no)->exists())
           {$this->no=main::on(auth()->user()->company)->max('no')+1;
           $this->OrderChanged=true;}
+          $taj_id=bank::find($this->bankno)->bank_tajmeeh;
          DB::connection(Auth()->user()->company)->table('main')->insert([
            'no'=>$this->no,'name'=>$this->name,'bank'=>$this->bankno,'acc'=>$this->acc,'sul_date'=>$this->sul_date,'sul_type'=>1,'sul_tot'=>$this->sul_tot,
            'dofa'=>$this->dofa,'sul'=>$this->sul,'kst'=>$this->kst,'kst_count'=>$this->kstcount,'sul_pay'=>0,'raseed'=>$this->sul,'order_no'=>$this->orderno,
            'jeha'=>$this->jeha,'place'=>$this->place,'notes'=>$this->notes,'chk_in'=>$this->chk_in,'chk_out'=>0,'last_order'=>0,'ref_no'=>$this->ref_no,
-           'emp'=>auth::user()->empno,'inp_date'=>date('Y-m-d'),]);
+           'emp'=>auth::user()->empno,'inp_date'=>date('Y-m-d'),'taj_id'=>$taj_id]);
          $res=sell_tran::on(Auth()->user()->company)->where('order_no',$this->orderno)->get();
          foreach ($res as $item) {
            main_items::on(Auth()->user()->company)->insert(['no'=>$this->no,'item_no'=>$item->item_no]);

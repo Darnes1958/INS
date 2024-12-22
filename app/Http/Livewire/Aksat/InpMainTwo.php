@@ -272,11 +272,12 @@ class InpMainTwo extends Component
 
       DB::connection(Auth()->user()->company)->beginTransaction();
       try {
+          $taj_id=bank::find($this->bankno)->bank_tajmeeh;
          DB::connection(Auth()->user()->company)->table('main')->insert([
            'no'=>$this->no,'name'=>$this->name,'bank'=>$this->bankno,'acc'=>$this->acc,'sul_date'=>$this->sul_date,'sul_type'=>1,'sul_tot'=>$this->sul_tot,
            'dofa'=>$this->dofa,'sul'=>$this->sul,'kst'=>$this->kst,'kst_count'=>$this->kstcount,'sul_pay'=>0,'raseed'=>$this->sul,'order_no'=>$this->orderno,
            'jeha'=>$this->jeha,'place'=>$this->place,'notes'=>$this->notes,'chk_in'=>$this->chk_in,'chk_out'=>0,'last_order'=>$this->order_no_old,'ref_no'=>$this->ref_no,
-           'emp'=>auth::user()->empno,'inp_date'=>date('Y-m-d'),]);
+           'emp'=>auth::user()->empno,'inp_date'=>date('Y-m-d'),'taj_id'=>$taj_id]);
          $res=sell_tran::on(Auth()->user()->company)->where('order_no',$this->orderno)->get();
          foreach ($res as $item) {
            main_items::on(Auth()->user()->company)->insert(['no'=>$this->no,'item_no'=>$item->item_no]);
@@ -334,10 +335,10 @@ class InpMainTwo extends Component
           ]);
 
           $select = main::on(Auth()->user()->company)->where('no',$this->no_old)->select('no','name','bank','acc','sul_date','sul_type','sul_tot','dofa','sul',
-              'kst','kst_count','sul_pay','raseed','order_no','jeha','place','notes','chk_in','chk_out','last_order','ref_no','emp','inp_date');
+              'kst','kst_count','sul_pay','raseed','order_no','jeha','place','notes','chk_in','chk_out','last_order','ref_no','emp','inp_date','taj_id');
           $bindings = $select->getBindings();
           $insertQuery = 'INSERT into mainarc (no,name,bank,acc,sul_date,sul_type,sul_tot,dofa,sul,kst,kst_count,sul_pay,raseed,order_no,
-                                               jeha,place,notes,chk_in,chk_out,last_order,ref_no,emp,inp_date) '. $select->toSql();
+                                               jeha,place,notes,chk_in,chk_out,last_order,ref_no,emp,inp_date,taj_id) '. $select->toSql();
           DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
 
           $select = kst_trans::on(Auth()->user()->company)->where('no',$this->no_old)->select('ser','no','kst_date','ksm_type','chk_no','kst','ksm_date','ksm','h_no','emp','kst_notes','inp_date');

@@ -241,10 +241,10 @@ class EditMainData extends Component
       tar_kst_before::on(Auth()->user()->company)->where('no',$this->no)->delete();
 
       $select = main::where('no',$this->no)->select('no','name','bank','acc','sul_date','sul_type','sul_tot','dofa','sul',
-        'kst','kst_count','sul_pay','raseed','order_no','jeha','place','notes','chk_in','chk_out','last_order','ref_no','emp','inp_date');
+        'kst','kst_count','sul_pay','raseed','order_no','jeha','place','notes','chk_in','chk_out','last_order','ref_no','emp','inp_date','taj_id');
       $bindings = $select->getBindings();
       $insertQuery = 'INSERT into main_deleted (no,name,bank,acc,sul_date,sul_type,sul_tot,dofa,sul,kst,kst_count,sul_pay,raseed,order_no,
-                                               jeha,place,notes,chk_in,chk_out,last_order,ref_no,emp,inp_date) '. $select->toSql();
+                                               jeha,place,notes,chk_in,chk_out,last_order,ref_no,emp,inp_date,taj_id) '. $select->toSql();
       DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
 
       $select = kst_trans::on(Auth()->user()->company)->where('no',$this->no)->select('ser','no','kst_date','ksm_type','chk_no','kst','ksm_date','ksm','h_no','emp','kst_notes','inp_date');
