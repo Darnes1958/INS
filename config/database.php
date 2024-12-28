@@ -337,6 +337,20 @@ return [
             'prefix_indexes' => true,
             'trust_server_certificate' => true,
         ],
+        'Boshlak5' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL_OTHER'),
+            'host' => env('DB_HOST_OTHER', 'localhost'),
+            'port' => env('DB_PORT_OTHER', '1433'),
+            'database' => env('DB_DATABASE_Boshlak5', 'forge'),
+            'username' => env('DB_USERNAME_OTHER', 'forge'),
+            'password' => env('DB_PASSWORD_OTHER', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'trust_server_certificate' => true,
+        ],
+
       'Almajd' => [
         'driver' => 'sqlsrv',
         'url' => env('DATABASE_URL_OTHER'),
