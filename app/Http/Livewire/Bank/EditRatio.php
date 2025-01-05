@@ -20,7 +20,7 @@ class EditRatio extends Component
         return [
 
             'tajmeehy.ratio_type' =>['required'],
-            'tajmeehy.ratio_val' =>['required','integer','gt:0','lt:11']  ,
+            'tajmeehy.ratio_val' =>['required','integer','gt:0','lt:31']  ,
         ];
     }
     public function TakeTaj($tajno){
