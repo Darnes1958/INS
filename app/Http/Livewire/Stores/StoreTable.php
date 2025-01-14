@@ -109,18 +109,28 @@ class StoreTable extends Component
            if ($per_type==1) {
                $from = stores::where('st_no', $this->place_no1)->where('item_no',$item['item_no'])->first();
                $to = stores::where('st_no', $st_no2)->where('item_no', $item['item_no'])->first();
+               if (!$to) {stores::insert(['st_no' => $st_no2, 'item_no' => $item['item_no'],'raseed'=>0]);
+                   $to = stores::where('st_no', $st_no2)->where('item_no', $item['item_no'])->first();}
            }
             if ($per_type==2) {
                 $from = stores::where('st_no', $this->place_no1)->where('item_no',$item['item_no'])->first();
                 $to = halls::where('hall_no', $hall_no)->where('item_no', $item['item_no'])->first();
+                if (!$to) {halls::insert(['hall_no' => $hall_no, 'item_no' => $item['item_no'],'raseed'=>0]);
+                    $to = halls::where('hall_no', $hall_no)->where('item_no', $item['item_no'])->first();}
             }
             if ($per_type==3) {
                 $from = halls::where('hall_no', $this->place_no1)->where('item_no',$item['item_no'])->first();
                 $to = stores::where('st_no', $st_no2)->where('item_no', $item['item_no'])->first();
+                if (!$to) {stores::insert(['st_no' => $st_no2, 'item_no' => $item['item_no'],'raseed'=>0]);
+                    $to = stores::where('st_no', $st_no2)->where('item_no', $item['item_no'])->first();}
             }
             if ($per_type==4) {
                 $from = halls::where('hall_no', $this->place_no1)->where('item_no',$item['item_no'])->first();
                 $to = halls::where('hall_no', $hall_no)->where('item_no', $item['item_no'])->first();
+                if (!$to) {halls::insert(['hall_no' => $hall_no, 'item_no' => $item['item_no'],'raseed'=>0]);
+                           $to = halls::where('hall_no', $hall_no)->where('item_no', $item['item_no'])->first();}
+
+
             }
             $from->raseed -= $item['quant'];
             $from->save();
