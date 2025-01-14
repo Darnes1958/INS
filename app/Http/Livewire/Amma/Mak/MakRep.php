@@ -17,7 +17,7 @@ class MakRep extends Component
   use WithPagination;
   protected $paginationTheme = 'bootstrap';
   public $search;
-  public $RepChk=true;
+  public $RepChk=false;
   public $withzero=1;
 
   public $type_no=0;

@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Stores;
 
+use App\Models\stores\halls;
 use App\Models\stores\store_exp;
+use App\Models\stores\stores;
 use App\Models\trans\trans;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -104,7 +106,26 @@ class StoreTable extends Component
             'hall_no'=>$hall_no,
             'emp'=>Auth::user()->empno,
           ]);
-
+           if ($per_type==1) {
+               $from = stores::where('st_no', $this->place_no1)->where('item_no',$item['item_no'])->first();
+               $to = stores::where('st_no', $st_no2)->where('item_no', $item['item_no'])->first();
+           }
+            if ($per_type==2) {
+                $from = stores::where('st_no', $this->place_no1)->where('item_no',$item['item_no'])->first();
+                $to = halls::where('hall_no', $hall_no)->where('item_no', $item['item_no'])->first();
+            }
+            if ($per_type==3) {
+                $from = halls::where('hall_no', $this->place_no1)->where('item_no',$item['item_no'])->first();
+                $to = stores::where('st_no', $st_no2)->where('item_no', $item['item_no'])->first();
+            }
+            if ($per_type==4) {
+                $from = halls::where('hall_no', $this->place_no1)->where('item_no',$item['item_no'])->first();
+                $to = halls::where('hall_no', $hall_no)->where('item_no', $item['item_no'])->first();
+            }
+            $from->raseed -= $item['quant'];
+            $from->save();
+            $to->raseed += $item['quant'];
+            $to->save();
           }
 
         if ($this->HasRaseed)

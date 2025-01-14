@@ -55,8 +55,56 @@ class DelPer extends Component
   public function delete(){
     $this->CloseDeleteDialog();
 
-    store_exp::where('per_no',$this->per_no)->delete();
+      DB::connection(Auth()->user()->company)->beginTransaction();
+      try {
+          $res = store_exp::where('per_no', $this->per_no)->get();
 
+
+          foreach ($res as $item) {
+              if ($this->per_type == 1) {
+                  $from = stores::where('st_no', $item->st_no)->where('item_no', $item->item_no)->first();
+                  $from->raseed += $item->quant;
+                  $from->save();
+                  $to = stores::where('st_no', $item->st_no2)->where('item_no', $item->item_no)->first();
+                  $to->raseed -= $item->quant;
+                  $to->save();
+              }
+              if ($this->per_type == 2) {
+                  $from = stores::where('st_no', $item->st_no)->where('item_no', $item->item_no)->first();
+                  $from->raseed += $item->quant;
+                  $from->save();
+                  $to = halls::where('hall_no', $item->hall_no)->where('item_no', $item->item_no)->first();
+                  $to->raseed -= $item->quant;
+                  $to->save();
+              }
+              if ($this->per_type == 3) {
+                  $from = halls::where('hall_no', $item->st_no)->where('item_no', $item->item_no)->first();
+                  $from->raseed += $item->quant;
+                  $from->save();
+                  $to = stores::where('st_no', $item->st_no2)->where('item_no', $item->item_no)->first();
+                  $to->raseed -= $item->quant;
+                  $to->save();
+              }
+              if ($this->per_type == 4) {
+                  $from = halls::where('hall_no', $item->st_no)->where('item_no', $item->item_no)->first();
+                  $from->raseed = $from->raseed + $item->quant;
+
+                  $from->save();
+                  $to = halls::where('hall_no', $item->hall_no)->where('item_no', $item->item_no)->first();
+                  $to->raseed = $to->raseed - $item->quant;
+                  $to->save();
+              }
+
+          }
+
+          store_exp::where('per_no', $this->per_no)->delete();
+          DB::connection(Auth()->user()->company)->commit();
+      }
+      catch (\Exception $e) {
+          info($e);
+          DB::connection(Auth()->user()->company)->rollback();
+          $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
+      }
 
     $this->per_no=0;
     $this->clearData();
