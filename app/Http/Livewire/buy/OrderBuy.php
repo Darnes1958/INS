@@ -11,10 +11,12 @@ use App\Models\buy\charges_buy;
 use App\Models\buy\charges_buy_work;
 use App\Models\buy\rep_buy_tran;
 use App\Models\jeha\jeha;
+use App\Models\stores\halls;
 use App\Models\stores\halls_names;
 use App\Models\stores\item_price_sell;
 use App\Models\stores\items;
 use App\Models\stores\store_exp;
+use App\Models\stores\stores;
 use App\Models\stores\stores_names;
 use App\Models\trans\trans;
 use Illuminate\Support\Facades\Auth;
@@ -463,6 +465,17 @@ class OrderBuy extends Component
               'hall_no' => $this->ToSal_L,
               'emp' => Auth::user()->empno,
             ]);
+
+              $from = stores::where('st_no', $this->st_no)->where('item_no',$item['item_no'])->first();
+              $to = halls::where('hall_no', $this->ToSal_L)->where('item_no', $item['item_no'])->first();
+              if (!$to) {halls::insert(['hall_no' => $this->ToSal_L, 'item_no' => $item['item_no'],'raseed'=>0]);
+                  $to = halls::where('hall_no', $this->ToSal_L)->where('item_no', $item['item_no'])->first();}
+
+              $from->raseed -= $item['quant'];
+              $from->save();
+              $to->raseed += $item['quant'];
+              $to->save();
+
           }
         }
         DB::connection(Auth()->user()->company)->commit();

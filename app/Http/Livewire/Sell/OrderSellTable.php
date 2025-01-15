@@ -8,6 +8,7 @@ use App\Models\Customers;
 use App\Models\jeha\jeha;
 use App\Models\sell\rep_sell_tran;
 use App\Models\sell\sells;
+use App\Models\stores\halls;
 use App\Models\stores\halls_names;
 use App\Models\stores\items;
 use App\Models\stores\store_exp;
@@ -85,6 +86,15 @@ class OrderSellTable extends Component
                     'emp'=>Auth::user()->empno,
                   ]);
                 }
+                  $from = stores::where('st_no', $this->st_no)->where('item_no',$item['item_no'])->first();
+                  $to = halls::where('hall_no', $this->ToSal_L)->where('item_no', $item['item_no'])->first();
+                  if (!$to) {halls::insert(['hall_no' => $this->ToSal_L, 'item_no' => $item['item_no'],'raseed'=>0]);
+                      $to = halls::where('hall_no', $this->ToSal_L)->where('item_no', $item['item_no'])->first();}
+
+                  $from->raseed -= $item['quant'];
+                  $from->save();
+                  $to->raseed += $item['quant'];
+                  $to->save();
 
                 $this->PlaceType='Salat';
                 $this->st_no=$this->ToSal_L;
