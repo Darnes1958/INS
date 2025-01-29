@@ -106,8 +106,12 @@ class RepHaf extends Component
                         $query->where('bank_name', 'like', '%' . $this->search . '%')
                             ->orWhere('hafitha_date', 'like', '%'.$this->search.'%');})
                     ->paginate(15),
-                 'HafTranTable'=>DB::connection(Auth()->user()->company)->table('hafitha_tran_view')
-                   ->where('hafitha_no',$this->Haf_no)
+                 'HafTranTable'=>DB::connection(Auth()->user()->company)->table('hafitha_tran')
+                   ->join('hafitha','hafitha_tran.hafitha','=','hafitha.hafitha_no')
+                   ->join('kst_type','hafitha_tran.kst_type','=','kst_type.kst_type_no')
+                   ->join('bank','hafitha.bank','=','bank.bank_no')
+                   ->selectRaw('hafitha_tran.*,hafitha.hafitha_no,kst_type.kst_type_no,bank.bank_no,kst_type.kst_type_name,bank.bank_name')
+                   ->where('hafitha.hafitha_no',$this->Haf_no)
                    ->where(function ($query) {
                      $query->where('name', 'like', '%' . $this->search2 . '%')
                        ->orWhere('acc', 'like', '%'.$this->search2.'%')

@@ -13,12 +13,15 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 
 
 class FromExcel extends Component
 {
   use WithFileUploads;
+  use WithPagination;
+    protected $paginationTheme = 'bootstrap';
   public $file;
   public $filename;
   public $Show=false;
