@@ -6,6 +6,7 @@ use App\Models\Arc\Arc_rep_sell_tran;
 use App\Models\Arc\Arc_Sells;
 use App\Models\Customers;
 use App\Models\jeha\jeha;
+use App\Models\sell\price_type;
 use App\Models\sell\rep_sell_tran;
 use App\Models\sell\sells;
 use App\Models\stores\halls;
@@ -68,37 +69,53 @@ class OrderSellTable extends Component
             $this->HasRaseed=true;
             DB::connection(Auth()->user()->company)->beginTransaction();
             try {
+
               if ($this->ToSal && $this->PlaceType=='Makazen') {
-                $per_no=store_exp::on(Auth()->user()->company)->max('per_no')+1;
-                for ($i = 0; $i < count($this->orderdetail); $i++) {
-                  $item=$this->orderdetail[$i];
-                  if ($item['item_no'] == 0) {   continue;    }
-                  DB::connection(Auth()->user()->company)->table('store_exp')->insert([
-                    'st_no'=>$this->st_no,
-                    'per_no'=>$per_no,
-                    'item_no' => $item['item_no'],
-                    'quant' => $item['quant'],
-                    'exp_date'=>$this->order_date,
-                    'order_no'=>0,
-                    'per_type'=>2,
-                    'st_no2'=>0,
-                    'hall_no'=>$this->ToSal_L,
-                    'emp'=>Auth::user()->empno,
-                  ]);
-                }
-                  $from = stores::where('st_no', $this->st_no)->where('item_no',$item['item_no'])->first();
-                  $to = halls::where('hall_no', $this->ToSal_L)->where('item_no', $item['item_no'])->first();
-                  if (!$to) {halls::insert(['hall_no' => $this->ToSal_L, 'item_no' => $item['item_no'],'raseed'=>0]);
-                      $to = halls::where('hall_no', $this->ToSal_L)->where('item_no', $item['item_no'])->first();}
+                  $per_no = store_exp::max('per_no') + 1;
+                  for ($i = 0; $i < count($this->orderdetail); $i++) {
 
-                  $from->raseed -= $item['quant'];
-                  $from->save();
-                  $to->raseed += $item['quant'];
-                  $to->save();
+                      $item = $this->orderdetail[$i];
 
-                $this->PlaceType='Salat';
-                $this->st_no=$this->ToSal_L;
+                      info('item_no' . $item['item_no']);
+                      if ($item['item_no'] == 0) {
+                          continue;
+                      }
+                      DB::connection(Auth()->user()->company)->table('store_exp')->insert([
+                          'st_no' => $this->st_no,
+                          'per_no' => $per_no,
+                          'item_no' => $item['item_no'],
+                          'quant' => $item['quant'],
+                          'exp_date' => $this->order_date,
+                          'order_no' => 0,
+                          'per_type' => 2,
+                          'st_no2' => 0,
+                          'hall_no' => $this->ToSal_L,
+                          'emp' => Auth::user()->empno,
+                      ]);
+
+                      $from = stores::where('st_no', $this->st_no)->where('item_no', $item['item_no'])->first();
+                      $to = halls::where('hall_no', $this->ToSal_L)->where('item_no', $item['item_no'])->first();
+                      if (!$to) {
+                          halls::insert(['hall_no' => $this->ToSal_L, 'item_no' => $item['item_no'], 'raseed' => 0]);
+                          $to = halls::where('hall_no', $this->ToSal_L)->where('item_no', $item['item_no'])->first();
+                      }
+
+                      info('from' . $from->raseed);
+                      info('to' . $to->raseed);
+                      info($item['quant']);
+
+                      $from->raseed -= $item['quant'];
+                      $from->save();
+                      $to->raseed += $item['quant'];
+                      $to->save();
+                      info('from' . $from->raseed);
+                      info('to' . $to->raseed);
+
+                      $this->PlaceType = 'Salat';
+                      $this->st_no = $this->ToSal_L;
+                  }
               }
+
 
                if ($this->PlaceType=='Makazen') $pt=1; else $pt=2;
                 DB::connection(Auth()->user()->company)->table('sells')->insert([
@@ -194,10 +211,12 @@ class OrderSellTable extends Component
                     if ($res->sell_type==1){ $place_name=stores_names::find($res->place_no)->st_name;}
                     if ($res->sell_type==2){ $place_name=halls_names::find($res->place_no)->hall_name;}
 
+                    $type_name=price_type::find($res->price_type)->type_name;
+
                     $orderdetail = rep_sell_tran::where('order_no', $this->order_no)->get();
 
                     $reportHtml = view('PrnView.sell.rep-order-sell',
-                        ['orderdetail'=>$orderdetail,'res'=>$res,'cus'=>$cus,'jeha_name'=>$jeha_name,'place_name'=>$place_name])->render();
+                        ['orderdetail'=>$orderdetail,'res'=>$res,'cus'=>$cus,'jeha_name'=>$jeha_name,'place_name'=>$place_name,'type_name'=>$type_name])->render();
                     $arabic = new Arabic();
                     $p = $arabic->arIdentify($reportHtml);
 
