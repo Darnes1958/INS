@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Sell;
 
+
+use App\Models\LarSetting;
 use App\Models\sell\price_type;
 use App\Models\stores\items;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +15,7 @@ use \App\Http\Livewire\Traits\MyLib;
 class OrderSellDetail extends Component
 {
     use MyLib;
+    public $canChangePrice =true;
     public $item;
     public $item_name;
     public $st_raseed;
@@ -53,7 +56,9 @@ class OrderSellDetail extends Component
     if ($this->Quant>$this->st_raseed)
     {$this->dispatchBrowserEvent('mmsg', 'الرصيد لا يسمح !'); return(false);}
     if ($this->Quant<=0) {return false;}
-    $this->emit('gotonext','price');
+    if ($this->canChangePrice)
+     $this->emit('gotonext','price');
+    else $this->ChkRec();
   }
    protected $listeners = [
         'itemchange','edititem','YesIsFound','ClearData','mountdetail','dismountdetail','TakeNewItem','CloseBringModal',
@@ -81,6 +86,9 @@ class OrderSellDetail extends Component
 
     public function mount()
     {
+
+        $this->canChangePrice=LarSetting::query()->first()->canChangePrice;
+
         $this->ClearData();
         $this->DetailOpen=false;
         $this->OrderDetailOpen=true;

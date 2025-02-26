@@ -169,14 +169,25 @@
         <input wire:model="raseed" class="form-control " name="raseed" type="text" readonly
                id="raseed"   >
     </div>
-    <div class="col-6">
-        <label for="price" class="form-label-me">السعر</label>
-        <input wire:model="price" wire:keydown.enter="ChkRec" class="form-control" name="price" type="text" value=""
-               id="price"  style="text-align: center"  x-bind:disabled="!$wire.DetailOpen">
-        <br>
 
-        @error('price') <span class="error">{{ $message }}</span> @enderror
-    </div>
+    @if($canChangePrice)
+        <div class="col-6">
+            <label for="price" class="form-label-me">السعر</label>
+            <input wire:model="price" wire:keydown.enter="ChkRec" class="form-control" name="price" type="text" value=""
+                   id="price"  style="text-align: center"  x-bind:disabled="!$wire.DetailOpen">
+            <br>
+            @error('price') <span class="error">{{ $message }}</span> @enderror
+        </div>
+    @else
+        <div class="col-6">
+            <label for="price" class="form-label-me">السعر</label>
+            <input wire:model="price"  class="form-control" name="price" type="text" value=""
+                   id="price"  style="text-align: center"  x-bind:disabled="!$wire.DetailOpen" readonly>
+            <br>
+            @error('price') <span class="error">{{ $message }}</span> @enderror
+        </div>
+    @endif
+
     <div class="col-6 ">
         <label for="st_raseed" class="form-label-me " >{{$st_label}}</label>
         <input wire:model="st_raseed" class="form-control " name="st_raseed" type="text" readonly

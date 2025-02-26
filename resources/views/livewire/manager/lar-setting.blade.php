@@ -15,10 +15,11 @@
           <input class="form-check-input"  type="checkbox" wire:model="ArcBtn"  >
           <label class="form-check-label" >إظهار ايقون النقل من وإلي الارشيف</label>
         </div>
-        <div  class="my-3">
-          <input class="form-check-input"  type="checkbox" wire:model="ArcBtn"  >
-          <label class="form-check-label" >إظهار ايقون النقل من وإلي الارشيف</label>
-        </div>
+          <div  class="my-3">
+              <input class="form-check-input"  type="checkbox" wire:model="canChangePrice"  >
+              <label class="form-check-label" >تعديل السعر في فاتورة المبيعات</label>
+          </div>
+
 
         <div class="my-3">
           <label style="margin-left: 8px;">نقطة البيع الافتراضية للمبيعات</label>

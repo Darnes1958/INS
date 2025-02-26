@@ -12,6 +12,7 @@ class LarSetting extends Component
     public $ArcBtn;
     public $SellSalOrMak;
     public $ToSal;
+    public $canChangePrice;
   public $Show=false;
 
   protected $listeners = ['show'];
@@ -26,6 +27,8 @@ class LarSetting extends Component
       if ($res->SellTakInc=='inc') $this->TakInc=true; else $this->TakInc=false;
       if ($res->SellNakInc=='inc') $this->NakInc=true; else $this->NakInc=false;
       if ($res->ToSal=='yes') $this->ToSal=true; else $this->ToSal=false;
+      $this->canChangePrice=$res->canChangePrice==1;
+      info($this->canChangePrice);
       $this->SellSalOrMak=$res->SellSalOrMak;
     }
     public function SaveSetting(){
@@ -39,6 +42,7 @@ class LarSetting extends Component
         'ArcBtn'=>$arc,
         'SellSalOrMak'=>$this->SellSalOrMak,
         'ToSal'=>$tosal,
+        'canChangePrice'=>$this->canChangePrice,
       ]);
     }
     public function render()

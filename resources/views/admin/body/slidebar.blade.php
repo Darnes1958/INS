@@ -81,7 +81,14 @@
                         <li><a href="{{route('stores.add',21)}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">من صالة لمخزن</a></li>
                         <li><a href="{{route('stores.add',22)}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">من صالة لصالة</a></li>
                         <li><a href="{{route('repamma','DelPer')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">الغاء اذن صرف</a></li>
-                        <li><a href="{{route('itemprices')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تغيير أسعار لصنف</a></li>
+                        @if( \App\Models\LarSetting::query()->first()->canChangePrice )
+                            <li><a href="{{route('itemprices')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تغيير أسعار لصنف</a></li>
+                        @else
+                            @role('admin')
+                              <li><a href="{{route('itemprices')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تغيير أسعار لصنف</a></li>
+                            @endrole
+                        @endif
+
                         @can('سعر الشراء')
                         <li><a href="{{route('itemdamage')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">توحيد صنف</a></li>
                         @endcan
@@ -243,11 +250,8 @@
                 <div class="collapse" id="repamma-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         @can('اليومية')
-                        <li><a href="{{route('repamma','daily')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">الحركة اليومية</a></li>
-
-                       <li><a href="{{route('repamma','RepKlasa')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">خلاصة الحركة اليومية</a></li>
-
-
+                          <li><a href="{{route('repamma','daily')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">الحركة اليومية</a></li>
+                          <li><a href="{{route('repamma','RepKlasa')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">خلاصة الحركة اليومية</a></li>
                         @endcan
                         @can('فاتورة مبيعات')
                         <li><a href="{{route('order_sell.rep')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">فاتورة مبيعات</a></li>
