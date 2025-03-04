@@ -63,7 +63,7 @@ class OrderSellTable extends Component
             session()->flash('message', 'لم يتم ادخال اصناف بعد');
         }
         else {
-            if (sells::on(auth()->user()->company)->where('order_no',$this->order_no)->exists())
+            if (sells::where('order_no',$this->order_no)->exists())
             {$this->order_no=sells::on(auth()->user()->company)->max('order_no')+1;
                $this->OrderChanged=true;}
             $this->HasRaseed=true;
@@ -76,7 +76,7 @@ class OrderSellTable extends Component
 
                       $item = $this->orderdetail[$i];
 
-                      info('item_no' . $item['item_no']);
+
                       if ($item['item_no'] == 0) {
                           continue;
                       }
@@ -100,20 +100,17 @@ class OrderSellTable extends Component
                           $to = halls::where('hall_no', $this->ToSal_L)->where('item_no', $item['item_no'])->first();
                       }
 
-                      info('from' . $from->raseed);
-                      info('to' . $to->raseed);
-                      info($item['quant']);
+
 
                       $from->raseed -= $item['quant'];
                       $from->save();
                       $to->raseed += $item['quant'];
                       $to->save();
-                      info('from' . $from->raseed);
-                      info('to' . $to->raseed);
 
-                      $this->PlaceType = 'Salat';
-                      $this->st_no = $this->ToSal_L;
+
                   }
+                  $this->PlaceType = 'Salat';
+                  $this->st_no = $this->ToSal_L;
               }
 
 
@@ -162,6 +159,23 @@ class OrderSellTable extends Component
                        break;
                       }
                      }
+                  if ($this->PlaceType=='Salat')
+                  {
+                      $pt=2;
+                      $st_quant=DB::connection(Auth()->user()->company)->table('halls')
+                          ->where('hall_no', '=', $this->st_no)
+                          ->where('item_no','=',$item['item_no'])
+                          ->pluck('raseed');
+                      $st_quant=(int)$st_quant[0];
+                      $quant=(int)$item['quant'];
+
+                      if ($quant>$st_quant)
+                      {$this->dispatchBrowserEvent('mmsg', 'الصنف :'.$item['item_no'].' رصيده لا يكفي');
+                          $this->HasRaseed=false;
+
+                          break;
+                      }
+                  }
 
                     if ($this->HasRaseed)
                     {DB::connection(Auth()->user()->company)->table('sell_tran')->insert([
