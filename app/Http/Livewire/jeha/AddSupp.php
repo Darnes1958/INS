@@ -200,6 +200,15 @@ class AddSupp extends Component
         ->where('jeha_no',$jeha_no)
         ->update(['Favorite'=>0]);
     }
+      if ($action=='prevented'){
+          jeha::where('jeha_no',$jeha_no)
+              ->update(['prevented'=>0]);
+      }
+      if ($action=='notPrevented'){
+          jeha::where('jeha_no',$jeha_no)
+              ->update(['prevented'=>1]);
+      }
+
   }
   public function CloseDeleteDialog(){$this->dispatchBrowserEvent('CloseMyDelete');}
 

@@ -217,7 +217,8 @@ class RepMainDataArc extends Component
     public function render()
     {
 
-
+        $bg='#bfd1ec';
+        if ($this->jeha!=0 && jeha::find($this->jeha)->prevented) $bg='#ffe5e5';
         return view('livewire.aksat.rep.okod.rep-main-data-arc',[
             'TableOver' => DB::connection(Auth()->user()->company)->table('over_kst_a')
                 ->select('tar_date','kst')
@@ -236,6 +237,7 @@ class RepMainDataArc extends Component
                 ->where('jeha',$this->jeha)
                 ->where('no','!=',$this->no)
                 ->paginate(5),
+            'bg'=>$bg,
             ]);
     }
 }

@@ -55,6 +55,7 @@ class RepMainAllData extends Component
     public $HasTar=false;
     public $HasChk=false;
     public $HasArc=false;
+    public $prevented=false;
 
     public $MainOrArc='قائم';
     public $OverTable='over_kst';
@@ -68,6 +69,7 @@ class RepMainAllData extends Component
         $this->HasChk=false;
         $this->HasOver=false;
         $this->HasTar=false;
+        $this->prevented=false;
         $this->no=0;
         $this->acc='';
         $this->name='';
@@ -197,6 +199,7 @@ class RepMainAllData extends Component
       $this->HasChk=false;
       $this->HasOver=false;
       $this->HasTar=false;
+
       $this->no=$res['no'];
       $this->acc=$res['acc'];
       $this->name=$res['name'];
@@ -235,12 +238,14 @@ class RepMainAllData extends Component
           ->where('no','!=',$this->no)->count();
       $this->ChkTasleem=chk_tasleem::on(Auth()->user()->company)->where('no',$this->no)->count();
 
+      $this->prevented=jeha::find($this->jeha)->prevented;
+
     }
 
 
     public function render()
     {
-
+        if ($this->prevented) $bg='#ffe5e5'; else $bg='white';
 
         return view('livewire.aksat.rep.okod.rep-main-all-data',[
             'TableOver' => DB::connection(Auth()->user()->company)->table($this->OverTable)
@@ -260,6 +265,7 @@ class RepMainAllData extends Component
                 ->where('jeha',$this->jeha)
                 ->where('no','!=',$this->no)
                 ->paginate(5),
+            'bg'=>$bg,
             ]);
     }
 }

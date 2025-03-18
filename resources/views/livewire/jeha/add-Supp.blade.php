@@ -86,6 +86,7 @@
                @can('عميل خاص')
              <th width="5%" style="text-align: center">VIP</th>
                @endcan
+               <th width="5%" style="text-align: center">محظور</th>
              <th width="5%" style="text-align: center"></th>
              <th width="5%" style="text-align: center"></th>
            </tr>
@@ -132,6 +133,17 @@
                          </td>
                 @endif
                @endcan
+                 @if($item->prevented==1)
+                     <td  style="padding-top: 2px;padding-bottom: 2px; ">
+                         <i wire:click="selectItem({{ $item->jeha_no }},'prevented')"
+                            class="btn btn-outline-dark btn-sm  fa fa-ban editable-input " style="margin-left: 2px;color:red"></i>
+                     </td>
+                 @else
+                     <td  style="padding-top: 2px;padding-bottom: 2px; ">
+                         <i wire:click="selectItem({{ $item->jeha_no }},'notPrevented')"
+                            class="btn btn-outline-secondary btn-sm   editable-input" style="margin-left: 2px;color:blue"></i>
+                     </td>
+                 @endif
                <td  style="padding-top: 2px;padding-bottom: 2px; ">
                  <i wire:click="selectItem({{ $item->jeha_no }},'update')" @click="$focus.focus(search_box)"
                     class="btn btn-outline-primary btn-sm fa fa-edit editable-input" style="margin-left: 2px;"></i>

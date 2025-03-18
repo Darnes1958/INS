@@ -1,9 +1,15 @@
 <div>
- <div x-data class="row " style="border:1px solid lightgray;background: white;">
+    @if($prevented)
+        <div x-data class="row " style="border:1px solid lightgray;background: #ffe5e5;">
+    @else
+        <div x-data class="row " style="border:1px solid lightgray;background: white;">
+    @endif
+
    <div class="d-inline-flex align-items-center py-0">
      <label for="name" class="form-label-me align-right" style="width: 14% ">رقم الزبون</label>
      <input  wire:model="jeha" type="text" class="form-control font-size-12 h-75 py-0" id="jeha" readonly style="width: 20%" >
      <input  wire:model="name" type="text" class="form-control font-size-12 h-75 py-0" id="name" readonly style="width: 66%;margin-right: 4px;" >
+       <label for="name" class="form-label-me align-right" style="width: 14% ">test {{$prevented}}</label>
    </div>
    <div class="d-inline-flex align-items-center py-0">
      <label for="acc" class="form-label-me" style="width: 14% " >رقم الحساب</label>

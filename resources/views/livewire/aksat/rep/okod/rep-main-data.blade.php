@@ -1,5 +1,8 @@
 <div>
- <div x-data class="row gy-1 my-1" style="border:1px solid lightgray;background: white;">
+
+
+          <div x-data class="row gy-1 my-1" style="border:1px solid lightgray;background: {{$bg}};">
+
    <div class="d-inline-flex align-items-center">
      <label for="name" class="form-label align-right" style="width: 20% ">رقم الزبون</label>
      <input  wire:model="jeha" type="text" class="form-control " id="name" readonly style="width: 15%" >

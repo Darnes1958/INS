@@ -66,6 +66,7 @@ class RepMainData extends Component
     public $HasTar=false;
     public $HasChk=false;
     public $HasArc=false;
+    public $prevented=false;
 
     public $IsMosdad=false;
     public $IsStop=false;
@@ -179,6 +180,7 @@ class RepMainData extends Component
       $this->HasTar=false;
       $this->IsStop=false;
       $this->IsMosdad=false;
+
       $this->no=$res['no'];
       if ($res['last_order'] && $res['last_order']!=0){
         $rec=MainArc::where('order_no',$res['last_order'])->first();
@@ -232,6 +234,8 @@ class RepMainData extends Component
       $this->ArcMain=MainArc::on(Auth()->user()->company)->where('jeha',$this->jeha)->count();
       $this->ChkTasleem=chk_tasleem::on(Auth()->user()->company)->where('no',$this->no)->count();
 
+      $this->prevented=jeha::find($this->jeha)->prevented;
+
       $this->IsMosdad=$this->raseed==0;
       $this->IsStop=stop_kst::where('no',$this->no)->exists();
       if ($this->IsStop) {
@@ -281,7 +285,7 @@ class RepMainData extends Component
           $this->aksat_count=null;
           $this->sal_date=null;}
 
-
+        if ($this->prevented) $bg='#ffe5e5'; else $bg='white';
 
         return view('livewire.aksat.rep.okod.rep-main-data',[
             'TableOver' => DB::connection(Auth()->user()->company)->table('over_kst')
@@ -300,6 +304,7 @@ class RepMainData extends Component
                 ->select('sul_date','no')
                 ->where('jeha',$this->jeha)
                 ->paginate(5),
+            'bg'=>$bg,
             ]);
     }
 }
