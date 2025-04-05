@@ -155,11 +155,11 @@ class EditMainData extends Component
 
   public function SaveCont(){
     $this->validate();
-
+    $taj=bank::find($this->bankno)->bank_tajmeeh;
     DB::connection(Auth()->user()->company)->beginTransaction();
     try {
       DB::connection(Auth()->user()->company)->table('main')->where('no',$this->no)->update([
-        'bank'=>$this->bankno,'acc'=>$this->acc,
+        'bank'=>$this->bankno,'acc'=>$this->acc,'taj_id'=>$taj,
         'place'=>$this->place,'notes'=>$this->notes,'chk_in'=>$this->chk_in,'ref_no'=>$this->ref_no,
         'emp'=>auth::user()->empno,]);
       over_kst::on(Auth()->user()->company)->where('bank',$this->OldBank)->where('acc',$this->OldAcc)->update([
@@ -178,10 +178,10 @@ class EditMainData extends Component
         'bank'=>$this->bankno,'acc'=>$this->acc,
       ]);
       main::on(Auth()->user()->company)->where('jeha',$this->jeha)->update([
-        'bank'=>$this->bankno,'acc'=>$this->acc,
+        'bank'=>$this->bankno,'acc'=>$this->acc,'taj_id'=>$taj,
       ]);
       MainArc::on(Auth()->user()->company)->where('jeha',$this->jeha)->update([
-        'bank'=>$this->bankno,'acc'=>$this->acc,
+        'bank'=>$this->bankno,'acc'=>$this->acc,'taj_id'=>$taj,
       ]);
 
       Operations::insert(['Proce'=>'عقد','Oper'=>'تعديل','no'=>$this->no,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);

@@ -359,7 +359,7 @@
                     @endcan
 
                 @endrole
-                    @if($id==1)
+                    @if(\Illuminate\Support\Facades\Auth::user()->id==1)
                         <li class="mb-1">
                             <button class="font-size-14 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#Cus-collapse" aria-expanded="false">
                                 &nbsp <i class="fa  fas fa-list-ul" aria-hidden="true"></i>&nbsp شئون الشركات</button>

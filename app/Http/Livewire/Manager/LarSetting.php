@@ -28,7 +28,7 @@ class LarSetting extends Component
       if ($res->SellNakInc=='inc') $this->NakInc=true; else $this->NakInc=false;
       if ($res->ToSal=='yes') $this->ToSal=true; else $this->ToSal=false;
       $this->canChangePrice=$res->canChangePrice==1;
-      info($this->canChangePrice);
+
       $this->SellSalOrMak=$res->SellSalOrMak;
     }
     public function SaveSetting(){

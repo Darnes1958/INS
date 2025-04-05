@@ -135,7 +135,7 @@ class KstGeted extends Component
                 $q->where('main.bank', '=', $this->bank_no);
             })
             ->when($this->ByTajmeehy=='Taj',function($q){
-                info('here : '.$this->TajNo);
+
                 $q-> whereIn('main.bank', function($q){
                     $q->select('bank_no')->from('bank')->where('bank_tajmeeh',$this->TajNo);});
             })

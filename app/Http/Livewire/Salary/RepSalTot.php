@@ -27,7 +27,7 @@ class RepSalTot extends Component
     }
 
     public function selectItem($m){
-      info($m);
+
         $this->M=$m;
 
 

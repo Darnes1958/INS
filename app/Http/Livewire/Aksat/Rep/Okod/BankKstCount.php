@@ -89,7 +89,7 @@ class BankKstCount extends Component
   }
   public function render()
   {
-if ($this->RepRadio=='ByPlace' ) info('ByPlace');
+
     return view('livewire.aksat.rep.okod.bank-kst-count',[
       'ssul'=>main::on(Auth()->user()->company)->sum('sul'),
       'ppay'=>main::on(Auth()->user()->company)->sum('sul_pay'),
@@ -121,7 +121,7 @@ if ($this->RepRadio=='ByPlace' ) info('ByPlace');
                              (SELECT       count(*) AS Expr1
                                FROM             dbo.kst_trans
                                WHERE         (no in (select no from main where main.bank=main_view.bank) ) and (ksm is null or ksm=0)) AS kst_count
-                             
+
                  ')
       ->groupBy('bank','bank_name')
       ->orderby('bank')

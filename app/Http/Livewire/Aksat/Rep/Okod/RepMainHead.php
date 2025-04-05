@@ -53,9 +53,9 @@ class RepMainHead extends Component
     if ($this->no!=null) {
         $result = main::find($this->no);
         if ($result) {
-          info($result->sul_pay);
+
             $this->chkRaseed($result);
-            info($result->sul_pay);
+
             $this->CloseTable();
             $this->acc=$result->acc;
             $this->emitTo($this->who,'GotoDetail',$result);
