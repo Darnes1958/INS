@@ -93,7 +93,7 @@
                         <li><a href="{{route('itemdamage')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">توحيد صنف</a></li>
                         @endcan
                       @if (Auth()->User()->company=='Motahedon' || Auth()->User()->company=='Taleb' || Auth()->User()->company=='Bentaher2'
-                         || Auth()->User()->company=='Sohol')
+                         || Auth()->User()->company=='Sohol' || Auth()->User()->company=='Boshlak')
                         <li><a href="{{route('jaradraseed')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تعديل ارصدة بعد الجرد</a></li>
                        @endif
 
