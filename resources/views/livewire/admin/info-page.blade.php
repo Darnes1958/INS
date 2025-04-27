@@ -16,10 +16,10 @@
                          style="margin-right: 25%;margin-left: 25%;">
                     استفسار عن جميع العقود لزبون
                 </button>
-          <!--      <button  wire:click="RepItem" class="col-md-6  my-4 btn btn-primary"
+              <button  wire:click="RepItem" class="col-md-6  my-4 btn btn-primary"
                          style="margin-right: 25%;margin-left: 25%;">
                     استفسار عن اصناف
-                </button> -->
+                </button>
             </div>
         </div>
     </div>
@@ -50,5 +50,10 @@
             @livewire('aksat.rep.okod.rep-main-all-trans')
         </div>
     </div>
+    <div x-show="$wire.showitemrep" class="row mb-3 ">
 
+        <div  class="col-md-6 themed-grid-col px-1">
+            @livewire('amma.mak.item-rep-info')
+        </div>
+    </div>
 </div>
