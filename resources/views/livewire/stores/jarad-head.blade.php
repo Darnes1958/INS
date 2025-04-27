@@ -89,6 +89,13 @@
 </div>
 
 @push('scripts')
+    <script type="text/javascript">
+        window.addEventListener('mmsg',function(e){
+            MyMsg.fire({
+                confirmButtonText:  e.detail,
+            })
+        });
+    </script>
   <script type="text/javascript">
       Livewire.on('gotonext',postid=>  {
 

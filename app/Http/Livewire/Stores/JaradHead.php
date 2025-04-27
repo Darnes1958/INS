@@ -24,14 +24,21 @@ class JaradHead extends Component
   public $NotZero=false;
 
 
-  public function ChkItem($item=0){
-      if ($item!=0) $this->item_no=$item;
+  public function ChkItem(){
+      if (!$this->place_no) { $this->dispatchBrowserEvent('mmsg', 'يجب اختيار مكان التخزين');return  false;}
+      if (!$this->item_type) { $this->dispatchBrowserEvent('mmsg', 'يجب اختيار التصنيف');return  false;}
+      if (!$this->item_no) return;
+
       if ($this->item_no){
+          if (!$this->item_type) $this->item_type=items::find($this->item_no)->item_type;
           $res=RepMakzoon::where('place_type',$this->place_type)
               ->where('place_no',$this->place_no)
-              ->where('item_type',$this->item_type)
+              ->when($this->item_type,function ($q){
+               $q->where('item_type',$this->item_type);
+              })
               ->where('item_no',$this->item_no)
               ->first();
+
           if ($res){
               $this->item_no=$res->item_no;
               $this->item_name=$res->item_name;
@@ -124,14 +131,16 @@ class JaradHead extends Component
           'item_types'=>item_type::all(),
 
           'RepMak'=>RepMakzoon::where('place_type',$this->place_type)
-          ->where('place_no',$this->place_no)
-          ->where('item_type',$this->item_type)
-          ->when($this->NotZero,function ($q){
-              $q->where('raseed','!=',0);
-          })
-          ->orderby('item_no')
-          ->get(),
-          'RepMak2'=>RepMakzoon::where('item_no',$this->item_no)->get(),
+            ->where('place_no',$this->place_no)
+            ->where('item_type',$this->item_type)
+            ->when($this->NotZero,function ($q){
+                  $q->where('raseed','!=',0);
+              })
+              ->orderby('item_no')
+              ->get(),
+          'RepMak2'=>RepMakzoon::when($this->item_no!=null,function ($q){$q->where('item_no',$this->item_no);})
+              ->when($this->item_no==null,function ($q){$q->where('item_no',null);})
+              ->get(),
 
         ]);
     }
