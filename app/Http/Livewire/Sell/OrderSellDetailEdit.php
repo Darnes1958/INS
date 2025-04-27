@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Sell;
 
 use \App\Http\Livewire\Traits\MyLib;
+use App\Models\LarSetting;
 use App\Models\stores\items;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -12,6 +13,7 @@ use Livewire\Component;
 class OrderSellDetailEdit extends Component
 {
     use MyLib;
+    public $canChangePrice =true;
     public $MyConn;
     public $order_no;
     public $stno;
@@ -49,7 +51,12 @@ class OrderSellDetailEdit extends Component
     }
 
     if ($this->quant<=0) {return false;}
-    $this->emit('gotonext','price');
+
+      if ($this->canChangePrice)
+          $this->emit('gotonext','price');
+      else $this->ChkRec();
+
+
   }
 
 
@@ -83,7 +90,7 @@ class OrderSellDetailEdit extends Component
 
     public function mount()
     {
-
+        $this->canChangePrice=LarSetting::query()->first()->canChangePrice;
         $this->ClearData();
         $this->DetailOpen=false;
         $this->OrderDetailOpen=true;
