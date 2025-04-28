@@ -3,14 +3,14 @@
 
       @role('info')
       <div class="col-md-11" >
-          @livewire('stores.item-select')
+          @livewire('stores.item-select',['PlaceSelectType' => 'items','PlaceToselect' => 1,'withZero'=>0])
       </div>
       <div class="col-md-1">
           <button wire:click="$emit('CloseItemRep')"  type="button" class="btn btn-outline-danger btn-sm far fa-window-close" ></button>
       </div>
       @else
           <div class="col-md-12" >
-              @livewire('stores.item-select')
+              @livewire('stores.item-select',['PlaceSelectType' => 'items','PlaceToselect' => 1,'withZero'=>0])
           </div>
       @endrole
 

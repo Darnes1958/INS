@@ -16,6 +16,7 @@ class ItemSelect extends Component
   public $ItemList;
   public $PlaceSelectType;
   public $PlaceToSelect;
+  public $withZero;
   protected $listeners = [
     'itemfound','B_RefreshSelectItem','RefreshSelectItem' => '$refresh','TakeItemNo'
   ];
@@ -37,9 +38,10 @@ class ItemSelect extends Component
     }
   }
 
-  public function mount($placeSelectType='items',$placeToselect=1){
+  public function mount($placeSelectType='items',$placeToselect=1,$withZero=1){
     $this->PlaceSelectType=$placeSelectType;
     $this->PlaceToSelect=$placeToselect;
+    $this->withZero=$withZero;
   }
   public function hydrate(){
 
@@ -52,6 +54,7 @@ class ItemSelect extends Component
 
         $this->ItemList=DB::connection(Auth()->user()->company)->table('items')
           ->select('item_no', 'raseed', 'item_name')
+          ->when($this->withZero==0,function($query){$query->where('raseed','>',0);})
           ->where('available',1)
           ->get();}
         if ($this->PlaceSelectType=='Makazen') {
