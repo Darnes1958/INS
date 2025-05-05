@@ -1,6 +1,7 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-4">
+
       <div class="card">
         <div class="card-header" style="background: #0e8cdb;color: white;font-size: 14pt;">ادخال مصارف تجميعية</div>
 
@@ -48,6 +49,13 @@
       </div>
     </div>
     <div class="col-md-7">
+        <div class="row">
+            <div class="col-md-6  ">
+                <input wire:model="search"  type="search"   placeholder="بحث  ....">
+            </div>
+
+
+        </div>
       <div class="card">
         <div class="card-body">
           <table class="table table-sm table-bordered table-striped table-light " width="100%"   >

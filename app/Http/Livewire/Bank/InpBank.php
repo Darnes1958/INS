@@ -15,6 +15,7 @@ class InpBank extends Component
   public $bank_tajmeeh;
   public $bank_no;
   public $bank_name;
+  public $search;
   public $bank_code;
 
   public $UpdateMod=false;
@@ -93,6 +94,7 @@ class InpBank extends Component
           'BankTable'=>bank::on(Auth()->user()->company)
           ->join('BankTajmeehy','bank.bank_tajmeeh','=','BankTajmeehy.TajNo')
           ->select('bank_no','bank_name','bank_code','TajName')
+          ->where('bank_name', 'like', '%' . $this->search . '%')
           ->paginate(15)]);
     }
 }
