@@ -51,9 +51,11 @@
     <div class="col-md-7">
         <div class="row">
             <div class="col-md-6  ">
-                <input wire:model="search"  type="search"   placeholder="بحث  ....">
+                <input wire:model="search"  type="search"   placeholder="بحث عن الفروع ....">
             </div>
-
+            <div class="col-md-6 ">
+                <input wire:model="search2"  type="search"   placeholder="بحث عن التجميعي .......">
+            </div>
 
         </div>
       <div class="card">
