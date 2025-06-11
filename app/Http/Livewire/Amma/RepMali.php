@@ -125,7 +125,7 @@ class RepMali extends Component
     $this->rebh=sells::on(Auth()->user()->company)->whereBetween('order_date',[$this->mas_date1,$this->mas_date2])->sum('rebh');
 
   }
-  public function paginate($items, $perPage = 15, $page = null, $options = [])
+  public function paginate($items, $perPage = 20, $page = null, $options = [])
   {
     $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
     $items = $items instanceof Collection ? $items : Collection::make($items);
