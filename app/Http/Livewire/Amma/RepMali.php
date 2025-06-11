@@ -134,7 +134,7 @@ class RepMali extends Component
     public function render()
     {
       $page = 1;
-      $paginate = 15;
+      $paginate = 20;
       $collection = collect(DB::connection(Auth()->user()->company)->
       select('Select * from dbo.frep_mali (?,?) as result  '
         ,array($this->date1,$this->date2)));
