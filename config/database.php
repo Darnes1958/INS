@@ -239,20 +239,7 @@ return [
         'trust_server_certificate' => true,
       ],
 
-        'Safoa' => [
-            'driver' => 'sqlsrv',
-            'url' => env('DATABASE_URL_OTHER'),
-            'host' => env('DB_HOST_OTHER', 'localhost'),
-            'port' => env('DB_PORT_OTHER', '1433'),
-            //'database' => 'Daibany',
-            'database' => env('DB_DATABASE_Safoa', 'forge'),
-            'username' => env('DB_USERNAME_OTHER', 'forge'),
-            'password' => env('DB_PASSWORD_OTHER', ''),
-            'charset' => 'utf8',
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'trust_server_certificate' => true,
-        ],
+
         'Boseed' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL_OTHER'),
@@ -393,20 +380,7 @@ return [
             'prefix_indexes' => true,
             'trust_server_certificate' => true,
         ],
-        'Boshlak3' => [
-            'driver' => 'sqlsrv',
-            'url' => env('DATABASE_URL_OTHER'),
-            'host' => env('DB_HOST_OTHER', 'localhost'),
-            'port' => env('DB_PORT_OTHER', '1433'),
 
-            'database' => env('DB_DATABASE_Boshlak3', 'forge'),
-            'username' => env('DB_USERNAME_OTHER', 'forge'),
-            'password' => env('DB_PASSWORD_OTHER', ''),
-            'charset' => 'utf8',
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'trust_server_certificate' => true,
-        ],
         'Verona' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL_OTHER'),
@@ -463,20 +437,7 @@ return [
             'prefix_indexes' => true,
             'trust_server_certificate' => true,
         ],
-        'Tsaheel' => [
-            'driver' => 'sqlsrv',
-            'url' => env('DATABASE_URL_OTHER'),
-            'host' => env('DB_HOST_OTHER', 'localhost'),
-            'port' => env('DB_PORT_OTHER', '1433'),
 
-            'database' => env('DB_DATABASE_Tsaheel', 'forge'),
-            'username' => env('DB_USERNAME_OTHER', 'forge'),
-            'password' => env('DB_PASSWORD_OTHER', ''),
-            'charset' => 'utf8',
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'trust_server_certificate' => true,
-        ],
         'Mahary' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL_OTHER'),
@@ -569,33 +530,6 @@ return [
         'prefix_indexes' => true,
         'trust_server_certificate' => true,
       ],
-        'MotTest' => [
-            'driver' => 'sqlsrv',
-            'url' => env('DATABASE_URL_OTHER'),
-            'host' => env('DB_HOST_OTHER', 'localhost'),
-            'port' => env('DB_PORT_OTHER', '1433'),
-            'database' => env('DB_DATABASE_MotTest', 'forge'),
-            'username' => env('DB_USERNAME_OTHER', 'forge'),
-            'password' => env('DB_PASSWORD_OTHER', ''),
-            'charset' => 'utf8',
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'trust_server_certificate' => true,
-        ],
-      'Ateeg' => [
-        'driver' => 'sqlsrv',
-        'url' => env('DATABASE_URL_OTHER'),
-        'host' => env('DB_HOST_OTHER', 'localhost'),
-        'port' => env('DB_PORT_OTHER', '1433'),
-        'database' => env('DB_DATABASE_Ateeg', 'forge'),
-        'username' => env('DB_USERNAME_OTHER', 'forge'),
-        'password' => env('DB_PASSWORD_OTHER', ''),
-        'charset' => 'utf8',
-        'prefix' => '',
-        'prefix_indexes' => true,
-        'trust_server_certificate' => true,
-      ],
-
 
 
         'Atheer' => [
@@ -624,7 +558,19 @@ return [
             'prefix_indexes' => true,
             'trust_server_certificate' => true,
         ],
-
+        'Ghozlan' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL_OTHER'),
+            'host' => env('DB_HOST_OTHER', 'localhost'),
+            'port' => env('DB_PORT_OTHER', '1433'),
+            'database' => env('DB_DATABASE_Ghozlan', 'forge'),
+            'username' => env('DB_USERNAME_OTHER', 'forge'),
+            'password' => env('DB_PASSWORD_OTHER', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'trust_server_certificate' => true,
+        ],
 
 
     ],
