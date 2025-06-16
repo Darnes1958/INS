@@ -18,7 +18,11 @@ class StoresController extends Controller
   function JaradRaseed(){
     return view('backend.stores.jarad');
   }
-  function StoresAdd($from_to){
+    function JaradRaseed2(){
+        return view('backend.stores.jarad2');
+    }
+
+    function StoresAdd($from_to){
     return view('backend.stores.stores_add',compact('from_to'));
   }
     function ItemPrices(){

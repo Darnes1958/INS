@@ -95,6 +95,7 @@
 
                         @if(\App\Models\LarSetting::first()->canEditRaseed)
                             <li><a href="{{route('jaradraseed')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تعديل ارصدة بعد الجرد</a></li>
+                            <li><a href="{{route('jaradraseed2')}}" class="link-dark d-inline-flex text-decoration-none rounded font-size-14 h4 my-0 py-0">تعديل ارصدة بعد الجرد 2</a></li>
                         @endif
 
 
