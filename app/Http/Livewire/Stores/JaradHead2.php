@@ -24,10 +24,10 @@ class JaradHead2 extends Component
   public $NotZero=false;
 
 
-  public function ChkItem($item_no){
+  public function ChkItem($item_no=null){
       if (!$this->place_no) { $this->dispatchBrowserEvent('mmsg', 'يجب اختيار مكان التخزين');return  false;}
 
-      $this->item_no= $item_no;
+      if ($item_no)  $this->item_no= $item_no;
 
           $res=RepMakzoon::where('place_type',$this->place_type)
               ->where('place_no',$this->place_no)

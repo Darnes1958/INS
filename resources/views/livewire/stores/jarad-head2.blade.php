@@ -19,7 +19,7 @@
 
          <div class="col-md-8">
            <label for="item_no" class="form-label">رقم الصنف</label>
-           <input wire:model="item_no"  wire:keydown.enter="ChkItem"  type="text" class="form-control" id="item_no"  >
+           <input wire:model="item_no"  wire:keydown.enter="ChkItem()"  type="text" class="form-control" id="item_no"  >
            @error('item_no') <span class="error">{{ $message }}</span> @enderror
          </div>
          <div class="col-md-8">
