@@ -36,16 +36,27 @@ class ToHafitha extends Component
           if (Auth::user()->company=='Daibany' && $this->TajNo==50) $bankcode=Str::substr($acc, 0, 4);
           else $bankcode=Str::substr($acc, 0, 3);
 
-        if (Auth::user()->company=='BokreahAli')
+        if (Auth::user()->company=='BokreahAli' || Auth::user()->company=='Botnan')
         {
-          if ($this->TajNo==3)
-            $bank_no='61';
+            if (Auth::user()->company=='BokreahAli') {
+                if ($this->TajNo==3)
+                    $bank_no='61';
 
-          if ($this->TajNo==7)
-             $bank_no='95';
+                if ($this->TajNo==7)
+                    $bank_no='95';
 
-          if ($this->TajNo==11)
-                $bank_no='100';
+                if ($this->TajNo==11)
+                    $bank_no='100';
+            }
+            if (Auth::user()->company=='Botnan') {
+                if ($this->TajNo==1)
+                    $bank_no='2';
+
+                if ($this->TajNo==2)
+                    $bank_no='1';
+
+
+            }
 
         }
         else {
