@@ -36,7 +36,7 @@
 <div style="text-align: right;font-size: 11pt;">
     <label  id="mainlabel" style="width: 85px;">{{$res->kst}}</label>
     <label  style="display:inline-block;">و قيمة الإستقطاع الشهري</label>
-    <label  id="mainlabel" style="width: 30px;">{{$res->kst_count}}</label>
+    <label  id="mainlabel" style="width: 30px;">{{$kst_count}}</label>
     <label  style="display:inline-block;">عدد الاشهر </label>
     <label  id="mainlabel" style="width: 70px;">{{$maxdate}}</label>
     <label  style="display:inline-block;">إلي شهر</label>

@@ -53,7 +53,12 @@
     </div>
     <div class="d-inline-flex align-items-center">
         <label for="kst_count" class="form-label" style="width: 20% ">عدد الأقساط</label>
-        <input wire:model="kst_count" type="text" class="form-control" id="kst_count" style="width: 10%" readonly>
+        @if(\Illuminate\Support\Facades\Auth::user()->company=='Elmaleh')
+            <input wire:model="kst_count" type="text" class="form-control" id="kst_count" style="width: 10%" >
+        @else
+            <input wire:model="kst_count" type="text" class="form-control" id="kst_count" style="width: 10%" readonly>
+        @endif
+
         <label for="kst_count" class="form-label" style="width: 10% ;text-align: left;margin-left: 2px;">متبقي</label>
         <input wire:model="kst_raseed" type="text" class="form-control" id="kst_count" style="width: 10%" readonly>
         <label for="kst" class="form-label" style="width: 20% ">&nbsp;&nbsp;القسط</label>
@@ -80,7 +85,7 @@
        <a  href="{{route('pdfmain',$no)}}" class="btn btn-success waves-effect waves-light "><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
      </div>
      <div class="col-md-2">
-       <a  href="{{route('pdfmaincont',$no)}}" class="btn btn-success waves-effect waves-light "><i class="fa fa-print"> &nbsp;&nbsp;طباعة العقد&nbsp;&nbsp;</i></a>
+       <a  href="{{route('pdfmaincont',$no,$kst_count)}}" class="btn btn-success waves-effect waves-light "><i class="fa fa-print"> &nbsp;&nbsp;طباعة العقد&nbsp;&nbsp;</i></a>
      </div>
      <div class="col-md-2">
        <a  href="{{route('pdfmaincont2',$no)}}" class="btn btn-success waves-effect waves-light "><i class="fa fa-print"> &nbsp;&nbsp;طباعة العقد 2&nbsp;&nbsp;</i></a>

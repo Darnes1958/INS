@@ -591,13 +591,14 @@ class RepAksatController extends Controller
     return $pdf->download('report.pdf');
 
   }
-  function PdfMainCont($no){
+  function PdfMainCont($no,$kst_count=null){
 
     $RepDate=date('Y-m-d');
     $cus=Customers::where('Company',Auth::user()->company)->first();
     $res=DB::connection(Auth()->user()->company)->table('main_view')
       ->where('no',  $no)
       ->first();
+    if ($kst_count==null) $kst_count=$res->kst_count;
 
     $items=rep_sell_tran::where('order_no',$res->order_no)->get();
     $item_name='';
@@ -617,7 +618,7 @@ class RepAksatController extends Controller
     $xxdate=$xdate->month.'-'.$xdate->year;
 
     $reportHtml = view('PrnView.aksat.Pdf-main-Cont',
-      ['res'=>$res,'mindate'=>$mmdate,'maxdate'=>$xxdate,'cus'=>$cus,'TajAcc'=>$tajacc,'item_name'=>$item_name])->render();
+      ['res'=>$res,'mindate'=>$mmdate,'maxdate'=>$xxdate,'cus'=>$cus,'TajAcc'=>$tajacc,'item_name'=>$item_name,'kst_count'=>$kst_count])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 

@@ -47,6 +47,7 @@ class RepMainData extends Component
     public $sul_pay;
     public $raseed;
     public $kst_count;
+    public $kst_count_print;
     public $kst;
     public $chk_in=0;
     public $chk_out=0;
