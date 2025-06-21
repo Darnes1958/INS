@@ -592,7 +592,7 @@ class RepAksatController extends Controller
 
   }
   function PdfMainCont($no,$kst_count=null){
-
+    info($kst_count);
     $RepDate=date('Y-m-d');
     $cus=Customers::where('Company',Auth::user()->company)->first();
     $res=DB::connection(Auth()->user()->company)->table('main_view')
