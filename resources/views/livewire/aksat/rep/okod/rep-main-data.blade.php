@@ -88,7 +88,7 @@
        <a  href="{{route('pdfmaincont',[$no,$kst_count])}}" class="btn btn-success waves-effect waves-light "><i class="fa fa-print"> &nbsp;&nbsp;طباعة العقد&nbsp;&nbsp;</i></a>
      </div>
      <div class="col-md-2">
-       <a  href="{{route('pdfmaincont2',$no)}}" class="btn btn-success waves-effect waves-light "><i class="fa fa-print"> &nbsp;&nbsp;طباعة العقد 2&nbsp;&nbsp;</i></a>
+       <a  href="{{route('pdfmaincont2',[$no,$kst_count])}}" class="btn btn-success waves-effect waves-light "><i class="fa fa-print"> &nbsp;&nbsp;طباعة العقد 2&nbsp;&nbsp;</i></a>
      </div>
      @if(\Illuminate\Support\Facades\Auth::user()->company=='Malah')
      <div class="col-md-2">

@@ -130,7 +130,7 @@ Route::controller(RepAksatController::class)->group(function (){
   route::get('/rep/okod/{rep}', 'RepOkod')->name('rep.okod')->middleware('auth') ;
   route::get('/pdfmain/{no}', 'PdfMain')->name('pdfmain') ;
   route::get('/pdfmaincont/{no?}/{kst_count?}', 'PdfMainCont')->name('pdfmaincont') ;
-  route::get('/pdfmaincont2/{no}', 'PdfMainCont2')->name('pdfmaincont2') ;
+  route::get('/pdfmaincont2/{no?}/{kst_count?}', 'PdfMainCont2')->name('pdfmaincont2') ;
   route::get('/pdfmaintobank/{no}', 'PdfMainToBank')->name('pdfmaintobank') ;
   route::get('/pdfbanksum/{RepChk?}/{date1?}/{date2?}', 'PdfBankSum')->name('pdfbanksum') ;
   route::get('/pdfplacesum/{RepChk?}/{date1?}/{date2?}', 'PdfPlaceSum')->name('pdfplacesum') ;
