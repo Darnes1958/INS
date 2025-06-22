@@ -29,19 +29,25 @@ class JaradHead2 extends Component
 
       if ($item_no)  $this->item_no= $item_no;
 
+      $item=items::find($this->item_no);
+      if (!$item) { $this->dispatchBrowserEvent('mmsg', 'رقم الصنف غير صحيح');return  false;}
+
           $res=RepMakzoon::where('place_type',$this->place_type)
               ->where('place_no',$this->place_no)
               ->where('item_no',$this->item_no)
               ->first();
 
-          if ($res){
-              $this->item_no=$res->item_no;
-              $this->item_name=$res->item_name;
-              $this->raseed=$res->raseed;
-              $this->JarRaseed=$res->place_ras;
-              $this->emit('gotonext','JarRaseed');
+      $this->item_no=$item->item_no;
+      $this->item_name=$item->item_name;
+      $this->raseed=$item->raseed;
 
-      }
+          if ($res){
+              $this->JarRaseed=$res->place_ras;
+          } else
+          {
+              $this->JarRaseed=0;
+          }
+      $this->emit('gotonext','JarRaseed');
   }
   public function updated($field){
 
@@ -61,27 +67,31 @@ class JaradHead2 extends Component
   public function SaveRas(){
 
     if ($this->JarRaseed>=0){
-        $temp_place_type=$this->place_type;
-        $temp_place_no=$this->place_no;
-        $temp_item_no=$this->item_no;
-
 
 
        if ($this->place_type==0)
-       stores::where('st_no',$this->place_no)
-            ->where('item_no',$this->item_no)
-            ->update(['raseed'=>$this->JarRaseed,]);
+       {
+           $stores= stores::where('st_no',$this->place_no)
+               ->where('item_no',$this->item_no)->first();
+           if ($stores) {$stores->raseed=$this->JarRaseed;$stores->save();}
+           else stores::create(['st_no' => $this->place_no, 'item_no' => $this->item_no,'raseed'=>$this->JarRaseed]);
+
+
+       }
        else
-           halls::where('hall_no',$this->place_no)
-               ->where('item_no',$this->item_no)
-               ->update(['raseed'=>$this->JarRaseed,]);
+       {
+           $halls= halls::where('hall_no',$this->place_no)
+               ->where('item_no',$this->item_no)->first();
+           if ($halls) {$halls->raseed=$this->JarRaseed;$halls->save();}
+           else halls::create(['hall_no' => $this->place_no, 'item_no' => $this->item_no,'raseed'=>$this->JarRaseed]);
+       }
+
 
       $sum1=stores::where('item_no',$this->item_no)->sum('raseed');
       $sum2=halls::where('item_no',$this->item_no)->sum('raseed');
       items::where('item_no',$this->item_no)
           ->update(['raseed'=>$sum1+$sum2,]);
-        $this->place_type=$temp_place_type;
-        $this->place_no=$temp_place_no;
+
         $this->item_no='';
         $this->JarRaseed=0;
         $this->raseed=0;
