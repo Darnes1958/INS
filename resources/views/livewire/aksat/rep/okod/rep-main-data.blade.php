@@ -90,6 +90,9 @@
      <div class="col-md-2">
        <a  href="{{route('pdfmaincont2',[$no,$kst_count])}}" class="btn btn-success waves-effect waves-light "><i class="fa fa-print"> &nbsp;&nbsp;طباعة العقد 2&nbsp;&nbsp;</i></a>
      </div>
+       <div class="col-md-2">
+           <a  href="{{route('pdfmaincont3')}}" class="btn btn-success waves-effect waves-light "><i class="fa fa-print"> &nbsp;&nbsp;طباعة العقد نموذج فارغ&nbsp;&nbsp;</i></a>
+       </div>
      @if(\Illuminate\Support\Facades\Auth::user()->company=='Malah')
      <div class="col-md-2">
        <a  href="{{route('pdfmaintobank',$no)}}" class="btn btn-success waves-effect waves-light "><i class="fa fa-print"> &nbsp;&nbsp;طباعة نموذج&nbsp;&nbsp;</i></a>
