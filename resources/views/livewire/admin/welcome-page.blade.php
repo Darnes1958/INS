@@ -21,6 +21,13 @@
                       (!empty($admindata->profile_image))? url('upload/admin_images/'.$admindata->profile_image):
                       url('upload/no_image.jpg')}}" alt="Card image cap">
     </div>
+      @if(\App\Models\Customers::where('Company',\Illuminate\Support\Facades\Auth::user()->company)->first()->message!=null)
+          <div class="col-md-12">
+              <br>
+              <br>
+              <h2 class="text-danger"> {{\App\Models\Customers::where('Company',\Illuminate\Support\Facades\Auth::user()->company)->first()->message}}</h2>
+          </div>
+      @endif
     @if(\App\Models\Lines::first()->line1!==null)
     <div class="col-md-12">
       <br>
