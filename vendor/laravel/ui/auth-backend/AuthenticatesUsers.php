@@ -2,20 +2,15 @@
 
 namespace Illuminate\Foundation\Auth;
 
-use App\Models\Customers;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use App\Http\Traits\GlobalTrait;
-use Illuminate\Support\Facades\Session;
-use function PHPUnit\Framework\at;
 
 trait AuthenticatesUsers
 {
     use RedirectsUsers, ThrottlesLogins;
-    use GlobalTrait;
+
     /**
      * Show the application's login form.
      *
@@ -49,24 +44,6 @@ trait AuthenticatesUsers
         }
 
         if ($this->attemptLogin($request)) {
-
-          $CompCode=Customers::where('Company',Auth()->user()->company)->first()->CompCode;
-
-          if (Auth::user()->isBanned()){
-            $this->logout($request);
-
-            return back();
-          }
-
-
-          if (Auth::user()->id<>1)
-          if ($CompCode<>$request->CompCode) {
-            $this->logout($request);
-
-            return back();
-          }
-
-
             if ($request->hasSession()) {
                 $request->session()->put('auth.password_confirmed_at', time());
             }

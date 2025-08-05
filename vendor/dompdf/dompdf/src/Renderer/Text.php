@@ -6,7 +6,6 @@
  */
 namespace Dompdf\Renderer;
 
-use ArPHP\I18N\Arabic;
 use Dompdf\Adapter\CPDF;
 use Dompdf\Frame;
 
@@ -46,7 +45,7 @@ class Text extends AbstractRenderer
         $style = $frame->get_style();
         $text = $frame->get_text();
 
-        if (trim($text) === "") {
+        if ($text === "") {
             return;
         }
 
@@ -72,11 +71,7 @@ class Text extends AbstractRenderer
           array($this->_canvas->get_page_number()),
           $text
         );*/
-     //   if ( ! class_exists( 'I18N_Arabic' ) ){
-      //      $Arabic = new Arabic('arabic');
-     //       $text = $Arabic->utf8Glyphs($text);
 
-      //  }
         $this->_canvas->text($x, $y, $text,
             $font, $size,
             $style->color, $word_spacing, $letter_spacing);

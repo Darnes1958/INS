@@ -34,14 +34,14 @@ Add the Livewire directive `@livewire('livewire-ui-modal')` directive to your te
 ```
 
 ## Alpine
-Livewire Elements Modal requires [Alpine](https://github.com/alpinejs/alpine). You can use the official CDN to quickly include Alpine:
+Livewire Elements Modal requires [Alpine](https://github.com/alpinejs/alpine) and the plugin[Focus](https://alpinejs.dev/plugins/focus). You can use the official CDN to quickly include Alpine:
 
 ```html
-<!-- Alpine v2 -->
-<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
-
 <!-- Alpine v3 -->
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<!-- Focus plugin -->
+<script defer src="https://unpkg.com/@alpinejs/focus@3.x.x/dist/cdn.min.js"></script>
 ```
 
 ## TailwindCSS
@@ -85,23 +85,23 @@ To open a modal you will need to emit an event. To open the `EditUser` modal for
 ```
 
 ## Passing parameters
-To open the `EditUser` modal for a specific user we can pass the user id (notice the single quotes):
+To open the `EditUser` modal for a specific user we can pass the user id:
 
 ```html
 <!-- Outside of any Livewire component -->
-<button onclick='Livewire.emit("openModal", "edit-user", {{ json_encode(["user" => $user->id]) }})'>Edit User</button>
+<button onclick="Livewire.emit('openModal', 'edit-user', {{ json_encode(['user' => $user->id]) }})">Edit User</button>
 
 <!-- Inside existing Livewire component -->
-<button wire:click='$emit("openModal", "edit-user", {{ json_encode(["user" => $user->id]) }})'>Edit User</button>
+<button wire:click="$emit('openModal', 'edit-user', {{ json_encode(['user' => $user->id]) }})">Edit User</button>
 
 <!-- If you use a different primaryKey (e.g. email), adjust accordingly -->
-<button wire:click='$emit("openModal", "edit-user", {{ json_encode(["user" => $user->email]) }})'>Edit User</button>
+<button wire:click="$emit('openModal', 'edit-user', {{ json_encode(['user' => $user->email]) }})">Edit User</button>
 
 <!-- Example of passing multiple parameters -->
-<button wire:click='$emit("openModal", "edit-user", {{ json_encode([$user->id, $isAdmin]) }})'>Edit User</button>
+<button wire:click="$emit('openModal', 'edit-user', {{ json_encode([$user->id, $isAdmin]) }})">Edit User</button>
 ```
 
-The parameters are passed to the `mount` method on the modal component:
+The parameters are injected into the modal component and the model will be automatically fetched from the database if the type is defined:
 
 ```php
 <?php
@@ -113,13 +113,14 @@ use LivewireUI\Modal\ModalComponent;
 
 class EditUser extends ModalComponent
 {
+    // This will inject just the ID
+    // public int $user;
+
     public User $user;
 
-    public function mount(User $user)
+    public function mount()
     {
-        Gate::authorize('update', $user);
-        
-        $this->user = $user;
+        Gate::authorize('update', $this->user);
     }
 
     public function render()
@@ -128,6 +129,8 @@ class EditUser extends ModalComponent
     }
 }
 ```
+
+The parameters are also passed to the `mount` method on the modal component.
 
 ## Opening a child modal
 From an existing modal you can use the exact same event and a child modal will be created:
@@ -160,17 +163,15 @@ class EditUser extends ModalComponent
 {
     public User $user;
 
-    public function mount(User $user)   
+    public function mount()
     {
-        Gate::authorize('update', $user);
-        
-        $this->user = $user;
+        Gate::authorize('update', $this->user);
     }
 
     public function update()
     {
-        Gate::authorize('update', $user);
-            
+        Gate::authorize('update', $this->user);
+
         $this->user->update($data);
 
         $this->closeModal();
@@ -188,8 +189,8 @@ If you don't want to go to the previous modal but close the entire modal compone
 ```php
 public function update()
 {
-    Gate::authorize('update', $user);
-    
+    Gate::authorize('update', $this->user);
+
     $this->user->update($data);
 
     $this->forceClose()->closeModal();
@@ -201,8 +202,8 @@ Often you will want to update other Livewire components when changes have been m
 ```php
 public function update()
 {
-    Gate::authorize('update', $user);
-    
+    Gate::authorize('update', $this->user);
+
     $this->user->update($data);
 
     $this->closeModalWithEvents([
@@ -219,7 +220,7 @@ public function update()
     $this->user->update($data);
 
     $this->closeModalWithEvents([
-        UserOverview::getName() => ['userModified', [$this->user->id],
+        UserOverview::getName() => ['userModified', [$this->user->id]],
     ]);
 }
 ```
@@ -307,7 +308,7 @@ class DeleteTeam extends ModalComponent
     public function delete()
     {
         Gate::authorize('delete', $this->team);
-        
+
         $this->team->delete();
 
         $this->skipPreviousModal()->closeModalWithEvents([
@@ -322,7 +323,7 @@ class DeleteTeam extends ModalComponent
 }
 ```
 
-You can also optionally call the `destroySkippedModals()` method to destroy the skipped modals so if any are opened again their state will be reset  
+You can also optionally call the `destroySkippedModals()` method to destroy the skipped modals so if any are opened again their state will be reset
 
 
 
@@ -406,13 +407,13 @@ return [
     |--------------------------------------------------------------------------
     |
     | Configure the default properties for a modal component.
-    | 
+    |
     | Supported modal_max_width
     | 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl'
     */
     'component_defaults' => [
         'modal_max_width' => '2xl',
-        
+
         'close_modal_on_click_away' => true,
 
         'close_modal_on_escape' => true,
@@ -420,7 +421,7 @@ return [
         'close_modal_on_escape_is_forceful' => true,
 
         'dispatch_close_event' => false,
-        
+
         'destroy_on_close' => false,
     ],
 ];
@@ -438,6 +439,4 @@ WireElements is open-sourced software licensed under the [MIT license](LICENSE.m
 
 ## Beautiful components crafted with Livewire
 
-<a href="https://wire-elements.dev/"><img src="https://philo.dev/content/images/size/w1000/2022/05/wire-elements-pro.png" width="600" alt="" /></a>
-
-<a href="https://wire-elements.dev/">Sign up to get notified</a>
+<a href="https://wire-elements.dev/"><img src="https://philo.dev/content/images/size/w1600/2022/07/wire-elements-pro-v2.png" width="600" alt="" /></a>

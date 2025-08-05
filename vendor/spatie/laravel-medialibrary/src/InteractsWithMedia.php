@@ -25,13 +25,14 @@ use Spatie\MediaLibrary\MediaCollections\MediaRepository;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\Support\MediaLibraryPro;
 use Spatie\MediaLibraryPro\PendingMediaLibraryRequestHandler;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 trait InteractsWithMedia
 {
-    /** @var \Spatie\MediaLibrary\Conversions\Conversion[] */
+    /** @var Conversion[] */
     public array $mediaConversions = [];
 
-    /** @var \Spatie\MediaLibrary\MediaCollections\MediaCollection[] */
+    /** @var MediaCollection[] */
     public array $mediaCollections = [];
 
     protected bool $deletePreservingMedia = false;
@@ -65,7 +66,7 @@ trait InteractsWithMedia
      *
      *
      */
-    public function addMedia(string|\Symfony\Component\HttpFoundation\File\UploadedFile $file): FileAdder
+    public function addMedia(string|UploadedFile $file): FileAdder
     {
         return app(FileAdderFactory::class)->create($this, $file);
     }
@@ -245,7 +246,7 @@ trait InteractsWithMedia
      *
      *
      */
-    public function copyMedia(string|\Symfony\Component\HttpFoundation\File\UploadedFile $file): FileAdder
+    public function copyMedia(string|UploadedFile $file): FileAdder
     {
         return $this->addMedia($file)->preservingOriginal();
     }
@@ -547,7 +548,7 @@ trait InteractsWithMedia
         $collection = new MediaCollections\Models\Collections\MediaCollection($collection);
 
         return $collection
-            ->filter(fn (Media $mediaItem) => $mediaItem->collection_name === $collectionName)
+            ->filter(fn (Media $mediaItem) => $collectionName !== '*' ? $mediaItem->collection_name === $collectionName : true)
             ->sortBy('order_column')
             ->values();
     }
@@ -612,5 +613,22 @@ trait InteractsWithMedia
         });
 
         $this->registerMediaConversions($media);
+    }
+
+    public function __sleep(): array
+    {
+        // do not serialize properties from the trait
+        return collect(parent::__sleep())
+            ->reject(
+                fn ($key) => in_array(
+                    $key,
+                    [
+                        'mediaConversions',
+                        'mediaCollections',
+                        'unAttachedMediaLibraryItems',
+                        'deletePreservingMedia',
+                    ]
+                )
+            )->toArray();
     }
 }

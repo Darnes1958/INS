@@ -3,6 +3,10 @@
 namespace LivewireUI\Modal;
 
 use Exception;
+use Illuminate\Contracts\Routing\UrlRoutable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Reflector;
 use Illuminate\View\View;
 use Livewire\Component;
 use ReflectionClass;
@@ -29,10 +33,15 @@ class Modal extends Component
             throw new Exception("[{$componentClass}] does not implement [{$requiredInterface}] interface.");
         }
 
-        $id = md5($component . serialize($componentAttributes));
+        $id = md5($component.serialize($componentAttributes));
+
+        $componentAttributes = collect($componentAttributes)
+            ->merge($this->resolveComponentProps($componentAttributes, new $componentClass()))
+            ->all();
+
         $this->components[$id] = [
-            'name'            => $component,
-            'attributes'      => $componentAttributes,
+            'name' => $component,
+            'attributes' => $componentAttributes,
             'modalAttributes' => array_merge([
                 'closeOnClickAway' => $componentClass::closeModalOnClickAway(),
                 'closeOnEscape' => $componentClass::closeModalOnEscape(),
@@ -49,6 +58,51 @@ class Modal extends Component
         $this->emit('activeModalComponentChanged', $id);
     }
 
+    public function resolveComponentProps(array $attributes, Component $component)
+    {
+        if (PHP_VERSION_ID < 70400) {
+            return;
+        }
+
+        return $this->getPublicPropertyTypes($component)
+            ->intersectByKeys($attributes)
+            ->map(function ($className, $propName) use ($attributes) {
+                $resolved = $this->resolveParameter($attributes, $propName, $className);
+
+                return $resolved;
+            });
+    }
+
+    protected function resolveParameter($attributes, $parameterName, $parameterClassName)
+    {
+        $parameterValue = $attributes[$parameterName];
+
+        if ($parameterValue instanceof UrlRoutable) {
+            return $parameterValue;
+        }
+
+        $instance = app()->make($parameterClassName);
+
+        if (! $model = $instance->resolveRouteBinding($parameterValue)) {
+            throw (new ModelNotFoundException())->setModel(get_class($instance), [$parameterValue]);
+        }
+
+        return $model;
+    }
+
+    public function getPublicPropertyTypes($component)
+    {
+        if (PHP_VERSION_ID < 70400) {
+            return new Collection();
+        }
+
+        return collect($component->getPublicPropertiesDefinedBySubClass())
+            ->map(function ($value, $name) use ($component) {
+                return Reflector::getParameterClassName(new \ReflectionProperty($component, $name));
+            })
+            ->filter();
+    }
+
     public function destroyComponent($id): void
     {
         unset($this->components[$id]);
@@ -58,7 +112,7 @@ class Modal extends Component
     {
         return [
             'openModal',
-            'destroyComponent'
+            'destroyComponent',
         ];
     }
 
@@ -69,7 +123,7 @@ class Modal extends Component
         }
 
         if (config('livewire-ui-modal.include_css', false)) {
-            $cssPath = __DIR__ . '/../public/modal.css';
+            $cssPath = __DIR__.'/../public/modal.css';
         }
 
         return view('livewire-ui-modal::modal', [
