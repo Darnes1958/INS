@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Buy;
+namespace App\Http\Livewire\buy;
 
 
 use App\Models\buy\charge_by;

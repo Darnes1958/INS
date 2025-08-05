@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Buy;
+namespace App\Http\Livewire\buy;
 
 use App\Models\jeha\jeha;
 use App\Models\stores\items;

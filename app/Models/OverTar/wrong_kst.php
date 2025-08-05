@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class wrong_Kst extends Model
+class wrong_kst extends Model
 {
   use HasFactory;
   protected $connection = 'other';

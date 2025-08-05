@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Salary;
+namespace App\Http\Controllers\salary;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

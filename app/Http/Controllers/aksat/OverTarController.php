@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Aksat;
+namespace App\Http\Controllers\aksat;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

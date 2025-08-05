@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Jeha;
+namespace App\Http\Livewire\jeha;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;

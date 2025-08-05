@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Jeha;
+namespace App\Http\Livewire\jeha;
 
 use App\Models\aksat\main;
 use App\Models\jeha\jeha;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Buy;
+namespace App\Http\Livewire\buy;
 
 use App\Models\buy\charges_buy;
 use App\Models\buy\rep_buy_tran;

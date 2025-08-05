@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Jeha;
+namespace App\Http\Livewire\jeha;
 
 use App\Exports\MordTran;
 use App\Models\jeha\jeha;

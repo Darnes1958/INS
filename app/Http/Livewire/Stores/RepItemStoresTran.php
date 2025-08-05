@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\stores;
+namespace App\Http\Livewire\Stores;
 
 
 use App\Models\stores\items;
