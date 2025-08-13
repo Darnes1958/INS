@@ -74,6 +74,7 @@ class ExcelController extends Controller
       }
       else
         DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set bankcode=substring(acc,1,3) ") );
+
       DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set bank=bank_no from bank where Taj='$TajNo' and bank_tajmeeh='$TajNo' and bankcode=bank_code") );
         DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set Mahjoza.no=main.no,MainOrArc=1 from main where main.bank=Mahjoza.bank and main.acc=Mahjoza.acc") );
         DB::connection(Auth()->user()->company)->statement( DB::raw("update Mahjoza set Mahjoza.no=mainarc.no,MainOrArc=2
