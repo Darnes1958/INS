@@ -8,6 +8,7 @@ use App\Models\aksat\main_deleted;
 use App\Models\aksat\MainArc;
 use App\Models\aksat\ManyNo;
 use App\Models\bank\bank;
+use App\Models\Customers;
 use App\Models\excel\FromExcelModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -36,42 +37,9 @@ class ToHafitha extends Component
           if (Auth::user()->company=='Daibany' && $this->TajNo==50) $bankcode=Str::substr($acc, 0, 4);
           else $bankcode=Str::substr($acc, 0, 3);
 
-        if (Auth::user()->company=='BokreahAli' || Auth::user()->company=='Botnan'
-            || Auth::user()->company=='Anwar' || Auth::user()->company=='Rabeeh')
+        if (Customers::where('Company',Auth::user()->company)->first()->oneBank==1)
         {
-            if (Auth::user()->company=='BokreahAli') {
-                if ($this->TajNo==3)
-                    $bank_no='61';
-
-                if ($this->TajNo==7)
-                    $bank_no='95';
-
-                if ($this->TajNo==11)
-                    $bank_no='100';
-            }
-            if (Auth::user()->company=='Botnan') {
-                if ($this->TajNo==1)
-                    $bank_no='2';
-
-                if ($this->TajNo==2)
-                    $bank_no='1';
-
-
-            }
-            if (Auth::user()->company=='Anwar') {
-                if ($this->TajNo==1)
-                    $bank_no='5';
-
-                if ($this->TajNo==2)
-                    $bank_no='3';
-
-
-            }
-            if (Auth::user()->company=='Rabeeh') {
-                if ($this->TajNo==1)
-                    $bank_no='3';
-
-            }
+            $bank_no = bank::where('bank_tajmeeh', $this->TajNo)->min('bank_no');
         }
         else {
           if (bank::where('bank_tajmeeh', $this->TajNo)
