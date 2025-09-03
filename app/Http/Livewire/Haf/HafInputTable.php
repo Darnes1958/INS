@@ -131,42 +131,15 @@ class HafInputTable extends Component
      $this->HaveManyNo=ManyNo::where('h_no',$this->hafitha)->count();
     return view('livewire.haf.haf-input-table',[
         'ManyNo'=>ManyNo::where('h_no',$this->hafitha)->paginate(10),
-        'HafithaTable' =>DB::connection(Auth()->user()->company)
-            ->table('hafitha_tran_view')
-            ->when($this->search || $this->DisRadio=='DisAll', function($q)  {
-                return $q->where([
-                            ['hafitha_no', '=', $this->hafitha],
-                            ['hafitha_state', '=', 0],
-                            ['name', 'like', '%'.$this->search.'%'],])
-                         ->orwhere([
-                            ['hafitha_no', '=', $this->hafitha],
-                            ['hafitha_state', '=', 0],
-                            ['acc', 'like', '%'.$this->search.'%'],]);       })
-            ->when($this->search || $this->DisRadio=='DisMe', function($q)  {
-                return $q->where([
-                    ['hafitha_no', '=', $this->hafitha],
-                    ['hafitha_state', '=', 0],
-                    ['emp','=',Auth::user()->empno],
-                    ['name', 'like', '%'.$this->search.'%'],])
-                    ->orwhere([
-                        ['hafitha_no', '=', $this->hafitha],
-                        ['hafitha_state', '=', 0],
-                        ['acc', 'like', '%'.$this->search.'%'],]);       })
+        'HafithaTable'=> hafitha_tran::
+            join('kst_type','kst_type.kst_type_no','=','hafitha_tran.kst_type')
+        ->where('hafitha',$this->hafitha)
 
-
-
-            ->when(!$this->search || $this->DisRadio=='DisAll', function($q)  {
-                return $q->where([
-                    ['hafitha_no', '=', $this->hafitha],
-                    ['hafitha_state', '=', 0],]);       })
-            ->when(!$this->search || $this->DisRadio=='DisMe', function($q)  {
-                return $q->where([
-                    ['hafitha_no', '=', $this->hafitha],
-                    ['hafitha_state', '=', 0],
-                    ['emp','=',Auth::user()->empno], ]);       })
-
+           ->when($this->search , function($q)  {
+                return $q->where('name', 'like', '%'.$this->search.'%')
+                         ->orwhere('acc', 'like', '%'.$this->search.'%');
+           })
             ->orderBy($this->index,'asc')
-
             ->paginate(15)]);
     }
 }

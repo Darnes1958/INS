@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Haf;
 
 use App\Models\aksat\hafitha_tran;
 use App\Models\aksat\hafitha;
+use App\Models\aksat\kst_trans;
 use App\Models\aksat\main;
 use App\Models\bank\bank;
 use App\Models\Operations;
@@ -61,66 +62,78 @@ class HafInputHeader extends Component
     $this->HafUpload=true;
     $this->HafProgress=0;
 
+
     DB::connection(Auth()->user()->company)->beginTransaction();
     try {
-      $this->HafCount=DB::connection(Auth()->user()->company)->table('hafitha_tran_view')->where('hafitha_no',$this->hafitha)->count();
-      $res=DB::connection(Auth()->user()->company)->table('hafitha_tran_view')->where('hafitha_no',$this->hafitha)->get();
+
+
+
+      $this->HafCount=DB::connection(Auth()->user()->company)->table('hafitha_tran')->where('hafitha',$this->hafitha)->count();
+      $res=DB::connection(Auth()->user()->company)->table('hafitha_tran')->where('hafitha',$this->hafitha)->get();
 
       foreach ($res as $item)
       {
         $no=$item->no; $acc=$item->acc; $kst=$item->kst; $ksm_date=$item->ksm_date; $baky=$item->baky;
-        $ser_in_hafitha=$item->ser_in_hafitha; $emp=$item->emp; $name=$item->name;$bank=$item->bank;
-        $sul_pay=$item->sul_pay+$item->kst;$raseed=$item->raseed-$item->kst;
+         $emp=$item->emp; $name=$item->name;
+
 
         if ($item->kst_type==1 or $item->kst_type==3)
-           { $min=DB::connection(Auth()->user()->company)->table('kst_trans')
-             ->where([
-               ['no', $no],
-               ['ksm', null],])
-             ->orwhere([
-               ['no',  $no],
-               ['ksm', 0],])
-             ->min('ser');
-             if ($min==null)
-                  {$min=DB::connection(Auth()->user()->company)->table('kst_trans')->where('no',$no)->max('ser')+1;
-                    DB::connection(Auth()->user()->company)->table('kst_trans')->insert([
-                     'ser'=>$min,'no'=>$no,'kst_date'=>$ksm_date,'ksm_type'=>2,'chk_no'=>0,'kst'=>$kst,'ksm_date'=>$ksm_date,'ksm'=>$kst,'emp'=>$emp,
-                      'h_no'=>$this->hafitha,'inp_date'=>date('Y-m-d'),]);
-                  }
-             else {
-                   DB::connection(Auth()->user()->company)->table('kst_trans')->where('no',$no)->where('ser',$min)->update([
-                   'h_no'=>$this->hafitha,'ksm'=>$kst,'ksm_date'=>$ksm_date,'emp'=>$emp,'inp_date'=>date('Y-m-d'),'ksm_type'=>2,]);
-                  }
+           {
+               $kst_trans=kst_trans::where('no',$item->no)->orderBy('ser')->get();
+               if ($kst_trans->count()==0) {
+                   DB::connection(Auth()->user()->company)->rollback();
+                   $this->dispatchBrowserEvent('mmsg', 'العقد رقم '.$item->no.'لديه قسط بالحافظة .. يجب استرجاعه من الأرشيف');
+                   return;
+               }
+
+               $found=false;
+
+               foreach ($kst_trans as $kst_tran){
+                   if ($kst_tran->ksm==null || $kst_tran->ksm==0) {
+                       $kst_tran->update(['h_no'=>$this->hafitha,'ksm'=>$kst,'ksm_date'=>$ksm_date,
+                                          'emp'=>$emp,'inp_date'=>date('Y-m-d'),'ksm_type'=>2,]);
+                       $kst_tran->save();
+                       $found=true;
+                       break;
+                   }
+
+               }
+               if (!$found){
+                   kst_trans::insert([
+                       'ser'=>$kst_tran->ser+1,'no'=>$no,'kst_date'=>$ksm_date,'ksm_type'=>2,'chk_no'=>0,'kst'=>$kst,'ksm_date'=>$ksm_date,'ksm'=>$kst,'emp'=>$emp,
+                       'h_no'=>$this->hafitha,'inp_date'=>date('Y-m-d'),]);
+
+               }
+
+
              if ($baky!=0)
                  {
                   DB::connection(Auth()->user()->company)->table('over_kst')->insert([
-                    'no'=>$no,'name'=>$name,'bank'=>$bank,'acc'=>$acc,'kst'=>$baky,'tar_type'=>1,'tar_date'=>$ksm_date,'letters'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
+                    'no'=>$no,'name'=>$name,'bank'=>$this->bank,'acc'=>$acc,'kst'=>$baky,'tar_type'=>1,'tar_date'=>$ksm_date,'letters'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
                  }
 
-             DB::connection(Auth()->user()->company)->table('main')->where('no',$no)->
-             update(['sul_pay'=>$sul_pay,'raseed'=>$raseed]);
            }
        if ($item->kst_type==2)
        {
          DB::connection(Auth()->user()->company)->table('over_kst')->insert([
-           'no'=>$no,'name'=>$name,'bank'=>$bank,'acc'=>$acc,'kst'=>$kst,'tar_type'=>1,'tar_date'=>$ksm_date,'letters'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
+           'no'=>$no,'name'=>$name,'bank'=>$this->bank,'acc'=>$acc,'kst'=>$kst,'tar_type'=>1,'tar_date'=>$ksm_date,'letters'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
        }
         if ($item->kst_type==5)
         {
           DB::connection(Auth()->user()->company)->table('over_kst_a')->insert([
-            'no'=>$no,'name'=>$name,'bank'=>$bank,'acc'=>$acc,'kst'=>$kst,'tar_type'=>1,'tar_date'=>$ksm_date,'letters'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
+            'no'=>$no,'name'=>$name,'bank'=>$this->bank,'acc'=>$acc,'kst'=>$kst,'tar_type'=>1,'tar_date'=>$ksm_date,'letters'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
         }
         if ($item->kst_type==4)
         {
           $wrong=DB::connection(Auth()->user()->company)->table('wrong_kst')->max('wrong_no')+1;
           DB::connection(Auth()->user()->company)->table('wrong_kst')->insert([
-            'wrong_no'=>$wrong,'name'=>$name,'bank'=>$bank,'acc'=>$acc,'kst'=>$kst,'tar_date'=>$ksm_date,'morahel'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
+            'wrong_no'=>$wrong,'name'=>$name,'bank'=>$this->bank,'acc'=>$acc,'kst'=>$kst,'tar_date'=>$ksm_date,'morahel'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
         }
         if ($item->kst_type==6)
         {
           $wrong_after=DB::connection(Auth()->user()->company)->table('wrong_kst')->max('wrong_no')+1;
           DB::connection(Auth()->user()->company)->table('wrong_kst')->insert([
-           'no'=>$no, 'wrong_no'=>$wrong_after,'name'=>$name,'bank'=>$bank,'acc'=>$acc,'kst'=>$kst,'tar_date'=>$ksm_date,'morahel'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
+           'no'=>$no, 'wrong_no'=>$wrong_after,'name'=>$name,'bank'=>$this->bank,'acc'=>$acc,'kst'=>$kst,'tar_date'=>$ksm_date,'morahel'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
         }
         $this->HafProgress++;
 
