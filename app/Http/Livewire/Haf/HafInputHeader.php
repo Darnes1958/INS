@@ -8,6 +8,9 @@ use App\Models\aksat\kst_trans;
 use App\Models\aksat\main;
 use App\Models\bank\bank;
 use App\Models\Operations;
+use App\Models\OverTar\over_kst;
+use App\Models\OverTar\over_kst_a;
+use App\Models\OverTar\wrong_kst;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -41,7 +44,7 @@ class HafInputHeader extends Component
 
  public $HafUpload=false;
  public $HafProgress=0;
- public $HafCount=100;
+
 
   protected $listeners = [
     'RefreshHead','CloseMini','DoDeleteHafitha','DoTarheelHafitha','DoChkBankNo'
@@ -65,84 +68,86 @@ class HafInputHeader extends Component
 
     DB::connection(Auth()->user()->company)->beginTransaction();
     try {
+      hafitha_tran::where('hafitha',$this->hafitha)
+          ->chunk(300,function ($res) {
 
 
 
-      $this->HafCount=DB::connection(Auth()->user()->company)->table('hafitha_tran')->where('hafitha',$this->hafitha)->count();
-      $res=DB::connection(Auth()->user()->company)->table('hafitha_tran')->where('hafitha',$this->hafitha)->get();
-
-      foreach ($res as $item)
-      {
-        $no=$item->no; $acc=$item->acc; $kst=$item->kst; $ksm_date=$item->ksm_date; $baky=$item->baky;
-         $emp=$item->emp; $name=$item->name;
-
-
-        if ($item->kst_type==1 or $item->kst_type==3)
-           {
-               $kst_trans=kst_trans::where('no',$item->no)->orderBy('ser')->get();
-               if ($kst_trans->count()==0) {
-                   DB::connection(Auth()->user()->company)->rollback();
-                   $this->dispatchBrowserEvent('mmsg', 'العقد رقم '.$item->no.'لديه قسط بالحافظة .. يجب استرجاعه من الأرشيف');
-                   return;
-               }
-
-               $found=false;
-
-               foreach ($kst_trans as $kst_tran){
-                   if ($kst_tran->ksm==null || $kst_tran->ksm==0) {
-                       $kst_tran->update(['h_no'=>$this->hafitha,'ksm'=>$kst,'ksm_date'=>$ksm_date,
-                                          'emp'=>$emp,'inp_date'=>date('Y-m-d'),'ksm_type'=>2,]);
-                       $kst_tran->save();
-                       $found=true;
-                       break;
-                   }
-
-               }
-               if (!$found){
-                   kst_trans::insert([
-                       'ser'=>$kst_tran->ser+1,'no'=>$no,'kst_date'=>$ksm_date,'ksm_type'=>2,'chk_no'=>0,'kst'=>$kst,'ksm_date'=>$ksm_date,'ksm'=>$kst,'emp'=>$emp,
-                       'h_no'=>$this->hafitha,'inp_date'=>date('Y-m-d'),]);
-
-               }
-
-
-             if ($baky!=0)
+                 foreach ($res as $item)
                  {
-                  DB::connection(Auth()->user()->company)->table('over_kst')->insert([
-                    'no'=>$no,'name'=>$name,'bank'=>$this->bank,'acc'=>$acc,'kst'=>$baky,'tar_type'=>1,'tar_date'=>$ksm_date,'letters'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
+                     $no=$item->no; $acc=$item->acc; $kst=$item->kst; $ksm_date=$item->ksm_date; $baky=$item->baky;
+                     $emp=$item->emp; $name=$item->name;
+
+
+                     if ($item->kst_type==1 or $item->kst_type==3)
+                     {
+                         $kst_trans=kst_trans::where('no',$item->no)->orderBy('ser')->get();
+                         if ($kst_trans->count()==0) {
+                             DB::connection(Auth()->user()->company)->rollback();
+                             $this->dispatchBrowserEvent('mmsg', 'العقد رقم '.$item->no.'لديه قسط بالحافظة .. يجب استرجاعه من الأرشيف');
+                             return;
+                         }
+
+                         $found=false;
+
+                         foreach ($kst_trans as $kst_tran){
+                             if ($kst_tran->ksm==null || $kst_tran->ksm==0) {
+                                 $kst_tran->update(['h_no'=>$this->hafitha,'ksm'=>$kst,'ksm_date'=>$ksm_date,
+                                     'emp'=>$emp,'inp_date'=>date('Y-m-d'),'ksm_type'=>2,]);
+                                 $kst_tran->save();
+                                 $found=true;
+                                 break;
+                             }
+
+                         }
+                         if (!$found){
+                             kst_trans::insert([
+                                 'ser'=>$kst_tran->ser+1,'no'=>$no,'kst_date'=>$ksm_date,'ksm_type'=>2,'chk_no'=>0,'kst'=>$kst,'ksm_date'=>$ksm_date,'ksm'=>$kst,'emp'=>$emp,
+                                 'h_no'=>$this->hafitha,'inp_date'=>date('Y-m-d'),]);
+
+                         }
+
+
+                         if ($baky!=0)
+                         {
+                             over_kst::insert([
+                                 'no'=>$no,'name'=>$name,'bank'=>$this->bank,'acc'=>$acc,'kst'=>$baky,'tar_type'=>1,'tar_date'=>$ksm_date,'letters'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
+                         }
+
+                     }
+                     if ($item->kst_type==2)
+                     {
+                         over_kst::insert([
+                             'no'=>$no,'name'=>$name,'bank'=>$this->bank,'acc'=>$acc,'kst'=>$kst,'tar_type'=>1,'tar_date'=>$ksm_date,'letters'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
+                     }
+                     if ($item->kst_type==5)
+                     {
+                         over_kst_a::insert([
+                             'no'=>$no,'name'=>$name,'bank'=>$this->bank,'acc'=>$acc,'kst'=>$kst,'tar_type'=>1,'tar_date'=>$ksm_date,'letters'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
+                     }
+                     if ($item->kst_type==4)
+                     {
+                         $wrong=wrong_kst::max('wrong_no')+1;
+                         wrong_kst::insert([
+                             'wrong_no'=>$wrong,'name'=>$name,'bank'=>$this->bank,'acc'=>$acc,'kst'=>$kst,'tar_date'=>$ksm_date,'morahel'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
+                     }
+                     if ($item->kst_type==6)
+                     {
+                         $wrong_after=wrong_kst::max('wrong_no')+1;
+                         wrong_kst::insert([
+                             'no'=>$no, 'wrong_no'=>$wrong_after,'name'=>$name,'bank'=>$this->bank,'acc'=>$acc,'kst'=>$kst,'tar_date'=>$ksm_date,'morahel'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
+                     }
+                     $this->HafProgress++;
+
                  }
 
-           }
-       if ($item->kst_type==2)
-       {
-         DB::connection(Auth()->user()->company)->table('over_kst')->insert([
-           'no'=>$no,'name'=>$name,'bank'=>$this->bank,'acc'=>$acc,'kst'=>$kst,'tar_type'=>1,'tar_date'=>$ksm_date,'letters'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
-       }
-        if ($item->kst_type==5)
-        {
-          DB::connection(Auth()->user()->company)->table('over_kst_a')->insert([
-            'no'=>$no,'name'=>$name,'bank'=>$this->bank,'acc'=>$acc,'kst'=>$kst,'tar_type'=>1,'tar_date'=>$ksm_date,'letters'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
-        }
-        if ($item->kst_type==4)
-        {
-          $wrong=DB::connection(Auth()->user()->company)->table('wrong_kst')->max('wrong_no')+1;
-          DB::connection(Auth()->user()->company)->table('wrong_kst')->insert([
-            'wrong_no'=>$wrong,'name'=>$name,'bank'=>$this->bank,'acc'=>$acc,'kst'=>$kst,'tar_date'=>$ksm_date,'morahel'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
-        }
-        if ($item->kst_type==6)
-        {
-          $wrong_after=DB::connection(Auth()->user()->company)->table('wrong_kst')->max('wrong_no')+1;
-          DB::connection(Auth()->user()->company)->table('wrong_kst')->insert([
-           'no'=>$no, 'wrong_no'=>$wrong_after,'name'=>$name,'bank'=>$this->bank,'acc'=>$acc,'kst'=>$kst,'tar_date'=>$ksm_date,'morahel'=>0,'emp'=>$emp,'h_no'=>$this->hafitha,]);
-        }
-        $this->HafProgress++;
 
-      }
-      DB::connection(Auth()->user()->company)->table('hafitha')->where('hafitha_no',$this->hafitha)->update(['hafitha_state'=>1]);
-      $haflist=DB::connection(Auth()->user()->company)->table('hafitha_tran')
-          ->where('hafitha',$this->hafitha)->select('no');
-        DB::connection(Auth()->user()->company)->table('main')
-            ->where('bank',$this->bank)
+
+          });
+
+      hafitha::where('hafitha_no',$this->hafitha)->update(['hafitha_state'=>1]);
+      $haflist=hafitha_tran::where('hafitha',$this->hafitha)->select('no');
+        main::where('bank',$this->bank)
             ->whereIn('no',$haflist)
             ->update(['main.sul_pay'=>
                 DB::connection(Auth()->user()->company)->
