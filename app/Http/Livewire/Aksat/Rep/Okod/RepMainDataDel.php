@@ -5,17 +5,25 @@ namespace App\Http\Livewire\Aksat\Rep\Okod;
 use App\Http\Livewire\Admin\Mahjoza;
 use App\Models\aksat\chk_tasleem;
 use App\Models\aksat\kst_trans;
+use App\Models\aksat\kst_trans_deleted;
 use App\Models\aksat\main;
+use App\Models\aksat\main_deleted;
+use App\Models\aksat\main_items;
+use App\Models\aksat\main_items_deleted;
 use App\Models\aksat\MainArc;
 use App\Models\aksat\place;
 use App\Models\bank\bank;
 use App\Models\excel\MahjozaModel;
 use App\Models\jeha\jeha;
+use App\Models\Operations;
 use App\Models\OverTar\over_kst;
+use App\Models\OverTar\stop_kst;
 use App\Models\OverTar\tar_kst;
+use App\Models\OverTar\tar_kst_before;
 use App\Models\sell\sells;
 use App\Models\stores\halls_names;
 use App\Models\stores\stores_names;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -141,6 +149,50 @@ class RepMainDataDel extends Component
     $this->dispatchBrowserEvent('OpenArcModal');
   }
 
+  public function Retrieve()
+  {
+
+      DB::connection('other')->beginTransaction();
+      try {
+
+
+          $select = main_deleted::where('no',$this->no)->select('no','name','bank','acc','sul_date','sul_type','sul_tot','dofa','sul',
+              'kst','kst_count','sul_pay','raseed','order_no','jeha','place','notes','chk_in','chk_out','last_order','ref_no','emp','inp_date','taj_id');
+          $bindings = $select->getBindings();
+          $insertQuery = 'INSERT into main (no,name,bank,acc,sul_date,sul_type,sul_tot,dofa,sul,kst,kst_count,sul_pay,raseed,order_no,
+                                               jeha,place,notes,chk_in,chk_out,last_order,ref_no,emp,inp_date,taj_id) '. $select->toSql();
+          DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
+
+          $select = kst_trans_deleted::on(Auth()->user()->company)->where('no',$this->no)->select('ser','no','kst_date','ksm_type','chk_no','kst','ksm_date','ksm','h_no','emp','kst_notes','inp_date');
+          $bindings = $select->getBindings();
+          $insertQuery = 'INSERT into kst_trans (ser,no,kst_date,ksm_type,chk_no,kst,ksm_date,ksm,h_no,emp,kst_notes,inp_date) '. $select->toSql();
+          DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
+
+          $select = main_items_deleted::where('no',$this->no)->select('no','item_no');
+          $bindings = $select->getBindings();
+          $insertQuery = 'INSERT into main_items (no,item_no) '. $select->toSql();
+          DB::connection(Auth()->user()->company)->insert($insertQuery, $bindings);
+
+          main_items_deleted::where('no',$this->no)->delete();
+          kst_trans_deleted::on(Auth()->user()->company)->where('no',$this->no)->delete();
+          main_deleted::on(Auth()->user()->company)->where('no',$this->no)->delete();
+
+          Operations::insert(['Proce'=>'عقد','Oper'=>'ارجاع عقد ملغي','no'=>$this->no,'created_at'=>Carbon::now(),'emp'=>auth::user()->empno,]);
+
+          DB::connection(Auth()->user()->company)->commit();
+          $this->no=0; $this->orderno='';$this->name='';$this->bankno='';$this->acc='';$this->place='';
+          $this->sul='';$this->sul_tot='';$this->dofa='';$this->kst='';
+          $this->kstcount='';$this->notes='';$this->ref_no='';$this->chk_in='';
+          $this->render();
+
+
+
+      } catch (\Exception $e) {
+          DB::connection(Auth()->user()->company)->rollback();
+          info($e);
+          $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
+      }
+  }
     public function render()
     {
         $res=MahjozaModel::where('no',$this->no)->first();

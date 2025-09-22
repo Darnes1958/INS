@@ -70,24 +70,7 @@
    <div class="row">
 
      <div class="col-md-6">
-      <div class="row">
-        <div class="col-md-4">
-          <label  class="form-label my-0" >أقساط محجوزة</label>
-          <input wire:model="aksat_tot" type="text" class="form-control"   readonly>
-
-        </div>
-        <div class="col-md-3">
-          <label  class="form-label my-0" >عددها</label>
-          <input wire:model="aksat_count" type="text" class="form-control"   readonly>
-
-        </div>
-        <div class="col-md-5">
-          <label  class="form-label my-0" >تاريخ أخر مرتب</label>
-          <input wire:model="sal_date" type="text" class="form-control text-center text-danger"   readonly>
-
-        </div>
-
-      </div>
+         <a wire:click="Retrieve" class="btn btn-info waves-effect waves-light mx-10"><i class="fa fa-archive"> &nbsp;&nbsp;استرجاع&nbsp;&nbsp;</i></a>
 
 
      </div>
