@@ -77,6 +77,14 @@
   </div>
 
 @push('scripts')
+    <script type="text/javascript">
+
+        window.addEventListener('mmsg',function(e){
+            MyMsg.fire({
+                confirmButtonText:  e.detail,
+            })
+        });
+    </script>
   <script>
       window.addEventListener('CloseKstManyModal', event => {
           $("#ModalKstMany").modal('hide');

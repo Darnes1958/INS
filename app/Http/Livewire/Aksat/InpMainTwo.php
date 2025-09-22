@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Aksat;
 
+use App\Models\aksat\hafitha;
 use App\Models\aksat\kst_trans;
 use App\Models\aksat\main;
 use App\Models\aksat\main_items;
@@ -159,11 +160,15 @@ class InpMainTwo extends Component
      ->first();
 
    if ($res){
+
      $res_old=main::on(Auth()->user()->company)->where('jeha',$res->jeha)->first();
      if (! $res_old){
          $this->dispatchBrowserEvent('mmsg', 'لا يوجد عقد سابق لهذا الزبون ليتم ضمه ');
          return false;
      }
+       if (hafitha::where('bank',$res_old->bank)->where('hafitha_state',0)->exists()) {
+           {$this->dispatchBrowserEvent('mmsg', 'توجد حافظة غير مرحلة لهذا المصرف .. لا يجوز ادخال او ضم عقود !'); return(false);}
+       }
      $this->no_old=$res_old->no;
      $this->order_no_old=$res_old->order_no;
      $this->sul_tot_old=$res_old->sul_tot;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Aksat;
 
+use App\Models\aksat\hafitha;
 use App\Models\aksat\kst_trans;
 use App\Models\Operations;
 use Carbon\Carbon;
@@ -141,6 +142,9 @@ public function Go(){
     if ($this->no!=null) {
       $result = main::where('no',$this->no)->first();
       if ($result) {
+          if (hafitha::where('bank',$result->bank)->where('hafitha_state',0)->exists()) {
+              {$this->dispatchBrowserEvent('mmsg', 'توجد حافظة غير مرحلة لهذا المصرف .. لا يجوز ادخال اقساط !'); return(false);}
+          }
         $this->name=$result->name;
         $this->bankno=$result->bank;
         $this->bankname=bank::find($this->bankno)->bank_name;
@@ -178,6 +182,10 @@ public function Go(){
         else {
 
           $result = main::where('acc',$this->acc)->first();
+            if (hafitha::where('bank',$result->bank)->where('hafitha_state',0)->exists()) {
+                {$this->dispatchBrowserEvent('mmsg', 'توجد حافظة غير مرحلة لهذا المصرف .. لا يجوز ادخال اقساط !'); return(false);}
+            }
+
           $this->bankno=$result->bank;
           $this->bankname=bank::find($this->bankno)->bank_name;
           $this->name=$result->name;

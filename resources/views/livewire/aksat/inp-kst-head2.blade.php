@@ -157,4 +157,12 @@
           Livewire.emit('Go');
       });
   </script>
+  <script type="text/javascript">
+
+      window.addEventListener('mmsg',function(e){
+          MyMsg.fire({
+              confirmButtonText:  e.detail,
+          })
+      });
+  </script>
 @endpush

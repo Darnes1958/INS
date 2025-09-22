@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Aksat;
 
+use App\Models\aksat\hafitha;
 use App\Models\aksat\kst_trans;
 use App\Models\aksat\main;
 use App\Models\aksat\main_deleted;
@@ -160,7 +161,12 @@ class InpMainHead extends Component
 
       $res=bank::on(Auth()->user()->company)->find($this->bankno);
       if (!$res ){$this->dispatchBrowserEvent('mmsg', 'هذا الرقم غير مخزون ');$this->emit('goto','bank_no');}
-      else {$this->BankGet=true; $this->emit('goto','acc');$this->emit('TakeBankNo',$res->bank_no,$res->bank_name);};}
+      else {
+          if (hafitha::where('bank',$this->bankno)->where('hafitha_state',0)->exists()) {
+              {$this->dispatchBrowserEvent('mmsg', 'توجد حافظة غير مرحلة لهذا المصرف .. لا يجوز ادخال عقود !'); return(false);}
+          }
+          $this->BankGet=true; $this->emit('goto','acc');$this->emit('TakeBankNo',$res->bank_no,$res->bank_name);}
+    }
   }
   public function ChkAccAndGo(){
     if ($this->acc) {

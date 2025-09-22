@@ -154,6 +154,9 @@ public function Go(){
     if ($this->no!=null) {
       $result = main::on(Auth()->user()->company)->where('bank',$this->bankno)->where('no',$this->no)->first();
       if ($result) {
+          if (hafitha::where('bank',$result->bank)->where('hafitha_state',0)->exists()) {
+              {$this->dispatchBrowserEvent('mmsg', 'توجد حافظة غير مرحلة لهذا المصرف .. لا يجوز ادخال اقساط !'); return(false);}
+          }
         $this->name=$result->name;
         $this->acc=$result->acc;
         $orderno=$result->order_no;
