@@ -203,7 +203,7 @@ class EditMainData extends Component
   public function DeleteCont(){
     $this->validate();
 
-    DB::connection('other')->beginTransaction();
+    DB::connection(Auth()->user()->company)->beginTransaction();
     try {
       tar_kst::on(Auth()->user()->company)->where('no',$this->no)->delete();
       over_kst::on(Auth()->user()->company)->where('no',$this->no)->delete();
@@ -233,7 +233,7 @@ class EditMainData extends Component
   public function DeleteContAfter(){
     $this->validate();
 
-    DB::connection('other')->beginTransaction();
+    DB::connection(Auth()->user()->company)->beginTransaction();
     try {
       tar_kst::on(Auth()->user()->company)->where('no',$this->no)->delete();
       over_kst::on(Auth()->user()->company)->where('no',$this->no)->delete();

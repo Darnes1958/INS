@@ -152,7 +152,7 @@ class RepMainDataDel extends Component
   public function Retrieve()
   {
 
-      DB::connection('other')->beginTransaction();
+      DB::connection(Auth()->user()->company)->beginTransaction();
       try {
 
 
