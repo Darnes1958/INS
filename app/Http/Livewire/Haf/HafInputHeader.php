@@ -66,15 +66,12 @@ class HafInputHeader extends Component
     $this->HafProgress=0;
 
 
-    DB::connection(Auth()->user()->company)->beginTransaction();
-    try {
-      hafitha_tran::where('hafitha',$this->hafitha)
-          ->chunk(300,function ($res) {
+     $res= hafitha_tran::where('hafitha',$this->hafitha)->where('published',0)->get();
 
-
-
-                 foreach ($res as $item)
+     foreach ($res as $item)
                  {
+                     DB::connection(Auth()->user()->company)->beginTransaction();
+                     try {
                      $no=$item->no; $acc=$item->acc; $kst=$item->kst; $ksm_date=$item->ksm_date; $baky=$item->baky;
                      $emp=$item->emp; $name=$item->name;
 
@@ -104,9 +101,7 @@ class HafInputHeader extends Component
                              kst_trans::insert([
                                  'ser'=>$kst_tran->ser+1,'no'=>$no,'kst_date'=>$ksm_date,'ksm_type'=>2,'chk_no'=>0,'kst'=>$kst,'ksm_date'=>$ksm_date,'ksm'=>$kst,'emp'=>$emp,
                                  'h_no'=>$this->hafitha,'inp_date'=>date('Y-m-d'),]);
-
                          }
-
 
                          if ($baky!=0)
                          {
@@ -139,12 +134,23 @@ class HafInputHeader extends Component
                      }
                      $this->HafProgress++;
 
+                     $item->published=1;
+                     $item->save();
+                     DB::connection(Auth()->user()->company)->commit();
+                     } catch (\Exception $e) {
+                         info($e);
+
+                         DB::connection(Auth()->user()->company)->rollback();
+                         $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
+
+                     }
                  }
 
-
-
-          });
-
+     if (hafitha_tran::where('hafitha',$this->hafitha)->where('published',0)->count()>0)
+     {
+         $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
+         return false;
+     }
       hafitha::where('hafitha_no',$this->hafitha)->update(['hafitha_state'=>1]);
       $haflist=hafitha_tran::where('hafitha',$this->hafitha)->select('no');
         main::where('bank',$this->bank)
@@ -159,7 +165,7 @@ class HafInputHeader extends Component
                 DB::connection(Auth()->user()->company)->
                 raw('sul-sul_pay')]);
 
-      DB::connection(Auth()->user()->company)->commit();
+
       $this->HafHeadDetail=null;
       $this->bank=null;
       $this->HafUpload=false;
@@ -171,13 +177,7 @@ class HafInputHeader extends Component
       $this->ShowHafTarheel=false;
       $this->dispatchBrowserEvent('mmsg', 'تم ترحيل الحافظة');
 
-    } catch (\Exception $e) {
-        info($e);
 
-      DB::connection(Auth()->user()->company)->rollback();
-      $this->dispatchBrowserEvent('mmsg', 'حدث خطأ');
-
-    }
   }
 
   function DeleteHafitha(){
