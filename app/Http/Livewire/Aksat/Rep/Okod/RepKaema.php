@@ -91,6 +91,7 @@ class RepKaema extends Component
           'RepThere2' => DB::connection(Auth::user()->company)->table("main")->select('*')
             ->when($this->bank_no!=0,function($q){
               return $q->where('bank', '=', $this->bank_no);})
+            ->where('taj_id',$this->TajNo)
             ->whereNotIn('acc',function($query){
               $query->select('acc')->from('kaema')
                 ->whereIn('bank',function ($q){
