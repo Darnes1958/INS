@@ -100,7 +100,9 @@
         </tbody>
 
     </table>
-    <div class="page-break"></div>
+
+ <!--
+   <div class="page-break"></div>
     <table style="width:  80%; margin-left: 10%;margin-right: 10%;">
 
         <thead style=" font-family: DejaVu Sans, sans-serif; margin-top: 8px;" >
@@ -126,6 +128,7 @@
         </tbody>
 
     </table>
+    -->
 
 @endsection
 
