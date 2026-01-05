@@ -22,13 +22,18 @@
               <th style="width: 5%"> <i wire:click="selectSpc(1)"
                                         class="btn btn-outline-success btn-sm  far fa-user-secret editable-input" style="margin-left: 2px;"></i></th>
           @endif
-          <th colspan="4">
+          <th colspan="3">
             <div class=" form-check form-check-inline">
               <input class="form-check-input" type="checkbox" wire:model="ZeroShow"  name="inlineRadioOptions" id="inlineRadio1" value="yes">
               <label class="form-check-label" for="inlineRadio1">إظهار الأرصدة صفر</label>
 
             </div>
           </th>
+            <th colspan="3">
+                <a   wire:click="toExclAll"
+                     class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-file-excel"> &nbsp;&nbsp;إكسل لجميع الموردين&nbsp;&nbsp;</i></a>
+
+            </th>
 
 
         </tr>
@@ -102,8 +107,9 @@
     </div>
    <div class="col-md-6">
        <a   wire:click="toExcl" x-show="$wire.jeha_no!=0"
-           class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-file-excel"> &nbsp;&nbsp;إكسل&nbsp;&nbsp;</i></a>
-     <table class="table table-sm table-bordered table-striped  " width="100%"  id="mytable3" >
+            class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-file-excel"> &nbsp;&nbsp;إكسل للمورد&nbsp;&nbsp;</i></a>
+
+       <table class="table table-sm table-bordered table-striped  " width="100%"  id="mytable3" >
        <caption class="font-size-18 caption-top text-center p-0" style="color: #0a53be">{{$jeha_name}}</caption>
        <thead class="font-size-12 bg-primary text-white">
 
