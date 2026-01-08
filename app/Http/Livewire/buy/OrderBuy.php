@@ -99,11 +99,16 @@ class OrderBuy extends Component
     public function updated($field)
     {
         if ($field=='st_nol') {
-            $this->st_no=$this->st_nol;
+            if (stores::where('st_no',$this->st_nol)->exists())
+             $this->st_no=$this->st_nol;
         }
         if ($field=='st_no') {
-            $this->st_nol=$this->st_no;
-            $this->ChkSt_no();}
+            if (stores::where('st_no',$this->st_no)->exists())
+            {
+                $this->st_nol=$this->st_no;
+                $this->ChkSt_no();}
+
+            }
 
         if ($field=='TheJehaIsSelected'){
             $this->TheJehaIsSelected=0;
@@ -131,8 +136,12 @@ class OrderBuy extends Component
     public function ChkSt_no(){
         if ($this->st_no)
         {
-            buys_work::where('emp',Auth::user()->empno)->update(['place_no'=>$this->st_no]);
-            $this->emit('gotonext','theitem');
+            if (stores::where('st_no',$this->st_no)->exists())
+            {
+                buys_work::where('emp',Auth::user()->empno)->update(['place_no'=>$this->st_no]);
+                $this->emit('gotonext','theitem');
+
+            } else $this->st_no=1;
         }
     }
     public function DoEditItem(){
