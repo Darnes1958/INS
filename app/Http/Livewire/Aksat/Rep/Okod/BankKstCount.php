@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Aksat\Rep\Okod;
 
+use App\Exports\BankKstCountXls;
+use App\Exports\MordTran;
 use App\Models\aksat\main;
 use App\Models\aksat\main_kst_count;
 use App\Models\aksat\main_sells_bank_view;
@@ -16,6 +18,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BankKstCount extends Component
 {
@@ -87,6 +90,9 @@ class BankKstCount extends Component
     $this->emitTo('stores.store-select3','ResetYou',$this->Table);
 
   }
+    public function toExcl(){
+        return Excel::download(new BankKstCountXls($this->place_name), 'Banks.xlsx');
+    }
   public function render()
   {
 

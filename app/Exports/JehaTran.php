@@ -19,18 +19,21 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class MordTran implements FromCollection,WithMapping, WithHeadings,WithStyles,
+class JehaTran implements FromCollection,WithMapping, WithHeadings,WithStyles,
     WithEvents,WithColumnWidths,WithColumnFormatting
 {
     public $jeha_no;
+    public $date1;
+    public $jeha_name;
     /**
     * @return \Illuminate\Support\Collection
     */
 
-    public function __construct(int $jeha)
+    public function __construct(int $jeha,string $date1)
     {
         $this->jeha_no = $jeha;
-
+        $this->date1=$date1;
+        $this->jeha_name=jeha::find($this->jeha_no)->jeha_name;
     }
     public function registerEvents(): array
     {
@@ -48,7 +51,7 @@ class MordTran implements FromCollection,WithMapping, WithHeadings,WithStyles,
                     ->getAlignment()
                     ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-                $event->sheet->setCellValue('B6', 'كشف حساب بتاريخ  '.date('Y-m-d'));
+                $event->sheet->setCellValue('B6', 'كشف حساب العميل  '.$this->jeha_name.' من تاريخ '.$this->date1);
 
 
                 $event->sheet->getDelegate()->setRightToLeft(true);
@@ -61,9 +64,9 @@ class MordTran implements FromCollection,WithMapping, WithHeadings,WithStyles,
     {
         return [
 
-            'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+
 
         ];
     }
@@ -79,19 +82,18 @@ class MordTran implements FromCollection,WithMapping, WithHeadings,WithStyles,
             'G' => 80,
         ];
     }
-    /**
-     * @var MordeenDetailView $main_view
-     */
+
     public function map($main_view): array
     {
         return [
-            $main_view->wtype,
+            $main_view->data,
             $main_view->order_date,
-            $main_view->order_no,
 
-            $main_view->tot,
-            $main_view->cash,
-            $main_view->not_cash,
+
+            $main_view->mden,
+            $main_view->daen,
+            $main_view->order_no,
+            $main_view->type_name,
             $main_view->notes,
         ];
     }
@@ -102,11 +104,11 @@ class MordTran implements FromCollection,WithMapping, WithHeadings,WithStyles,
             [$cus->CompanyName],
             [$cus->CompanyNameSuffix],
             [' '],
-            ['اسم المورد : '.jeha::find($this->jeha_no)->jeha_name],
+            ['اسم الزبون : '.jeha::find($this->jeha_no)->jeha_name],
             [''],
             [''],
             [''],
-            ['البيان','التاريخ','رقم المعاملة','الاجمالي','المدفوع','الأجل','ملاحظات'],
+            ['البيان','التاريخ','مدين','دائن','رقم المستند','طريقة الدفع','ملاحظات'],
         ];
     }
     public function styles(Worksheet $sheet)
@@ -124,10 +126,13 @@ class MordTran implements FromCollection,WithMapping, WithHeadings,WithStyles,
     }
     public function collection()
     {
-        return  DB::connection(Auth()->user()->company)->table('MordeenDetailView')
-        ->where('jeha',$this->jeha_no)
-        ->orderBy('order_date')
-        ->get();
+
+      return  collect(
+          DB::connection(Auth()->user()->company)->
+              select('Select * from dbo.frep_jeha_tran (?) as result where order_date>=? order by order_date,order_no '
+            ,array($this->jeha_no,$this->date1)
+          )
+      );
     }
 
 }

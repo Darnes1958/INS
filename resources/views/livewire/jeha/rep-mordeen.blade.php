@@ -114,12 +114,13 @@
        <thead class="font-size-12 bg-primary text-white">
 
        <tr style="text-align: center;">
-         <th >البيان</th>
-         <th style="width: 14% ;">التاريخ</th>
-         <th style="width: 14%">رقم المعاملة</th>
-         <th style="width: 14%">الاجمالي</th>
-         <th style="width: 14%">المدفوع</th>
-         <th style="width: 14%">الأجل</th>
+         <th style="width: 14%">البيان</th>
+         <th style="width: 12% ;">التاريخ</th>
+         <th style="width: 12%">رقم المعاملة</th>
+         <th style="width: 12%">الاجمالي</th>
+         <th style="width: 12%">المدفوع</th>
+         <th style="width: 12%">الأجل</th>
+         <th >ملاحظات</th>
 
        </tr>
        </thead>
@@ -132,6 +133,7 @@
            <td> {{ number_format($item->tot,2, '.', ',') }} </td>
            <td> {{ number_format($item->cash,2, '.', ',') }} </td>
            <td> {{ number_format($item->not_cash,2, '.', ',') }} </td>
+             <td> {{ $item->notes }} </td>
          </tr>
        @endforeach
        </tbody>

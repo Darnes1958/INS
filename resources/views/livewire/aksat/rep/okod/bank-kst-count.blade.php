@@ -31,7 +31,7 @@
             <label class="form-check-label" >مخزن</label>
           </div>
         </div>
-        <div  x-show="$wire.PlaceChk && $wire.RepRadio=='ByPlace'" class="col-md-3" >
+        <div  x-show="$wire.PlaceChk && $wire.RepRadio=='ByPlace'" class="col-md-4" >
 
           @livewire('stores.store-select3',['table'=>$Table])
           <div class="form-check form-check-inline">
@@ -39,18 +39,16 @@
             <label class="form-check-label" >صالة</label>
           </div>
         </div>
-        <div x-show="$wire.PlaceChk && $wire.RepRadio=='ByPlace' && $wire.place_no!=0" class="col-md-2">
+        <div x-show="$wire.PlaceChk && $wire.RepRadio=='ByPlace' && $wire.place_no!=0" class="col-md-3">
 
             <a  href="{{route('pdfplacekstcount',['place_name'=>$place_name])}}"
                 class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
-
+            <a   wire:click="toExcl"
+            class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-file-excel"> &nbsp;&nbsp;إكسل &nbsp;&nbsp;</i></a>
         </div>
 
       </div>
     </div>
-
-
-
 
   </div>
 

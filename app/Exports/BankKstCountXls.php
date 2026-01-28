@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\aksat\main_kst_count;
 use App\Models\bank\bank;
 use App\Models\Customers;
 use App\Models\jeha\jeha;
@@ -19,17 +20,17 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class MordTran implements FromCollection,WithMapping, WithHeadings,WithStyles,
+class BankKstCountXls implements FromCollection,WithMapping, WithHeadings,WithStyles,
     WithEvents,WithColumnWidths,WithColumnFormatting
 {
-    public $jeha_no;
+    public $place_name;
     /**
     * @return \Illuminate\Support\Collection
     */
 
-    public function __construct(int $jeha)
+    public function __construct(string $place_name)
     {
-        $this->jeha_no = $jeha;
+        $this->place_name = $place_name;
 
     }
     public function registerEvents(): array
@@ -48,7 +49,7 @@ class MordTran implements FromCollection,WithMapping, WithHeadings,WithStyles,
                     ->getAlignment()
                     ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-                $event->sheet->setCellValue('B6', 'كشف حساب بتاريخ  '.date('Y-m-d'));
+                $event->sheet->setCellValue('B6', 'كشف باعداد الأقساط المحصلة والمتبقية حتي تاريخ  '.date('Y-m-d'));
 
 
                 $event->sheet->getDelegate()->setRightToLeft(true);
@@ -61,38 +62,38 @@ class MordTran implements FromCollection,WithMapping, WithHeadings,WithStyles,
     {
         return [
 
-            'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
 
         ];
     }
     public function columnWidths(): array
     {
         return [
-            'A' => 20,
+            'A' => 60,
             'B' => 16,
-            'C' => 14,
-            'D' => 14,
-            'E' => 14,
-            'F' => 14,
-            'G' => 80,
+            'C' => 16,
+            'D' => 16,
+            'E' => 16,
+            'F' => 16,
+            'G' => 16,
         ];
     }
     /**
-     * @var MordeenDetailView $main_view
+     * @var main_kst_count $main_view
      */
     public function map($main_view): array
     {
         return [
-            $main_view->wtype,
-            $main_view->order_date,
-            $main_view->order_no,
+            $main_view->bank_name,
+            $main_view->WCOUNT,
+            $main_view->sumsul,
 
-            $main_view->tot,
-            $main_view->cash,
-            $main_view->not_cash,
-            $main_view->notes,
+            $main_view->sumpay,
+            $main_view->sumraseed,
+            $main_view->kst_count,
+            $main_view->kst_count_not,
         ];
     }
     public function headings(): array
@@ -102,11 +103,11 @@ class MordTran implements FromCollection,WithMapping, WithHeadings,WithStyles,
             [$cus->CompanyName],
             [$cus->CompanyNameSuffix],
             [' '],
-            ['اسم المورد : '.jeha::find($this->jeha_no)->jeha_name],
+            ['نقطة البيع : '.$this->place_name],
             [''],
             [''],
             [''],
-            ['البيان','التاريخ','رقم المعاملة','الاجمالي','المدفوع','الأجل','ملاحظات'],
+            ['المصرف','ع.العقود','الإجمالي','المسدد','المتبقي','ع.المخصومة','ع.المتبقية'],
         ];
     }
     public function styles(Worksheet $sheet)
@@ -124,10 +125,14 @@ class MordTran implements FromCollection,WithMapping, WithHeadings,WithStyles,
     }
     public function collection()
     {
-        return  DB::connection(Auth()->user()->company)->table('MordeenDetailView')
-        ->where('jeha',$this->jeha_no)
-        ->orderBy('order_date')
-        ->get();
+        return  main_kst_count::on(Auth()->user()->company)
+
+            ->selectRaw('place_no,place_name,bank, bank_name, COUNT(*) AS WCOUNT, SUM(sul) AS sumsul, SUM(sul_pay) AS sumpay,
+                            SUM(raseed) AS sumraseed,sum(kst_count) as kst_count,sum(kst_count_not) as kst_count_not ')
+
+            ->where('place_name','=', $this->place_name)
+            ->groupBy('place_no','place_name','bank','bank_name')
+            ->orderBy('place_no')->get();
     }
 
 }

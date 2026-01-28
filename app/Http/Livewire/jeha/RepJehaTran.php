@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\jeha;
 
+use App\Exports\JehaTran;
+use App\Exports\MordTran;
 use App\Models\aksat\main;
 use App\Models\aksat\MainArc;
 use App\Models\buy\buys;
@@ -19,6 +21,7 @@ use Livewire\Component;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RepJehaTran extends Component
 {
@@ -143,6 +146,9 @@ class RepJehaTran extends Component
         $this->trandate=$this->tran_date;
 
     }
+    public function toExcl(){
+        return Excel::download(new JehaTran($this->jeha_no,$this->tran_date), 'zbaen.xlsx');
+    }
     public function paginate($items, $perPage = 15, $page = null, $options = [])
     {
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
@@ -173,11 +179,6 @@ class RepJehaTran extends Component
             ,array($this->jehano,$this->trandate)));
 
         $data = $this->paginate($collection);
-
-
-
-
-
 
 
 

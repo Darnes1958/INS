@@ -32,6 +32,8 @@
         <div  class="col-md-2 ">
             <a  href="{{route('pdfjehatran',['jeha_no'=>$jeha_no,'Mden'=>$Mden,'MdenBefore'=>$MdenBefore,'Daen'=>$Daen,'DaenBefore'=>$DaenBefore,'tran_date'=>$tran_date])}}"
                 class="btn btn-success waves-effect waves-light"><i class="fa fa-print"> &nbsp;&nbsp;طباعة&nbsp;&nbsp;</i></a>
+            <a   wire:click="toExcl" x-show="$wire.jeha_no!=0"
+            class="btn btn-outline-success waves-effect waves-light border-0 mx-2"><i class="fas fa-file-excel"> &nbsp;&nbsp;إكسل &nbsp;&nbsp;</i></a>
         </div>
     </div>
 
