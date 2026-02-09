@@ -9,11 +9,14 @@ use App\Models\Arc\Arc_rep_sell_tran;
 use App\Models\Arc\Arc_Sells;
 use App\Models\bank\bank;
 use App\Models\bank\BankTajmeehy;
+use App\Models\bank\Companies;
 use App\Models\buy\buy_tran;
 use App\Models\buy\buys;
 use App\Models\buy\rep_buy_tran;
 use App\Models\Customers;
 use App\Models\jeha\jeha;
+use App\Models\masr\MasCenters;
+use App\Models\masr\Masrofat;
 use App\Models\sell\price_type;
 use App\Models\sell\rep_sell_tran;
 use App\Models\sell\sells;
@@ -170,10 +173,14 @@ $comp=Auth()->user()->company;
       $res=Arc_Sells::where('order_no',$order_no)->first();
     }
 
+      if ($res->sell_type==1)
+          $CompName=Companies::find(MasCenters::where('CenterWho',2)->where('WhoId',$res->place_no)->first()->company_id)->CompName;
+      else
+          $CompName=Companies::find(MasCenters::where('CenterWho',1)->where('WhoId',$res->place_no)->first()->company_id)->CompName;
 
     $reportHtml = view('PrnView.sell.rep-order-sell',
       ['orderdetail'=>$orderdetail,'res'=>$res,'cus'=>$cus,'jeha_name'=>$jeha_name,'place_name'=>$place_name,
-          'type_name'=>$type_name,'bank_name'=>$bank_name])->render();
+          'type_name'=>$type_name,'bank_name'=>$bank_name,'CompName'=>$CompName])->render();
     $arabic = new Arabic();
     $p = $arabic->arIdentify($reportHtml);
 

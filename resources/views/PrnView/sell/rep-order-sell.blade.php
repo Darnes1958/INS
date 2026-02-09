@@ -64,7 +64,7 @@
 <div  >
 
 
-        <label style="font-family: Amiri; font-size: 20pt; margin-right: 12px;" >{{$cus->CompanyName}}</label>
+        <label style="font-family: Amiri; font-size: 20pt; margin-right: 12px;" >{{$CompName}}</label>
     <br>
         <label style="font-family: Amiri; font-size: 16pt;margin-right: 12px;">{{$cus->CompanyNameSuffix}}</label>
 
