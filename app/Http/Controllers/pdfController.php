@@ -101,8 +101,7 @@ $comp=Auth()->user()->company;
     $tar=tar_buy_view::where('order_no',$order_no)->get();
 
 
-
-      $reportHtml = view('PrnView.buy.rep-order-buy',
+    $reportHtml = view('PrnView.buy.rep-order-buy',
           ['tar'=>$tar,'orderdetail'=>$orderdetail,'res'=>$res,'cus'=>$cus,'jeha_name'=>$jeha_name,'place_name'=>$place_name])->render();
       $arabic = new Arabic();
       $p = $arabic->arIdentify($reportHtml);
