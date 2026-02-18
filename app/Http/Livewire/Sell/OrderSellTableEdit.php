@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Sell;
 
 use App\Models\aksat\main;
+use App\Models\aksat\MainArc;
+use App\Models\aksat\TransArc;
 use App\Models\Operations;
 use App\Models\sell\rep_sell_tran;
 use App\Models\sell\sell_tran;
@@ -74,9 +76,9 @@ class OrderSellTableEdit extends Component
             return false;
         }
       if ($this->price_type==2) {
-          $res=main::on($conn)->where('order_no',$this->order_no)->first();
-          if ($res) {$no=$res->no;$sul_pay=$res->sul_pay;} else $no=0;
-          if ($no!=0 && ($this->tot - $this->madfooh)<$res->sul_pay){
+          $main=main::where('order_no',$this->order_no)->first();
+          if ($main) {$no=$main->no;$sul_pay=$main->sul_pay;} else $no=0;
+          if ($no!=0 && ($this->tot - $this->madfooh)<$main->sul_pay){
             session()->flash('message', 'يجب أن لا تكون قيمة الفاتورة أصغر من المدفوع في العقد');
             return false;
           }
@@ -89,13 +91,22 @@ class OrderSellTableEdit extends Component
               sell_tran::on($conn)->where('order_no',$this->order_no)->delete();
               sells::on($conn)->where('order_no',$this->order_no)->delete();
 
-              if ($no!=0){
+              if ($no!=0)
+              {
+                  $lastTot=0;
+                  if ($main->last_order!= null && $main->last_order!=0) {
+                    $oldMain=MainArc::where('order_no',$main->last_order)->first();
+                    $trans=TransArc::where('no',$oldMain->no)->where(DB::raw('SUBSTRING(kst_notes,1,21)'),'مبلغ تم دمجه مع العقد')->first();
+                      $lastTot=$trans->ksm;
+                      }
+
                 main::on($conn)->where('no',$no)->update([
-                 'sul_tot'=>$this->tot,
-                 'sul'=>$this->tot - $this->madfooh,
+                 'sul_tot'=>$this->tot+$lastTot,
+                 'sul'=>$this->tot+$lastTot - $this->madfooh,
                  'dofa'=>$this->madfooh,
-                 'raseed'=>$this->tot - $this->madfooh-$sul_pay,
+                 'raseed'=>$this->tot+$lastTot - $this->madfooh-$sul_pay,
                 ]);
+
               }
                if ($this->TablePlaceType=='Makazen') $pt=1; else $pt=2;
                 DB::connection($conn)->table('sells')->insert([
