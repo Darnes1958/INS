@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Aksat\Rep\Okod;
 
+use App\Models\aksat\BankStop;
 use App\Models\aksat\main;
 use App\Models\bank\bank;
 use App\Models\bank\BankTajmeehy;
@@ -84,10 +85,16 @@ class Kamla extends Component
     {
 
       DB::connection(Auth()->user()->company)->table('late')->delete();
+
       if ($this->ByTajmeehy=='Bank')
       DB::connection(Auth()->user()->company)->statement( 'insert into late select main.no,DATEDIFF(month,max(ksm_date),getdate()),:emp
-                            from main,kst_trans where main.no=kst_trans.no and (SUL_PAY)<(SUL-1) and main.no<>0 and sul_pay<>0
-                            and bank=:bank group by main.no having DATEDIFF(month,max(ksm_date),getdate())>=:months ',
+                            from main,kst_trans
+                            where main.no=kst_trans.no
+                              and (SUL_PAY)<(SUL-1)
+                              and main.no<>0
+                              and sul_pay<>0
+                              and bank=:bank
+                            group by main.no having DATEDIFF(month,max(ksm_date),getdate())>=:months ',
                             array('bank'=> $this->bank_no,'emp'=>Auth::user()->empno,'months'=>$this->months ));
       if ($this->ByTajmeehy=='Taj')
         DB::connection(Auth()->user()->company)->statement( 'insert into late select main.no,DATEDIFF(month,max(ksm_date),getdate()),:emp
@@ -106,6 +113,11 @@ class Kamla extends Component
                     where  sul_pay=0 and  main.no<>0 and DATEDIFF(month,sul_date,getdate())>=:months
                     and bank in (select bank_no from bank where bank_tajmeeh=:taj) ',
                     array('taj'=> $this->TajNo,'emp'=>Auth::user()->empno,'months'=>$this->months ));
+
+
+        DB::connection(Auth()->user()->company)->table('late')
+            ->whereIn('no',BankStop::all()->pluck('no'))->delete();
+
 
       if ($this->RepRadio=='RepAll') {
           $page = 1;
