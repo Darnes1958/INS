@@ -135,10 +135,13 @@ class HafInputTable extends Component
             join('kst_type','kst_type.kst_type_no','=','hafitha_tran.kst_type')
         ->where('hafitha',$this->hafitha)
 
-           ->when($this->search , function($q)  {
-                return $q->where('name', 'like', '%'.$this->search.'%')
-                         ->orwhere('acc', 'like', '%'.$this->search.'%');
+        ->when($this->search , function($q)  {
+                return $q->where(function ($query){
+                   $query->where('name', 'like', '%'.$this->search.'%')
+                       ->orwhere('acc', 'like', '%'.$this->search.'%');
+                });
            })
+
             ->orderBy($this->index,'asc')
             ->paginate(15)]);
     }
